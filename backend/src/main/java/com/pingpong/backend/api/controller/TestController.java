@@ -20,11 +20,11 @@ public class TestController {
     }
 
     @GetMapping("/user/{id}")
-    public Optional<User> read(@PathVariable Long id) {
+    public String read(@PathVariable Long id) {
 
         Optional<User> userOptional = userRepository.findById(id);
         userOptional.ifPresent(System.out::println);
 
-        return userOptional;
+        return "success : "+userOptional.toString();
     }
 }
