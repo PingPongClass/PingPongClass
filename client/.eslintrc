@@ -21,7 +21,12 @@
           "endOfLine": "auto"
         }
       ],
+      "no-param-reassign": ["error", { "props": false }],
       "react/state-in-constructor": "off",
+      "react/react-in-jsx-scope": "off",
+      "no-use-before-define": "off",
+      "react/button-has-type": "off",
+      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
       "import/no-extraneous-dependencies": [
         "error",
         {
