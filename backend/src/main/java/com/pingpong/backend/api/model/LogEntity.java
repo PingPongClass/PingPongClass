@@ -19,14 +19,6 @@ public class LogEntity {
     @JoinColumn(name="student_id", nullable = false)
     private StudentEntity studententity;
 
-    @ManyToOne
-    @JoinColumn(name="subject_code", nullable = false)
-    private SubjectEntity subjectentity;
-
-    @ManyToOne
-    @JoinColumn(name="timetable_id", nullable = false)
-    private TimetableEntity timetableentity;
-
     @Column(name = "reg_date", nullable = false, columnDefinition = "DATE")
     private Date regDate;
 
