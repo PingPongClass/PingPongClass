@@ -13,7 +13,7 @@ public class ClassStudentEntity {
     @JoinColumn(name="class_id", nullable = false)
     private ClassEntity classentity;
 
-    @Column(name = "student_id", nullable = false)
-    private int studentId;
-
+    @ManyToOne
+    @JoinColumn(name="student_id", nullable = false)
+    private StudentEntity studententity;
 }

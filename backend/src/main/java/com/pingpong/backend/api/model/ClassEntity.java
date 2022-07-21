@@ -9,14 +9,17 @@ public class ClassEntity {
     @Column(name = "class_id")
     private int classId;
 
-    @Column(name = "teacher_id", nullable = false)
-    private int teacherId;
+    @ManyToOne
+    @JoinColumn(name="teacher_id", nullable = false)
+    private TeacherEntity teacherentity;
 
-    @Column(name = "subject_code", nullable = false, columnDefinition = "TINYINT")
-    private int subjectCode;
+    @ManyToOne
+    @JoinColumn(name="subject_code", nullable = false)
+    private SubjectEntity subjectentity;
 
-    @Column(name = "timetable_id", nullable = false)
-    private int timetableId;
+    @ManyToOne
+    @JoinColumn(name="timetable_id", nullable = false)
+    private TimetableEntity timetableentity;
 
     @Column(name = "class_title", nullable = false, length = 20)
     private String classTitle;

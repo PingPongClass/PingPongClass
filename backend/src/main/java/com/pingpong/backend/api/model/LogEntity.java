@@ -11,17 +11,21 @@ public class LogEntity {
     @Column(name = "log_id")
     private int logId;
 
-    @Column(name = "class_id", nullable = false)
-    private int classId;
+    @ManyToOne
+    @JoinColumn(name="class_id", nullable = false)
+    private ClassEntity classentity;
 
-    @Column(name = "student_id", nullable = false)
-    private int studentId;
+    @ManyToOne
+    @JoinColumn(name="student_id", nullable = false)
+    private StudentEntity studententity;
 
-    @Column(name = "subject_code", nullable = false, columnDefinition = "TINYINT")
-    private int subjectCode;
+    @ManyToOne
+    @JoinColumn(name="subject_code", nullable = false)
+    private SubjectEntity subjectentity;
 
-    @Column(name = "timetable_id", nullable = false, columnDefinition = "TINYINT")
-    private int timetableId;
+    @ManyToOne
+    @JoinColumn(name="timetable_id", nullable = false)
+    private TimetableEntity timetableentity;
 
     @Column(name = "reg_date", nullable = false, columnDefinition = "DATE")
     private Date regDate;
