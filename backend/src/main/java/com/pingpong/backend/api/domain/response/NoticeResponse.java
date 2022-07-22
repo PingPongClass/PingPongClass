@@ -1,5 +1,6 @@
-package com.pingpong.backend.api.domain;
+package com.pingpong.backend.api.domain.response;
 
+import com.pingpong.backend.api.domain.NoticeEntity;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

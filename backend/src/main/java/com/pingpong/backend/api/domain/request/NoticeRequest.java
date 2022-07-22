@@ -1,4 +1,4 @@
-package com.pingpong.backend.api.domain;
+package com.pingpong.backend.api.domain.request;
 
 import lombok.AccessLevel;
 import lombok.Getter;
