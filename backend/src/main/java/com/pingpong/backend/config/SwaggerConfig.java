@@ -31,9 +31,9 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo(){
         return new ApiInfoBuilder()
-                .title("테스트 API 타이틀")
-                .description("테스트 API 상세소개 및 사용법 등")
-                .contact(new Contact("mile", "milenote.tistory.com", "skn@futurenuri.com"))
+                .title("핑퐁클래스 테스트 API 타이틀")
+                .description("핑퐁클래스 관련 테스트 API 상세소개 및 사용법")
+                .contact(new Contact("pingpong class", "pingpongclass.com", "pingpongclass@gmail.com"))
                 .version("1.0")
                 .build();
     }
