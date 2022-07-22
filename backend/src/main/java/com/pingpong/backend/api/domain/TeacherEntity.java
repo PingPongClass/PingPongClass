@@ -1,6 +1,11 @@
 package com.pingpong.backend.api.domain;
 
 
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 //import lombok.*;
@@ -10,6 +15,8 @@ import javax.persistence.*;
 //@NoArgsConstructor
 
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name="teacher")
 public class TeacherEntity {
     @Id
@@ -26,4 +33,13 @@ public class TeacherEntity {
     private String password;
 
     private String profile;
+
+    @Builder
+    public TeacherEntity(int teacherId, String name, String email, String password, String profile) {
+        this.teacherId = teacherId;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.profile = profile;
+    }
 }

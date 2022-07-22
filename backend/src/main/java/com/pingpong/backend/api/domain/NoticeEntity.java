@@ -1,15 +1,19 @@
 package com.pingpong.backend.api.domain;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 //import lombok.*;
-//@Getter
 //@Builder
 //@AllArgsConstructor
 //@NoArgsConstructor
 
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name="notice")
 public class NoticeEntity {
     @Id
@@ -18,7 +22,11 @@ public class NoticeEntity {
 
     @ManyToOne
     @JoinColumn(name="teacher_id",nullable=false)
-    private TeacherEntity teachEntity;
+    private TeacherEntity teacherEntity;
+
+    @ManyToOne
+    @JoinColumn(name="class_id",nullable=false)
+    private ClassEntity classEntity;
 
     @Column(nullable = false, length=50)
     private String title;
@@ -27,6 +35,20 @@ public class NoticeEntity {
     private String content;
 
     @Column(nullable = false)
-    private Timestamp regtime;
+    private LocalDateTime regtime = LocalDateTime.now();
 
+    @Builder
+    public NoticeEntity(TeacherEntity teacherEntity, ClassEntity classEntity, String title, String content) {
+        this.teacherEntity = teacherEntity;
+        this.classEntity = classEntity;
+        this.title=title;
+        this.content=content;
+    }
+
+    public void update(ClassEntity classEntity, String title, String content){
+        this.title = title;
+        this.content = content;
+        this.regtime = LocalDateTime.now();
+        this.classEntity = classEntity;
+    }
 }
