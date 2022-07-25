@@ -1,15 +1,12 @@
 package com.pingpong.backend.api.domain;
 
-
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
+import lombok.*;
 
-//import lombok.*;
-//@Getter
-//@Builder
-//@AllArgsConstructor
-//@NoArgsConstructor
 
+@Getter
+@NoArgsConstructor
 @Entity
 @Table(name="record")
 public class RecordEntity {
@@ -22,9 +19,22 @@ public class RecordEntity {
     @JoinColumn(name="class_id", nullable = false)
     private ClassEntity classEntity;
 
+//    @ManyToOne
+//    @JoinColumn(name="teacher_id", nullable = false)
+//    private TeacherEntity teacherEntity;
+
     @Column(nullable = false, length = 256)
     private String videoUrl;
 
     @Column(nullable = false)
-    private Date videoSavetime;
+    private LocalDate videoSavetime = LocalDate.now();
+
+    @Builder
+    public RecordEntity(int recordId, ClassEntity classEntity, String videoUrl, LocalDate videoSavetime){
+        this.recordId =recordId;
+        this.classEntity = classEntity;
+        this.videoUrl = videoUrl;
+        this.videoSavetime = videoSavetime;
+    }
+
 }

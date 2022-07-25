@@ -8,8 +8,8 @@ import javax.persistence.*;
 
 @Entity(name = "student")
 @Table(name="student")
-@Getter @Setter
-@NoArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StudentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +30,7 @@ public class StudentEntity {
     @Column(length = 40, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length=256)
     private String password;
 
     @Column(nullable = false)
@@ -45,19 +45,17 @@ public class StudentEntity {
     @Column(nullable = false, length = 50)
     private String introduce;
 
-//    @OneToMany(mappedBy = "student")
-//    private List<ItemStudentEntity> items = new ArrayList<>();
-
-//    public update(String name, int grade, int classNum, int studentNum, String email, String password, String profile, int point, int totalPoint, String introduce){
-//        this.name = name;
-//        this.classNum = classNum;
-//        this.studentId = studentNum;
-//        this.email = email;
-//        this.password = password;
-//        this.profile = profile;
-//        this.point = point;
-//        this.totalPoint = totalPoint;
-//        this.introduce = introduce;
-//    }
-
+    @Builder
+    public StudentEntity(String name, Byte grade, Byte classNum, Byte studentNum, String email, String password, String profile, int point, int totalPoint, String introduce){
+        this.name = name;
+        this.grade = grade;
+        this.classNum=classNum;
+        this.studentNum=studentNum;
+        this.email=email;
+        this.password=password;
+        this.profile=profile;
+        this.point=point;
+        this.totalPoint=totalPoint;
+        this.introduce=introduce;
+    }
 }

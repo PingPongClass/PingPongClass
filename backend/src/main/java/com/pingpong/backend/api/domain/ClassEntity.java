@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Table(name="class")
 public class ClassEntity {
     @Id
@@ -31,15 +31,23 @@ public class ClassEntity {
     @Column(nullable = false, length = 20)
     private String classTitle;
 
+    @Column(nullable = false, length = 50)
+    private String classDesc;
+
+    @Column(length = 256)
+    private String classUrl;
+
     @Column(nullable = false)
     private byte classDay;
 
     @Builder
-    public ClassEntity(TeacherEntity teacherEntity, SubjectEntity subjectEntity, TimetableEntity timetableEntity, String classTitle, byte classDay) {
+    public ClassEntity(TeacherEntity teacherEntity, SubjectEntity subjectEntity, TimetableEntity timetableEntity, String classTitle, String classDesc,String classUrl,  byte classDay) {
         this.teacherEntity = teacherEntity;
         this.subjectEntity = subjectEntity;
         this.timetableEntity = timetableEntity;
         this.classDay = classDay;
+        this.classUrl = classUrl;
+        this.classDesc = classDesc;
         this.classTitle = classTitle;
     }
 }
