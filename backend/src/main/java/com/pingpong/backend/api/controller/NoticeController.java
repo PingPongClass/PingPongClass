@@ -3,6 +3,7 @@ package com.pingpong.backend.api.controller;
 import com.pingpong.backend.api.domain.request.NoticeRequest;
 import com.pingpong.backend.api.domain.response.NoticeResponse;
 import com.pingpong.backend.api.service.NoticeService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@Api(value = "공지사항 API", tags={"공지사항"})
+@CrossOrigin
 @RequestMapping("/notice")
 @RequiredArgsConstructor
 public class NoticeController {

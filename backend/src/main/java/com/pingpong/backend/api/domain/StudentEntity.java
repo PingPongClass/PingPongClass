@@ -57,4 +57,8 @@ public class StudentEntity {
         this.totalPoint=totalPoint;
         this.introduce=introduce;
     }
+
+    public void updatePoint(int point){
+        this.point=point;
+    }
 }

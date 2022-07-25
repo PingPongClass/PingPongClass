@@ -1,7 +1,9 @@
 package com.pingpong.backend.api.domain;
 
 import com.pingpong.backend.api.domain.enums.ItemCategory;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -10,6 +12,7 @@ import javax.persistence.*;
 @Table(name="item")
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ItemEntity {
 
     @Id
@@ -29,5 +32,5 @@ public class ItemEntity {
     private ItemCategory category;
 
     @Column(nullable = false)
-    private String describe;
+    private String itemDescribe;
 }
