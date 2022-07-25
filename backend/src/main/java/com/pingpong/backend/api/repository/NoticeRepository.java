@@ -2,6 +2,9 @@ package com.pingpong.backend.api.repository;
 
 import com.pingpong.backend.api.domain.ClassEntity;
 import com.pingpong.backend.api.domain.NoticeEntity;
+import com.pingpong.backend.api.domain.TeacherEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
