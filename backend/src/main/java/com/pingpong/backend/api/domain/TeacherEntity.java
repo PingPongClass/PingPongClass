@@ -45,6 +45,18 @@ public class TeacherEntity {
     private String profile;
 
     @Builder
+    public TeacherEntity(int teacherId, String name, String email, int isAdmin, String password, String birth, int manageGrade, String profile) {
+        this.teacherId = teacherId;
+        this.name = name;
+        this.password = password;
+        this.birth=birth;
+        this.manageGrade=manageGrade;
+        this.email=email;
+        this.isAdmin=isAdmin;
+        this.profile=profile;
+    }
+
+    @Builder
     public TeacherEntity(int teacherId, String name, String password, String birth, int manageGrade) {
         this.teacherId = teacherId;
         this.name = name;

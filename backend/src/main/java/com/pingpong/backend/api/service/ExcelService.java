@@ -1,8 +1,10 @@
 package com.pingpong.backend.api.service;
 
+import com.pingpong.backend.api.domain.StudentEntity;
 import com.pingpong.backend.api.domain.StudentExcelTest;
 import com.pingpong.backend.api.domain.TeacherEntity;
 import com.pingpong.backend.api.repository.StudentExcelRepository;
+import com.pingpong.backend.api.repository.StudentRepository;
 import com.pingpong.backend.api.repository.TeacherRepository;
 import lombok.NoArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
@@ -23,7 +25,7 @@ import java.util.Map;
 public class ExcelService {
 
     @Autowired
-    StudentExcelRepository studentExcelRepository;
+    StudentRepository studentRepository;
     @Autowired
     TeacherRepository teacherRepository;
     @Autowired
@@ -60,18 +62,18 @@ public class ExcelService {
             return "Excel 파일만 업로드해주세요.";
         }
 
-        List<StudentExcelTest> listStudent = new ArrayList<>();
+        List<StudentEntity> listStudent = new ArrayList<>();
         List<Map<String, Object>> listMap = excelUtil.getListData(file, 1, 5);
 
         for(Map<String, Object> map : listMap){
-            StudentExcelTest studentInfo = new StudentExcelTest(Integer.parseInt(map.get("0").toString()), map.get("1").toString(), Integer.parseInt(map.get("2").toString()),
+            StudentEntity studentInfo = new StudentEntity(Integer.parseInt(map.get("0").toString()), map.get("1").toString(), Integer.parseInt(map.get("2").toString()),
                     Integer.parseInt(map.get("3").toString()), Integer.parseInt(map.get("4").toString()), getRamdomPassword(10));
 
             listStudent.add(studentInfo);
         }
 
-        for(StudentExcelTest studentInfo : listStudent){
-            studentExcelRepository.save(studentInfo);
+        for(StudentEntity studentInfo : listStudent){
+            studentRepository.save(studentInfo);
         }
 
         return "등록되었습니다.";
