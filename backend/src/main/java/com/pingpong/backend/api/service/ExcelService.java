@@ -1,9 +1,7 @@
 package com.pingpong.backend.api.service;
 
 import com.pingpong.backend.api.domain.StudentEntity;
-import com.pingpong.backend.api.domain.StudentExcelTest;
 import com.pingpong.backend.api.domain.TeacherEntity;
-import com.pingpong.backend.api.repository.StudentExcelRepository;
 import com.pingpong.backend.api.repository.StudentRepository;
 import com.pingpong.backend.api.repository.TeacherRepository;
 import lombok.NoArgsConstructor;
