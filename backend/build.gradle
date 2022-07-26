@@ -51,6 +51,10 @@ dependencies {
 
     //JUnit
     testImplementation group: 'junit', name: 'junit', version: '4.13.1'
+
+    //excel
+    implementation 'org.apache.poi:poi-ooxml:5.2.2' //.xlsx
+    implementation 'org.apache.poi:poi:5.2.2' //.xls
 }
     tasks.named('test') {
     useJUnitPlatform()

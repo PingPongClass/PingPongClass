@@ -1,10 +1,13 @@
 package com.pingpong.backend.api.controller;
 
+import com.pingpong.backend.api.domain.TeacherEntity;
 import com.pingpong.backend.api.domain.request.NoticeRequest;
 import com.pingpong.backend.api.domain.response.NoticeResponse;
+import com.pingpong.backend.api.repository.TeacherRepository;
 import com.pingpong.backend.api.service.NoticeService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -17,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 public class NoticeController {
 
     private final NoticeService noticeService;
+    @Autowired
+    TeacherRepository teacherRepository;
 
     @ApiOperation(value = "공지사항 작성", notes = "teacherId, classId, title, content를 이용하여 공지사항을 작성합니다.")
     @PostMapping("")
@@ -32,12 +37,13 @@ public class NoticeController {
 
     @ApiOperation(value = "공지사항 조회 및 검색", notes = "공지사항을 조회하고, 필터에 따라 검색합니다.")
     @GetMapping("/list")
-    public Page<NoticeResponse> selectNotice(@RequestParam(value="type") int type, @RequestParam(value="userId") int userId,
-                                             @RequestParam(value="classId") int classId, @RequestParam(value="titleSearch", required = false) String titleSearch, Pageable pageable){
+    public Page<NoticeResponse> selectNotice(@RequestParam(value="userId") int userId, @RequestParam(value="classId") int classId, @RequestParam(value="titleSearch", required = false) String titleSearch, Pageable pageable){
         Page<NoticeResponse> result = null;
-        if(type==1){
+        int type = Integer.toString(userId).length();
+        if(type==7){
             //관리자일 때
-            if(userId>=5000000) {
+            TeacherEntity teacher = teacherRepository.getOne(userId);
+            if(teacher.getIsAdmin()==1) {
                 result = noticeService.findAll(classId, titleSearch, pageable);
             }
             //선생님일 때
@@ -45,7 +51,7 @@ public class NoticeController {
                 result = noticeService.findTeacher(userId, classId, titleSearch, pageable);
             }
             //학생일 때
-        } else if(type==0){
+        } else if(type==10){
             result = noticeService.findStudent(userId, classId, titleSearch, pageable);
         }
 
