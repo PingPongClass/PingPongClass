@@ -5,9 +5,11 @@ import com.pingpong.backend.api.domain.TeacherEntity;
 import com.pingpong.backend.api.repository.StudentRepository;
 import com.pingpong.backend.api.repository.TeacherRepository;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,15 +21,13 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class ExcelService {
 
-    @Autowired
-    StudentRepository studentRepository;
-    @Autowired
-    TeacherRepository teacherRepository;
-    @Autowired
-    ExcelUtil excelUtil;
+    private final StudentRepository studentRepository;
+    private final TeacherRepository teacherRepository;
+    private final ExcelUtil excelUtil;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public String getRamdomPassword(int size) {
         char[] charSet = new char[] {
@@ -65,7 +65,7 @@ public class ExcelService {
 
         for(Map<String, Object> map : listMap){
             StudentEntity studentInfo = new StudentEntity(Integer.parseInt(map.get("0").toString()), map.get("1").toString(), Integer.parseInt(map.get("2").toString()),
-                    Integer.parseInt(map.get("3").toString()), Integer.parseInt(map.get("4").toString()), getRamdomPassword(10));
+                    Integer.parseInt(map.get("3").toString()), Integer.parseInt(map.get("4").toString()), bCryptPasswordEncoder.encode(getRamdomPassword(10)));
 
             listStudent.add(studentInfo);
         }
@@ -91,7 +91,7 @@ public class ExcelService {
         List<Map<String, Object>> listMap = excelUtil.getListData(file, 1, 4);
 
         for(Map<String, Object> map : listMap){
-            TeacherEntity teacherInfo = new TeacherEntity(Integer.parseInt(map.get("0").toString()), map.get("1").toString(), getRamdomPassword(10),
+            TeacherEntity teacherInfo = new TeacherEntity(Integer.parseInt(map.get("0").toString()), map.get("1").toString(), bCryptPasswordEncoder.encode(getRamdomPassword(10)),
                     map.get("2").toString(), Integer.parseInt(map.get("3").toString()), Integer.parseInt(map.get("4").toString()));
 
             listTeacher.add(teacherInfo);
