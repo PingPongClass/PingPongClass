@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 public class LoginDto {
 
     @NotNull
-    private int id;
+    private String id;
 
     @NotNull
     private String password;

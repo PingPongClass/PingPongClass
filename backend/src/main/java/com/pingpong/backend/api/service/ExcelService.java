@@ -7,14 +7,12 @@ import com.pingpong.backend.api.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +23,7 @@ public class ExcelService {
     private final StudentRepository studentRepository;
     private final TeacherRepository teacherRepository;
     private final ExcelUtil excelUtil;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public String addStudent(MultipartFile file) throws IOException, InvalidFormatException {
         if(file.isEmpty()){
@@ -42,7 +40,7 @@ public class ExcelService {
 
         for(Map<String, Object> map : listMap){
             StudentEntity studentInfo = new StudentEntity(Integer.parseInt(map.get("0").toString()), map.get("1").toString(), Integer.parseInt(map.get("2").toString()),
-                    Integer.parseInt(map.get("3").toString()), Integer.parseInt(map.get("4").toString()), bCryptPasswordEncoder.encode("ssafy"+map.get("0").toString()));
+                    Integer.parseInt(map.get("3").toString()), Integer.parseInt(map.get("4").toString()), passwordEncoder.encode("ssafy"+map.get("0").toString()));
 
             listStudent.add(studentInfo);
         }
@@ -68,7 +66,7 @@ public class ExcelService {
         List<Map<String, Object>> listMap = excelUtil.getListData(file, 1, 4);
 
         for(Map<String, Object> map : listMap){
-            TeacherEntity teacherInfo = new TeacherEntity(Integer.parseInt(map.get("0").toString()), map.get("1").toString(), bCryptPasswordEncoder.encode("ssafy"+map.get("0").toString()),
+            TeacherEntity teacherInfo = new TeacherEntity(Integer.parseInt(map.get("0").toString()), map.get("1").toString(), passwordEncoder.encode("ssafy"+map.get("0").toString()),
                     map.get("2").toString(), Integer.parseInt(map.get("3").toString()), Integer.parseInt(map.get("4").toString()));
 
             listTeacher.add(teacherInfo);
