@@ -33,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     private org.springframework.security.core.userdetails.User createUser(String id, StudentEntity student) {
-        if (student.getActivated()==0) {
+        if (!student.isActivated()) {
             throw new RuntimeException(id + " -> 활성화되어 있지 않습니다.");
         }
         //DB 가져온 유저가 활성화 상태면

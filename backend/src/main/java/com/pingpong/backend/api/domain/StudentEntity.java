@@ -53,8 +53,7 @@ public class StudentEntity {
     private String introduce;
 
     @Column(name = "activated")
-    @ColumnDefault("1")
-    private int activated;
+    private boolean activated=true;
 
     @ManyToMany
     @JoinTable(
