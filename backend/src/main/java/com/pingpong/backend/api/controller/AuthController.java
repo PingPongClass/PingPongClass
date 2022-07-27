@@ -35,6 +35,7 @@ public class AuthController {
         //아이디와 패스워드 인자를 받고, AuthenticationToken객체 생성
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getId(), loginDto.getPassword());
+        System.out.println(authenticationToken+"토큰!!!!!!!!!!!!!!!");
         //authenticate가 실행될 때, CustomUserDetailService에서 loadUserByUsername메소드 실행되어 authentication객체 생성
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         //authentication객체를 SecurityContext에 저장

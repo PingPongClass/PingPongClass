@@ -14,7 +14,7 @@ import java.util.List;
 @Api(value = "상점 API", tags={"상점"})
 @CrossOrigin
 @RestController
-@RequestMapping("/ssafy/items")
+@RequestMapping("/items")
 @RequiredArgsConstructor
 public class StoreController {
     private final ItemServiceImpl itemService;

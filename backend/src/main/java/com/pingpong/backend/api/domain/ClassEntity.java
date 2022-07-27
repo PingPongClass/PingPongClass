@@ -41,9 +41,6 @@ public class ClassEntity {
     @Column(nullable = false)
     private int classDay;
 
-//    @OneToMany(mappedBy = "class", cascade = {CascadeType.ALL})
-//    public List<ClassStudentEntity> classStudentEntityList;
-
     @Builder
     public ClassEntity(TeacherEntity teacherEntity, SubjectEntity subjectEntity, TimetableEntity timetableEntity, String classTitle, String classDesc, String classUrl,  int classDay) {
         this.teacherEntity = teacherEntity;
@@ -55,8 +52,9 @@ public class ClassEntity {
         this.classTitle = classTitle;
     }
 
-    public void update(TimetableEntity timetableEntity, String classTitle, String classDesc, int classDay){
+    public void update(TimetableEntity timetableEntity, SubjectEntity subjectEntity, String classTitle, String classDesc, int classDay){
         this.timetableEntity = timetableEntity;
+        this.subjectEntity = subjectEntity;
         this.classDay = classDay;
         this.classDesc = classDesc;
         this.classTitle = classTitle;

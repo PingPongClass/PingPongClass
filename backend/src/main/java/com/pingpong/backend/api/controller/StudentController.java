@@ -14,13 +14,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.SecureRandom;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Api(value = "학생 API", tags={"학생"})
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/ssafy/students")
+@RequestMapping("/students")
 @RequiredArgsConstructor
 public class StudentController {
     @Autowired
@@ -29,13 +31,11 @@ public class StudentController {
     @Autowired
     private StudentRepository repository;
 
-
-
     @ApiOperation(value = "학생 회원가입", notes = "학생 정보 삽입, 임시비밀번호 제공")
     @PostMapping
     public ResponseEntity<?> register(@RequestBody StudentEntity student){
         try{
-            //FIXME
+            student.updateRandomPassword(getRamdomPassword(10));
             service.register(student);
             return new ResponseEntity<String>("학생정보 입력 성공",HttpStatus.OK);
         } catch(Exception e){
@@ -43,6 +43,27 @@ public class StudentController {
         }
     }
 
+    //랜덤 임시 패스워드 생성
+    public String getRamdomPassword(int size) {
+        char[] charSet = new char[] {
+                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+                '!', '@', '#', '$', '%', '^', '&' };
+
+        StringBuffer sb = new StringBuffer();
+        SecureRandom sr = new SecureRandom();
+        sr.setSeed(new Date().getTime());
+
+        int idx = 0;
+        int len = charSet.length;
+        for (int i=0; i<size; i++) {
+            idx = sr.nextInt(len);    // 강력한 난수를 발생시키기 위해 SecureRandom을 사용한다.
+            sb.append(charSet[idx]);
+        }
+
+        return sb.toString();
+    }
 
     //FIXME
 //    @ApiOperation(value = "학생 로그인", notes = "JWT")
