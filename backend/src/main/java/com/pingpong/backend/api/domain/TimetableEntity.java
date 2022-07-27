@@ -13,22 +13,22 @@ import javax.persistence.*;
 @Table(name="timetable")
 public class TimetableEntity {
     @Id
-    private byte timetableId;
+    private int timetableId;
 
     @Column(nullable = false)
-    private byte startTimehh;
+    private int startTimehh;
 
     @Column(nullable = false)
-    private byte startTimemm;
+    private int startTimemm;
 
     @Column(nullable = false)
-    private byte endTimehh;
+    private int endTimehh;
 
     @Column(nullable = false)
     private int endTimemm;
 
     @Builder
-    public TimetableEntity(byte timetableId, byte startTimehh, byte startTimemm, byte endTimehh, byte endTimemm){
+    public TimetableEntity(int timetableId, int startTimehh, int startTimemm, int endTimehh, int endTimemm){
         this.timetableId = timetableId;
         this.startTimehh = startTimehh;
         this.startTimemm = startTimemm;

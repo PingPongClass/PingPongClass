@@ -9,13 +9,13 @@ import lombok.*;
 @Table(name="subject")
 public class SubjectEntity {
     @Id
-    private Byte classSubjectCode;
+    private int classSubjectCode;
 
     @Column(nullable = false, length=10)
     private String name;
 
     @Builder
-    public SubjectEntity(byte classSubjectCode, String name){
+    public SubjectEntity(int classSubjectCode, String name){
         this.classSubjectCode = classSubjectCode;
         this.name = name;
     }

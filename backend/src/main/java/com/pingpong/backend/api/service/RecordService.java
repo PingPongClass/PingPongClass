@@ -39,7 +39,7 @@ public class RecordService {
     }
     //강의다시보기 목록 조회 및 수업명 검색(학생)
     public List<RecordResponse> findRecordsForStudent(final int studentId,  String classTitle){
-        Sort sort = Sort.by(Sort.Direction.DESC, "classId", "classTitle");
+        Sort sort = Sort.by(Sort.Direction.DESC, "regtime");
         List<RecordEntity> recordEntityList = new ArrayList<>();
         List<RecordResponse> list = new ArrayList<>();
         StudentEntity studentEntity = studentRepository.getOne(studentId);
@@ -62,7 +62,7 @@ public class RecordService {
 
     //강의다시보기 목록 (선생님)
     public List<RecordResponse> findRecordsForTeacher(final int teacherId){
-        Sort sort = Sort.by(Sort.Direction.DESC, "classId", "classTitle");
+        Sort sort = Sort.by(Sort.Direction.DESC, "regtime");
         TeacherEntity teacherEntity = teacherRepository.getOne(teacherId);
         List<ClassEntity> classEntityList = classRepository.findByTeacherEntity(teacherEntity);
         List<RecordEntity> recordEntityList = new ArrayList<>();

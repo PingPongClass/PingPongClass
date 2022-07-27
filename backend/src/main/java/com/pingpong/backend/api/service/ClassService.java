@@ -92,7 +92,7 @@ public class ClassService {
     //수업 목록 전체 조회
     public List<ClassResponse> findClassesById(final int userId){
         List<ClassResponse> list = new ArrayList<>();
-        if(userId<500000) {// 학생일때
+        if(userId>1000000000) {// 학생일때
             StudentEntity studentEntity = studentRepository.getOne(userId);
             List<ClassStudentEntity> classStudentEntityList = classStudentRepository.findByStudentEntity(studentEntity);
             for (ClassStudentEntity classStudentEntity : classStudentEntityList) {
@@ -116,7 +116,7 @@ public class ClassService {
         DayOfWeek dayOfWeek = localDate.getDayOfWeek();
         int dayNumber = dayOfWeek.getValue();
         List<ClassResponse> list = new ArrayList<>();
-        if(userId<500000) {// 학생일때
+        if(userId>1000000000) {// 학생일때
             StudentEntity studentEntity = studentRepository.getOne(userId);
             List<ClassStudentEntity> classStudentEntityList = classStudentRepository.findByStudentEntity(studentEntity);
             for (ClassStudentEntity classStudentEntity : classStudentEntityList) {

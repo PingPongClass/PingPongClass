@@ -13,7 +13,7 @@ public class ClassRequest {
     private int subjectCode;
     private String classTitle;
     private int classDay;
-    private byte timetableId;
+    private int timetableId;
     private String classDesc;
     private String classUrl;
     private List<Integer> studentIdList;

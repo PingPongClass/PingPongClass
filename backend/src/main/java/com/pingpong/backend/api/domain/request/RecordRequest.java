@@ -10,10 +10,6 @@ import java.time.LocalDate;
 @NoArgsConstructor(access= AccessLevel.PROTECTED)
 public class RecordRequest {
 
-    private int teacherId;
-    private String classTitle;
     private int classId;
-    private int subjectCode;
-    private int timetableId;
     private String videoUrl;
 }
