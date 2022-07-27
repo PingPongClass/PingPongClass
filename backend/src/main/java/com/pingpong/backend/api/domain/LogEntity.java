@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -25,7 +26,7 @@ public class LogEntity {
     private StudentEntity studententity;
 
     @Column(nullable = false, columnDefinition = "DATE")
-    private Date regDate;
+    private LocalDate regDate;
 
     @Column(nullable = false)
     private int point;
@@ -37,7 +38,7 @@ public class LogEntity {
     private int presentCnt;
 
     @Builder
-    public LogEntity(ClassEntity classEntity, StudentEntity studententity, Date regDate, int point, boolean attendance, int presentCnt){
+    public LogEntity(ClassEntity classEntity, StudentEntity studententity, LocalDate regDate, int point, boolean attendance, int presentCnt){
         this.classentity = classEntity;
         this.studententity = studententity;
         this.regDate = regDate;

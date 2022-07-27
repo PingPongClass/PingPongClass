@@ -27,5 +27,6 @@ public interface StudentRepository extends JpaRepository<StudentEntity, Integer>
     //FIXME
     @Query(value="SELECT regDate, SUM(point) point FROM log WHERE studentId = :studentId GROUP BY reg_date", nativeQuery = true)
     List<LogEntity> getPoint(@Param("studentId") int studentId);
+
 }
 

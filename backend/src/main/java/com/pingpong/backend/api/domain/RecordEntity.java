@@ -19,15 +19,11 @@ public class RecordEntity {
     @JoinColumn(name="class_id", nullable = false)
     private ClassEntity classEntity;
 
-//    @ManyToOne
-//    @JoinColumn(name="teacher_id", nullable = false)
-//    private TeacherEntity teacherEntity;
-
     @Column(nullable = false, length = 256)
     private String videoUrl;
 
     @Column(nullable = false)
-    private LocalDate videoSavetime = LocalDate.now();
+    private LocalDate videoSavetime;
 
     @Builder
     public RecordEntity(int recordId, ClassEntity classEntity, String videoUrl, LocalDate videoSavetime){

@@ -13,7 +13,7 @@ public class RecordRequest {
     private int teacherId;
     private String classTitle;
     private int classId;
-    private String subjectCode;
-    private String timetableId;
+    private int subjectCode;
+    private int timetableId;
     private String videoUrl;
 }

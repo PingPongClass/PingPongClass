@@ -10,5 +10,7 @@ public interface TeacherRepository extends JpaRepository<TeacherEntity, Integer>
 
     boolean existsByEmail(String email);
 
+    TeacherEntity findByTeacherId(int teacherId);
+
 }
 
