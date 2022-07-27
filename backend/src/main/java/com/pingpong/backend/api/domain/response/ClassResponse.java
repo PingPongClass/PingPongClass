@@ -1,16 +1,17 @@
 package com.pingpong.backend.api.domain.response;
-
 import com.pingpong.backend.api.domain.ClassEntity;
 import lombok.Getter;
+
+//목록 조회용 response
 
 @Getter
 public class ClassResponse {
     private String teacherName;
     private int subjectCode;
     private String classTitle;
-    private Byte classDay;
+    private int classDay;
     private String classDesc;
-    private byte timetableId;
+    private int timetableId;
 
     public ClassResponse(ClassEntity classEntity){
         this.teacherName = classEntity.getTeacherEntity().getName();
