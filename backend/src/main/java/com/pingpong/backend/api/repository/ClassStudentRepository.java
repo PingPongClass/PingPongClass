@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface ClassStudentRepository extends JpaRepository<ClassStudentEntity, Integer> {
     List<ClassStudentEntity> findByStudentEntity(StudentEntity studentEntity);
+    List<ClassStudentEntity> findByClassEntity(ClassEntity classEntity);
 }

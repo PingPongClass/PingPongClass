@@ -1,10 +1,9 @@
 package com.pingpong.backend.api.domain.request;
 
-import com.pingpong.backend.api.domain.StudentEntity;
+import com.pingpong.backend.api.domain.ClassStudentEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import java.util.List;
 
 @Getter
@@ -13,9 +12,9 @@ public class ClassRequest {
     private int teacherId;
     private int subjectCode;
     private String classTitle;
-    private byte classDay;
+    private int classDay;
     private byte timetableId;
     private String classDesc;
     private String classUrl;
-    private List<StudentEntity> students;
+    private List<Integer> studentIdList;
 }

@@ -29,4 +29,9 @@ public class ClassStudentEntity {
         this.classEntity=classEntity;
         this.studentEntity=studentEntity;
     }
+
+    public void update(StudentEntity studentEntity, ClassEntity classEntity){
+        this.classEntity = classEntity;
+        this.studentEntity = studentEntity;
+    }
 }
