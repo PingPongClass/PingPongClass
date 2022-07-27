@@ -92,7 +92,7 @@ public class ExcelService {
 
         for(Map<String, Object> map : listMap){
             TeacherEntity teacherInfo = new TeacherEntity(Integer.parseInt(map.get("0").toString()), map.get("1").toString(), getRamdomPassword(10),
-                    map.get("2").toString(), Integer.parseInt(map.get("3").toString()));
+                    map.get("2").toString(), Integer.parseInt(map.get("3").toString()), Integer.parseInt(map.get("4").toString()));
 
             listTeacher.add(teacherInfo);
         }

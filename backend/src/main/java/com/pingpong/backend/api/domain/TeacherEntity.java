@@ -57,12 +57,13 @@ public class TeacherEntity {
     }
 
     @Builder
-    public TeacherEntity(int teacherId, String name, String password, String birth, int manageGrade) {
+    public TeacherEntity(int teacherId, String name, String password, String birth, int manageGrade, int isAdmin) {
         this.teacherId = teacherId;
         this.name = name;
         this.password = password;
         this.birth=birth;
         this.manageGrade=manageGrade;
+        this.isAdmin=isAdmin;
     }
 
     public void updateRandomPassword(String password){
