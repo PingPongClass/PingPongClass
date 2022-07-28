@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface ClassRepository extends JpaRepository<ClassEntity, Integer> {
     List<ClassEntity> findByTeacherEntity(TeacherEntity teacherEntity);
-    List<ClassEntity> findByClassId(int classId);
     List<ClassEntity> findByClassIdAndClassDay(int classId, int classDay, Sort sort);
     List<ClassEntity> findByTeacherEntityAndClassDay(TeacherEntity teacherEntity, int classDay, Sort sort);
+    List<ClassEntity> findByClassIdAndClassTitleContaining(int classId, String classTitle);
 
 }
