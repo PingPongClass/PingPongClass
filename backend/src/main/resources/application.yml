@@ -14,6 +14,7 @@ logging:
     com:
       samsung:
         security: DEBUG
+
 server:
   servlet:
     contextPath: /
@@ -23,6 +24,8 @@ server:
       charset: UTF-8
   address: localhost
   port: '8080'
+
+#mysal JPA
 spring:
   jpa:
     hibernate:
@@ -36,18 +39,35 @@ spring:
         show_sql: 'true'
     database: mysql
     show-sql: 'true'
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       password: pingpong403
       username: pong
     url: jdbc:mysql://localhost:3306/pingpong?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
+
   devtools:
     livereload:
       enabled: 'true'
+
   mvc:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
+
+  #Mail
+  mail:
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: 'true'
+          auth: 'true'
+    host: smtp.gmail.com
+    username: ppclass403@gmail.com
+    password: szjrjxvsxiggnvke
+    port: '587'
+
 build:
   date: '@build.date@'
 springfox:
@@ -55,6 +75,7 @@ springfox:
     swagger:
       use-model-v3: 'false'
 
+#JWT
 jwt:
   header: Authorization
   #HS512 알고리즘을 사용할 것이기 때문에 512bit, 즉 64byte 이상의 secret key를 사용해야 한다.
