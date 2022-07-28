@@ -1,30 +1,26 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import backgroundImg from '../assets/images/homeBackground.png';
+import IosModal from '../components/Common/IosModal';
 import LeftSide from '../components/Home/LeftSide';
 import RightSide from '../components/Home/RightSide';
 
 function Home() {
   return (
     <div css={totalContainer}>
-      <LeftSide />
-      <RightSide />
+      <IosModal>
+        <LeftSide />
+        <RightSide />
+      </IosModal>
     </div>
   );
 }
 
 const totalContainer = css`
-  position: absolute;
-  width: 90vw;
-  height: 90vh;
-  left: 5vw;
-  top: 5vh;
-
-  background: linear-gradient(
-    185.82deg,
-    rgba(127, 192, 228, 0.7) 0%,
-    rgba(94, 103, 190, 0.357) 95.83%
-  );
-  border-radius: 20px;
+  background-image: url(${backgroundImg});
+  background-size: cover;
+  width: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: row;
 `;

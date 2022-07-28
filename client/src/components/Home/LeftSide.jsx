@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import MovingLogo from '../../images/movingLogo.gif';
+import MovingLogo from '../../assets/images/movingLogo.gif';
 
 function LeftSide() {
   return (
