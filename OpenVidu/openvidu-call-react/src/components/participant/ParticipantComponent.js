@@ -45,6 +45,7 @@ export default class ParticipantComponent extends Component {
             <div>
               <SingleParticipantPanel
                 myinfo={this.props.myinfo.nickname}
+                attTime={this.props.myinfo.attTime}
                 isVideoOn={this.props.myinfo.videoActive}
                 isAudioOn={this.props.myinfo.audioActive}
               />

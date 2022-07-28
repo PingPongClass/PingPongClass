@@ -7,8 +7,10 @@ import VideocamOff from "@material-ui/icons/VideocamOff";
 
 import "./SingleParticipantPanel.css";
 
-// SingleParticipantPanel: 한 명의 패널을 담당하는 컴포넌트
-
+// name: 오석호
+// date: 2022/07/28
+// desc: 한 명의 패널을 담당하는 컴포넌트
+// Todo: 사용자의 이름과 같은 상태값들을 한명씩 출력해주는 컴포넌트
 const SingleParticipantPanel = (props) => {
   const { myinfo, isVideoOn, isAudioOn } = props;
   return (

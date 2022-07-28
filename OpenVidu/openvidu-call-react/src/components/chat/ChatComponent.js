@@ -30,7 +30,9 @@ export default class ChatComponent extends Component {
         messageList.push({
           connectionId: event.from.connectionId,
           nickname: data.nickname,
-          time: `${time.getHours()}:${time.getMinutes()}`,
+          time: `${String(time.getHours()).padStart(2, "0")}:${String(
+            time.getMinutes(),
+          ).padStart(2, "0")}`,
           message: data.message,
         });
         const document = window.document;

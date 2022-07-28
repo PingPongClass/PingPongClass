@@ -1,43 +1,48 @@
-import $ from 'jquery';
+import $ from "jquery";
 
 // OpenViduLayout: 화상연결화면의 레이아웃을 담당하는 클래스
 class OpenViduLayout {
   layoutContainer;
-  opts ;
+  opts;
 
   // fixAspectRatio: 요소의 비율을 설정하는 함수
   fixAspectRatio(elem, width) {
-    const sub = elem.querySelector('.OT_root');
+    const sub = elem.querySelector(".OT_root");
     if (sub) {
       // If this is the parent of a subscriber or publisher then we need
       // to force the mutation observer on the publisher or subscriber to
       // trigger to get it to fix it's layout
       const oldWidth = sub.style.width;
-      sub.style.width = width + 'px';
+      sub.style.width = width + "px";
       // sub.style.height = height + 'px';
-      sub.style.width = oldWidth || '';
+      sub.style.width = oldWidth || "";
     }
   }
 
   // positionElement: 요소의 위치를 결정하는 함수
   positionElement(elem, x, y, width, height, animate) {
     const targetPosition = {
-      left: x + 'px',
-      top: y + 'px',
-      width: width + 'px',
-      height: height + 'px',
+      left: x + "px",
+      top: y + "px",
+      width: width + "px",
+      height: height + "px",
     };
 
     this.fixAspectRatio(elem, width);
 
     if (animate && $) {
       $(elem).stop();
-      $(elem).animate(targetPosition, animate.duration || 200, animate.easing || 'swing', () => {
-        this.fixAspectRatio(elem, width);
-        if (animate.complete) {
-          animate.complete.call(this);
-        }
-      });
+      $(elem).animate(
+        targetPosition,
+        animate.duration || 200,
+        animate.easing || "swing",
+        () => {
+          this.fixAspectRatio(elem, width);
+          if (animate.complete) {
+            animate.complete.call(this);
+          }
+        },
+      );
     } else {
       $(elem).css(targetPosition);
     }
@@ -49,7 +54,7 @@ class OpenViduLayout {
     if (!elem) {
       return 3 / 4;
     }
-    const video = elem.querySelector('video');
+    const video = elem.querySelector("video");
     if (video && video.videoHeight && video.videoWidth) {
       return video.videoHeight / video.videoWidth;
     } else if (elem.videoHeight && elem.videoWidth) {
@@ -59,31 +64,31 @@ class OpenViduLayout {
   }
 
   // getCSSNumber: CSS번호를 반환하는 함수 ? 어디에 쓰는지 잘 모르겠음
-   getCSSNumber(elem, prop) {
+  getCSSNumber(elem, prop) {
     const cssStr = $(elem).css(prop);
     return cssStr ? parseInt(cssStr, 10) : 0;
   }
 
   // Really cheap UUID function
   // cheapUUID: UUID 생성하는 함수
-   cheapUUID() {
+  cheapUUID() {
     return (Math.random() * 100000000).toFixed(0);
   }
 
   // getHeight: 요소의 높이를 반환하는 함수
-   getHeight(elem) {
-    const heightStr = $(elem).css('height');
+  getHeight(elem) {
+    const heightStr = $(elem).css("height");
     return heightStr ? parseInt(heightStr, 10) : 0;
   }
 
   // getHeight: 요소의 너비를 반환하는 함수
-   getWidth(elem) {
-    const widthStr = $(elem).css('width');
+  getWidth(elem) {
+    const widthStr = $(elem).css("width");
     return widthStr ? parseInt(widthStr, 10) : 0;
   }
 
   // getBestDimensions: 요소들을 가장 적절하게 배치하기 위한 위치를 결정해서 반환해주는 함수
-   getBestDimensions(minR , maxR , count , WIDTH, HEIGHT, targetHeight) {
+  getBestDimensions(minR, maxR, count, WIDTH, HEIGHT, targetHeight) {
     let maxArea, targetCols, targetRows, targetWidth, tWidth, tHeight, tRatio;
 
     // Iterate through every possible combination of rows and columns
@@ -129,7 +134,7 @@ class OpenViduLayout {
   }
 
   // arrange: 실제로 적절한 위치에 요소들을 배열해주는 함수
-   arrange(
+  arrange(
     children,
     WIDTH,
     HEIGHT,
@@ -146,11 +151,27 @@ class OpenViduLayout {
     let dimensions;
 
     if (!fixedRatio) {
-      dimensions = this.getBestDimensions(minRatio, maxRatio, count, WIDTH, HEIGHT, targetHeight);
+      dimensions = this.getBestDimensions(
+        minRatio,
+        maxRatio,
+        count,
+        WIDTH,
+        HEIGHT,
+        targetHeight,
+      );
     } else {
       // Use the ratio of the first video element we find to approximate
-      const ratio = this.getVideoRatio(children.length > 0 ? children[0] : null);
-      dimensions = this.getBestDimensions(ratio, ratio, count, WIDTH, HEIGHT, targetHeight);
+      const ratio = this.getVideoRatio(
+        children.length > 0 ? children[0] : null,
+      );
+      dimensions = this.getBestDimensions(
+        ratio,
+        ratio,
+        count,
+        WIDTH,
+        HEIGHT,
+        targetHeight,
+      );
     }
 
     // Loop through each stream in the container and place it inside
@@ -207,9 +228,11 @@ class OpenViduLayout {
           let extraHeight = remainingHeightDiff / remainingShortRows;
           if (extraHeight / row.height > (WIDTH - row.width) / row.width) {
             // We can't go that big or we'll go too wide
-            extraHeight = Math.floor((WIDTH - row.width) / row.width * row.height);
+            extraHeight = Math.floor(
+              ((WIDTH - row.width) / row.width) * row.height,
+            );
           }
-          row.width += Math.floor(extraHeight / row.height * row.width);
+          row.width += Math.floor((extraHeight / row.height) * row.width);
           row.height += extraHeight;
           remainingHeightDiff -= extraHeight;
           remainingShortRows -= 1;
@@ -234,27 +257,34 @@ class OpenViduLayout {
         if (fixedRatio) {
           targetWidth = Math.floor(targetHeight / this.getVideoRatio(elem));
         }
-        elem.style.position = 'absolute';
+        elem.style.position = "absolute";
         // $(elem).css('position', 'absolute');
         const actualWidth =
           targetWidth -
-          this.getCSSNumber(elem, 'paddingLeft') -
-          this.getCSSNumber(elem, 'paddingRight') -
-          this.getCSSNumber(elem, 'marginLeft') -
-          this.getCSSNumber(elem, 'marginRight') -
-          this.getCSSNumber(elem, 'borderLeft') -
-          this.getCSSNumber(elem, 'borderRight');
+          this.getCSSNumber(elem, "paddingLeft") -
+          this.getCSSNumber(elem, "paddingRight") -
+          this.getCSSNumber(elem, "marginLeft") -
+          this.getCSSNumber(elem, "marginRight") -
+          this.getCSSNumber(elem, "borderLeft") -
+          this.getCSSNumber(elem, "borderRight");
 
         const actualHeight =
           targetHeight -
-          this.getCSSNumber(elem, 'paddingTop') -
-          this.getCSSNumber(elem, 'paddingBottom') -
-          this.getCSSNumber(elem, 'marginTop') -
-          this.getCSSNumber(elem, 'marginBottom') -
-          this.getCSSNumber(elem, 'borderTop') -
-          this.getCSSNumber(elem, 'borderBottom');
+          this.getCSSNumber(elem, "paddingTop") -
+          this.getCSSNumber(elem, "paddingBottom") -
+          this.getCSSNumber(elem, "marginTop") -
+          this.getCSSNumber(elem, "marginBottom") -
+          this.getCSSNumber(elem, "borderTop") -
+          this.getCSSNumber(elem, "borderBottom");
 
-        this.positionElement(elem, x + offsetLeft, y + offsetTop, actualWidth, actualHeight, animate);
+        this.positionElement(
+          elem,
+          x + offsetLeft,
+          y + offsetTop,
+          actualWidth,
+          actualHeight,
+          animate,
+        );
         x += targetWidth;
       }
       y += targetHeight;
@@ -263,28 +293,31 @@ class OpenViduLayout {
 
   // filterDisplayNone: display 속성이 None인 요소들을 필터링해주는 함수
   filterDisplayNone(element) {
-    return element.style.display !== 'none';
+    return element.style.display !== "none";
   }
 
   // updateLayout: 레이아웃을 업데이트해주는 함수(display가 none인 요소들은 null처리, 그게 아니라면 id에 UUID 부여 후 업데이트)
   updateLayout() {
-    if (this.layoutContainer.style.display === 'none') {
+    if (
+      this.layoutContainer === null ||
+      this.layoutContainer.style.display === "none"
+    ) {
       return;
     }
     let id = this.layoutContainer.id;
     if (!id) {
-      id = 'OT_' + this.cheapUUID();
+      id = "OT_" + this.cheapUUID();
       this.layoutContainer.id = id;
     }
 
     const HEIGHT =
       this.getHeight(this.layoutContainer) -
-      this.getCSSNumber(this.layoutContainer, 'borderTop') -
-      this.getCSSNumber(this.layoutContainer, 'borderBottom');
+      this.getCSSNumber(this.layoutContainer, "borderTop") -
+      this.getCSSNumber(this.layoutContainer, "borderBottom");
     const WIDTH =
       this.getWidth(this.layoutContainer) -
-      this.getCSSNumber(this.layoutContainer, 'borderLeft') -
-      this.getCSSNumber(this.layoutContainer, 'borderRight');
+      this.getCSSNumber(this.layoutContainer, "borderLeft") -
+      this.getCSSNumber(this.layoutContainer, "borderRight");
 
     const availableRatio = HEIGHT / WIDTH;
 
@@ -294,11 +327,15 @@ class OpenViduLayout {
     let bigOffsetLeft = 0;
 
     const bigOnes = Array.prototype.filter.call(
-      this.layoutContainer.querySelectorAll('#' + id + '>.' + this.opts.bigClass),
+      this.layoutContainer.querySelectorAll(
+        "#" + id + ">." + this.opts.bigClass,
+      ),
       this.filterDisplayNone,
     );
     const smallOnes = Array.prototype.filter.call(
-      this.layoutContainer.querySelectorAll('#' + id + '>*:not(.' + this.opts.bigClass + ')'),
+      this.layoutContainer.querySelectorAll(
+        "#" + id + ">*:not(." + this.opts.bigClass + ")",
+      ),
       this.filterDisplayNone,
     );
 
@@ -403,14 +440,15 @@ class OpenViduLayout {
       minRatio: opts.minRatio != null ? opts.minRatio : 9 / 16,
       fixedRatio: opts.fixedRatio != null ? opts.fixedRatio : false,
       animate: opts.animate != null ? opts.animate : false,
-      bigClass: opts.bigClass != null ? opts.bigClass : 'OT_big',
+      bigClass: opts.bigClass != null ? opts.bigClass : "OT_big",
       bigPercentage: opts.bigPercentage != null ? opts.bigPercentage : 0.8,
       bigFixedRatio: opts.bigFixedRatio != null ? opts.bigFixedRatio : false,
       bigMaxRatio: opts.bigMaxRatio != null ? opts.bigMaxRatio : 3 / 2,
       bigMinRatio: opts.bigMinRatio != null ? opts.bigMinRatio : 9 / 16,
       bigFirst: opts.bigFirst != null ? opts.bigFirst : true,
     };
-    this.layoutContainer = typeof container === 'string' ? $(container) : container;
+    this.layoutContainer =
+      typeof container === "string" ? $(container) : container;
   }
 
   // setLayoutOptions: 옵션 설정
