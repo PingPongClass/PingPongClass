@@ -16,6 +16,7 @@ import javax.transaction.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -64,23 +65,56 @@ public class ClassService {
 
     //수업 수정
     public void modify(int classId, ClassRequest req){
-        //해당 수업id에 해당 하는 classStudentEntity List로 뽑아서 싹 삭제
         ClassEntity cEntity = classRepository.getOne(classId);
-        List<ClassStudentEntity> classStudentEntityList = classStudentRepository.findByClassEntity(cEntity);
-        for(ClassStudentEntity classStudentEntity: classStudentEntityList){
-            classStudentRepository.delete(classStudentEntity);
+
+        //원래 수업에 듣는 학생 리스트
+        List<ClassStudentEntity> list = classStudentRepository.findByClassEntityOrderByStudentEntityAsc(cEntity);
+        List<Integer> originStudentList = new ArrayList<>();
+        List<Integer> deleteStudent = new ArrayList<>();
+        for(ClassStudentEntity classStudent : list){
+            originStudentList.add(classStudent.getStudentEntity().getStudentId());
+            deleteStudent.add(classStudent.getStudentEntity().getStudentId());
         }
+
+        //새롭게 수업에 듣는 학생 리스트
+        List<Integer> newStudentList = (ArrayList<Integer>) req.getStudentIdList();
+        List<Integer> updateStudent = new ArrayList<>();
+        for(Integer studentId : newStudentList){
+            updateStudent.add(studentId);
+        }
+        Collections.sort(newStudentList);
+
+        //두 리스트가 동일하지 않을 경우에만
+        if(!newStudentList.equals(originStudentList)) {
+
+            //원래 리스트와 새로운 리스트를 비교해서 새로 추가해야하는 값 남기기
+            updateStudent.removeAll(originStudentList);
+            //원래 리스트와 새로운 리스트를 비교해서 삭제해야하는 값 남기기
+            deleteStudent.removeAll(newStudentList);
+
+            //delete해야하는 값 delete
+            if(deleteStudent.size()!=0){
+                for(Integer studentId : deleteStudent){
+                    StudentEntity student = studentRepository.getOne(studentId);
+                    ClassStudentEntity classStudent = classStudentRepository.findClassStudentEntityByClassEntityAndStudentEntity(cEntity, student);
+                    classStudentRepository.delete(classStudent);
+                }
+            }
+
+            //update해야하는 값 update
+            if(updateStudent.size()!=0){
+                for(Integer studentId : updateStudent){
+                    StudentEntity student = studentRepository.getOne(studentId);
+                    classStudentRepository.save(new ClassStudentEntity(student, cEntity));
+                }
+            }
+        }
+
         //수업 정보 수정(timetableEntity, subjectEntity, classTitle, classDesc, classDay)
         SubjectEntity subjectEntity = subjectRepository.getOne(req.getSubjectCode());
         TimetableEntity timetableEntity = timetableRepository.getOne(req.getTimetableId());
         ClassEntity classEntity = classRepository.getOne(classId);
         classEntity.update(timetableEntity, subjectEntity, req.getClassTitle(), req.getClassDesc(), req.getClassDay());
-        List<Integer> studentIdList = req.getStudentIdList();
-        for(Integer studentId : studentIdList){
-            StudentEntity student = studentRepository.getOne(studentId);
-            ClassStudentEntity classstudent = new ClassStudentEntity(student, classEntity);
-            classStudentRepository.save(classstudent);
-        }
     }
 
     //수업 목록 전체 조회
