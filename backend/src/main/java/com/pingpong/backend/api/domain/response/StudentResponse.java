@@ -22,8 +22,9 @@ public class StudentResponse {
     private String currentLevel;
     private String nextLevel;
     private int levelPoint;
+    private int myRank;
 
-    public StudentResponse(StudentEntity entity){
+    public StudentResponse(StudentEntity entity, int myRank){
         this.studentId=entity.getStudentId();
         this.name=entity.getName();
         this.grade=entity.getGrade();
@@ -56,6 +57,7 @@ public class StudentResponse {
         else this.nextLevel="End";
         if(level(entity.getTotalPoint())!=6) this.levelPoint = levelrank.get(level(entity.getTotalPoint())+1) - entity.getTotalPoint();
         else this.levelPoint=0;
+        this.myRank=myRank;
     }
 
     private int level(int point){

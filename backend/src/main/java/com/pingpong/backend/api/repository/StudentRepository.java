@@ -20,10 +20,8 @@ public interface StudentRepository extends JpaRepository<StudentEntity, Integer>
 
     boolean existsByEmail(String email);
 
-    //mysql버전 8이상이어야 rank함수 사용 가능 -> dense_rank()쓰고싶다
-    //FIXME
-    @Query(value="SELECT name, totalPoint, introduce FROM student ORDER BY totalPoint DESC LIMIT 10", nativeQuery = true)
-    List<StudentEntity> getRanking();
+    List<StudentEntity> findTop10ByOrderByTotalPointDesc();
+    int countByTotalPointGreaterThan(int totalPoint);
 
     //FIXME
     @Query(value="SELECT regDate, SUM(point) point FROM log WHERE studentId = :studentId GROUP BY reg_date", nativeQuery = true)

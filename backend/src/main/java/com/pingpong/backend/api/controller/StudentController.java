@@ -3,7 +3,9 @@ package com.pingpong.backend.api.controller;
 import com.pingpong.backend.api.domain.LogEntity;
 import com.pingpong.backend.api.domain.StudentEntity;
 import com.pingpong.backend.api.domain.StudentSpecification;
+import com.pingpong.backend.api.domain.response.RankResponse;
 import com.pingpong.backend.api.domain.response.StudentResponse;
+import com.pingpong.backend.api.repository.RankingRepository;
 import com.pingpong.backend.api.repository.StudentRepository;
 import com.pingpong.backend.api.service.StudentServiceImpl;
 import io.swagger.annotations.Api;
@@ -18,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Api(value = "학생 API", tags={"학생"})
 @RestController
@@ -28,9 +29,10 @@ import java.util.Optional;
 public class StudentController {
     @Autowired
     private StudentServiceImpl service;
-
     @Autowired
     private StudentRepository repository;
+    @Autowired
+    private RankingRepository rankingRepository;
 
     @ApiOperation(value = "학생 회원가입", notes = "학생 정보 삽입, 임시비밀번호 제공")
     @PostMapping
@@ -105,7 +107,9 @@ public class StudentController {
     public ResponseEntity<?> findByStudentId(@PathVariable int studentId){
         StudentEntity student = repository.getOne(studentId);
         if(student!=null){
-            return new ResponseEntity<StudentResponse>(new StudentResponse(student), HttpStatus.OK);
+            int rank = repository.countByTotalPointGreaterThan(student.getTotalPoint())+1;
+            if(rankingRepository.findFirstByStudent(student)!=null) rank = rankingRepository.findFirstByStudent(student).getRankNum();
+            return new ResponseEntity<StudentResponse>(new StudentResponse(student, rank), HttpStatus.OK);
         } else{
             return new ResponseEntity<String>("해당 학생이 존재하지 않습니다.",HttpStatus.FORBIDDEN);
         }
@@ -181,8 +185,8 @@ public class StudentController {
     @ApiOperation(value = "학교 랭킹 10위까지", notes = "스티커 많은 순으로 ")
     public ResponseEntity<?> getRanking(){
         try{
-            List<StudentEntity> list = service.getRanking();
-            return new ResponseEntity<List<StudentEntity>>(list, HttpStatus.OK);
+            List<RankResponse> rankings = service.getRanking();
+            return new ResponseEntity<List<RankResponse>>(rankings, HttpStatus.OK);
         } catch(Exception e){
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.FORBIDDEN);
         }

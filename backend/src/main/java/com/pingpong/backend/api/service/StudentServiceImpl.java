@@ -3,7 +3,11 @@ package com.pingpong.backend.api.service;
 import com.pingpong.backend.Exception.CustomException;
 import com.pingpong.backend.Exception.ErrorCode;
 import com.pingpong.backend.api.domain.LogEntity;
+import com.pingpong.backend.api.domain.RankingEntity;
 import com.pingpong.backend.api.domain.StudentEntity;
+import com.pingpong.backend.api.domain.response.NoticeResponse;
+import com.pingpong.backend.api.domain.response.RankResponse;
+import com.pingpong.backend.api.repository.RankingRepository;
 import com.pingpong.backend.api.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,11 +15,13 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService{
     private final StudentRepository repository;
+    private final RankingRepository rankingRepository;
 
     @Override
     @Transactional
@@ -63,8 +69,9 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public List<StudentEntity> getRanking() {
-        return repository.getRanking();
+    public List<RankResponse> getRanking() {
+        List<RankingEntity> list = rankingRepository.findAll();
+        return list.stream().map(RankResponse::new).collect(Collectors.toList());
     }
 
     @Override

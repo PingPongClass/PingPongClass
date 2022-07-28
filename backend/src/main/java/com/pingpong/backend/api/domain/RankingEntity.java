@@ -1,14 +1,13 @@
 package com.pingpong.backend.api.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name="ranking")
 @Getter
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RankingEntity {
 
     @Id
@@ -22,4 +21,10 @@ public class RankingEntity {
 
     @Column(nullable = false)
     private int rankNum;
+
+    @Builder
+    public RankingEntity(StudentEntity student, int rankNum){
+        this.student=student;
+        this.rankNum=rankNum;
+    }
 }
