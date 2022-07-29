@@ -45,6 +45,7 @@ export default class ParticipantComponent extends Component {
             <div>
               <SingleParticipantPanel
                 myinfo={this.props.myinfo.nickname}
+                point={this.props.myinfo.point}
                 attendenceTime={this.props.myinfo.attendenceTime}
                 isVideoOn={this.props.myinfo.videoActive}
                 isAudioOn={this.props.myinfo.audioActive}
@@ -53,6 +54,7 @@ export default class ParticipantComponent extends Component {
             {this.props.subscribers.map((sub, i) => (
               <SingleParticipantPanel
                 myinfo={sub.nickname}
+                point={this.props.myinfo.point}
                 attendenceTime={sub.attendenceTime}
                 isVideoOn={sub.videoActive}
                 isAudioOn={sub.audioActive}

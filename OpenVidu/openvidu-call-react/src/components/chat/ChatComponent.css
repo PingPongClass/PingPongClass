@@ -165,7 +165,7 @@ span.triangle {
 #messageInput {
   position: absolute;
   left: 3%;
-  bottom: 2%;
+  bottom: 1rem;
   width: 94%;
   height: 60px;
   background-color: #696969;

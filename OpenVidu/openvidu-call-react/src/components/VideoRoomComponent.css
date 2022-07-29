@@ -100,9 +100,9 @@
 
 .double_chat {
   position: absolute;
-  height: calc((100vh - 80px) / 1.7);
+  height: calc((100vh - 80px) / 1.65);
   width: 100%;
-  top: calc((100vh - 80px) / 2.5);
+  top: calc((100vh - 80px) / 2.54);
 }
 
 /*!
