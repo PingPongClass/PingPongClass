@@ -20,10 +20,7 @@ import PeopleIcon from "@material-ui/icons/People";
 import Shuffle from "@material-ui/icons/Shuffle";
 import Quiz from "@material-ui/icons/HelpOutline";
 import AccessTime from "@material-ui/icons/AccessTime";
-
 import IconButton from "@material-ui/core/IconButton";
-
-const logo = require("../../assets/images/openvidu_logo.png");
 
 export default class ToolbarComponent extends Component {
   constructor(props) {
@@ -128,7 +125,7 @@ export default class ToolbarComponent extends Component {
   }
   // render: 렌더링 함수
   render() {
-    const mySessionId = this.props.sessionId;
+    // const mySessionId = this.props.sessionId;
     const localUser = this.props.user;
     return (
       <AppBar className="toolbar" id="header">

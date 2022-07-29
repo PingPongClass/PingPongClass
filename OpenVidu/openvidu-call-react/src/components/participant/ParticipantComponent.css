@@ -44,10 +44,16 @@
   border-radius: 20px;
 }
 
-#participants {
+.participants-wrap {
   color: white;
   margin-left: 1rem;
   margin-top: 1rem;
+  height: calc(100% - 60px);
+  overflow: auto;
+}
+
+.participants-wrap > * {
+  margin-bottom: 0.5rem;
 }
 
 ::-webkit-scrollbar {

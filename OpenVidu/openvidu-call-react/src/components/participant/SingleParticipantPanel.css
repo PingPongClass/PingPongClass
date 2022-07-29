@@ -1,4 +1,5 @@
 #oneParticipant {
+  color: white;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -6,4 +7,13 @@
 
 .right_side {
   font-weight: 600;
+}
+
+.left_side {
+  display: flex;
+  justify-content: center;
+}
+
+.left_side > * {
+  margin-right: 0.5rem;
 }

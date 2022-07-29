@@ -1,4 +1,4 @@
-import React, { Component, Suspense } from "react";
+import React, { Component } from "react";
 import axios from "axios";
 import "./VideoRoomComponent.css";
 import { OpenVidu } from "openvidu-browser";
@@ -28,11 +28,11 @@ class VideoRoomComponent extends Component {
     //     : 'https://' + window.location.hostname + ':4443';
     this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
       ? this.props.openviduServerUrl
-      : "https://i7a403.p.ssafy.io";
+      : process.env.REACT_APP_OPENVIDU_SERVER_URL;
     // OPENVIDU_SERVER_SECRET: 서버 비밀번호 - 변경할 필요 없음
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
-      : "pingpongclass403";
+      : process.env.REACT_APP_OPENVIDU_SERVER_SECRET;
     // hasBeenUpdated: 업데이트 여부 판단하는 변수
     this.hasBeenUpdated = false;
     // layout: 현재 레이아웃 (openvidu-layout.js와 연결)
@@ -40,7 +40,7 @@ class VideoRoomComponent extends Component {
     // sessionName: 세션 이름을 담은 변수 (기본값 SessionA)
     let sessionName = this.props.sessionName
       ? this.props.sessionName
-      : "Session0329";
+      : "Session03";
     // userName: 유저의 이름 (기본 OpenVidu_User + 0부터 99까지의 랜덤한 숫자)
     let userName = this.props.user
       ? this.props.user
@@ -217,10 +217,22 @@ class VideoRoomComponent extends Component {
 
   // connect: 토큰을 매개변수로 받아서 실제 세션에 접속하게 해주는 함수
   connect(token) {
+    // name: 오석호
+    // date: 2022/07/28
+    // desc: 입장 시간을 저장해주는 로직
+    const time = new Date();
+    let attTime =
+      String(time.getHours()).padStart(2, "0") +
+      ":" +
+      String(time.getMinutes()).padStart(2, "0") +
+      ":" +
+      String(time.getSeconds()).padStart(2, "0");
+    localUser.setAttendenceTime(attTime);
     // 유저끼리 데이터 교환
     this.state.session
       .connect(token, {
         clientData: this.state.myUserName,
+        attTime: localUser.attendenceTime,
         randPick: this.state.randPick,
       })
       .then(() => {
@@ -230,7 +242,7 @@ class VideoRoomComponent extends Component {
         if (this.props.error) {
           this.props.error({
             error: error.error,
-            messgae: error.message,
+            message: error.message,
             code: error.code,
             status: error.status,
           });
@@ -280,18 +292,6 @@ class VideoRoomComponent extends Component {
     localUser.setConnectionId(this.state.session.connection.connectionId);
     localUser.setScreenShareActive(false);
     localUser.setStreamManager(publisher);
-
-    // name: 오석호
-    // date: 2022/07/28
-    // desc: 입장 시간을 저장해주는 로직
-    const time = new Date();
-    let attTime =
-      String(time.getHours()).padStart(2, "0") +
-      ":" +
-      String(time.getMinutes()).padStart(2, "0") +
-      ":" +
-      String(time.getSeconds()).padStart(2, "0");
-    localUser.setAttendenceTime(attTime);
 
     // 이벤트 등록
     this.subscribeToUserChanged();
@@ -404,7 +404,6 @@ class VideoRoomComponent extends Component {
       const subscriber = this.state.session.subscribe(event.stream, undefined);
       // var subscribers = this.state.subscribers;
 
-      console.log("USER DATA: " + event.stream.connection.data);
       subscriber.on("streamPlaying", (e) => {
         this.checkSomeoneShareScreen();
         subscriber.videos[0].video.parentElement.classList.remove(
@@ -417,7 +416,9 @@ class VideoRoomComponent extends Component {
       newUser.setConnectionId(event.stream.connection.connectionId);
       newUser.setType("remote");
 
-      newUser.setAttendenceTime();
+      newUser.setAttendenceTime(
+        JSON.parse(event.stream.connection.data).attTime,
+      );
       const nickname = event.stream.connection.data.split("%")[0];
       newUser.setNickname(JSON.parse(nickname).clientData);
       this.remotes.push(newUser);
@@ -836,7 +837,6 @@ class VideoRoomComponent extends Component {
   }
 
   toggleQuiz() {
-    console.log("hi");
     this.setState({ quizDisplay: !this.state.quizDisplay });
     this.updateLayout();
   }

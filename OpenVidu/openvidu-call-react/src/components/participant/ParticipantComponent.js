@@ -8,11 +8,11 @@ import "./ParticipantComponent.css";
 export default class ParticipantComponent extends Component {
   constructor(props) {
     super(props);
-
     this.close = this.close.bind(this);
+    this.participantScroll = React.createRef();
   }
 
-  componentDidMount() {
+  componentDidUpdate() {
     console.log(this.props.myinfo, "내정보");
     console.log(this.props.subscribers, "참가자정보");
     this.props.subscribers.forEach((elem) => {
@@ -41,11 +41,11 @@ export default class ParticipantComponent extends Component {
             />
           </div>
           {/* 참여자 */}
-          <div id="participants">
+          <div className="participants-wrap" ref={this.participantScroll}>
             <div>
               <SingleParticipantPanel
                 myinfo={this.props.myinfo.nickname}
-                attTime={this.props.myinfo.attTime}
+                attendenceTime={this.props.myinfo.attendenceTime}
                 isVideoOn={this.props.myinfo.videoActive}
                 isAudioOn={this.props.myinfo.audioActive}
               />
@@ -53,6 +53,7 @@ export default class ParticipantComponent extends Component {
             {this.props.subscribers.map((sub, i) => (
               <SingleParticipantPanel
                 myinfo={sub.nickname}
+                attendenceTime={sub.attendenceTime}
                 isVideoOn={sub.videoActive}
                 isAudioOn={sub.audioActive}
               />
