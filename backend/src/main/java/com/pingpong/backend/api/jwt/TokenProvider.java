@@ -20,12 +20,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
-/**
- * jwt 패키지를 생성하고, 토큰의 생성과 토큰의 유효성 검증등을 담당할 Token Provider
- */
-
 //InitializingBean implements해서 afterPropertiesSet을 Override한 이유는
-//Bean이 생성이 되고 주입을 받은 후에(TokenProvider()생성자)
+//Bean이 생성이 되고 주입을 받은 후에(ToeknProvider()생성자)
 //afterPropertiesSet에서 secret값을 BaseDecode한 다음에 key변수에 할당하기 위함
 @Component
 public class TokenProvider implements InitializingBean {
@@ -40,24 +36,21 @@ public class TokenProvider implements InitializingBean {
 
 
     public TokenProvider(
-            @Value("${jwt.secret}") String secret,          //yml의 값들
+            @Value("${jwt.secret}") String secret,
             @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {   //하루
         this.secret = secret;
         this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
     }
 
-    //secret값을 Base64로 Decode해서 key 변수에 할당
     @Override
     public void afterPropertiesSet() {
-        // base64로 변환된 키를 byte[]로 변환
         byte[] keyBytes = Decoders.BASE64.decode(secret);
-        // hmacShaKeyfor를 이용해 Key객체로 변환
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    //Authentication 객체의 권한정보를 이용해서 토큰을 생성
+    //Authentication객체의 권한정보를 이용해서 토큰을 생성하는 메소드
     public String createToken(Authentication authentication) {
-        //authenticaion 객체를 받아서 권한 설정을 하고, application.yml 에서 설정했던 토큰 만료시간을 설정하고 토큰을 생성
+        //권한들
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
@@ -74,10 +67,8 @@ public class TokenProvider implements InitializingBean {
                 .compact();
     }
 
-    //토큰에 담겨있는 정보를 이용해 Authentication 객체를 리턴
+    //토큰에 담겨있는 정보를 이용해 Authentication 객체를 리턴하는 메소드
     public Authentication getAuthentication(String token) {
-        //token으로 클레임을 만들고, 클레임에서 권한정보를 받아서 유저 객체를 만들어서 최종적으로 Authenticaion 객체를 리턴합니다.
-        //Claims : JWT 의 속성정보, java 에서 Claims 는 Json map 형식의 인터페이스임
         Claims claims = Jwts
                 .parserBuilder()
                 .setSigningKey(key)

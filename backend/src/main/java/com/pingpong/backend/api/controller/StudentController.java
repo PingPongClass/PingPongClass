@@ -25,7 +25,7 @@ import java.util.List;
 @Api(value = "학생 API", tags={"학생"})
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/ssafy/students")
+@RequestMapping("ssafy/students")
 @RequiredArgsConstructor
 public class StudentController {
     private final StudentServiceImpl service;
@@ -52,7 +52,7 @@ public class StudentController {
                     .grade(student.getGrade())
                     .classNum(student.getClassNum())
                     .studentNum(student.getStudentNum())
-                    .password(passwordEncoder.encode("ssafy"+maxStudentId.toString()))
+                    .password(passwordEncoder.encode("ssafy"+maxStudentId))
                     .build();
             service.register(studentEntity);
             return new ResponseEntity<String>("학생정보 입력 성공",HttpStatus.OK);

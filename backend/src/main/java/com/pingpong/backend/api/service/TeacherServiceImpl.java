@@ -35,7 +35,7 @@ public class TeacherServiceImpl implements TeacherService {
         TeacherEntity teacherEntity = TeacherEntity.builder()
                 .teacherId(teacher.getTeacherId())
                 .name((teacher.getName()))
-                .password(teacher.getPassword())
+                .password(passwordEncoder.encode(teacher.getPassword()))
                 .birth(teacher.getBirth())
                 .manageGrade(teacher.getManageGrade())
                 .authorities(Collections.singleton(authority))

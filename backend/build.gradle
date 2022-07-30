@@ -3,6 +3,8 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'idea'
+    //20220729 추가
+    id 'com.google.cloud.tools.jib' version '3.1.2'
 }
 
 group = 'com.pingpong'

@@ -28,7 +28,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(final String id) {
-        System.out.println("------------------3. loadUserByUsername : "+id.length());
         if(id.length() == 10){  //학생이면
             return studentRepository.findById(Integer.parseInt(id))
                     .map(student -> createStudent(id, student))
