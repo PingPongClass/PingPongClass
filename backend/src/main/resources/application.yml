@@ -2,7 +2,7 @@ logging:
   level:
     org:
       springframework:
-        boot: DEBUG
+        boot: INFO
         security: DEBUG
       apache:
         tiles: INFO
@@ -24,7 +24,6 @@ server:
       enabled: 'true'
       force: 'true'
       charset: UTF-8
-  address: localhost
   port: '8080'
 
 #mysal JPA
@@ -47,7 +46,7 @@ spring:
     hikari:
       password: pingpong403
       username: pong
-    url: jdbc:mysql://localhost:3306/pingpong?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
+    url: jdbc:mysql://mysql-pingpong:3306/pingpong?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
 
   devtools:
     livereload:
@@ -83,4 +82,4 @@ jwt:
   #HS512 알고리즘을 사용할 것이기 때문에 512bit, 즉 64byte 이상의 secret key를 사용해야 한다.
   #echo 'silvernine-tech-spring-boot-jwt-tutorial-secret-silvernine-tech-spring-boot-jwt-tutorial-secret'|base64
   secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
-  token-validity-in-seconds: 86400
+  token-validity-in-seconds: 86400  #하루

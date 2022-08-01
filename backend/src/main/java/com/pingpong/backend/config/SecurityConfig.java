@@ -64,7 +64,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //추가적�
                         /* swagger v3 */
                         "/v3/api-docs/**",
                         "/swagger-ui/**",
-                        "/ssafy/**"
+                        "/ssafy/**",
+                        "/login/**",
+                        "/"
                 );
     }
 

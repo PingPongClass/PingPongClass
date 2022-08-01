@@ -71,3 +71,7 @@ dependencies {
     tasks.named('test') {
     useJUnitPlatform()
 }
+    //gradle은 도커이미지 빌드할때 이 설정 필요하다고 해서 일단 추가
+//    jar{
+//        enable=false;
+//    }
