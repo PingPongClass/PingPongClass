@@ -6,27 +6,139 @@ import RightSide from '../components/Home/RightSide';
 function Home() {
   return (
     <div css={totalContainer}>
-      <LeftSide />
-      <RightSide />
+      <div className="triangles">
+        <div className="triangle1" />
+        <div className="triangle2" />
+      </div>
+      <div className="parent">
+        <div className="child">
+          <div className="container">
+            <div className="circles">
+              <div className="circle1" />
+              <div className="circle2" />
+              <div className="circle3" />
+            </div>
+            <hr />
+            <div className="sideContainer">
+              <LeftSide />
+              <RightSide />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
-
 const totalContainer = css`
-  position: absolute;
-  width: 90vw;
-  height: 90vh;
-  left: 5vw;
-  top: 5vh;
+  background-color: #ffffff;
+  opacity: 0.8;
+  background-image: linear-gradient(#929292 1px, transparent 1px),
+    linear-gradient(to right, #929292 1px, #ffffff 1px);
+  background-size: 30px 30px;
+  height: 100vh;
+  position: relative;
 
-  background: linear-gradient(
-    185.82deg,
-    rgba(127, 192, 228, 0.7) 0%,
-    rgba(94, 103, 190, 0.357) 95.83%
-  );
-  border-radius: 20px;
-  display: flex;
-  flex-direction: row;
+  .triangles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    div {
+      width: 0px;
+      height: 0px;
+    }
+
+    .triangle1 {
+      border-bottom: 40vh solid #bdcde5;
+      border-left: 0px solid transparent;
+      border-right: 100vw solid transparent;
+      transform: scaleY(-1);
+    }
+
+    .triangle2 {
+      position: absolute;
+      top: 60%;
+      border-bottom: 40vh solid #f8cbd3;
+      border-left: 100vw solid transparent;
+      border-right: 0px solid transparent;
+    }
+  }
+
+  .child {
+    position: absolute;
+    width: 79.8vw;
+    height: 83vh;
+    left: 0.5vw;
+    top: -0.5vh;
+
+    border-radius: 20px;
+
+    background-color: white;
+
+    border: 2px solid #000000;
+  }
+
+  .parent {
+    position: relative;
+    width: 80vw;
+    height: 84vh;
+    left: 9.8vw;
+    top: 8vh;
+
+    border-radius: 20px;
+
+    background-color: #fff1bf;
+
+    border: 2px solid #001111;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    width: 100%;
+  }
+
+  .sideContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 78vh;
+    vertical-align: center;
+  }
+
+  hr {
+    width: 100%;
+    height: 2px;
+    border: 0;
+    background-color: black;
+  }
+
+  .circles {
+    margin: 10px 0 0 10px;
+    div {
+      border: 2px solid black;
+      width: 10px;
+      height: 10px;
+      border-radius: 75px;
+      background-color: #000000;
+      float: left;
+    }
+
+    .circle1 {
+      background-color: #ef8181;
+    }
+
+    .circle2 {
+      background-color: #ffe381;
+      margin-left: 0.3rem;
+    }
+
+    .circle3 {
+      background-color: #96ba85;
+      margin-left: 0.3rem;
+    }
+  }
 `;
 
 export default Home;

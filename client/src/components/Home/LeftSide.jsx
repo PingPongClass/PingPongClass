@@ -1,23 +1,25 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import MovingLogo from '../../images/movingLogo.gif';
+import MainLogo from '../../images/image1.png';
 
 function LeftSide() {
   return (
     <div css={totalContainer}>
-      <img src={MovingLogo} alt="움직이는 기본로고" />
+      <img src={MainLogo} alt="로고" />
     </div>
   );
 }
 
 const totalContainer = css`
+  margin-left: 4vw;
   width: 40%;
-  height: 100%;
+  align-items: center;
   display: flex;
   justify-content: center;
-  align-items: center;
   img {
-    width: 400px;
+    max-width: 100%;
+    min-width: 40%;
+    height: auto;
   }
 `;
 
