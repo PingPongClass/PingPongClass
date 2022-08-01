@@ -35,7 +35,7 @@ const totalContainer = css`
   h2 {
     color: #332757;
     text-align: right;
-    font-size: calc(3em + 1vw);
+    font-size: calc(1.5em + 2vw);
     span {
       color: white;
       background-color: #df5b73;
@@ -46,7 +46,7 @@ const totalContainer = css`
     color: #332757;
     text-align: right;
     font-size: calc(0.5em + 1vw);
-    font-weight: 800;
+    font-weight: 700;
   }
 
   .buttons {
@@ -59,7 +59,7 @@ const totalContainer = css`
       height: 6vh;
       border-radius: 30px;
       border: none;
-      font-weight: 600;
+      font-weight: 700;
       font-size: calc(0.2em + 1vw);
       cursor: pointer;
     }
