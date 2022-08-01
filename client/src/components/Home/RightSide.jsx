@@ -5,8 +5,8 @@ function RightSide() {
   return (
     <div css={totalContainer}>
       <h2>
-        함께 만들어가는 <br />
-        <span className="programName">핑퐁클래스</span>.
+        함께 만들어가는, <br />
+        <span className="programName">핑퐁클래스</span> .
       </h2>
       <p>
         핑퐁클래스는 20년간의 노하우가 담긴
@@ -35,7 +35,7 @@ const totalContainer = css`
   h2 {
     color: #332757;
     text-align: right;
-    font-size: calc(2em + 1vw);
+    font-size: calc(3em + 1vw);
     span {
       color: white;
       background-color: #df5b73;
@@ -46,7 +46,7 @@ const totalContainer = css`
     color: #332757;
     text-align: right;
     font-size: calc(0.5em + 1vw);
-    font-weight: 600;
+    font-weight: 800;
   }
 
   .buttons {
