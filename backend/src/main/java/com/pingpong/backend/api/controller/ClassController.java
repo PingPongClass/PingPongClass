@@ -60,17 +60,15 @@ public class ClassController {
         return "수업을 삭제했습니다.";
     }
 
-    //오늘 요일에 해당하는 수업 목록 조회
-    //오늘 해당하는 수업 없을 때 에러처리 해줘야된다.
-    @ApiOperation(value = "오늘의 수업 목록 조회(요일)")
+    //요청받은 요일에 해당하는 수업 목록 조회
+    @ApiOperation(value = "요일에 따른 수업 목록 조회")
     @GetMapping("/{userId}/today")
-    public Page<ClassResponse> findTodayClasses(@PathVariable final int userId, Pageable pageable){
+    public Page<ClassResponse> findTodayClasses(@RequestParam(value="id") final int userId, @RequestParam(value="day") final int classDay, Pageable pageable){
         Page<ClassResponse> pageReponse = null;
-        pageReponse=classService.findTodayClasses(userId, pageable);
+        pageReponse=classService.findTodayClasses(userId, classDay ,pageable);
         return pageReponse;
     }
     //전체 수업 목록 조회
-    //오늘 해당하는 수업 없을 때 에러처리 해줘야된다.
     @ApiOperation(value = "전체 수업 목록 조회")
     @GetMapping("/{userId}")
     public Page<ClassResponse> findClassById(@PageableDefault(size=5) @PathVariable final int userId, Pageable pageable ){
