@@ -6,7 +6,7 @@ function RightSide() {
     <div css={totalContainer}>
       <h2>
         함께 만들어가는, <br />
-        <span className="programName">핑퐁클래스</span> .
+        <span className="programName">&nbsp;핑퐁클래스.&nbsp;</span>
       </h2>
       <p>
         핑퐁클래스는 20년간의 노하우가 담긴
@@ -31,14 +31,15 @@ const totalContainer = css`
   flex-direction: column;
   justify-content: center;
   align-items: right;
-  padding: 4rem;
+  padding-right: 5rem;
 
   h2 {
     color: #332757;
     text-align: right;
     font-size: calc(1.5em + 2vw);
+    margin: 2rem;
     span {
-      color: white;
+      color: #ffffff;
       background-color: #df5b73;
     }
   }
@@ -54,6 +55,7 @@ const totalContainer = css`
     display: inline-block;
     flex-direction: row;
     justify-content: center;
+    text-align: right;
     margin: 2rem 0;
 
     button {
@@ -83,10 +85,9 @@ const totalContainer = css`
     }
     button:first-child {
       margin-right: 1rem;
-      background-color: #e978a0;
-      margin-left: 1rem;
     }
   }
 `;
 
 export default RightSide;
+
