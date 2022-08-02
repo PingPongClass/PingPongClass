@@ -62,6 +62,8 @@ const AbsoluteBox = ({ renderCenter, pos, width, height }) => css`
 
 const RelativeBox = ({ pos }) => css`
   position: relative;
+  width: 100%;
+  height: 100%;
   ${getPositionCSS(pos)};
 `;
 

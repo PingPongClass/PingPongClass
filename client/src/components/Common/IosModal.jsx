@@ -23,6 +23,8 @@ const IosModal = ({
         css={AbsoluteBox({
           renderCenter,
           pos: { absolutePos },
+          width,
+          height,
         })}
       >
         <IosModalBase width={width} height={height}>
@@ -36,6 +38,8 @@ const IosModal = ({
         css={AbsoluteBox({
           renderCenter,
           pos: { absolutePos },
+          width,
+          height,
         })}
       >
         <IosModalBase width={width} height={height}>
@@ -57,6 +61,8 @@ const AbsoluteBox = ({ renderCenter, pos, width, height }) => css`
 
 const RelativeBox = ({ pos }) => css`
   position: relative;
+  width: 100%;
+  height: 100%;
   ${getPositionCSS(pos)};
 `;
 

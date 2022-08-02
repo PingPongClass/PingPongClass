@@ -20,7 +20,6 @@ const NavBar = ({ changeContent }) => {
 
 const totalContainer = css`
   width: 80%;
-  margin-top: 50%;
   background: rgb(109, 163, 99);
   display: flex;
   flex-direction: column;

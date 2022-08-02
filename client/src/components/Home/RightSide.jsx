@@ -90,4 +90,3 @@ const totalContainer = css`
 `;
 
 export default RightSide;
-

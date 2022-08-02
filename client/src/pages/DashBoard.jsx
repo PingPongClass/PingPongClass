@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState } from 'react';
 import { css } from '@emotion/react';
-import BackGround from '../components/DashBoard/BackGround';
 import IconGroup from '../components/DashBoard/IconGroup';
 import MainContent from '../components/DashBoard/MainContent';
 import NavBar from '../components/DashBoard/NavBar';
 import dashboardBackground from '../assets/images/dashboardBackground.png';
+import InputPassword from '../components/DashBoard/MyPage/InputPassword';
 
 function DashBoard() {
   const [content, setContent] = useState('mainContent');
@@ -14,7 +14,6 @@ function DashBoard() {
   };
   return (
     <div css={totalContainer}>
-      <BackGround />
       <div className="dashBoardContainer">
         <div className="navBar">
           <h1>navBar</h1>
@@ -27,14 +26,13 @@ function DashBoard() {
             <IconGroup />
           </div>
           <div className="infoContent">
-            <h1>infoContent</h1>
             {
               {
                 mainContent: <MainContent />,
                 timeTable: <h1>시간표</h1>,
                 notice: <h1>공지사항</h1>,
                 shop: <h1>상점</h1>,
-                myPage: <h1>마이페이지</h1>,
+                myPage: <InputPassword />,
               }[content]
             }
           </div>

@@ -15,7 +15,9 @@ const IosModalBase = ({ children, width, height }) => {
           <img src={YellowEllipse} alt="노란버튼" />
           <img src={GreenEllipse} alt="초록버튼" />
         </div>
-        <div css={Body}>{children}</div>
+        <div className="body" css={Body}>
+          {children}
+        </div>
       </div>
     </div>
   );
@@ -31,7 +33,7 @@ const YellowBackground = css`
   width: 100%;
   height: 100%;
   background: #fff1bf;
-  border: 5px solid #000000;
+  border: 2px solid #000000;
   border-radius: 30px;
 `;
 
@@ -39,9 +41,9 @@ const WhiteBackground = css`
   position: absolute;
   width: 99.5%;
   height: 98%;
-  left: 2%;
+  left: 1.5rem;
   background: #ffffff;
-  border: 5px solid #000000;
+  border: 2px solid #000000;
   border-radius: 20px;
 `;
 
@@ -51,7 +53,7 @@ const Header = css`
   display: flex;
   flex-direction: row;
   align-items: center;
-  border-bottom: 5px solid #000000;
+  border-bottom: 2px solid #000000;
 
   img {
     width: 1.5rem;
@@ -60,8 +62,7 @@ const Header = css`
 `;
 
 const Body = css`
-  width: 100%;
-  height: 100% - 3rem;
+  height: calc(100% - 3rem);
 `;
 
 IosModalBase.propTypes = {
