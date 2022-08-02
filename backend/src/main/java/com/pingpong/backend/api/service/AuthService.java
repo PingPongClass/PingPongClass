@@ -22,6 +22,7 @@ public class AuthService {
 
     @Transactional
     public TokenDto login(UserRequest.Login loginDto) {
+        System.out.println("------------------1. login 함수 : "+loginDto.getId()+","+loginDto.getPassword());
         // 1. Login ID/PW 를 기반으로 AuthenticationToken 생성
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getId(), loginDto.getPassword());
 
@@ -29,16 +30,18 @@ public class AuthService {
         //    authenticate 메서드가 실행이 될 때 CustomUserDetailsService 에서 만들었던 loadUserByUsername 메서드가 실행됨
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        System.out.println("------------------3. authentication : "+authentication);
 
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
+        System.out.println("------------------4. TokenDto : "+tokenDto);
 
         // 4. RefreshToken 저장
         RefreshToken refreshToken = RefreshToken.builder()
                 .key(Integer.parseInt(authentication.getName()))
                 .value(tokenDto.getRefreshToken())
                 .build();
-
+        System.out.println("------------------5. refreshtoken : "+refreshToken);
         refreshTokenRepository.save(refreshToken);
 
         // 5. 토큰 발급

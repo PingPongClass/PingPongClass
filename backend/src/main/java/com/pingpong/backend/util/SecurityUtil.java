@@ -14,22 +14,21 @@ public class SecurityUtil {
     }
 
     //Security Context의 Authentication 객체를 이용해 id을 리턴해주는 유틸성 메소드
-    public static int getCurrentUsername() {
+    public static String getCurrentUsername() {
         //SecurityContext에 Authentication객체가 저장되는 시점은 JwtFilter의 doFilter메소드에서 Request가 들어올 때
         //SecurityContext에 Authentication 객체를 저장해서 사용
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null) {
-            logger.debug("Security Context에 인증 정보가 없습니다.");
-            return 0;
+            throw  new RuntimeException("Security Context 에 인증 정보가 없습니다.");
         }
 
-        int username = 0;
+        String username = "";
         if (authentication.getPrincipal() instanceof UserDetails) {
             UserDetails springSecurityUser = (UserDetails) authentication.getPrincipal();
-            username = Integer.parseInt(springSecurityUser.getUsername());
+            username = springSecurityUser.getUsername();
         } else if (authentication.getPrincipal() instanceof String) {
-            username = (int) authentication.getPrincipal();
+            username = (String)authentication.getPrincipal();
         }
 
         return username;

@@ -17,7 +17,7 @@ import java.util.List;
 @Api(value = "선생님 API", tags={"선생님"})
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/teachers")
+@RequestMapping("/ssafy/teachers")
 @RequiredArgsConstructor
 public class TeacherController {
     private final TeacherRepository repository;
@@ -33,17 +33,17 @@ public class TeacherController {
             if (teacher.getIsAdmin() == 0) {        //선생님
                 maxTeacherId = repository.getMaxTeacherId();
                 //아이디 유효성 검사
-                if(maxTeacherId == null || maxTeacherId < 403001 ){
-                    maxTeacherId = 403001;
-                } else if(maxTeacherId > 403999 ){
+                if(maxTeacherId == null || maxTeacherId < 4030001 ){
+                    maxTeacherId = 4030001;
+                } else if(maxTeacherId > 4039999 ){
                     return new ResponseEntity<String>("선생님 pk 범위 초과",HttpStatus.FORBIDDEN);
                 }
             } else if (teacher.getIsAdmin() == 1) {  //관리자(행정실)
                 maxTeacherId = repository.getMaxAdminId();
                 //아이디 유효성 검사
-                if(maxTeacherId == null || maxTeacherId < 503001 ){
-                    maxTeacherId = 503001;
-                } else if(maxTeacherId > 503999 ){
+                if(maxTeacherId == null || maxTeacherId < 5030001 ){
+                    maxTeacherId = 5030001;
+                } else if(maxTeacherId > 5039999 ){
                     return new ResponseEntity<String>("관리자 pk 범위 초과",HttpStatus.FORBIDDEN);
                 }
             }

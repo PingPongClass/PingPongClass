@@ -5,6 +5,7 @@ import com.pingpong.backend.api.jwt.JwtAuthenticationEntryPoint;
 import com.pingpong.backend.api.jwt.JwtSecurityConfig;
 import com.pingpong.backend.api.jwt.TokenProvider;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity      //기본적인 웹 보안 활성화
 @EnableGlobalMethodSecurity(prePostEnabled = true)  //@PreAuthorize 어노테이션을 메소드단위로 추가하기 위해 적용
+@Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter { //추가적인 보안 설정
     private final TokenProvider tokenProvider;
 //    private final CorsFilter corsFilter;
@@ -64,9 +66,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //추가적�
                         /* swagger v3 */
                         "/v3/api-docs/**",
                         "/swagger-ui/**",
-                        "/ssafy/**",
-                        "/login/**",
-                        "/"
+                        "/css/**",
+                        "/fonts/**",
+                        "/img/**",
+                        "/js/**",
+                        "/ssafy/**"
                 );
     }
 
@@ -102,8 +106,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //추가적�
                 .authorizeRequests() //HttpServletRequest를 사용하는 요청들에 대한 접근제한 설정하겠다
                 .antMatchers("/ssafy/**","/auth/**", "/web-resources/**", "/actuator/**").permitAll()//해당 api 요청은 인증없이 접근 허용하겠다는 의미
                 .antMatchers("/students/**","/students").authenticated()
-                .antMatchers("/teachers/**","/teachers").hasAnyRole("ROLE_TEACHER","ROLE_ADMIN")
-                .antMatchers("/admin/**").hasAnyRole("ROLE_ADMIN")
+                .antMatchers("/teachers/**","/teachers").hasAnyRole("TEACHER","ADMIN")
+                .antMatchers("/admin/**").hasAnyRole("ADMIN")
                 .anyRequest().authenticated() //나머지 요청들은 모두 인증되어야 한다
 
                 //JWTFilter를 addFilterBefore로 등록했던 JwtSecurityConfig클래스도 적용

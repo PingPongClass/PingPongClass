@@ -1,5 +1,6 @@
 package com.pingpong.backend.api.controller;
 
+import com.pingpong.backend.api.domain.Authority;
 import com.pingpong.backend.api.domain.LogEntity;
 import com.pingpong.backend.api.domain.StudentEntity;
 import com.pingpong.backend.api.domain.StudentSpecification;
@@ -16,11 +17,15 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Set;
 
 @Api(value = "학생 API", tags={"학생"})
 @RestController
@@ -41,7 +46,7 @@ public class StudentController {
 
     @ApiOperation(value = "학생 회원가입", notes = "학생 정보 삽입, 임시비밀번호 제공")
     @PostMapping
-//    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> register(@RequestBody UserRequest.StudentSignUp student){
         try{
             //학번 검사
@@ -69,12 +74,20 @@ public class StudentController {
 
     @ApiOperation(value = "학생 목록 조회", notes = "(기본은 전체 + 학년, 반, 이름)모든 학생 정보 조회")
     @GetMapping
-//    @PreAuthorize("hasAnyRole('STUDENT','TEACHER','ADMIN')")
+    @PreAuthorize("hasAnyRole('STUDENT','TEACHER','ADMIN')")
     public ResponseEntity<?> findAll(
             @RequestParam(required = false) Integer grade,
             @RequestParam(required = false) Integer classNum,
             @RequestParam(required = false) String name
     ){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("학생목록 조회" +auth.getAuthorities().size());
+
+        if (auth != null) {
+            for (GrantedAuthority aut1 : auth.getAuthorities()) {
+                System.out.println(aut1.getAuthority().toString());
+            }
+        }
         try{
             Specification<StudentEntity> spec = ((root, query, criteriaBuilder) -> null);
 
@@ -122,7 +135,7 @@ public class StudentController {
 
     @PatchMapping
     @ApiOperation(value = "학생 정보 수정", notes = "학생정보 수정")
-    @PreAuthorize("hasAnyRole('STUDENT','ADMIN')")
+    @PreAuthorize("hasAnyRole('STUDENT')")
     public ResponseEntity<String> modify(@RequestBody StudentEntity student){
         try {
             service.modify(student);
@@ -180,18 +193,18 @@ public class StudentController {
         }
     }
 
-    //PreAuthorize를 통해 USER, ADMIN 두가지 권한 모두 호출가능한 API
-    @GetMapping("/info")
-    @PreAuthorize("hasAnyRole('STUDENT','ADMIN')")
-    public ResponseEntity<StudentEntity> getMyUserInfo(HttpServletRequest request) {
-        //username에 해당하는 user객체와 권한정보 가져오기
-        return ResponseEntity.ok(service.getMyUserWithAuthorities());
-    }
-
-    //ADMIN 권한만 호출가능한 API
-    @GetMapping("/info/{studentId}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<StudentEntity> getUserInfo(@PathVariable int studentId) {
-        return ResponseEntity.ok(service.getUserWithAuthorities(studentId));
-    }
+//    //PreAuthorize를 통해 USER, ADMIN 두가지 권한 모두 호출가능한 API
+//    @GetMapping("/info")
+////    @PreAuthorize("hasAnyRole('STUDENT','ADMIN')")
+//    public ResponseEntity<StudentEntity> getMyUserInfo(HttpServletRequest request) {
+//        //username에 해당하는 user객체와 권한정보 가져오기
+//        return ResponseEntity.ok(service.getMyUserWithAuthorities());
+//    }
+//
+//    //ADMIN 권한만 호출가능한 API
+//    @GetMapping("/info/{studentId}")
+////    @PreAuthorize("hasAnyRole('ADMIN')")
+//    public ResponseEntity<StudentEntity> getUserInfo(@PathVariable int studentId) {
+//        return ResponseEntity.ok(service.getUserWithAuthorities(studentId));
+//    }
 }
