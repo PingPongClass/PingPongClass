@@ -1,7 +1,9 @@
 package com.pingpong.backend.api.controller;
 
+import com.pingpong.backend.api.domain.StudentEntity;
 import com.pingpong.backend.api.domain.TeacherEntity;
 import com.pingpong.backend.api.domain.request.UserRequest;
+import com.pingpong.backend.api.domain.response.StudentResponse;
 import com.pingpong.backend.api.repository.TeacherRepository;
 import com.pingpong.backend.api.service.TeacherServiceImpl;
 import io.swagger.annotations.Api;
@@ -90,23 +92,31 @@ public class TeacherController {
         }
     }
 
-    @GetMapping("/email/{email}")
-    @ApiOperation(value = "이메일 중복 체크", notes = "중복 이메일인지 체크")
-    public ResponseEntity<String> hasEmail(@PathVariable String email){
-        Boolean isExists = service.hasEmail(email);
-        if(isExists){
-            return new ResponseEntity<String>("중복된 이메일입니다.", HttpStatus.FORBIDDEN);
-        } else{
-            return new ResponseEntity<String>("사용가능한 이메일입니다.", HttpStatus.OK);
+    //FIXME
+    @ApiOperation(value = "선생님 정보 조회", notes = "선생님번호로 선생님 정보 조회")
+    @GetMapping("/{teacherId}")
+    public ResponseEntity<?> findByTeacherId(@PathVariable int teacherId){
+//        return new ResponseEntity<TeacherEntity>(repository.getOne(teacherId),HttpStatus.OK);
+        try{
+            TeacherEntity teacher = repository.findByTeacherId(teacherId);
+            if(teacher!=null){
+                return new ResponseEntity<TeacherEntity>(teacher,HttpStatus.OK);
+            } else{
+                return new ResponseEntity<String>("해당 회원을 찾을 수 없습니다.",HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<String>("선생님 정보 조회 시 오류 발생",HttpStatus.FORBIDDEN);
         }
     }
 
+    //링크로 비밀번호 수정하러 들어올 때, teacher 권한 줘야할듯
     @ApiOperation(value = "비밀번호 수정", notes = "비밀번호 수정")
     @PatchMapping("/password")
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> modifyPassword(@RequestBody TeacherEntity teacher){
         try{
-            service.modifyPassword(teacher.getTeacherId(), teacher.getPassword());
+            service.modifyPassword(teacher.getTeacherId(), passwordEncoder.encode(teacher.getPassword()));
             return new ResponseEntity<String>("선생님 비밀번호 수정 성공", HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<String>("선생님 비밀번호 수정 실패"+e.getMessage(), HttpStatus.FORBIDDEN);

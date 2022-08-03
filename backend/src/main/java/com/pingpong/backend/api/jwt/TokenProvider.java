@@ -1,10 +1,15 @@
 package com.pingpong.backend.api.jwt;
 
 import com.pingpong.backend.api.domain.dto.TokenDto;
+import com.pingpong.backend.api.repository.StudentRepository;
+import com.pingpong.backend.api.repository.TeacherRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,6 +34,12 @@ public class TokenProvider {
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
     private final Key key;
 
+    @Autowired
+    StudentRepository studentRepository;
+
+    @Autowired
+    TeacherRepository teacherRepository;
+
     public TokenProvider(@Value("${jwt.secret}") String secretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
@@ -45,7 +56,7 @@ public class TokenProvider {
         // Access Token 생성
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         String accessToken = Jwts.builder()
-                .setSubject(authentication.getName())       // payload "sub": "name"
+                .setSubject(authentication.getName())       // payload "sub": "학번"
                 .claim(AUTHORITIES_KEY, authorities)        // payload "auth": "ROLE_USER"
                 .setExpiration(accessTokenExpiresIn)        // payload "exp": 1516239022 (예시)
                 .signWith(key, SignatureAlgorithm.HS512)    // header "alg": "HS512"
@@ -57,11 +68,19 @@ public class TokenProvider {
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
+        boolean isFirst = true;
+        if(authentication.getName().length()==10){
+            isFirst = (studentRepository.getOne(Integer.parseInt(authentication.getName())).getEmail())==null;
+        } else{
+            isFirst = (teacherRepository.getOne(Integer.parseInt(authentication.getName())).getEmail())==null;
+        }
+
         return TokenDto.builder()
                 .grantType(BEARER_TYPE)             //인증타입 bearer :  JWT 혹은 OAuth에 대한 토큰 사용
                 .accessToken(accessToken)
                 .accessTokenExpiresIn(accessTokenExpiresIn.getTime())   //만료일
                 .refreshToken(refreshToken)
+                .isFirst(isFirst)
                 .build();
     }
 

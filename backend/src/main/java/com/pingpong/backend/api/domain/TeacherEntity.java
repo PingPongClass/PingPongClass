@@ -1,18 +1,12 @@
 package com.pingpong.backend.api.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.*;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-//import lombok.*;
-//@Getter
-//@Builder
-//@AllArgsConstructor
-//@NoArgsConstructor
 
 @Entity(name = "teacher")
 @Table(name = "teacher")
@@ -20,6 +14,7 @@ import java.util.stream.Collectors;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TeacherEntity {
     @Id
     private int teacherId;
@@ -48,8 +43,6 @@ public class TeacherEntity {
 
     @Column(name = "activated")
     private boolean activated=true;
-
-
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(

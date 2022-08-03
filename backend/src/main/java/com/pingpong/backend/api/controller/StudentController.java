@@ -121,17 +121,6 @@ public class StudentController {
         }
     }
 
-    @GetMapping("/email/{email}")
-    @ApiOperation(value = "이메일 중복 체크", notes = "중복 이메일인지 체크")
-    public ResponseEntity<String> hasEmail(@PathVariable String email){
-        Boolean isExists = service.hasEmail(email);
-        if(isExists){
-            return new ResponseEntity<String>("중복된 이메일입니다.", HttpStatus.FORBIDDEN);
-        } else{
-            return new ResponseEntity<String>("사용가능한 이메일입니다.", HttpStatus.OK);
-        }
-    }
-
     @PatchMapping
     @ApiOperation(value = "학생 정보 수정", notes = "학생정보 수정")
     @PreAuthorize("hasRole('STUDENT')")
@@ -140,6 +129,7 @@ public class StudentController {
             service.modify(student);
             return new ResponseEntity<String>("학생 정보수정 성공.", HttpStatus.OK);
         } catch (Exception e){
+            e.printStackTrace();
             return new ResponseEntity<String>("학생 정보수정 실패", HttpStatus.FORBIDDEN);
         }
     }
@@ -185,10 +175,9 @@ public class StudentController {
         }
     }
 
-    //SQL FIX ME
     @GetMapping("/points/{studentId}")
     @ApiOperation(value = "히트맵을 위한 스티커 내역", notes = "한 학생의 스티커 내역")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAnyRole('STUDENT')")
     public ResponseEntity<?> getPoint(@PathVariable int studentId){
         try{
             List<Map<String, Integer>> list = service.getPoint(studentId);

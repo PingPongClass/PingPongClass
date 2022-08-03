@@ -1,13 +1,8 @@
 package com.pingpong.backend.api.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.*;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -18,8 +13,8 @@ import java.util.stream.Collectors;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class StudentEntity {
-    @JsonIgnore
     @Id
     private int studentId;
 
@@ -58,14 +53,12 @@ public class StudentEntity {
     @Column(nullable = false, name = "activated")
     private boolean activated=true;
 
-
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "student_authority",
             joinColumns = {@JoinColumn(name = "student_id", referencedColumnName ="studentId")},  //외래키
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authorityName")})   //반대 엔티티의 외래키
     private Set<Authority> authorities;
-
 
     @Builder
     public StudentEntity(int studentId, String name, byte grade, byte classNum, byte studentNum, String email, String password, String profile, int point, int totalPoint, String introduce){

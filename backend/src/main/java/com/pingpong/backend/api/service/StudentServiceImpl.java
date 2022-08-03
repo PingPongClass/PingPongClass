@@ -29,7 +29,7 @@ public class StudentServiceImpl implements StudentService{
     private final StudentRepository repository;
     private final LogRepository logRepository;
     private final RankingRepository rankingRepository;
-
+    private final PasswordEncoder encoder;
 
     /*
     회원가입
@@ -73,6 +73,14 @@ public class StudentServiceImpl implements StudentService{
     @Transactional
     public void modify(StudentEntity student) {
         StudentEntity studentEntity = repository.findById(student.getStudentId()).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
+
+        if(student.getPassword() != null){
+            System.out.println("password null 아님"+student.getPassword());
+            student = StudentEntity.builder()
+                    .password(encoder.encode(student.getPassword()))
+                    .build();
+        }
+        
         studentEntity.modifyStudent(student);
     }
 
