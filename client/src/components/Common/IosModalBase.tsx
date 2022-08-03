@@ -1,11 +1,16 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import PropTypes from 'prop-types';
 import RedEllipse from '../../assets/images/redEllipse.png';
 import YellowEllipse from '../../assets/images/yellowEllipse.png';
 import GreenEllipse from '../../assets/images/greenEllipse.png';
 
-const IosModalBase = ({ children, width, height }) => {
+interface IosModalBaseStyle {
+  children: any;
+  width: string;
+  height: string;
+}
+
+const IosModalBase = ({ children, width, height }: IosModalBaseStyle) => {
   return (
     <div css={totalContainer({ width, height })}>
       <div css={YellowBackground} />
@@ -23,7 +28,12 @@ const IosModalBase = ({ children, width, height }) => {
   );
 };
 
-const totalContainer = ({ width, height }) => css`
+interface TotalContainerProps {
+  width: string;
+  height: string;
+}
+
+const totalContainer = ({ width, height }: TotalContainerProps) => css`
   width: ${width};
   height: ${height};
 `;
@@ -64,17 +74,5 @@ const Header = css`
 const Body = css`
   height: calc(100% - 3rem);
 `;
-
-IosModalBase.propTypes = {
-  children: PropTypes.node,
-  width: PropTypes.string,
-  height: PropTypes.string,
-};
-
-IosModalBase.defaultProps = {
-  children: null,
-  width: '1000px',
-  height: '600px',
-};
 
 export default IosModalBase;

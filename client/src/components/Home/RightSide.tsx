@@ -2,8 +2,13 @@
 import { css } from '@emotion/react';
 import PropTypes from 'prop-types';
 
-function RightSide(props) {
+interface RightSideProps {
+  setTap: Function;
+}
+
+function RightSide(props: RightSideProps) {
   const { setTap } = props;
+
   const onClickTeacher = () => {
     setTap('teacherLogin');
   };

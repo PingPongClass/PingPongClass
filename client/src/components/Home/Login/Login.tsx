@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useState } from 'react';
 // import axios from 'axios';
 
-const Login = (props) => {
+interface LoginProps {
+  tap: string;
+  setTap: Function;
+}
+
+const Login = (props: LoginProps) => {
   const { tap, setTap } = props;
   const [userId, setUserId] = useState('');
   const [userPw, setUserPw] = useState('');
@@ -54,19 +58,12 @@ const Login = (props) => {
         <div>비밀번호 찾기</div>
       </div>
       <div>
-        <button onClick={onClickEmail} setTap={setTap}>
-          로그인
-        </button>
+        <button onClick={onClickEmail}>로그인</button>
         <button onClick={onClickReturn}>돌아가기</button>
         <button onClick={test}>뭐가 적혀있지?</button>
       </div>
     </div>
   );
-};
-
-Login.propTypes = {
-  tap: PropTypes.string.isRequired,
-  setTap: PropTypes.func.isRequired,
 };
 
 export default Login;

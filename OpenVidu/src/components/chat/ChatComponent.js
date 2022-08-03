@@ -13,6 +13,7 @@ export default class ChatComponent extends Component {
     };
     // chatScroll: 현재 스크롤 위치
     this.chatScroll = React.createRef();
+    this.chatHeight = React.createRef();
     this.handleChange = this.handleChange.bind(this);
     this.handlePressKey = this.handlePressKey.bind(this);
     this.close = this.close.bind(this);
@@ -50,6 +51,11 @@ export default class ChatComponent extends Component {
         this.setState({ messageList: messageList });
         this.scrollToBottom();
       });
+
+      // 리사이즈 이벤트가 발생하면 맨 아래로 스크롤을 내리기
+      const elem = this.chatHeight.current;
+      console.log("우아아아아", elem);
+      elem.addEventListener('resize', () => console.log("testetstsetsetestset"));
   }
 
   // handleChange: 메시지를 입력할 때마다 작동하는 현재 작성 메시지 변경 이벤트 핸들러
@@ -97,6 +103,11 @@ export default class ChatComponent extends Component {
     }, 20);
   }
 
+  // chatHeight: 채팅창의 크기를 인식하는 이벤트 핸들러
+  chatHeight() {
+    this.scrollToBottom();
+  }
+
   // close: 무언가를 닫는 함수
   close() {
     this.props.close(undefined);
@@ -106,7 +117,7 @@ export default class ChatComponent extends Component {
   render() {
     const styleChat = { display: this.props.chatDisplay };
     return (
-      <div id="chatContainer">
+      <div id="chatContainer" ref={this.chatHeight}>
         <div id="chatComponent" style={styleChat}>
           {/* 툴바 */}
           <div id="chatToolbar">

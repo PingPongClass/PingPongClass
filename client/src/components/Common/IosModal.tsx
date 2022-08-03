@@ -1,21 +1,33 @@
 /** @jsxImportSource @emotion/react */
+import React from 'react';
 import { css } from '@emotion/react';
-import PropTypes from 'prop-types';
 import getPositionCSS from '../../utils/getPositionCSS';
 import IosModalBase from './IosModalBase';
+import type { GetpositionCSSProps } from '../../utils/getPositionCSS';
 
 // props에는 크기정보가 들어가야함
 
+interface IosModalProps {
+  children?: any;
+  isOpen?: boolean;
+  renderCenter?: boolean;
+  isRelative?: boolean;
+  relativePos?: GetpositionCSSProps;
+  absolutePos?: GetpositionCSSProps;
+  width?: string;
+  height?: string;
+}
+
 const IosModal = ({
-  children,
+  children = null,
   isOpen = true,
   renderCenter = false,
   isRelative = true,
   relativePos = {},
   absolutePos = {},
-  width,
-  height,
-}) => {
+  width = '1000px',
+  height = '600px',
+}: IosModalProps) => {
   if (!isOpen) return <div />;
   if (!isRelative)
     return (
@@ -50,7 +62,19 @@ const IosModal = ({
   );
 };
 
-const AbsoluteBox = ({ renderCenter, pos, width, height }) => css`
+interface AbsoluteBoxProps {
+  renderCenter: boolean;
+  pos: any;
+  width: any;
+  height: any;
+}
+
+const AbsoluteBox = ({
+  renderCenter,
+  pos,
+  width,
+  height,
+}: AbsoluteBoxProps) => css`
   position: absolute;
   width: ${width};
   height: ${height};
@@ -59,43 +83,15 @@ const AbsoluteBox = ({ renderCenter, pos, width, height }) => css`
   padding: 10px;
 `;
 
-const RelativeBox = ({ pos }) => css`
+interface RelativeBoxProps {
+  pos: any;
+}
+
+const RelativeBox = ({ pos }: RelativeBoxProps) => css`
   position: relative;
   width: 100%;
   height: 100%;
   ${getPositionCSS(pos)};
 `;
-
-IosModal.propTypes = {
-  children: PropTypes.node,
-  isOpen: PropTypes.bool,
-  renderCenter: PropTypes.bool,
-  isRelative: PropTypes.bool,
-  relativePos: PropTypes.shape({
-    top: PropTypes.string,
-    right: PropTypes.string,
-    bottom: PropTypes.string,
-    left: PropTypes.string,
-  }),
-  absolutePos: PropTypes.shape({
-    top: PropTypes.string,
-    right: PropTypes.string,
-    bottom: PropTypes.string,
-    left: PropTypes.string,
-  }),
-  width: PropTypes.string,
-  height: PropTypes.string,
-};
-
-IosModal.defaultProps = {
-  children: null,
-  isOpen: true,
-  renderCenter: false,
-  isRelative: true,
-  relativePos: {},
-  absolutePos: {},
-  width: '1000px',
-  height: '600px',
-};
 
 export default IosModal;

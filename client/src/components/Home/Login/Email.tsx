@@ -1,7 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+interface EmailProps {
+  setTap: Function;
+}
 
-const Email = (props) => {
+const Email = (props: EmailProps) => {
   const { setTap } = props;
   const onClickNext = () => {
     setTap('passwordFind');
@@ -15,10 +16,6 @@ const Email = (props) => {
       </div>
     </div>
   );
-};
-
-Email.propTypes = {
-  setTap: PropTypes.func.isRequired,
 };
 
 export default Email;

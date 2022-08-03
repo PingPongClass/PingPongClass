@@ -1,7 +1,10 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 
-const PasswordFind = () => {
+interface PasswordFindProps {
+  setTap: Function;
+}
+
+const PasswordFind = ({ setTap }: PasswordFindProps) => {
   return (
     <div>
       PasswordFind

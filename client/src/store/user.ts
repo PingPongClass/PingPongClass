@@ -1,4 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+export interface User {
+  tap: string;
+}
 
 export const userSlice = createSlice({
   name: 'user',
@@ -6,8 +10,8 @@ export const userSlice = createSlice({
     tap: 'test',
   },
   reducers: {
-    setTap: (state, action) => {
-      state.tap = action.payload;
+    setTap: (state, action: PayloadAction<User>) => {
+      state.tap = action.payload.tap;
     },
   },
 });
