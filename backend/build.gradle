@@ -67,6 +67,9 @@ dependencies {
 
     //SMTP
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    //Amazon S3 imageUpload
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE'
 }
     tasks.named('test') {
     useJUnitPlatform()

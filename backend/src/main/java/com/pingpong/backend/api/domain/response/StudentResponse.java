@@ -1,10 +1,10 @@
 package com.pingpong.backend.api.domain.response;
 
 import com.pingpong.backend.api.domain.StudentEntity;
+import com.pingpong.backend.api.service.S3Service;
 import lombok.Getter;
 
 import java.util.HashMap;
-import java.util.Map;
 
 
 @Getter
@@ -16,6 +16,7 @@ public class StudentResponse {
     private int studentNum;
     private String email;
     private String profile;
+    private String profileFullPath;
     private int point;
     private int totalPoint;
     private String introduce;
@@ -23,6 +24,8 @@ public class StudentResponse {
     private String nextLevel;
     private int levelPoint;
     private int myRank;
+
+    private S3Service s3Service;
 
     public StudentResponse(StudentEntity entity, int myRank){
         this.studentId=entity.getStudentId();
@@ -32,6 +35,7 @@ public class StudentResponse {
         this.studentNum=entity.getStudentNum();
         this.email=entity.getEmail();
         this.profile=entity.getProfile();
+        this.profileFullPath="https://" + s3Service.CLOUD_FRONT_DOMAIN_NAME+"/"+ entity.getProfile();
         this.point=entity.getPoint();
         this.totalPoint=entity.getTotalPoint();
         this.introduce=entity.getIntroduce();

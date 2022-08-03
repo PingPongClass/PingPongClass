@@ -1,7 +1,5 @@
 package com.pingpong.backend.api.controller;
 
-import com.pingpong.backend.api.domain.Authority;
-import com.pingpong.backend.api.domain.LogEntity;
 import com.pingpong.backend.api.domain.StudentEntity;
 import com.pingpong.backend.api.domain.StudentSpecification;
 import com.pingpong.backend.api.domain.request.UserRequest;
@@ -9,10 +7,10 @@ import com.pingpong.backend.api.domain.response.RankResponse;
 import com.pingpong.backend.api.domain.response.StudentResponse;
 import com.pingpong.backend.api.repository.RankingRepository;
 import com.pingpong.backend.api.repository.StudentRepository;
+import com.pingpong.backend.api.service.S3Service;
 import com.pingpong.backend.api.service.StudentServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
@@ -23,11 +21,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Api(value = "학생 API", tags={"학생"})
 @RestController
@@ -36,6 +34,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class StudentController {
     private final StudentServiceImpl service;
+    private final S3Service s3Service;
 
     private final StudentRepository repository;
 
@@ -136,9 +135,26 @@ public class StudentController {
     @PatchMapping
     @ApiOperation(value = "학생 정보 수정", notes = "학생정보 수정")
     @PreAuthorize("hasRole('STUDENT')")
-    public ResponseEntity<String> modify(@RequestBody StudentEntity student){
+    public ResponseEntity<String> modify(@RequestBody StudentEntity student) throws IOException {
         try {
             service.modify(student);
+            return new ResponseEntity<String>("학생 정보수정 성공.", HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<String>("학생 정보수정 실패", HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @PatchMapping("/profile")
+    @ApiOperation(value = "학생 프로필 이미지 수정", notes = "학생 프로필 수정")
+    @PreAuthorize("hasRole('STUDENT')")
+    public ResponseEntity<String> modifyProfile(@RequestParam("studentId") int studentId, @RequestPart("file") MultipartFile file) throws IOException {
+        try {
+            StudentEntity student = repository.getOne(studentId);
+            String imgPath = s3Service.upload(student.getProfile(), file);
+            StudentEntity modstudent = new StudentEntity(student.getStudentId(), student.getName(), student.getGrade(),
+                    student.getClassNum(), student.getStudentNum(), student.getEmail(), student.getPassword(),imgPath,
+                    student.getPoint(), student.getTotalPoint(), student.getIntroduce());
+            service.modify(modstudent);
             return new ResponseEntity<String>("학생 정보수정 성공.", HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<String>("학생 정보수정 실패", HttpStatus.FORBIDDEN);

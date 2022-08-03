@@ -96,11 +96,7 @@ public class StudentEntity {
         this.point += point;
         this.totalPoint += point;
     }
-
     public void modifyStudent(StudentEntity entity){
-        if(entity.getName()!=null){
-            this.name = entity.getName();
-        }
         if(entity.getGrade()!=0){
             this.grade = entity.getGrade();
         }
@@ -116,10 +112,14 @@ public class StudentEntity {
         if(entity.getPassword()!=null){
             this.password = entity.getPassword();
         }
-        if(entity.getIntroduce()!=null){
+        if(entity.getIntroduce()!=null) {
             this.introduce = entity.getIntroduce();
         }
+        if(entity.getProfile()!=null){
+            this.profile = entity.getProfile();
+        }
     }
+
     public void usePoint(int point){
         this.point=point;
     }

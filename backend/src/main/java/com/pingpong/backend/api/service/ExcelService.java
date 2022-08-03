@@ -1,5 +1,6 @@
 package com.pingpong.backend.api.service;
 
+import com.pingpong.backend.api.domain.Authority;
 import com.pingpong.backend.api.domain.StudentEntity;
 import com.pingpong.backend.api.domain.TeacherEntity;
 import com.pingpong.backend.api.repository.StudentRepository;
@@ -12,9 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +45,20 @@ public class ExcelService {
         }
 
         for(StudentEntity studentInfo : listStudent){
-            studentRepository.save(studentInfo);
+            Authority authority = Authority.builder()
+                    .authorityName("ROLE_STUDENT")
+                    .build();
+            StudentEntity studentEntity = StudentEntity.builder()
+                    .studentId(studentInfo.getStudentId())
+                    .name(studentInfo.getName())
+                    .password(studentInfo.getPassword())
+                    .grade(studentInfo.getGrade())
+                    .classNum(studentInfo.getClassNum())
+                    .studentNum(studentInfo.getStudentNum())
+                    .authorities(Collections.singleton(authority))
+                    .activated(true)
+                    .build();
+            studentRepository.save(studentEntity);
         }
 
         return "등록되었습니다.";
@@ -73,7 +85,37 @@ public class ExcelService {
         }
 
         for(TeacherEntity teacherInfo : listTeacher){
-            teacherRepository.save(teacherInfo);
+            //teacher계정은 권한이 2개
+            Set<Authority> authorities= new HashSet<>();
+            Authority role = Authority.builder()
+                    .authorityName("ROLE_STUDENT")
+                    .build();
+            authorities.add(role);
+
+            role = Authority.builder()
+                    .authorityName("ROLE_TEACHER")
+                    .build();
+            authorities.add(role);
+
+            if(teacherInfo.getIsAdmin() == 1){
+                role = Authority.builder()
+                        .authorityName("ROLE_ADMIN")
+                        .build();
+                authorities.add(role);
+            }
+
+            TeacherEntity teacherEntity = TeacherEntity.builder()
+                    .teacherId(teacherInfo.getTeacherId())
+                    .name((teacherInfo.getName()))
+                    .password(teacherInfo.getPassword())
+                    .birth(teacherInfo.getBirth())
+                    .manageGrade(teacherInfo.getManageGrade())
+                    .authorities(authorities)
+                    .isAdmin(teacherInfo.getIsAdmin())
+                    .activated(true)
+                    .build();
+
+            teacherRepository.save(teacherEntity);
         }
 
         return "등록되었습니다.";
