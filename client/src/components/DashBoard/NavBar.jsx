@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import PropTypes from 'prop-types';
+import mainLogo from '../../assets/images/mainLogo.png';
 
 const NavBar = ({ changeContent }) => {
   const onClick = (toGo) => {
@@ -8,7 +9,7 @@ const NavBar = ({ changeContent }) => {
   };
   return (
     <div css={totalContainer}>
-      <h1>Logo</h1>
+      <img src={mainLogo} alt="" />
       <button onClick={() => onClick('mainContent')}>대시보드</button>
       <button onClick={() => onClick('timeTable')}>시간표</button>
       <button onClick={() => onClick('notice')}>공지사항</button>
@@ -19,7 +20,7 @@ const NavBar = ({ changeContent }) => {
 };
 
 const totalContainer = css`
-  width: 80%;
+  width: 210px;
   background: rgb(109, 163, 99);
   display: flex;
   flex-direction: column;
@@ -27,11 +28,16 @@ const totalContainer = css`
   justify-content: center;
   border-radius: 10px;
   gap: 20px;
-  padding: 40px 0px;
+  padding: 20px 10px;
+  margin-top: 25%;
 
   button {
     width: 90%;
     height: 80px;
+  }
+
+  img {
+    width: 90%;
   }
 `;
 
