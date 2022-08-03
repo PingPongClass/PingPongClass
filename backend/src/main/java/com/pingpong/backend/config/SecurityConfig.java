@@ -69,7 +69,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //추가적�
                         "/img/**",
                         "/js/**",
                         "/ssafy/**",
-                        "/auth/**"
+                        "/auth/**",
+                        "/"
                 );
     }
 
