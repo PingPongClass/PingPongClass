@@ -11,12 +11,13 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Api(value = "유저 API", tags={"Users(학생, 선생님) 비밀번호 찾기"})
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/ssafy/users")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -24,8 +25,9 @@ public class UserController {
     private final TeacherRepository teacherRepository;
     private final EmailService emailService;
 
-    @ApiOperation(value = "학생 회원가입", notes = "학생 정보 삽입, 임시비밀번호 제공")
+    @ApiOperation(value = "비밀번호 찾기", notes = "학생 정보 삽입, 임시비밀번호 제공")
     @PostMapping("/password")
+    @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<?> findPassword(@RequestBody FindPwdRequest findPwdRequest){
         try{
             if(Integer.toString(findPwdRequest.getUserId()).length()==10){

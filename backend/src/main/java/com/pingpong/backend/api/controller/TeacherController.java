@@ -27,6 +27,7 @@ public class TeacherController {
 
     @ApiOperation(value = "선생님 회원가입", notes = "선생님 정보 삽입, 임시비밀번호 제공")
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> register(@RequestBody UserRequest.TeacherSignUp teacher){
         try {
             Integer maxTeacherId = 0;
@@ -67,7 +68,7 @@ public class TeacherController {
 
     @ApiOperation(value = "선생님 삭제", notes = "선생님 삭제")
     @DeleteMapping("/{teacherId}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteTeacher(@PathVariable int teacherId){
         try{
             service.delete(teacherId);
@@ -79,7 +80,7 @@ public class TeacherController {
 
     @ApiOperation(value = "선생님 목록 조회(이름검색까지)", notes = "이름으로 검색하면 이름까지 검색, 아니면 전체 검색")
     @GetMapping
-    @PreAuthorize("hasAnyRole('TEACHER','ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> findAll(@RequestParam(defaultValue = "전체") String name){
         try{
             List<TeacherEntity> list = service.findByName(name);
@@ -102,6 +103,7 @@ public class TeacherController {
 
     @ApiOperation(value = "비밀번호 수정", notes = "비밀번호 수정")
     @PatchMapping("/password")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> modifyPassword(@RequestBody TeacherEntity teacher){
         try{
             service.modifyPassword(teacher.getTeacherId(), teacher.getPassword());
@@ -113,6 +115,7 @@ public class TeacherController {
 
     @ApiOperation(value = "이메일 수정", notes = "이메일 수정")
     @PatchMapping("/email")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> modifyEmail(@RequestBody TeacherEntity teacher){
         try {
             service.modifyEmail(teacher.getTeacherId(), teacher.getEmail());

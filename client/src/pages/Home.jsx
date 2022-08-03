@@ -1,28 +1,44 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { useState } from 'react';
-import IosModal from '../components/Common/IosModal';
 import LeftSide from '../components/Home/LeftSide';
 import RightSide from '../components/Home/RightSide';
 import Login from '../components/Home/Login/Login';
-
-// tap === "main";
-// tap === "Login";
+import Email from '../components/Home/Login/Email';
+import PasswordFind from '../components/Home/Login/PasswordFind';
 
 const Home = () => {
   const [tap, setTap] = useState('main');
-
   return (
     <div css={totalContainer}>
-      <IosModal>
-        <LeftSide />
-        {tap === 'main' && <RightSide setTap={setTap} />}
-        {tap === 'Login' && <Login />}
-      </IosModal>
+      <div className="triangles">
+        <div className="triangle1" />
+        <div className="triangle2" />
+      </div>
+      <div className="parent">
+        <div className="child">
+          <div className="container">
+            <div className="circles">
+              <div className="circle1" />
+              <div className="circle2" />
+              <div className="circle3" />
+            </div>
+            <hr />
+            <div className="sideContainer">
+              <LeftSide />
+              {tap === 'main' && <RightSide setTap={setTap} />}
+              {(tap === 'teacherLogin' || tap === 'studentLogin') && (
+                <Login tap={tap} setTap={setTap} />
+              )}
+              {tap === 'email' && <Email setTap={setTap} />}
+              {tap === 'passwordFind' && <PasswordFind setTap={setTap} />}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
-
 const totalContainer = css`
   background-color: #ffffff;
   opacity: 0.8;

@@ -8,6 +8,7 @@ import com.pingpong.backend.api.domain.RankingEntity;
 import com.pingpong.backend.api.domain.StudentEntity;
 import com.pingpong.backend.api.domain.response.NoticeResponse;
 import com.pingpong.backend.api.domain.response.RankResponse;
+import com.pingpong.backend.api.repository.LogRepository;
 import com.pingpong.backend.api.repository.RankingRepository;
 import com.pingpong.backend.api.repository.StudentRepository;
 import com.pingpong.backend.util.SecurityUtil;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -25,7 +27,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService{
     private final StudentRepository repository;
-    private final PasswordEncoder passwordEncoder;
+    private final LogRepository logRepository;
     private final RankingRepository rankingRepository;
 
 
@@ -87,8 +89,8 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public List<LogEntity> getPoint(int studentId) {
-        return repository.getPoint(studentId);
+    public List<Map<String, Integer>> getPoint(int studentId) {
+        return logRepository.getPoint(studentId);
     }
 
     @Override

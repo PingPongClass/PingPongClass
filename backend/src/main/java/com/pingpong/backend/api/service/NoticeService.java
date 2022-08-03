@@ -147,10 +147,4 @@ public class NoticeService {
         NoticeEntity entity = noticeRepository.findById(noticeId).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
         noticeRepository.delete(entity);
     }
-
-    //페이지네이션 연습
-    @Transactional
-    public Page<NoticeResponse> findTest(Pageable pageable){
-        return noticeRepository.findAll(pageable).map(NoticeResponse::new);
-    }
 }

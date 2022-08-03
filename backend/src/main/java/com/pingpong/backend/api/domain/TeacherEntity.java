@@ -51,13 +51,12 @@ public class TeacherEntity {
 
 
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "teacher_authority",
             joinColumns = {@JoinColumn(name = "teacher_id", referencedColumnName = "teacherId")},
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authorityName")})
     private Set<Authority> authorities;
-
 
     @Builder
     public TeacherEntity(int teacherId, String name, String email, int isAdmin, String password, String birth, int manageGrade, String profile) {

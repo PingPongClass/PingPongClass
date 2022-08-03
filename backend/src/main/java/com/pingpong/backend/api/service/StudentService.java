@@ -5,6 +5,7 @@ import com.pingpong.backend.api.domain.StudentEntity;
 import com.pingpong.backend.api.domain.response.RankResponse;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -31,7 +32,7 @@ public interface StudentService {
     List<RankResponse> getRanking();
 
     //한 학생의 날짜별 스티커 개수 조회
-    List<LogEntity> getPoint(int studentId);
+    List<Map<String, Integer>> getPoint(int studentId);
 
     void updatePoint(int studentId, int point);
 

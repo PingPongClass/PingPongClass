@@ -20,13 +20,6 @@ public interface StudentRepository extends JpaRepository<StudentEntity, Integer>
     List<StudentEntity> findTop10ByOrderByTotalPointDesc();
     int countByTotalPointGreaterThan(int totalPoint);
 
-    //FIXME
-    @Query(value="SELECT regDate, SUM(point) point FROM log WHERE studentId = :studentId GROUP BY reg_date", nativeQuery = true)
-    List<LogEntity> getPoint(@Param("studentId") int studentId);
-
-    //FIXME
-//    @Query(value = "CREATE TABLE ranking AS SELECT C1, C2 FROM OLD_TABLE", nativeQuery = true)
-//    void createRanking();
 
     @EntityGraph(attributePaths = "authorities")    //쿼리 수행시, Lazy 조회가 아니고 Eager 조회로 authorities 정보를 같이 가져옴옴
     Optional<StudentEntity> findOneWithAuthoritiesByStudentId(int studentId);

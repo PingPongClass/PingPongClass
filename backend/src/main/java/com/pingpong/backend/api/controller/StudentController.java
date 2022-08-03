@@ -12,6 +12,7 @@ import com.pingpong.backend.api.repository.StudentRepository;
 import com.pingpong.backend.api.service.StudentServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
@@ -25,14 +26,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Api(value = "학생 API", tags={"학생"})
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/ssafy/students")
-
-
+@RequestMapping("/students")
 @RequiredArgsConstructor
 public class StudentController {
     private final StudentServiceImpl service;
@@ -46,7 +46,7 @@ public class StudentController {
 
     @ApiOperation(value = "학생 회원가입", notes = "학생 정보 삽입, 임시비밀번호 제공")
     @PostMapping
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> register(@RequestBody UserRequest.StudentSignUp student){
         try{
             //학번 검사
@@ -110,7 +110,7 @@ public class StudentController {
 
     @ApiOperation(value = "학생 정보 조회", notes = "학번으로 학생 정보 조회")
     @GetMapping("/{studentId}")
-    @PreAuthorize("hasAnyRole('STUDENT')")
+    @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<?> findByStudentId(@PathVariable int studentId){
         StudentEntity student = repository.getOne(studentId);
         if(student!=null){
@@ -159,7 +159,7 @@ public class StudentController {
 
     @GetMapping("/ranking")
     @ApiOperation(value = "학교 랭킹 10위까지", notes = "스티커 많은 순으로 ")
-    @PreAuthorize("hasAnyRole('STUDENT','TEACHER','ADMIN')")
+    @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<?> getRanking(){
         try{
             List<RankResponse> rankings = service.getRanking();
@@ -169,13 +169,14 @@ public class StudentController {
         }
     }
 
+    //SQL FIX ME
     @GetMapping("/points/{studentId}")
     @ApiOperation(value = "히트맵을 위한 스티커 내역", notes = "한 학생의 스티커 내역")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getPoint(@PathVariable int studentId){
         try{
-            List<LogEntity> list = service.getPoint(studentId);
-            return new ResponseEntity<List<LogEntity>>(list, HttpStatus.OK);
+            List<Map<String, Integer>> list = service.getPoint(studentId);
+            return new ResponseEntity<List<Map<String, Integer>>>(list, HttpStatus.OK);
         } catch(Exception e){
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
@@ -183,7 +184,7 @@ public class StudentController {
 
     @PatchMapping("/points/{point}")
     @ApiOperation(value = "학생 스티커 개수 수정", notes = "point만큼 추가하거나 빼거나")
-    @PreAuthorize("hasAnyRole('TEACHER','ADMIN')")
+    @PreAuthorize("hasAnyRole('TEACHER')")
     public ResponseEntity<?> updatePoint(@RequestParam int studentId, @PathVariable int point){
         try{
             service.updatePoint(studentId, point);
