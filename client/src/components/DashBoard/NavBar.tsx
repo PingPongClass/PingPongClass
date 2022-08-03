@@ -2,6 +2,11 @@
 import { css } from '@emotion/react';
 import PropTypes from 'prop-types';
 import mainLogo from '../../assets/images/mainLogo.png';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import CampaignIcon from '@mui/icons-material/Campaign';
+import StorefrontIcon from '@mui/icons-material/Storefront';
+import PersonIcon from '@mui/icons-material/Person';
 
 interface NavBarProps {
   changeContent: Function;
@@ -14,30 +19,62 @@ const NavBar = ({ changeContent }: NavBarProps) => {
   return (
     <div css={totalContainer}>
       <img src={mainLogo} alt="" />
-      <button onClick={() => onClick('mainContent')}>대시보드</button>
-      <button onClick={() => onClick('timeTable')}>시간표</button>
-      <button onClick={() => onClick('notice')}>공지사항</button>
-      <button onClick={() => onClick('shop')}>상점</button>
-      <button onClick={() => onClick('myPage')}>마이페이지</button>
+      <div className="button" onClick={() => onClick('mainContent')}>
+        <DashboardIcon />
+        <p>대시보드</p>
+      </div>
+      <div className="button" onClick={() => onClick('timeTable')}>
+        <CalendarMonthIcon />
+        <p>시간표</p>
+      </div>
+      <div className="button" onClick={() => onClick('notice')}>
+        <CampaignIcon />
+        <p>공지사항</p>
+      </div>
+      <div className="button" onClick={() => onClick('shop')}>
+        <StorefrontIcon />
+        <p>상점</p>
+      </div>
+      <div className="button" onClick={() => onClick('myPage')}>
+        <PersonIcon />
+        <p>마이페이지</p>
+      </div>
     </div>
   );
 };
 
 const totalContainer = css`
   width: 210px;
-  background: rgb(109, 163, 99);
+  background: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
-  gap: 20px;
-  padding: 20px 10px;
-  margin-top: 25%;
+  border-radius: 20px;
+  gap: 26px;
+  padding: 30px 10px;
+  margin-top: 66px;
+  box-shadow: 5px 5px 15px -5px;
 
-  button {
+  .button {
     width: 90%;
-    height: 80px;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 20px;
+    padding-left: 28px;
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+
+  .button p {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
   }
 
   img {

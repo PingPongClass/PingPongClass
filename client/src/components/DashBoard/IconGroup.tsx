@@ -1,12 +1,21 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import EventIcon from '@mui/icons-material/Event';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const IconGroup = () => {
   return (
     <div css={totalContainer}>
-      <button>시간표</button>
-      <button>알림</button>
-      <button>내정보</button>
+      <button>
+        <EventIcon />
+      </button>
+      <button>
+        <NotificationsNoneIcon />
+      </button>
+      <button>
+        <AccountCircleIcon />
+      </button>
     </div>
   );
 };
@@ -18,8 +27,16 @@ const totalContainer = css`
   justify-content: center;
   gap: 20px;
 
-  p {
+  button {
     border: solid;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: white;
   }
 `;
 export default IconGroup;

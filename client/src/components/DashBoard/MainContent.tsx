@@ -17,7 +17,6 @@ const MainContent = () => {
 const totalContainer = css`
   height: 100%;
   width: 100%;
-  background: #c8b97c;
   display: flex;
   flex-direction: column;
   align-items: center;

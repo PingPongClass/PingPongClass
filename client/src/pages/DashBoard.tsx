@@ -34,7 +34,7 @@ const DashBoard = () => {
             }
           </div>
           <div className="footer">
-            <h1>핑퐁클래스 파이팅</h1>
+            <h1>footer</h1>
           </div>
         </div>
       </div>
@@ -60,7 +60,7 @@ const totalContainer = css`
   .navBar {
     height: 100%;
     width: 300px;
-    background: rgba(144, 186, 194, 0.633);
+    min-width: 300px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -68,21 +68,22 @@ const totalContainer = css`
   }
 
   .userInfo {
-    height: 100%;
+    height: 90%;
     width: 900px;
-    background: rgba(130, 101, 136, 0.404);
+    min-width: 900px;
+    background: #ffffff;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: start;
+    box-shadow: 5px 5px 10px -5px;
+    border-radius: 10px;
   }
 
   .infoBar {
     height: 5%;
     width: 95%;
     margin: 10px;
-    padding: 0px 20px;
-    background: #7fddb3;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -95,7 +96,7 @@ const totalContainer = css`
     width: 95%;
     margin: 10px;
     padding: 20px;
-    background: #c8b97c;
+    background: #bcbcbc;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -109,7 +110,7 @@ const totalContainer = css`
     width: 95%;
     margin: 10px;
     padding: 0px 20px;
-    background: #4ab0d9;
+    background: #8d9491;
     display: flex;
     flex-direction: column;
     align-items: center;
