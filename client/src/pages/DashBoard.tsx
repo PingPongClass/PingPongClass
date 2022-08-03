@@ -6,6 +6,7 @@ import MainContent from '../components/DashBoard/MainContent';
 import NavBar from '../components/DashBoard/NavBar';
 import dashboardBackground from '../assets/images/dashboardBackground.png';
 import InputPassword from '../components/DashBoard/MyPage/InputPassword';
+import NoticeBoard from '../components/DashBoard/Board/NoticeBoard';
 
 const DashBoard = () => {
   const [content, setContent] = useState('mainContent');
@@ -27,7 +28,7 @@ const DashBoard = () => {
               {
                 mainContent: <MainContent />,
                 timeTable: <h1>시간표</h1>,
-                notice: <h1>공지사항</h1>,
+                notice: <NoticeBoard />,
                 shop: <h1>상점</h1>,
                 myPage: <InputPassword />,
               }[content]
