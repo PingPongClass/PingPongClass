@@ -1,12 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import HeatMap from './HeatMap';
 
 const MainContent = () => {
   return (
     <div css={totalContainer}>
-      <div className="banner">banner</div>
       <div className="stickerBar">stickerBar</div>
       <div className="todaysClass">todaysClass</div>
+      <div className="banner">
+        <HeatMap />
+      </div>
     </div>
   );
 };
@@ -24,7 +27,6 @@ const totalContainer = css`
   .banner {
     height: 20%;
     width: 100%;
-    background: #ed8a2e;
   }
 
   .stickerBar {

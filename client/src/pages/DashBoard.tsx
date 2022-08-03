@@ -48,7 +48,7 @@ const totalContainer = css`
   height: 100vh;
 
   .dashBoardContainer {
-    height: 100vh;
+    height: 100%;
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -59,9 +59,7 @@ const totalContainer = css`
 
   .navBar {
     height: 100%;
-    width: 20%;
-    max-width: 300px;
-    min-width: 200px;
+    width: 300px;
     background: rgba(144, 186, 194, 0.633);
     display: flex;
     flex-direction: column;
@@ -71,9 +69,7 @@ const totalContainer = css`
 
   .userInfo {
     height: 100%;
-    width: 80%;
-    max-width: 1100px;
-    min-width: 500px;
+    width: 900px;
     background: rgba(130, 101, 136, 0.404);
     display: flex;
     flex-direction: column;
