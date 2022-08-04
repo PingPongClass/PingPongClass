@@ -4,6 +4,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.List;
@@ -19,14 +21,17 @@ public class ClassEntity {
 
     @ManyToOne
     @JoinColumn(name="teacher_id",nullable = false)
+    @OnDelete(action= OnDeleteAction.CASCADE)
     private TeacherEntity teacherEntity;
 
     @ManyToOne
     @JoinColumn(name="subject_code", nullable = false)
+    @OnDelete(action= OnDeleteAction.CASCADE)
     private SubjectEntity subjectEntity;
 
     @ManyToOne
     @JoinColumn(name="timetable_id", nullable = false)
+    @OnDelete(action= OnDeleteAction.CASCADE)
     private TimetableEntity timetableEntity;
 
     @Column(nullable = false, length = 20)

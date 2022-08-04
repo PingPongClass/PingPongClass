@@ -3,6 +3,8 @@ package com.pingpong.backend.api.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -19,10 +21,12 @@ public class LogEntity {
 
     @ManyToOne
     @JoinColumn(name="class_id", nullable = false)
+    @OnDelete(action= OnDeleteAction.CASCADE)
     private ClassEntity classentity;
 
     @ManyToOne
     @JoinColumn(name="student_id", nullable = false)
+    @OnDelete(action= OnDeleteAction.CASCADE)
     private StudentEntity studententity;
 
     @Column(nullable = false, columnDefinition = "DATE")

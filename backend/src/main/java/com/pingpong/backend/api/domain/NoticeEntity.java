@@ -1,6 +1,8 @@
 package com.pingpong.backend.api.domain;
 
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -22,10 +24,12 @@ public class NoticeEntity {
 
     @ManyToOne
     @JoinColumn(name="teacher_id",nullable=false)
+    @OnDelete(action= OnDeleteAction.CASCADE)
     private TeacherEntity teacherEntity;
 
     @ManyToOne
     @JoinColumn(name="class_id",nullable=false)
+    @OnDelete(action= OnDeleteAction.CASCADE)
     private ClassEntity classEntity;
 
     @Column(nullable = false, length=50)

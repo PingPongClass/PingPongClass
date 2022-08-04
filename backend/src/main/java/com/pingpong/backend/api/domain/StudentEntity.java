@@ -99,16 +99,16 @@ public class StudentEntity {
         if(entity.getStudentNum()!=0){
             this.studentNum = entity.getStudentNum();
         }
-        if(entity.getEmail()!=null){
+        if("".equals(entity.getEmail())==false && entity.getEmail()!=null){
             this.email = entity.getEmail();
         }
-        if(entity.getPassword()!=null){
+        if("".equals(entity.getPassword())==false && entity.getPassword()!=null){
             this.password = entity.getPassword();
         }
         if(entity.getIntroduce()!=null) {
             this.introduce = entity.getIntroduce();
         }
-        if(entity.getProfile()!=null){
+        if("".equals(entity.getProfile())==false && entity.getProfile()!=null){
             this.profile = entity.getProfile();
         }
     }

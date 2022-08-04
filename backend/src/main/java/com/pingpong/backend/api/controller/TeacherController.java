@@ -4,7 +4,9 @@ import com.pingpong.backend.api.domain.StudentEntity;
 import com.pingpong.backend.api.domain.TeacherEntity;
 import com.pingpong.backend.api.domain.request.UserRequest;
 import com.pingpong.backend.api.domain.response.StudentResponse;
+import com.pingpong.backend.api.domain.response.TeacherResponse;
 import com.pingpong.backend.api.repository.TeacherRepository;
+import com.pingpong.backend.api.service.S3Service;
 import com.pingpong.backend.api.service.TeacherServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,7 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Api(value = "선생님 API", tags={"선생님"})
@@ -26,6 +30,7 @@ public class TeacherController {
     private final TeacherRepository repository;
     private final TeacherServiceImpl service;
     private final PasswordEncoder passwordEncoder;
+    private final S3Service s3Service;
 
     @ApiOperation(value = "선생님 회원가입", notes = "선생님 정보 삽입, 임시비밀번호 제공")
     @PostMapping
@@ -92,15 +97,14 @@ public class TeacherController {
         }
     }
 
-    //FIXME
     @ApiOperation(value = "선생님 정보 조회", notes = "선생님번호로 선생님 정보 조회")
     @GetMapping("/{teacherId}")
+    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
     public ResponseEntity<?> findByTeacherId(@PathVariable int teacherId){
-//        return new ResponseEntity<TeacherEntity>(repository.getOne(teacherId),HttpStatus.OK);
         try{
             TeacherEntity teacher = repository.findByTeacherId(teacherId);
             if(teacher!=null){
-                return new ResponseEntity<TeacherEntity>(teacher,HttpStatus.OK);
+                return new ResponseEntity<TeacherResponse>(new TeacherResponse(teacher),HttpStatus.OK);
             } else{
                 return new ResponseEntity<String>("해당 회원을 찾을 수 없습니다.",HttpStatus.NOT_FOUND);
             }
@@ -133,6 +137,45 @@ public class TeacherController {
             return new ResponseEntity<String>("선생님 이메일 수정 성공", HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<String>("선생님 이메일 수정 실패"+e.getMessage(), HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @PatchMapping
+    @ApiOperation(value = "선생님 정보 수정", notes = "선생님정보 수정")
+    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
+    public ResponseEntity<String> modify(@RequestBody TeacherEntity teacher) throws IOException {
+        try {
+            service.modify(teacher);
+            return new ResponseEntity<String>("선생님 정보수정 성공.", HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<String>("선생님 정보수정 실패", HttpStatus.FORBIDDEN);
+        }
+    }
+
+
+    @PatchMapping("/profile")
+    @ApiOperation(value = "선생님 프로필 이미지 수정", notes = "선생님 프로필 수정")
+    @PreAuthorize("hasRole('TEACHER')")
+    public ResponseEntity<String> modifyProfile(@RequestParam("teacherId") int teacherId, @RequestPart("file") MultipartFile file) throws IOException {
+        try {
+            if(file.getSize()>=1048576) {
+                return new ResponseEntity<String>("이미지 크기 제한은 1MB 입니다.", HttpStatus.FORBIDDEN);
+            }
+            String originFile = file.getOriginalFilename();
+            String originFileExtension = originFile.substring(originFile.lastIndexOf("."));
+            if(!originFileExtension.equalsIgnoreCase(".jpg") && !originFileExtension.equalsIgnoreCase(".png")
+                    && !originFileExtension.equalsIgnoreCase(".jpeg")) {
+                return new ResponseEntity<String>("jpg, jpeg, png의 이미지 파일만 업로드해주세요", HttpStatus.FORBIDDEN);
+            }
+            TeacherEntity teacher = repository.getOne(teacherId);
+            String imgPath = s3Service.upload(teacher.getProfile(), file);
+            TeacherEntity modteacher = new TeacherEntity(teacher.getTeacherId(), teacher.getName(), teacher.getEmail(), teacher.getIsAdmin(), teacher.getPassword(),
+                    teacher.getBirth(), teacher.getManageGrade(), imgPath);
+            service.modify(modteacher);
+            return new ResponseEntity<String>("선생님 정보수정 성공.", HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<String>("선생님 정보수정 실패", HttpStatus.FORBIDDEN);
         }
     }
 

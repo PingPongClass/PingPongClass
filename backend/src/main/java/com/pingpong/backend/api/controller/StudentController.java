@@ -139,6 +139,16 @@ public class StudentController {
     @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<String> modifyProfile(@RequestParam("studentId") int studentId, @RequestPart("file") MultipartFile file) throws IOException {
         try {
+            if(file.getSize()>=1048576) {
+                return new ResponseEntity<String>("이미지 크기 제한은 1MB 입니다.", HttpStatus.FORBIDDEN);
+            }
+            String originFile = file.getOriginalFilename();
+            String originFileExtension = originFile.substring(originFile.lastIndexOf("."));
+            if(!originFileExtension.equalsIgnoreCase(".jpg") && !originFileExtension.equalsIgnoreCase(".png")
+                    && !originFileExtension.equalsIgnoreCase(".jpeg")) {
+                return new ResponseEntity<String>("jpg, jpeg, png의 이미지 파일만 업로드해주세요", HttpStatus.FORBIDDEN);
+            }
+
             StudentEntity student = repository.getOne(studentId);
             String imgPath = s3Service.upload(student.getProfile(), file);
             StudentEntity modstudent = new StudentEntity(student.getStudentId(), student.getName(), student.getGrade(),

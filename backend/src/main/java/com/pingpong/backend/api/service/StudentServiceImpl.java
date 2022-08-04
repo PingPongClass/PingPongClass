@@ -74,11 +74,10 @@ public class StudentServiceImpl implements StudentService{
     public void modify(StudentEntity student) {
         StudentEntity studentEntity = repository.findById(student.getStudentId()).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
 
-        if(student.getPassword() != null){
-            System.out.println("password null 아님"+student.getPassword());
-            student = StudentEntity.builder()
-                    .password(encoder.encode(student.getPassword()))
-                    .build();
+        if("".equals(student.getPassword())==false && student.getPassword() != null){
+            new StudentEntity(student.getStudentId(), student.getName(), student.getGrade(),
+                    student.getClassNum(), student.getStudentNum(), student.getEmail(), encoder.encode(student.getPassword()),student.getProfile(),
+                    student.getPoint(), student.getTotalPoint(), student.getIntroduce());
         }
         
         studentEntity.modifyStudent(student);

@@ -3,6 +3,8 @@ package com.pingpong.backend.api.domain;
 import javax.persistence.*;
 import java.time.LocalDate;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 
 @Getter
@@ -17,6 +19,7 @@ public class RecordEntity {
 
     @ManyToOne
     @JoinColumn(name="class_id", nullable = false)
+    @OnDelete(action= OnDeleteAction.CASCADE)
     private ClassEntity classEntity;
 
     @Column(nullable = false, length = 256)

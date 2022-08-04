@@ -81,11 +81,19 @@ public class TeacherEntity {
         this.email = email;
     }
 
-    public void modifyTeacher(TeacherEntity teacher){
-        this.name = teacher.getName();
-        this.email = teacher.getEmail();
-        this.password = teacher.getPassword();
-        this.profile = teacher.getProfile();
+    public void modifyTeacher(TeacherEntity entity){
+        if("".equals(entity.getEmail()) == false && entity.getEmail()!=null){
+            this.email = entity.getEmail();
+        }
+        if("".equals(entity.getPassword()) == false && entity.getPassword()!=null){
+            this.password = entity.getPassword();
+        }
+        if("".equals(entity.getProfile()) == false && entity.getProfile()!=null){
+            this.profile = entity.getProfile();
+        }
+        if(entity.getManageGrade()!=0){
+            this.manageGrade = entity.getManageGrade();
+        }
     }
 
     public static TeacherEntity from(TeacherEntity teacher) {
