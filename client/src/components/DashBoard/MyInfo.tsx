@@ -21,7 +21,7 @@ const totalContainer = css`
   justify-content: start;
   border-radius: 20px;
   padding: 20px;
-  box-shadow: 5px 5px 15px -5px;
+  box-shadow: 3px 3px 10px -5px;
   box-sizing: border-box;
   gap: 10px;
 

@@ -46,14 +46,12 @@ function TodaysClass() {
 const totalContainer = css`
   width: 100%;
   height: 100%;
-  padding: 20px;
   background: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   border-radius: 20px;
-  box-shadow: 5px 5px 15px -5px;
   box-sizing: border-box;
 
   .swiper {
@@ -85,6 +83,15 @@ const totalContainer = css`
     display: block;
     width: 100%;
     height: 100%;
+  }
+
+  .swiper-button-next,
+  .swiper-button-prev {
+    color: #6e6e6e;
+  }
+
+  .swiper-pagination-progressbar-fill {
+    background-color: #d65745;
   }
 `;
 

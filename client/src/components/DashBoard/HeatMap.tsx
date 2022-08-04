@@ -66,7 +66,6 @@ const totalContainer = css`
 
   .container {
     width: 100%;
-    padding: 20px;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
@@ -74,7 +73,6 @@ const totalContainer = css`
     justify-content: center;
     box-sizing: border-box;
     background-color: #ffffff;
-    box-shadow: 5px 5px 15px -5px;
   }
 
   .react-calendar-heatmap text {

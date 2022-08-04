@@ -37,6 +37,7 @@ const totalContainer = css`
     justify-content: center;
     border-radius: 50%;
     background: white;
+    box-shadow: 3px 3px 10px -5px;
     cursor: pointer;
   }
 `;

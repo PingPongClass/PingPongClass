@@ -45,7 +45,7 @@ const totalContainer = css`
     height: 100%;
     width: 100%;
     border-radius: 20px;
-    box-shadow: 5px 5px 15px -5px;
+    box-shadow: 3px 3px 10px -5px;
   }
 
   .myInfo {
