@@ -4,7 +4,7 @@ import { css } from '@emotion/react';
 function StickerBar({ objectName }: any) {
   return (
     <div css={totalContainer}>
-      <h1>{objectName}</h1>
+      <h2>{objectName}</h2>
     </div>
   );
 }
@@ -18,7 +18,7 @@ const totalContainer = css`
   align-items: center;
   justify-content: center;
   border-radius: 20px;
-  box-shadow: 3px 3px 10px -5px;
+  box-shadow: 2px 2px 15px -5px;
   cursor: pointer;
 `;
 

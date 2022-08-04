@@ -19,23 +19,23 @@ const NavBar = ({ changeContent }: NavBarProps) => {
   return (
     <div css={totalContainer}>
       <img src={mainLogo} alt="" />
-      <div className="button" onClick={() => onClick('mainContent')}>
+      <div className="navButton" onClick={() => onClick('mainContent')}>
         <DashboardIcon />
         <p>대시보드</p>
       </div>
-      <div className="button" onClick={() => onClick('timeTable')}>
+      <div className="navButton" onClick={() => onClick('timeTable')}>
         <CalendarMonthIcon />
         <p>시간표</p>
       </div>
-      <div className="button" onClick={() => onClick('notice')}>
+      <div className="navButton" onClick={() => onClick('notice')}>
         <CampaignIcon />
         <p>공지사항</p>
       </div>
-      <div className="button" onClick={() => onClick('shop')}>
+      <div className="navButton" onClick={() => onClick('shop')}>
         <StorefrontIcon />
         <p>상점</p>
       </div>
-      <div className="button" onClick={() => onClick('myPage')}>
+      <div className="navButton" onClick={() => onClick('myPage')}>
         <PersonIcon />
         <p>마이페이지</p>
       </div>
@@ -54,9 +54,9 @@ const totalContainer = css`
   gap: 26px;
   padding: 30px 10px;
   margin-top: 100px;
-  box-shadow: 3px 3px 10px -5px;
+  box-shadow: 2px 2px 15px -5px;
 
-  .button {
+  .navButton {
     width: 90%;
     height: 40px;
     display: flex;
@@ -69,7 +69,7 @@ const totalContainer = css`
     box-sizing: border-box;
   }
 
-  .button p {
+  .navButton p {
     width: 100%;
     display: flex;
     flex-direction: row;
