@@ -40,6 +40,10 @@ const ModalCSS = css`
     font-size: calc(0.5rem + 1vw);
   }
 
+  input::placeholder {
+    font-family: 'NanumSquareRound';
+  }
+
   button {
     width: 15vw;
     height: 5vh;
@@ -50,6 +54,7 @@ const ModalCSS = css`
     border-radius: 6px;
     margin-left: 8.5rem;
     font-size: calc(0.5rem + 1vw);
+    font-family: 'NanumSquareRound';
   }
 `;
 

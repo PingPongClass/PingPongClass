@@ -7,7 +7,7 @@
 }
 
 .App {
-  font-family: 'NanumSquare';
+  font-family: 'NanumSquareRound';
   color: var(--text-dark);
 }
 
@@ -35,6 +35,38 @@
   src: url('./assets/fonts/NanumSquareEB.otf');
 }
 
+@font-face {
+  font-family: 'S-CoreDream-4Regular';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-4Regular.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'IM_Hyemin-Bold';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2106@1.1/IM_Hyemin-Bold.woff2')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NanumSquareRound';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Cafe24SsurroundAir';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24SsurroundAir.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 /* 글씨 */
 .title-div {
   display: flex;
@@ -45,13 +77,13 @@
 
 .title {
   font-size: 2.4vw;
-  font-weight: 400;
+  font-weight: 600;
   margin: 4px;
 }
 
 .title-sub {
   font-size: 1.3vw;
-  font-weight: 400;
+  font-weight: 600;
   margin: 4px;
   margin-right: 36px;
   width: 100px;
@@ -91,33 +123,39 @@
   cursor: pointer;
   color: #ffffff;
   font-size: 1.1vw;
+  font-family: 'NanumSquareRound';
 }
 
 .blue {
   background-color: var(--blue);
   color: #ffffff;
+  font-family: 'NanumSquareRound';
 }
 
 .pink {
   background-color: var(--pink);
   color: #ffffff;
+  font-family: 'NanumSquareRound';
 }
 
 .gray {
   background-color: var(--gray);
   color: #ffffff;
+  font-family: 'NanumSquareRound';
 }
 
 /* input */
 .input {
   width: 255px;
-  height: 38px;
-  font-family: 'NanumSquare';
+  height: 37px;
+  font-family: 'NanumSquareRound';
   font-size: 1.2em;
   font-weight: 300;
-  border-radius: 29px;
+  border-radius: 15px;
   padding: 4px 25px;
+  border: 1px solid gray;
 }
+
 input:focus {
   border: none;
   box-shadow: 0 0 1px 3px var(--pink);
@@ -125,7 +163,7 @@ input:focus {
   color: var(--text-dark);
   outline: none;
 }
-s
+
 /** div **/
 .div-total {
   margin: 25px 0;
@@ -147,12 +185,13 @@ s
 .select {
   width: 195px;
   height: 48px;
-  font-family: 'NanumSquare';
+  font-family: 'NanumSquareRound';
   font-size: 1.2em;
-  font-weight: 300;
+  font-weight: 600;
   border: 1.77px solid black;
-  border-radius: 29px;
+  border-radius: 15px;
   padding: 4px 25px;
+  border: 1px solid gray;
 }
 
 .select:focus {
@@ -164,6 +203,7 @@ s
 }
 
 option {
-  font-weight: 200;
-  font-family: 'NanumSquare';
+  font-weight: 600;
+  font-family: 'NanumSquareRound';
 }
+
