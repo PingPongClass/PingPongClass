@@ -71,7 +71,7 @@ const totalContainer = css`
   .userInfo {
     height: 90%;
     width: 1000px;
-    min-width: 900px;
+    min-width: 1000px;
     background: #ffffff;
     display: flex;
     flex-direction: column;
@@ -105,6 +105,10 @@ const totalContainer = css`
     box-sizing: border-box;
     gap: 30px;
     overflow-y: scroll;
+  }
+
+  .infoContent::-webkit-scrollbar {
+    display: none;
   }
 
   .footer {

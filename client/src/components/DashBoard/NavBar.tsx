@@ -53,7 +53,7 @@ const totalContainer = css`
   border-radius: 20px;
   gap: 26px;
   padding: 30px 10px;
-  margin-top: 66px;
+  margin-top: 100px;
   box-shadow: 5px 5px 15px -5px;
 
   .button {

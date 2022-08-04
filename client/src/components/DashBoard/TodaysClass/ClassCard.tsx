@@ -1,20 +1,24 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 
-function StickerBar() {
-  return <div css={totalContainer}></div>;
+function StickerBar({ objectName }: any) {
+  return (
+    <div css={totalContainer}>
+      <h1>{objectName}</h1>
+    </div>
+  );
 }
 
 const totalContainer = css`
-  width: 100%;
-  height: 100%;
+  width: 233px;
+  height: 233px;
   background: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  border: solid;
   border-radius: 20px;
-  box-shadow: 5px 5px 15px -5px;
 `;
 
 export default StickerBar;

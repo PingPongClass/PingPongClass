@@ -2,7 +2,7 @@
 import { css } from '@emotion/react';
 import HeatMap from './HeatMap';
 import banner from '../../assets/images/banner.png';
-import StickerBar from './StickerBar';
+import MyInfo from './MyInfo';
 import TodaysClass from './TodaysClass';
 
 const MainContent = () => {
@@ -12,8 +12,8 @@ const MainContent = () => {
         <img src={banner} alt="" />
       </div>
       <h1>내 정보</h1>
-      <div className="stickerBar">
-        <StickerBar />
+      <div className="myInfo">
+        <MyInfo />
       </div>
       <h1>오늘의 수업</h1>
       <div className="todaysClass">
@@ -48,13 +48,13 @@ const totalContainer = css`
     box-shadow: 5px 5px 15px -5px;
   }
 
-  .stickerBar {
-    height: 300px;
+  .myInfo {
+    height: 400px;
     width: 100%;
   }
 
   .todaysClass {
-    height: 500px;
+    height: 300px;
     width: 100%;
   }
 
