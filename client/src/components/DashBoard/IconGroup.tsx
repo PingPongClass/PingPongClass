@@ -37,6 +37,7 @@ const totalContainer = css`
     justify-content: center;
     border-radius: 50%;
     background: white;
+    cursor: pointer;
   }
 `;
 export default IconGroup;
