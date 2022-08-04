@@ -5,15 +5,19 @@
   justify-content: space-between;
 }
 
-.right_side {
+.right-side {
   font-weight: 600;
 }
 
-.left_side {
+.left-side {
   display: flex;
   justify-content: center;
 }
 
-.left_side > * {
+.left-side > * {
   margin-right: 0.5rem;
+}
+
+.left-side button .zero {
+  cursor: not-allowed;
 }

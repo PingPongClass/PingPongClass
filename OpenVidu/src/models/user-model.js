@@ -138,6 +138,14 @@ class UserModel {
   setAttendenceTime(attendenceTime) {
     this.attendenceTime = attendenceTime;
   }
+
+  upPoint() {
+    ++this.point;
+  }
+
+  downPoint() {
+    if (this.point > 0) --this.point;
+  }
 }
 
 export default UserModel;

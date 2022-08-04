@@ -94,6 +94,9 @@ class VideoRoomComponent extends Component {
     this.pickRandomStudent = this.pickRandomStudent.bind(this);
     // nicknameChanged: 닉네임 상태 변경 함수
     this.nicknameChanged = this.nicknameChanged.bind(this);
+    // upPoint, downPoint : 포인트 변경 함수
+    this.upPointChanged = this.upPointChanged.bind(this);
+    this.downPointChanged = this.downPointChanged.bind(this);
     // toggleFullscreen: 전체화면 처리 함수
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
     // switchCamera: 카메라 변경 함수
@@ -388,6 +391,24 @@ class VideoRoomComponent extends Component {
       nickname: this.state.localUser.getNickname(),
     });
   }
+
+  // name: 오석호
+  // date: 2022/08/04
+  // 포인트 조작 함수
+  upPointChanged() {
+    let localUser = this.state.localUser;
+    localUser.upPoint();
+    this.sendSignalUserChanged({ point: localUser.getPoint() });
+    this.setState({ localUser: localUser });
+  }
+
+  downPointChanged() {
+    let localUser = this.state.localUser;
+    localUser.downPoint();
+    this.sendSignalUserChanged({ point: localUser.getPoint() });
+    this.setState({ localUser: localUser });
+  }
+
   // deleteSubscriber: 매개변수로 받은 stream을 가진 유저를 구독자 명단에서 제거하는 함수
   deleteSubscriber(stream) {
     const remoteUsers = this.state.subscribers;
@@ -448,7 +469,7 @@ class VideoRoomComponent extends Component {
     });
   }
 
-  // subscribeToUserChanged: 구독한 유저중에 닉네임, 비디오, 오디오, 화면공유 상태가 변경되었을 때 감지해서 화면을 바꿔주는 함수
+  // subscribeToUserChanged: 구독한 유저중에 닉네임, 비디오, 오디오, 화면공유, 포인트 상태가 변경되었을 때 감지해서 화면을 바꿔주는 함수
   subscribeToUserChanged() {
     this.state.session.on("signal:userChanged", (event) => {
       let remoteUsers = this.state.subscribers;
@@ -464,6 +485,9 @@ class VideoRoomComponent extends Component {
           }
           if (data.nickname !== undefined) {
             user.setNickname(data.nickname);
+          }
+          if (data.point !== undefined) {
+            user.setPoint(data.point);
           }
           if (data.isScreenShareActive !== undefined) {
             user.setScreenShareActive(data.isScreenShareActive);
@@ -1113,10 +1137,12 @@ class VideoRoomComponent extends Component {
                   style={participantDisplay}
                 >
                   <ParticipantComponent
-                    myinfo={localUser}
+                    user={localUser}
                     subscribers={subscribers}
                     participantDisplay={this.state.participantDisplay}
                     close={this.toggleParticipant}
+                    upPointChanged={this.upPointChanged}
+                    downPointChanged={this.downPointChanged}
                   />
                 </div>
               )}
@@ -1134,6 +1160,7 @@ class VideoRoomComponent extends Component {
                 >
                   <ChatComponent
                     user={localUser}
+                    subscribers={subscribers}
                     chatDisplay={this.state.chatDisplay}
                     close={this.toggleChat}
                     messageReceived={this.checkNotification}
