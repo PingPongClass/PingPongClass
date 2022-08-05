@@ -62,6 +62,11 @@ const totalContainer = css`
     padding-left: 18px;
     cursor: pointer;
     box-sizing: border-box;
+    transition: all 0.1s ease-in-out;
+  }
+
+  .navButton:hover {
+    transform: scale(1.1);
   }
 
   .navButton h4 {

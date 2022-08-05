@@ -14,6 +14,7 @@ import StoreMain from '@components/DashBoard/Store/StoreMain';
 import Footer from '@components/DashBoard/Footer/Footer';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ClassList from '@src/components/DashBoard/TodaysClass/ClassList';
 
 const DashBoard = () => {
   const contentStore = useAppSelector((state) => state.content.content);
@@ -62,7 +63,7 @@ const DashBoard = () => {
             {
               {
                 mainContent: <MainContent />,
-                timeTable: <h1>수업목록</h1>,
+                timeTable: <ClassList />,
                 notice: <NoticeBoard />,
                 postNotice: <EditNotice />,
                 editNotice: <EditNotice />,
