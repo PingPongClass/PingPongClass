@@ -1,11 +1,10 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { useState } from 'react';
-import ItemList from './ItemListTap/ItemList';
-import ReactionList from './ItemListTap/ReactionList';
-import GetItemList from './GetItemListTap/GetItemList';
-import GetReactionList from './GetItemListTap/GetReactionList';
-import BobkkiCapsule from '../../../assets/images/bobkkiCapsule.png';
+import ItemList from '@components/DashBoard/Store/ItemListTap/ItemList';
+import ReactionList from '@components/DashBoard/Store/ItemListTap/ReactionList';
+import GetItemList from '@components/DashBoard/Store/GetItemListTap/GetItemList';
+import GetReactionList from '@components/DashBoard/Store/GetItemListTap/GetReactionList';
+import BobkkiCapsule from '@assets/images/bobkkiCapsule.png';
 import HelpIcon from '@mui/icons-material/HelpOutline';
 import CircleIcon from '@mui/icons-material/Circle';
 import { yellow } from '@mui/material/colors';

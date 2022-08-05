@@ -1,6 +1,5 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import defaultProfile from '../../assets/images/defaultProfile.jpeg';
+import defaultProfile from '@assets/images/defaultProfile.jpeg';
 
 const Myinfo = () => {
   return (

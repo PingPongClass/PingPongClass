@@ -1,10 +1,9 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import React, { useEffect, useState } from 'react';
-import useIntersectionObserver from '@src/utils/useIntersectionObserver';
-import ManagedClass from './ManagedClass';
-import { useAppDispatch, useAppSelector } from '@src/store/hooks';
-import { setContent, selectContent } from '@src/store/content';
+import useIntersectionObserver from '@utils/useIntersectionObserver';
+import ManagedClass from '@components/DashBoard/Board/ManagedClass';
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+import { setContent, selectContent } from '@store/content';
 export interface ManagedClassProps {
   noticeId: number;
   writer: string;

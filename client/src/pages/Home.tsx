@@ -1,11 +1,10 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { useState } from 'react';
-import LeftSide from '../components/Home/LeftSide';
-import RightSide from '../components/Home/RightSide';
-import Login from '../components/Home/Login/Login';
-import Email from '../components/Home/Login/Email';
-import PasswordFind from '../components/Home/Login/PasswordFind';
+import LeftSide from '@components/Home/LeftSide';
+import RightSide from '@components/Home/RightSide';
+import Login from '@components/Home/Login/Login';
+import Email from '@components/Home/Login/Email';
+import PasswordFind from '@components/Home/Login/PasswordFind';
 
 const Home = () => {
   const [tap, setTap] = useState('main');

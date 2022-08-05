@@ -1,8 +1,7 @@
-/** @jsxImportSource @emotion/react */
 import React, { useState, useEffect } from 'react';
-import { NoticeProps } from './NoticeBoard';
-import { useAppDispatch, useAppSelector } from '@src/store/hooks';
-import { setContent, selectContent } from '@src/store/content';
+import { NoticeProps } from '@components/DashBoard/Board/NoticeBoard';
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+import { setContent, selectContent } from '@store/content';
 
 const Notice = (props: {
   key: number;

@@ -1,8 +1,7 @@
-/** @jsxImportSource @emotion/react */
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '@src/store/hooks';
-import { setContent, selectContent } from '@src/store/content';
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+import { setContent, selectContent } from '@store/content';
 
 interface ManageClassProps {
   classId: number;

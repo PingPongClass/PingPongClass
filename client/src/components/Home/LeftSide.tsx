@@ -1,7 +1,6 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import MainLogo from '../../assets/images/mainLogo.png';
-import MainPicture from '../../assets/images/mainPicture.png';
+import MainLogo from '@assets/images/mainLogo.png';
+import MainPicture from '@assets/images/mainPicture.png';
 
 const LeftSide = () => {
   return (

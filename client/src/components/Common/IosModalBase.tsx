@@ -1,8 +1,7 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import RedEllipse from '../../assets/images/redEllipse.png';
-import YellowEllipse from '../../assets/images/yellowEllipse.png';
-import GreenEllipse from '../../assets/images/greenEllipse.png';
+import RedEllipse from '@assets/images/redEllipse.png';
+import YellowEllipse from '@assets/images/yellowEllipse.png';
+import GreenEllipse from '@assets/images/greenEllipse.png';
 
 interface IosModalBaseStyle {
   children: any;

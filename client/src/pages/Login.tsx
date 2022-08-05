@@ -1,8 +1,7 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import axios from 'axios';
-import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
-import { setCookie } from '@src/utils/cookie';
+import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
+import { setCookie } from '@utils/cookie';
 import { useState } from 'react';
 
 const App = () => {

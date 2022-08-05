@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import IosModal from '../../Common/IosModal';
 // import Modal from '../components/Common/Modal';

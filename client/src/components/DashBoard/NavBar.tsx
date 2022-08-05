@@ -1,7 +1,6 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import PropTypes from 'prop-types';
-import mainLogo from '../../assets/images/mainLogo.png';
+import mainLogo from '@assets/images/mainLogo.png';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CampaignIcon from '@mui/icons-material/Campaign';

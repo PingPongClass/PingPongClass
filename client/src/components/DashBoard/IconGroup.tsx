@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import EventIcon from '@mui/icons-material/Event';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';

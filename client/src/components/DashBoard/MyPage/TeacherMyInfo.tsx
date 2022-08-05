@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import IosModal from '../../Common/IosModal';
 import ProfilImage from '../../../assets/images/profile.png';

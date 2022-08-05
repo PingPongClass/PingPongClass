@@ -1,9 +1,7 @@
-/** @jsxImportSource @emotion/react */
-import React from 'react';
 import { css } from '@emotion/react';
-import getPositionCSS from '../../utils/getPositionCSS';
-import IosModalBase from './IosModalBase';
-import type { GetpositionCSSProps } from '../../utils/getPositionCSS';
+import getPositionCSS from '@utils/getPositionCSS';
+import IosModalBase from '@components/Common/IosModalBase';
+import type { GetpositionCSSProps } from '@utils/getPositionCSS';
 
 // props에는 크기정보가 들어가야함
 

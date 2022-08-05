@@ -1,18 +1,17 @@
-/** @jsxImportSource @emotion/react */
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { css } from '@emotion/react';
-import IconGroup from '../components/DashBoard/IconGroup';
-import MainContent from '../components/DashBoard/MainContent';
-import NavBar from '../components/DashBoard/NavBar';
-import dashboardBackground from '../assets/images/dashboardBackground.png';
-import InputPassword from '../components/DashBoard/MyPage/InputPassword';
-import NoticeBoard from '../components/DashBoard/Board/NoticeBoard';
-import EditNotice from '../components/DashBoard/Board/EditNotice';
-import ManagedClassBoard from '../components/DashBoard/Board/ManagedClassBoard';
-import EditClass from '../components/DashBoard/Board/EditClass';
-import StoreMain from '@src/components/DashBoard/Store/StoreMain';
-import Footer from '@src/components/DashBoard/Footer/Footer';
+import IconGroup from '@components/DashBoard/IconGroup';
+import MainContent from '@components/DashBoard/MainContent';
+import NavBar from '@components/DashBoard/NavBar';
+import dashboardBackground from '@assets/images/dashboardBackground.png';
+import InputPassword from '@components/DashBoard/MyPage/InputPassword';
+import NoticeBoard from '@components/DashBoard/Board/NoticeBoard';
+import EditNotice from '@components/DashBoard/Board/EditNotice';
+import ManagedClassBoard from '@components/DashBoard/Board/ManagedClassBoard';
+import EditClass from '@components/DashBoard/Board/EditClass';
+import StoreMain from '@components/DashBoard/Store/StoreMain';
+import Footer from '@components/DashBoard/Footer/Footer';
 
 const DashBoard = () => {
   const contentStore = useAppSelector((state) => state.content.content);

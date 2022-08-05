@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import DashBoard from './pages/DashBoard';
-import Style from './pages/Style';
-import Login from './pages/Login';
-import './App.css';
+import Home from '@pages/Home';
+import DashBoard from '@pages/DashBoard';
+import Style from '@pages/Style';
+import Login from '@pages/Login';
+import '@src/App.css';
 
 const App = () => {
   return (
