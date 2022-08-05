@@ -157,7 +157,7 @@
 }
 
 input:focus {
-  border: none;
+  border: 2px solid gray;
   box-shadow: 0 0 1px 3px var(--pink);
   box-shadow: 0 0 0 3px -moz-mac-focusring;
   color: var(--text-dark);

@@ -12,13 +12,36 @@ import ManagedClassBoard from '@components/DashBoard/Board/ManagedClassBoard';
 import EditClass from '@components/DashBoard/Board/EditClass';
 import StoreMain from '@components/DashBoard/Store/StoreMain';
 import Footer from '@components/DashBoard/Footer/Footer';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const DashBoard = () => {
   const contentStore = useAppSelector((state) => state.content.content);
   const [content, setContent] = useState('mainContent');
+
   const changeContent = (toGo: string) => {
     setContent(toGo);
   };
+  const [toastMsg, setToast] = useState('원재호 님 로그인 되었습니다.');
+  const notify = () =>
+    toast.success(toastMsg, {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored',
+    });
+
+  // toastMsg에 원하는 메시지를 써서 함수를 실행하면 됨
+  // 여기있는 예시처럼 useState 를 활용해서 관리해도되고
+  if (toastMsg) {
+    notify();
+    setToast('');
+  }
+
   useEffect(() => {
     // 리렌더링을 위한 함수
     setContent(contentStore);
@@ -26,6 +49,7 @@ const DashBoard = () => {
 
   return (
     <div css={totalContainer}>
+      <ToastContainer />
       <div className="dashBoardContainer">
         <div className="navBar">
           <NavBar changeContent={changeContent} />
@@ -128,11 +152,10 @@ const totalContainer = css`
     width: 95%;
     margin: 10px;
     padding: 0px 20px;
-    background: rgb(236, 236, 236);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: end;
     box-sizing: border-box;
   }
 `;

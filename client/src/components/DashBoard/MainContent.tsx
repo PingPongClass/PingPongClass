@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import HeatMap from '@components/DashBoard/HeatMap';
-import banner from '@assets/images/banner.png';
 import MyInfo from '@components/DashBoard/MyInfo';
 import TodaysClass from '@components/DashBoard/TodaysClass';
 

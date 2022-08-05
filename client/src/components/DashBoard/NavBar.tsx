@@ -19,24 +19,20 @@ const NavBar = ({ changeContent }: NavBarProps) => {
     <div css={totalContainer}>
       <img src={mainLogo} alt="" />
       <div className="navButton" onClick={() => onClick('mainContent')}>
-        <DashboardIcon />
-        <h3>대시보드</h3>
+        <DashboardIcon style={{ fontSize: '40px' }} />
+        <h4>대시보드</h4>
       </div>
       <div className="navButton" onClick={() => onClick('timeTable')}>
-        <CalendarMonthIcon />
-        <h3>수업목록</h3>
+        <CalendarMonthIcon style={{ fontSize: '40px' }} />
+        <h4>수업목록</h4>
       </div>
       <div className="navButton" onClick={() => onClick('notice')}>
-        <CampaignIcon />
-        <h3>공지사항</h3>
+        <CampaignIcon style={{ fontSize: '40px' }} />
+        <h4>공지사항</h4>
       </div>
       <div className="navButton" onClick={() => onClick('shop')}>
-        <StorefrontIcon />
-        <h3>상점</h3>
-      </div>
-      <div className="navButton" onClick={() => onClick('myPage')}>
-        <PersonIcon />
-        <h3>마이페이지</h3>
+        <StorefrontIcon style={{ fontSize: '40px' }} />
+        <h4>상점</h4>
       </div>
     </div>
   );
@@ -63,12 +59,12 @@ const totalContainer = css`
     align-items: center;
     justify-content: space-between;
     font-size: 20px;
-    padding-left: 24px;
+    padding-left: 18px;
     cursor: pointer;
     box-sizing: border-box;
   }
 
-  .navButton h3 {
+  .navButton h4 {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -80,9 +76,5 @@ const totalContainer = css`
     width: 90%;
   }
 `;
-
-NavBar.propTypes = {
-  changeContent: PropTypes.func.isRequired,
-};
 
 export default NavBar;
