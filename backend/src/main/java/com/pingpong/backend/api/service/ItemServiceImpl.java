@@ -2,9 +2,9 @@ package com.pingpong.backend.api.service;
 
 import com.pingpong.backend.Exception.CustomException;
 import com.pingpong.backend.Exception.ErrorCode;
-import com.pingpong.backend.api.domain.ItemEntity;
-import com.pingpong.backend.api.domain.ItemStudentEntity;
-import com.pingpong.backend.api.domain.StudentEntity;
+import com.pingpong.backend.api.domain.*;
+import com.pingpong.backend.api.domain.request.ItemRequest;
+import com.pingpong.backend.api.domain.request.NoticeRequest;
 import com.pingpong.backend.api.domain.response.ItemStudentResponse;
 import com.pingpong.backend.api.repository.ItemRepository;
 import com.pingpong.backend.api.repository.ItemStudentRepository;
@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,10 +52,25 @@ public class ItemServiceImpl implements ItemService{
     @Transactional
     public void delete(final int studentId, final int itemId){
         StudentEntity student = studentRepository.getOne(studentId);
-        System.out.println(student.toString());
         ItemEntity item = itemRepository.getOne(itemId);
         ItemStudentEntity entity = itemStudentRepository.findFirstByStudentEntityAndItemEntity(student, item);
         itemStudentRepository.delete(entity);
+    }
+
+    //잔디색상 변경
+    @Transactional
+    public int updateJandiColor(final int studentId, final int jandiColor){
+        StudentEntity student = studentRepository.getOne(studentId);
+        student.updateJandiColor(jandiColor);
+        return student.getJandiColor();
+    }
+
+    //테두리색상 변경
+    @Transactional
+    public int updateBorderColor(final int studentId, final int borderColor){
+        StudentEntity student = studentRepository.getOne(studentId);
+        student.updateBorderColor(borderColor);
+        return student.getBorderColor();
     }
 
     //칭찬스티커 사용
@@ -63,5 +79,15 @@ public class ItemServiceImpl implements ItemService{
         StudentEntity entity = studentRepository.findById(studentId).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
         entity.usePoint(entity.getPoint()-5);
         return entity.getPoint();
+    }
+
+    //아이템 저장
+    @Transactional
+    public String save(final ItemRequest request) throws IOException {
+        StudentEntity studentEntity = studentRepository.getOne(request.getStudentId());
+        ItemEntity itemEntity = itemRepository.getOne(request.getItemId());
+        ItemStudentEntity entity = new ItemStudentEntity(studentEntity, itemEntity);
+        itemStudentRepository.save(entity);
+        return "저장되었습니다.";
     }
 }

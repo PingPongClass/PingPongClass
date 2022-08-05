@@ -60,6 +60,14 @@ public class StudentEntity {
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authorityName")})   //반대 엔티티의 외래키
     private Set<Authority> authorities;
 
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private int jandiColor;
+
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private int borderColor;
+
     @Builder
     public StudentEntity(int studentId, String name, byte grade, byte classNum, byte studentNum, String email, String password, String profile, int point, int totalPoint, String introduce){
         this.studentId = studentId;
@@ -84,11 +92,19 @@ public class StudentEntity {
         this.password=password;
     }
 
-
     public void updatePoint(int point) {
         this.point += point;
         this.totalPoint += point;
     }
+
+    public void updateJandiColor(int jandiColor) {
+        this.jandiColor=jandiColor;
+    }
+
+    public void updateBorderColor(int borderColor) {
+        this.borderColor=borderColor;
+    }
+
     public void modifyStudent(StudentEntity entity){
         if(entity.getGrade()!=0){
             this.grade = entity.getGrade();

@@ -1,12 +1,16 @@
 package com.pingpong.backend.api.controller;
 
 import com.pingpong.backend.api.domain.ItemEntity;
+import com.pingpong.backend.api.domain.request.ColorUpdateRequest;
+import com.pingpong.backend.api.domain.request.ItemRequest;
 import com.pingpong.backend.api.domain.response.ItemStudentResponse;
 import com.pingpong.backend.api.service.ItemServiceImpl;
 import com.pingpong.backend.api.service.StudentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,9 +49,44 @@ public class StoreController {
         return studentService.findByStudentId(studentId).get().getPoint();
     }
 
-    @ApiOperation(value = "칭찬스티커 개수 사용", notes = "유저의 사용가능한 칭찬스티커 5장을 소멸시킵니다.")
+    @ApiOperation(value = "칭찬스티커 개수 사용", notes = "유저의 사용가능한 칭찬스티커 15장을 소멸시킵니다.")
     @PatchMapping("/sticker")
     public int useSticker(@RequestBody final int params) throws Exception {
         return itemService.usePoint(params);
     }
+
+    @ApiOperation(value = "아이템 저장", notes = "뽑힌 아이템을 저장합니다.")
+    @PostMapping("")
+    public ResponseEntity<?> save(@RequestBody ItemRequest request) throws Exception{
+        try{
+            itemService.save(request);
+            return new ResponseEntity<String>("아이템 저장 성공",HttpStatus.OK);
+        } catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<String>("아이템 저장 실패",HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @ApiOperation(value = "잔디 색상 변경", notes = "유저의 잔디의 색상을 변경합니다.")
+    @PatchMapping("/color/jandi")
+    public ResponseEntity<?> updateJandi(@RequestBody ColorUpdateRequest request) throws Exception {
+        try{
+            itemService.updateJandiColor(request.getStudentId(), request.getColor());
+            return new ResponseEntity<String>("잔디 색 변경 성공",HttpStatus.OK);
+        } catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<String>("잔디 색 변경 실패",HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @ApiOperation(value = "테두리 색상 변경", notes = "유저의 테두리 색상을 변경합니다.")
+    @PatchMapping("/color/border")
+    public ResponseEntity<?> updateBorder(@RequestBody ColorUpdateRequest request) throws Exception {
+        try{
+            itemService.updateBorderColor(request.getStudentId(), request.getColor());
+            return new ResponseEntity<String>("테두리 색 변경 성공",HttpStatus.OK);
+        } catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<String>("테두리 색 변경 실패",HttpStatus.FORBIDDEN);
+        }    }
 }

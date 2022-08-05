@@ -3,6 +3,7 @@ package com.pingpong.backend.api.domain.response;
 import com.pingpong.backend.api.domain.StudentEntity;
 import com.pingpong.backend.api.service.S3Service;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 
@@ -24,9 +25,11 @@ public class StudentResponse {
     private String nextLevel;
     private int levelPoint;
     private int myRank;
+    private int jandiColor;
+    private int borderColor;
 
-    private S3Service s3Service;
-
+    @Autowired
+    S3Service s3Service;
     public StudentResponse(StudentEntity entity, int myRank){
         this.studentId=entity.getStudentId();
         this.name=entity.getName();
@@ -39,6 +42,8 @@ public class StudentResponse {
         this.point=entity.getPoint();
         this.totalPoint=entity.getTotalPoint();
         this.introduce=entity.getIntroduce();
+        this.jandiColor=entity.getJandiColor();
+        this.borderColor=entity.getBorderColor();
 
         HashMap<Integer, String> levelname = new HashMap<>();
         levelname.put(1, "Bronze");
