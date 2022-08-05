@@ -20,17 +20,17 @@ const Myinfo = () => {
       <div className="rankingContainer">
         <div className="ranking">
           <div className="rankingInfo">
-            <div>1위</div>
-            <div>오석호</div>
-            <div>99:99:99</div>
+            <div className="rankBox">1위</div>
+            <div className="nameBox">오석호</div>
+            <div className="myBio">안녕하세요 쏘콜라스 입니다.</div>
           </div>
           <button>펼치기</button>
         </div>
         <div className="rankingLow">
           <div className="rankingInfo">
-            <div>2위</div>
-            <div>원재호</div>
-            <div>10:11:22</div>
+            <div className="rankBox">2위</div>
+            <div className="nameBox">원재호호</div>
+            <div className="myBio">안녕하세요 쏘콜라스 선생님 제자입니다.</div>
           </div>
           <button>수정하기</button>
         </div>
@@ -67,6 +67,21 @@ const totalContainer = css`
   }
   .nameContainer {
     margin-left: 20px;
+  }
+  .rankBox {
+    width: 50px;
+  }
+  .myBio {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  .nameBox {
+    width: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
   }
 
   .levelContainer {
@@ -108,11 +123,10 @@ const totalContainer = css`
   }
 
   .rankingInfo {
-    width: 50%;
+    width: 80%;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
   }
 
   .level {
@@ -138,6 +152,7 @@ const totalContainer = css`
     background-color: #ffe790;
     border-radius: 20px;
     z-index: 1;
+    animation: barIn2 0.6s;
   }
   .currentSticker {
     position: absolute;
@@ -147,6 +162,25 @@ const totalContainer = css`
     background-color: #fdb878;
     border-radius: 20px;
     z-index: 99;
+    animation: barIn 0.6s;
+  }
+
+  @keyframes barIn {
+    from {
+      width: 0%;
+    }
+    to {
+      width: 50%;
+    }
+  }
+
+  @keyframes barIn2 {
+    from {
+      width: 0%;
+    }
+    to {
+      width: 70%;
+    }
   }
 `;
 

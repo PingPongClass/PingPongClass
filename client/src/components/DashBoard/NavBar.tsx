@@ -20,23 +20,23 @@ const NavBar = ({ changeContent }: NavBarProps) => {
       <img src={mainLogo} alt="" />
       <div className="navButton" onClick={() => onClick('mainContent')}>
         <DashboardIcon />
-        <p>대시보드</p>
+        <h3>대시보드</h3>
       </div>
       <div className="navButton" onClick={() => onClick('timeTable')}>
         <CalendarMonthIcon />
-        <p>시간표</p>
+        <h3>수업목록</h3>
       </div>
       <div className="navButton" onClick={() => onClick('notice')}>
         <CampaignIcon />
-        <p>공지사항</p>
+        <h3>공지사항</h3>
       </div>
       <div className="navButton" onClick={() => onClick('shop')}>
         <StorefrontIcon />
-        <p>상점</p>
+        <h3>상점</h3>
       </div>
       <div className="navButton" onClick={() => onClick('myPage')}>
         <PersonIcon />
-        <p>마이페이지</p>
+        <h3>마이페이지</h3>
       </div>
     </div>
   );
@@ -44,7 +44,7 @@ const NavBar = ({ changeContent }: NavBarProps) => {
 
 const totalContainer = css`
   width: 210px;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.9);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -63,12 +63,12 @@ const totalContainer = css`
     align-items: center;
     justify-content: space-between;
     font-size: 20px;
-    padding-left: 28px;
+    padding-left: 24px;
     cursor: pointer;
     box-sizing: border-box;
   }
 
-  .navButton p {
+  .navButton h3 {
     width: 100%;
     display: flex;
     flex-direction: row;
