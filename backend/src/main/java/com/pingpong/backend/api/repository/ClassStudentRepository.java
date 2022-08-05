@@ -11,4 +11,5 @@ public interface ClassStudentRepository extends JpaRepository<ClassStudentEntity
     List<ClassStudentEntity> findByStudentEntity(StudentEntity studentEntity);
     List<ClassStudentEntity> findByClassEntityOrderByStudentEntityAsc(ClassEntity classEntity);
     ClassStudentEntity findClassStudentEntityByClassEntityAndStudentEntity(ClassEntity classEntity, StudentEntity studentEntity);
+    List<ClassStudentEntity> findByClassEntity(ClassEntity classEntity);
 }

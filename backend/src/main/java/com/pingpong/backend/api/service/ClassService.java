@@ -6,6 +6,8 @@ import com.pingpong.backend.api.domain.*;
 import com.pingpong.backend.api.domain.request.ClassRequest;
 import com.pingpong.backend.api.domain.request.OpenRequest;
 import com.pingpong.backend.api.domain.response.ClassResponse;
+import com.pingpong.backend.api.domain.response.ClassStudentResponse;
+import com.pingpong.backend.api.domain.response.Participants;
 import com.pingpong.backend.api.domain.response.RecordResponse;
 import com.pingpong.backend.api.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -169,5 +171,18 @@ public class ClassService {
         ClassEntity classEntity = classRepository.getOne(classId);
         classEntity.updateUrl("");
     }
+    //해당 수업에 참가하는 학생 목록
+    public ClassStudentResponse findParticipant(int classId){
+        List<Participants> participantsList=new ArrayList<>();
+        ClassEntity classEntity = classRepository.getOne(classId);
+        List<ClassStudentEntity> classStudentEntityList = classStudentRepository.findByClassEntity(classEntity);
+        for(ClassStudentEntity classStudentEntity: classStudentEntityList){
+                participantsList.add(new Participants(classStudentEntity.getStudentEntity()));
+        }
+        ClassStudentResponse classStudentResponse = new ClassStudentResponse(classId, participantsList);
+        return classStudentResponse;
+    }
+
+
 
 }

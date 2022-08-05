@@ -1,5 +1,6 @@
 package com.pingpong.backend.api.domain.response;
 import com.pingpong.backend.api.domain.ClassEntity;
+import com.pingpong.backend.api.domain.SubjectEntity;
 import lombok.Getter;
 
 //목록 조회용 response
@@ -7,7 +8,7 @@ import lombok.Getter;
 @Getter
 public class ClassResponse {
     private String teacherName;
-    private int subjectCode;
+    private SubjectEntity subjectEntity;
     private String classTitle;
     private int classDay;
     private String classDesc;
@@ -15,7 +16,7 @@ public class ClassResponse {
 
     public ClassResponse(ClassEntity classEntity){
         this.teacherName = classEntity.getTeacherEntity().getName();
-        this.subjectCode = classEntity.getSubjectEntity().getClassSubjectCode();
+        this.subjectEntity = classEntity.getSubjectEntity();
         this.classTitle = classEntity.getClassTitle();
         this.classDay = classEntity.getClassDay();
         this.classDesc = classEntity.getClassDesc();

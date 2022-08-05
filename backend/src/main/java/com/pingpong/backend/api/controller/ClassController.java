@@ -3,6 +3,7 @@ package com.pingpong.backend.api.controller;
 import com.pingpong.backend.api.domain.request.ClassRequest;
 import com.pingpong.backend.api.domain.request.OpenRequest;
 import com.pingpong.backend.api.domain.response.ClassResponse;
+import com.pingpong.backend.api.domain.response.ClassStudentResponse;
 import com.pingpong.backend.api.service.ClassService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -82,5 +83,13 @@ public class ClassController {
         Page<ClassResponse> pageReponse = null;
         pageReponse=classService.findClassesById(userId, pageable);
         return pageReponse;
+    }
+
+    //수업에 참가하는 학생 목록
+    @ApiOperation(value= "참가 학생 목록 조회" )
+    @GetMapping("/student/{classId}")
+    @PreAuthorize("hasRole('TEACHER')")
+    public ClassStudentResponse findStudentByClassId(final int classId){
+        return classService.findParticipant(classId);
     }
 }
