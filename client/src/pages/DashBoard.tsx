@@ -12,6 +12,7 @@ import EditNotice from '../components/DashBoard/Board/EditNotice';
 import ManagedClassBoard from '../components/DashBoard/Board/ManagedClassBoard';
 import EditClass from '../components/DashBoard/Board/EditClass';
 import StoreMain from '@src/components/DashBoard/Store/StoreMain';
+import Footer from '@src/components/DashBoard/Footer/Footer';
 
 const DashBoard = () => {
   const contentStore = useAppSelector((state) => state.content.content);
@@ -51,7 +52,7 @@ const DashBoard = () => {
             }
           </div>
           <div className="footer">
-            <h1>footer</h1>
+            <Footer />
           </div>
         </div>
       </div>
