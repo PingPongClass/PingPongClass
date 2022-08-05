@@ -18,10 +18,10 @@ import 'react-toastify/dist/ReactToastify.css';
 const DashBoard = () => {
   const contentStore = useAppSelector((state) => state.content.content);
   const [content, setContent] = useState('mainContent');
-
   const changeContent = (toGo: string) => {
     setContent(toGo);
   };
+
   const [toastMsg, setToast] = useState('원재호 님 로그인 되었습니다.');
   const notify = () =>
     toast.success(toastMsg, {
@@ -96,6 +96,7 @@ const totalContainer = css`
     align-items: start;
     justify-content: center;
     background-color: transparent;
+    animation: smoothAppear 1s;
   }
 
   .navBar {
@@ -105,10 +106,10 @@ const totalContainer = css`
   }
 
   .userInfo {
-    height: 80%;
+    height: 85%;
     width: 1000px;
     min-width: 1000px;
-    margin-top: 100px;
+    margin-top: 50px;
     background: #ffffff;
     display: flex;
     flex-direction: column;
@@ -119,9 +120,9 @@ const totalContainer = css`
   }
 
   .infoBar {
-    height: 70px;
+    height: 60px;
     width: 95%;
-    padding: 20px 20px 0px 20px;
+    padding: 10px 10px 0px 10px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -130,10 +131,9 @@ const totalContainer = css`
   }
 
   .infoContent {
-    height: 85%;
+    height: 90%;
     width: 95%;
-    margin: 10px;
-    padding: 20px;
+    padding: 10px 20px 10px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -150,13 +150,23 @@ const totalContainer = css`
   .footer {
     height: 5%;
     width: 95%;
-    margin: 10px;
-    padding: 0px 20px;
+    padding: 0px 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: end;
+    justify-content: center;
     box-sizing: border-box;
+  }
+
+  @keyframes smoothAppear {
+    from {
+      opacity: 0;
+      transform: translateY(-5%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 `;
 

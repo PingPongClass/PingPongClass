@@ -58,7 +58,7 @@ const totalContainer = css`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    font-size: 20px;
+    font-size: calc(0.3rem + 1vw);
     padding-left: 18px;
     cursor: pointer;
     box-sizing: border-box;

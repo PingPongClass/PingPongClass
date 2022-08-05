@@ -79,6 +79,15 @@ const AbsoluteBox = ({
   ${renderCenter ? 'transform:translate(-50%, -50%); top:50%; left:50%;' : ''};
   ${getPositionCSS(pos)};
   padding: 10px;
+  animation: 0.7s ease-in-out loadEffect1;
+  @keyframes loadEffect1 {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 `;
 
 interface RelativeBoxProps {
