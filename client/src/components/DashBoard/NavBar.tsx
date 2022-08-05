@@ -48,7 +48,7 @@ const totalContainer = css`
   border-radius: 20px;
   gap: 26px;
   padding: 30px 10px;
-  margin-top: 100px;
+  margin-top: 50px;
   box-shadow: 2px 2px 15px -5px;
 
   .navButton {
