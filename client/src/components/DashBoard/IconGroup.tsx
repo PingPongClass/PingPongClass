@@ -37,8 +37,8 @@ const totalContainer = css`
   gap: 20px;
 
   button {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     border: none;
     background-color: #e6e6e6;
     display: flex;

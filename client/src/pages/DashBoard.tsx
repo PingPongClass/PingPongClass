@@ -107,10 +107,10 @@ const totalContainer = css`
   }
 
   .userInfo {
-    height: 85%;
+    height: 1100px;
     width: 1000px;
     min-width: 1000px;
-    margin-top: 50px;
+    margin-top: 100px;
     background: #ffffff;
     display: flex;
     flex-direction: column;

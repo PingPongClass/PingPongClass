@@ -94,7 +94,7 @@ const totalContainer = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: start;
   border-radius: 20px;
   box-shadow: 2px 2px 15px -5px;
 

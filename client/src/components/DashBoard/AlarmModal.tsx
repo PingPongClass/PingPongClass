@@ -68,7 +68,7 @@ const totalContainer = css`
 
   .alarmModal {
     width: 400px;
-    height: 80%;
+    height: 1100px;
     padding: 20px;
     margin-top: 100px;
     background-color: rgba(249, 249, 249);

@@ -70,6 +70,7 @@ const totalContainer = css`
   }
 
   .navButton h4 {
+    font-size: 20px;
     width: 100%;
     display: flex;
     flex-direction: row;
