@@ -23,7 +23,7 @@ const ManageClass = () => {
     if (tmpTitle === '' || tmpContent === '') {
       return;
     }
-    axios('http://i7a403.p.ssafy.io:8080/teachers', {
+    axios('/teachers', {
       method: 'get',
       responseType: 'json',
     }).then(function (response) {

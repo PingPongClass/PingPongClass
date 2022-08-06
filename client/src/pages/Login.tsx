@@ -3,12 +3,16 @@ import axios from 'axios';
 import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 import { setCookie } from '@utils/cookie';
 import { useState } from 'react';
+import { logIn, logOut, getMemberInfo } from '@src/store/member';
+import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 
 const App = () => {
   const [id, setId] = useState(0);
   const [password, setPassword] = useState('');
   const [accessToken, setToken] = useState('');
   const InterceptedAxios = setupInterceptorsTo(axios.create());
+  const dispatch = useAppDispatch();
+  const memberStore = useAppSelector((state) => state.member);
 
   const login = async () => {
     const result = await InterceptedAxios.post('/auth/login', {
@@ -18,24 +22,69 @@ const App = () => {
     return result;
   };
 
+  const getInfo = async () => {
+    let query = '/teachers/' + id;
+    if (id >= 5040000) {
+      query = '/students/' + id;
+    }
+    const result = await InterceptedAxios.get(query);
+
+    return result.data;
+  };
+
   const go = async () => {
     const result = await login();
     console.log(result);
     setToken(result.data.accessToken);
-    let refreshToken = result.data.refreshToken;
-    // localStorage 저장
-    // sessionStorage.setItem('jwt-accessToken', accessToken);
+    let refreshToken = result.data;
+
     if (result.data) {
       setCookie('jwt-accessToken', result.data.accessToken, {
         path: '/',
-        secure: true,
-        sameSite: 'none',
+        // secure: true,
+        // sameSite: 'none',
+        sameSite: 'Lax',
+        // httpOnly: true,
       });
-      setCookie('jwt-refreshToken', refreshToken, {
+      setCookie('jwt-refreshToken1', result.data, {
         path: '/',
-        secure: true,
-        sameSite: 'none',
+        // secure: true,
+        sameSite: 'Lax',
+        // httpOnly: true,
       });
+      setCookie('jwt-refreshToken2', result.data.refreshToken, {
+        path: '/',
+        // secure: true,
+        sameSite: 'Lax',
+        // httpOnly: true,
+      });
+      setCookie('jwt-refreshToken3', JSON.stringify(result.data), {
+        path: '/',
+        // secure: true,
+        sameSite: 'Lax',
+        // httpOnly: true,
+      });
+      setCookie('jwt-refreshToken4', JSON.stringify(result.data.refreshToken), {
+        path: '/',
+        // secure: true,
+        sameSite: 'Lax',
+        // httpOnly: true,
+      });
+
+      // 로그인한 회원 정보 저장
+
+      const userData = await getInfo();
+      let formattedUserData = { ...userData };
+      if (userData.teacherId) {
+        formattedUserData.userId = userData.teacherId;
+      } else {
+        formattedUserData.userId = userData.studentId;
+      }
+      dispatch(logIn(formattedUserData));
+
+      console.log(memberStore);
+
+      // JSON.parse();
     }
   };
 

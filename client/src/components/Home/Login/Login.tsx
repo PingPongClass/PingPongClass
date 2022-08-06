@@ -60,18 +60,17 @@ const Login = (props: LoginProps) => {
     })
       .then((response) => {
         //성공
-        console.log('넘어옴?');
         setToken(response.data.accessToken);
         // localStorage 저장
         if (response.data) {
           setCookie('jwt-accessToken', response.data.accessToken, {
             path: '/',
-            secure: true,
+            // secure: true,
             sameSite: 'none',
           });
-          setCookie('jwt-refreshToken', response.data.refreshToken, {
+          setCookie('jwt-refreshToken', response.data, {
             path: '/',
-            secure: true,
+            // secure: true,
             sameSite: 'none',
           });
         }

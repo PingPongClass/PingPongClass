@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import React, { useEffect, useState } from 'react';
 import useIntersectionObserver from '@src/utils/useIntersectionObserver';
@@ -22,6 +23,9 @@ export interface SubjectProps {
 }
 
 const NoticeBoard = () => {
+  const dispatch = useAppDispatch();
+  const memberStore = useAppSelector((state) => state.member);
+  const InterceptedAxios = setupInterceptorsTo(axios.create());
   const [isTeacher, setIsTeacher] = useState(false);
   const [keyword, setKeyword] = useState('');
   const [selected, setSelected] = useState<SubjectProps>({
@@ -36,9 +40,6 @@ const NoticeBoard = () => {
     },
   ]);
   const [page, setPage] = useState(1);
-  const dispatch = useAppDispatch();
-  const InterceptedAxios = setupInterceptorsTo(axios.create());
-  let timer: null | ReturnType<typeof setTimeout> | number;
   let totalPage = 0;
 
   const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
@@ -47,27 +48,20 @@ const NoticeBoard = () => {
       if (totalPage >= page) {
         setPage((prev) => prev + 1);
       }
-      // setArticles((prev) => [...prev, ...dummy]);
-      // setArticles((prev) => [...prev]);
     }
   };
 
-  const testUserId = 5030001;
+  const testUserId = 2022000003;
+  // const testUserId = 5030001;
 
   const { setTarget } = useIntersectionObserver({ onIntersect });
   // 임시 더미 데이터 불러오기
   useEffect(() => {
-    setSubjects(dummySubjects);
-    InterceptedAxios.get('/students/' + testUserId.toString())
-      .then((response) => {
-        let list = response.data.content;
-        setSubjects(list);
-      })
-      .catch(() => {
-        console.log('학생 수업정보 에러');
-      });
+    console.log(memberStore);
 
-    if (testUserId < 5040000) {
+    getSubjects();
+
+    if (memberStore.userId > 0 && memberStore.userId < 5040000) {
       setIsTeacher(true);
     } else {
       setIsTeacher(false);
@@ -79,7 +73,7 @@ const NoticeBoard = () => {
   }, [page]);
 
   useEffect(() => {
-    console.log(selected);
+    // console.log(selected);
   }, [selected]);
 
   const deleteNotice = (key: number) => {
@@ -106,6 +100,34 @@ const NoticeBoard = () => {
     getNotice();
   };
 
+  const getSubjects = () => {
+    InterceptedAxios.get('/classes/' + testUserId.toString())
+      .then((response) => {
+        let list = response.data.content;
+        let newList: SubjectProps[] = list.map((ele) => {
+          newList.map((elem) => {
+            if (elem.subjectCode !== ele.subjectEntity.classSubjectCode) {
+              return {
+                subjectCode: ele.subjectEntity.classSubjectCode,
+                classTitle: ele.subjectEntity.name,
+              };
+            }
+          });
+        });
+        newList = [
+          {
+            subjectCode: -1,
+            classTitle: '전체 선택',
+          },
+          ...newList,
+        ];
+        setSubjects(newList);
+      })
+      .catch(() => {
+        console.log('학생 수업정보 에러');
+      });
+  };
+
   const getNotice = () => {
     let word = '';
     if (keyword !== '') {
@@ -113,7 +135,7 @@ const NoticeBoard = () => {
     }
 
     let searchQuery =
-      '/notice/list?classId=' +
+      '/notice/list?paged=true&sort.sorted=true&sort.unsorted=false&classId=' +
       selected.subjectCode.toString() +
       '&userId=' +
       testUserId.toString() +
@@ -121,19 +143,31 @@ const NoticeBoard = () => {
       page.toString() +
       word;
 
-    console.log(searchQuery);
+    // console.log(searchQuery);
 
     InterceptedAxios.get(searchQuery)
       .then((response) => {
         let list = response.data.content;
         totalPage = response.data.totalPages;
         if (totalPage >= page) {
-          setArticles((prev) => [...prev, ...list]);
+          checkNewNotice(list);
         } else {
           alert('마지막 페이지입니다!');
         }
       })
       .catch(() => {});
+  };
+
+  const checkNewNotice = (value: NoticeProps[]) => {
+    const newNotice: NoticeProps[] = [];
+    value.forEach((element) => {
+      const id = element.noticeId;
+      let ExistenceStatus = articles.findIndex((i) => i.noticeId === id);
+      if (ExistenceStatus === -1) {
+        newNotice.push(element);
+      }
+    });
+    setArticles([...articles, ...newNotice]);
   };
 
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -283,13 +317,6 @@ const totalContainer = () => css`
     background-color: #c0d2e5;
   }
 
-  /* 구분선 */
-  /* .titleRow .col {
-    border-right: 0.5rem solid black;
-    vertical-align: middle;
-    padding: 1rem 0;
-  } */
-
   /* 게시글 항목 영역 */
   .articleArea {
     /* padding: 1% 0; */
@@ -411,28 +438,5 @@ const totalContainer = () => css`
     max-width: calc(50%);
   }
 `;
-
-const dummySubjects = [
-  {
-    subjectCode: 1,
-    classTitle: '국어',
-  },
-  {
-    subjectCode: 2,
-    classTitle: '수학',
-  },
-  {
-    subjectCode: 3,
-    classTitle: '사회',
-  },
-  {
-    subjectCode: 4,
-    classTitle: '과학',
-  },
-  {
-    subjectCode: 5,
-    classTitle: '영어',
-  },
-];
 
 export default NoticeBoard;

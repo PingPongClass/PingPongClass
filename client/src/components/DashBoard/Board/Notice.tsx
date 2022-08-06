@@ -1,7 +1,8 @@
+/** @jsxImportSource @emotion/react */
 import React, { useState, useEffect } from 'react';
 import { NoticeProps } from './NoticeBoard';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
-import { setContent, selectContent } from '@src/store/content';
+import { setContent, setParam, selectContent } from '@src/store/content';
 
 const Notice = (props: {
   key: number;
@@ -21,8 +22,9 @@ const Notice = (props: {
     setVisible(!visible);
   };
 
-  const editNotice = () => {
+  const editNotice = (num) => {
     // 수정페이지로 이동
+    dispatch(setParam({ param: num }));
     dispatch(setContent({ content: 'editNotice' }));
   };
 
@@ -46,7 +48,10 @@ const Notice = (props: {
         <div className="detailContent">{article.content}</div>
         <div className="detailWriter">- {article.writer}</div>
         <div className="detailFooter">
-          <button className="edit-btn" onClick={() => editNotice()}>
+          <button
+            className="edit-btn"
+            onClick={() => editNotice(article.noticeId)}
+          >
             수정
           </button>
           <button className="del-btn" onClick={() => deleteNotice()}>
