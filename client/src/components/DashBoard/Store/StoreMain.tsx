@@ -1,17 +1,25 @@
 import { css } from '@emotion/react';
-import { useState } from 'react';
-import ItemList from '@components/DashBoard/Store/ItemListTap/ItemList';
-import ReactionList from '@components/DashBoard/Store/ItemListTap/ReactionList';
-import GetItemList from '@components/DashBoard/Store/GetItemListTap/GetItemList';
-import GetReactionList from '@components/DashBoard/Store/GetItemListTap/GetReactionList';
-import BobkkiCapsule from '@assets/images/bobkkiCapsule.png';
+import { useState, useCallback } from 'react';
+import ItemList from './ItemListTap/ItemList';
+import ReactionList from './ItemListTap/ReactionList';
+import GetItemList from './GetItemListTap/GetItemList';
+import GetReactionList from './GetItemListTap/GetReactionList';
+import BobkkiCapsule from '../../../assets/images/bobkkiCapsule.png';
 import HelpIcon from '@mui/icons-material/HelpOutline';
 import CircleIcon from '@mui/icons-material/Circle';
 import { yellow } from '@mui/material/colors';
+import Animation from './Animation';
+import { motion } from 'framer-motion';
+import { autocompleteClasses } from '@mui/material';
 
 const StoreMain = () => {
   const [itemtap, setTap] = useState('itemTap');
   const [gettap, setGetTap] = useState('getItemTap');
+  const [isOpenBbobkki, setOpenBbobkki] = useState<boolean>(false);
+
+  const onClickOpenModal = useCallback(() => {
+    setOpenBbobkki(!isOpenBbobkki);
+  }, [isOpenBbobkki]);
 
   // 클릭 이벤트 핸들러
   const onClickTap = (prop: string) => {
@@ -24,6 +32,7 @@ const StoreMain = () => {
 
   return (
     <div css={totalContainer}>
+      {isOpenBbobkki && <Animation onClickOpenModal={onClickOpenModal} />}
       <div className="drawContainer">
         <div className="pageTitle">뽑기</div>
         <hr />
@@ -34,12 +43,18 @@ const StoreMain = () => {
               <HelpIcon fontSize="small" color="action" />
             </div>
             <img src={BobkkiCapsule} alt="뽑기캡슐" className="bobkkiCapsule" />
-            <button type="button" className="bbobkkiBtn">
+            <motion.button
+              type="button"
+              className="bbobkkiBtn"
+              onClick={onClickOpenModal}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
               <span>
                 <CircleIcon fontSize="small" sx={{ color: yellow[700] }} />
                 &nbsp; X 15
               </span>
-            </button>
+            </motion.button>
           </div>
           <div className="itemList">
             <div className="item-tap">
@@ -117,6 +132,7 @@ const totalContainer = () => css`
   max-width: inherit;
   display: flex;
   flex-direction: column;
+  animation: 0.7s ease-in-out loadEffect1;
 
   .bbobkki {
     display: flex;
@@ -131,7 +147,7 @@ const totalContainer = () => css`
 
   .itemList {
     width: 55%;
-    height: 28vh;
+    height: 25vh;
     margin: auto;
     border-radius: 20px;
   }
@@ -224,7 +240,7 @@ const totalContainer = () => css`
 
   .draw {
     width: 21%;
-    height: 28vh;
+    height: 25vh;
     display: inline-flex;
     margin: 0;
     justify-content: center;
@@ -281,6 +297,15 @@ const totalContainer = () => css`
       text-align: center;
       display: flex;
       justify-content: center;
+    }
+  }
+
+  @keyframes loadEffect1 {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
     }
   }
 `;

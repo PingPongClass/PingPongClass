@@ -32,7 +32,6 @@ public class UserController {
 
     @ApiOperation(value = "비밀번호 찾기", notes = "학생 정보 삽입, 임시비밀번호 제공")
     @PostMapping("/password")
-    @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<?> findPassword(@RequestBody FindPwdRequest findPwdRequest){
         try{
             if(Integer.toString(findPwdRequest.getUserId()).length()==10){

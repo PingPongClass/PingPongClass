@@ -107,6 +107,17 @@ public class StudentServiceImpl implements StudentService{
         student.updatePoint(point);
     }
 
+    @Override
+    public void selectiveDelete(List<Integer> list) {
+        for(int id:list)
+            repository.deleteById(id);
+    }
+
+    @Override
+    public void deleteAll() {
+        repository.deleteAll();
+    }
+
     //아래 두 메소드 허용권한을 다르게 해서 권한검증 테스트
 
     //username에 해당하는 user객체와 권한정보 가져오기

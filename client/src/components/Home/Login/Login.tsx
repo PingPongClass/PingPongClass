@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 import { setCookie } from '@utils/cookie';
 
+import { ToastContainer, toast } from 'react-toastify';
+
 interface LoginProps {
   tap: string;
   setTap: Function;
@@ -17,6 +19,22 @@ const Login = (props: LoginProps) => {
   const [userPw, setUserPw] = useState('');
   const [accessToken, setToken] = useState('');
   const InterceptedAxios = setupInterceptorsTo(axios.create());
+  const [toastMsg, setToast] = useState('');
+  const notify = () =>
+    toast.success(toastMsg, {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored',
+    });
+  if (toastMsg) {
+    notify();
+    setToast('');
+  }
 
   const onChangeId = (e) => {
     setUserId(e.target.value);
@@ -59,6 +77,8 @@ const Login = (props: LoginProps) => {
         }
 
         if (response.data.first) {
+          // setToast('로그인 성공. 첫 로그인시, 정보입력이 필요합니다.');
+          notify();
           alert('로그인 성공. 첫 로그인시, 정보입력이 필요합니다.');
           setTap('email');
         } else {
@@ -74,6 +94,7 @@ const Login = (props: LoginProps) => {
 
   return (
     <div css={totalContainer}>
+      <ToastContainer />
       <div className="div-title">
         <h2 className="title">로그인</h2>
       </div>

@@ -14,7 +14,7 @@ function Email(props: EmailProps) {
   const { setEmailConfirmed } = props;
   const [email, setEmail] = useState('');
   const [email1, setEmail1] = useState('');
-  const [email2, setEmail2] = useState('');
+  const [email2, setEmail2] = useState('naver.com');
   const [isUse, setUse] = useState(false);
   const InterceptedAxios = setupInterceptorsTo(axios.create());
 
@@ -23,8 +23,7 @@ function Email(props: EmailProps) {
   };
   const onChangeEmail2 = (e) => {
     setEmail2(e.target.value);
-    if (email2 == '1') {
-    }
+    console.log(email2);
   };
 
   const onClickReturn = () => {
@@ -44,10 +43,10 @@ function Email(props: EmailProps) {
       })
         .then(function () {
           console.log('이메일 중복안됨');
-          alert('사용 가능한 이메일입니다.');
           setEmail(email1 + '@' + email2);
           setEmailConfirmed(email);
           setUse(true);
+          alert('사용 가능한 이메일입니다.' + email);
         })
         .catch(function (error) {
           alert('중복된 이메일입니다. 다른 이메일을 입력해주세요.');

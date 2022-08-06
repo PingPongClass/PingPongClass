@@ -36,4 +36,7 @@ public interface StudentService {
 
     void updatePoint(int studentId, int point);
 
+    void selectiveDelete(List<Integer> list);
+    void deleteAll();
+
 }

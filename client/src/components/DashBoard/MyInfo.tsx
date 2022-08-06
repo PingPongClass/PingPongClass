@@ -64,6 +64,11 @@ const totalContainer = css`
     display: inline-block;
     height: 80px;
     border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+  }
+  .infoContainer img:hover {
+    transform: scale(1.2);
   }
   .nameContainer {
     margin-left: 20px;
@@ -109,6 +114,10 @@ const totalContainer = css`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    transition: all 0.1s ease-in-out;
+  }
+  .ranking:hover {
+    transform: scale(1.04);
   }
 
   .rankingLow {
@@ -120,6 +129,11 @@ const totalContainer = css`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    transition: all 0.1s ease-in-out;
+  }
+
+  .rankingLow:hover {
+    transform: scale(1.04);
   }
 
   .rankingInfo {

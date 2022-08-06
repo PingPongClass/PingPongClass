@@ -17,4 +17,7 @@ public interface ItemService {
 
     //칭찬스티커 사용
     int usePoint(int studentId) throws Exception;
+
+    //리액션 목록 조회
+    List<ItemStudentResponse> findReaction(int studentId) throws Exception;
 }

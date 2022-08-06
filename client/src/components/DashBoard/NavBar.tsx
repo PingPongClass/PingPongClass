@@ -48,7 +48,7 @@ const totalContainer = css`
   border-radius: 20px;
   gap: 26px;
   padding: 30px 10px;
-  margin-top: 100px;
+  margin-top: 50px;
   box-shadow: 2px 2px 15px -5px;
 
   .navButton {
@@ -58,13 +58,19 @@ const totalContainer = css`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    font-size: 20px;
+    font-size: calc(0.3rem + 1vw);
     padding-left: 18px;
     cursor: pointer;
     box-sizing: border-box;
+    transition: all 0.1s ease-in-out;
+  }
+
+  .navButton:hover {
+    transform: scale(1.1);
   }
 
   .navButton h4 {
+    font-size: 20px;
     width: 100%;
     display: flex;
     flex-direction: row;

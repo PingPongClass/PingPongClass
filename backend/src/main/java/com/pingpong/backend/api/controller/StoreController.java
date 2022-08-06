@@ -36,6 +36,12 @@ public class StoreController {
         return itemService.findItemById(studentId);
     }
 
+    @ApiOperation(value = "보유 리액션 목록 조회", notes = "학생이 보유한 리액션의 목록을 조회한다.")
+    @GetMapping("/reaction/{studentId}")
+    public List<ItemStudentResponse> findReaction(@PathVariable final int studentId) throws Exception {
+        return itemService.findReaction(studentId);
+    }
+
     @ApiOperation(value = "아이템 사용", notes = "선택한 아이템을 사용합니다.")
     @DeleteMapping("/{studentId}/{itemId}")
     public List<ItemStudentResponse> delete(@PathVariable final int studentId, @PathVariable final int itemId) throws Exception{
@@ -88,5 +94,6 @@ public class StoreController {
         } catch(Exception e){
             e.printStackTrace();
             return new ResponseEntity<String>("테두리 색 변경 실패",HttpStatus.FORBIDDEN);
-        }    }
+        }
+    }
 }

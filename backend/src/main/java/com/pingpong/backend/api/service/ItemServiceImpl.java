@@ -84,10 +84,36 @@ public class ItemServiceImpl implements ItemService{
     //아이템 저장
     @Transactional
     public String save(final ItemRequest request) throws IOException {
-        StudentEntity studentEntity = studentRepository.getOne(request.getStudentId());
-        ItemEntity itemEntity = itemRepository.getOne(request.getItemId());
-        ItemStudentEntity entity = new ItemStudentEntity(studentEntity, itemEntity);
-        itemStudentRepository.save(entity);
-        return "저장되었습니다.";
+        StudentEntity student = studentRepository.getOne(request.getStudentId());
+        ItemEntity item = itemRepository.getOne(request.getItemId());
+        ItemStudentEntity entity = new ItemStudentEntity(student, item);
+        if(item.getCategory().equals("REACTION")){
+            //리액션 중복 확인
+            int reaction = itemStudentRepository.countByStudentEntityAndItemEntity(student, item);
+            if(reaction == 0){
+                itemStudentRepository.save(entity);
+                return "저장되었습니다.";
+            } else{
+                return "이미 보유한 리액션입니다.";
+            }
+        } else{
+            itemStudentRepository.save(entity);
+            return "저장되었습니다.";
+        }
     }
+
+    //보유 리액션 목록조회
+    @Override
+    public List<ItemStudentResponse> findReaction(int studentId) throws Exception {
+        StudentEntity student = studentRepository.getOne(studentId);
+        List<ItemEntity> haveItemlist = itemRepository.findAll();
+        List<ItemStudentResponse> result = new ArrayList<>();
+        for(ItemEntity itemlist : haveItemlist){
+            if(itemlist.getCategory().equals("REACTION")) {
+                result.add(new ItemStudentResponse(itemlist, itemStudentRepository.countByStudentEntityAndItemEntity(student, itemlist)));
+            }
+        }
+        return result;
+    }
+
 }

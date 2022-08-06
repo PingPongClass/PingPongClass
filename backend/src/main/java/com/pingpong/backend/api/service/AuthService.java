@@ -56,7 +56,6 @@ public class AuthService {
     }
 
     @Transactional
-    @PreAuthorize("isAuthenticated()")
     public TokenDto reissue(TokenDto tokenRequestDto) {
         // 1. Refresh Token 검증
         if (!tokenProvider.validateToken(tokenRequestDto.getRefreshToken())) {

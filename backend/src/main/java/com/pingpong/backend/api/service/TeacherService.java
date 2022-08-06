@@ -33,4 +33,6 @@ public interface TeacherService {
 
     //이메일 수정
     void modifyEmail(int teacherId, String email);
+
+    void selectiveDelete(List<Integer> list);
 }

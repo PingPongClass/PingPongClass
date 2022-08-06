@@ -49,6 +49,11 @@ const totalContainer = css`
     background: white;
     box-shadow: 2px 2px 10px -5px;
     cursor: pointer;
+    transition: all 0.1s ease-in-out;
+  }
+
+  button:hover {
+    transform: scale(1.2);
   }
 `;
 export default IconGroup;

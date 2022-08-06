@@ -109,6 +109,12 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    public void selectiveDelete(List<Integer> list) {
+        for(int id: list)
+            repository.deleteById(id);
+    }
+
+    @Override
     @Transactional
     public void delete(int teacherId) {
         repository.deleteById(teacherId);

@@ -12,31 +12,43 @@ const PasswordFind = (props: PasswordFindProps) => {
   const { setTap } = props;
   const [userId, setUserId] = useState('');
   const [userEmail, setUserEmail] = useState('');
+  const [email, setEmail] = useState('');
+  const [email1, setEmail1] = useState('');
+  const [email2, setEmail2] = useState('');
   const InterceptedAxios = setupInterceptorsTo(axios.create());
 
   const onChangeId = (e) => {
     setUserId(e.target.value);
   };
 
-  const onChangeEmail = (e) => {
-    setUserEmail(e.target.value);
+  const onChangeEmail1 = (e) => {
+    setEmail1(e.target.value);
+  };
+  const onChangeEmail2 = (e) => {
+    setEmail2(e.target.value);
   };
 
   const onClickLogin = (e) => {
     setTap('login');
   };
+
   const onClickFind = (e) => {
-    InterceptedAxios.post('/users/password', {
-      user_id: userId,
-      email: userEmail,
-    })
-      .then(function (response) {
-        alert('이메일을 확인해주세요.');
+    setEmail(email1 + '@' + email2);
+    if (email1 == null) {
+      alert('이메일을 입력해주세요.');
+    } else {
+      InterceptedAxios.post('/users/password', {
+        user_id: userId,
+        email: userEmail,
       })
-      .catch(function (error) {
-        alert('존재하지 않는 회원정보입니다.');
-        console.log('실패', error);
-      });
+        .then(function (response) {
+          alert('이메일을 확인해주세요.');
+        })
+        .catch(function (error) {
+          alert('존재하지 않는 회원정보입니다.');
+          console.log('실패', error);
+        });
+    }
   };
 
   return (
@@ -47,20 +59,65 @@ const PasswordFind = (props: PasswordFindProps) => {
       <div className="div-total">
         <div className="div-main">
           <div className="div-sub">
-            <div className="title-sub">아이디</div>
+            <div
+              className="title-sub"
+              css={css`
+                width: 71px;
+              `}
+            >
+              아이디
+            </div>
             <input
               onChange={(e) => onChangeId(e)}
               value={userId}
               className="input"
+              css={css`
+                width: 378px;
+              `}
             />
           </div>
           <div className="div-sub">
-            <div className="title-sub">이메일</div>
+            <div
+              className="title-sub"
+              css={css`
+                width: 70px;
+              `}
+            >
+              이메일
+            </div>
             <input
-              onChange={(e) => onChangeEmail(e)}
-              value={userEmail}
-              className="input"
+              className="input input-email"
+              onChange={(e) => onChangeEmail1(e)}
+              value={email1}
+              css={css`
+                width: 142px;
+              `}
             />
+            <div
+              className="title-sub"
+              css={css`
+                width: 0px;
+              `}
+            >
+              @
+            </div>
+            <select
+              className="select"
+              onChange={(e) => onChangeEmail2(e)}
+              value={email2}
+              id="Email2"
+            >
+              <option selected disabled>
+                선택
+              </option>
+              <option value="naver.com" selected>
+                naver.com
+              </option>
+              <option value="nate.com">nate.com</option>
+              <option value="hanmail.net">hanmail.net</option>
+              <option value="hotmail.com">hotmail.com</option>
+              <option value="gmail.com">gmail.com</option>
+            </select>
           </div>
         </div>
       </div>

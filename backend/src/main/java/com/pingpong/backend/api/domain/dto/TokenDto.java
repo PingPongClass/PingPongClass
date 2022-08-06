@@ -3,6 +3,7 @@ package com.pingpong.backend.api.domain.dto;
 import lombok.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

@@ -46,11 +46,11 @@ public class StudentResponse {
         this.borderColor=entity.getBorderColor();
 
         HashMap<Integer, String> levelname = new HashMap<>();
-        levelname.put(1, "Bronze");
-        levelname.put(2, "Silver");
-        levelname.put(3, "Gold");
-        levelname.put(4, "Platinum");
-        levelname.put(5, "Ruby");
+        levelname.put(1, "White");
+        levelname.put(2, "Yellow");
+        levelname.put(3, "Green");
+        levelname.put(4, "Blue");
+        levelname.put(5, "Purple");
         levelname.put(6, "Rainbow");
 
         HashMap<Integer, Integer> levelrank = new HashMap<>();
