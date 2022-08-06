@@ -4,10 +4,11 @@ FROM node:16-alpine as builder
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY package*.json ./
+RUN npm install --save --save-exact react-scripts@5.0.1 --silent
 RUN npm install --silent
 COPY . .
 
 EXPOSE 5442
 
 # 소스를 작업폴더로 복사하고 앱 실행
-CMD ["npm", "start"]
+CMD ["npm", "run", "start:docker"]

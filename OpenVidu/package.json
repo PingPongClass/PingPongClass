@@ -23,7 +23,8 @@
         "build:openvidu-react": "npm install --prefix ../library/ && node library-copy.js && cd ../library && npm run create-library",
         "eject": "react-scripts eject",
         "start": "react-scripts start",
+        "start:docker": "PORT=5442 react-scripts start",
         "test": "react-scripts test --env=jsdom"
     },
-    "version": "0.0.1"
+    "version": "0.1.0"
 }
