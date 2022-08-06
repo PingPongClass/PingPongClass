@@ -1,7 +1,3 @@
-FROM openjdk:8-jre-alpine AS builder
-USER root
-RUN ./gradle bootJar
-
 FROM openjdk:8-jre-alpine
 EXPOSE 8080
 ARG JAR_FILE=build/libs/backend-0.0.1-SNAPSHOT.jar
