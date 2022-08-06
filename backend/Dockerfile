@@ -1,8 +1,8 @@
 FROM openjdk:8-jre-alpine AS builder
 COPY gradlew .
 COPY gradle gradle
-COPY build.gradle
-COPY settings.gradle
+COPY build.gradle .
+COPY settings.gradle .
 COPY src src
 RUN chomod +x ./gradle
 RUN ./gradle bootJar
