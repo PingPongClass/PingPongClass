@@ -211,4 +211,26 @@ public class StudentController {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
+    @ApiOperation(value = "학생 선택 삭제", notes = "학생정보 선택 삭제")
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/student/select")
+    public ResponseEntity<String> selectiveDelete(@RequestBody List<Integer> studentlist){
+        try{
+            service.selectiveDelete(studentlist);
+            return new ResponseEntity<String>("선택 삭제 성공", HttpStatus.ACCEPTED);
+        }catch(Exception e){
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.FORBIDDEN);
+        }
+    }
+    @ApiOperation(value = "학생 전체 삭제", notes = "학생정보 전체 삭제")
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/student/all")
+    public ResponseEntity<String> selectiveDelete(){
+        try{
+            service.deleteAll();
+            return new ResponseEntity<String>("전체 삭제 성공", HttpStatus.ACCEPTED);
+        }catch(Exception e){
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.FORBIDDEN);
+        }
+    }
 }

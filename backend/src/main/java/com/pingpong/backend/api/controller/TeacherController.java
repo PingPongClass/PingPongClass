@@ -178,5 +178,16 @@ public class TeacherController {
             return new ResponseEntity<String>("선생님 정보수정 실패", HttpStatus.FORBIDDEN);
         }
     }
+    @ApiOperation(value = "선생님 선택 삭제", notes = "선생님 정보 선택 삭제")
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/teacher/select")
+    public ResponseEntity<String> selectiveDelete(@RequestBody List<Integer> teacherlist){
+        try{
+            service.selectiveDelete(teacherlist);
+            return new ResponseEntity<String>("선택 삭제 성공", HttpStatus.ACCEPTED);
+        }catch(Exception e){
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.FORBIDDEN);
+        }
+    }
 
 }
