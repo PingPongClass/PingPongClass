@@ -1,4 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 
 export interface Authorities {
   authorityName: string;
@@ -37,10 +39,10 @@ export interface Member {
   subjects?: Subject[];
 
   // 선생, 관리자만
-  birth?: number;
+  birth?: string;
   manageGrade?: number;
   authorities?: Authorities[];
-  isAdmin?: boolean;
+  isAdmin?: number;
 }
 
 export interface StudentMember
@@ -90,63 +92,84 @@ const initialState = {
     },
   ],
   // 선생, 관리자만
-  birth: 0,
+  birth: '',
   manageGrade: 0,
   authorities: [
     {
       authorityName: '권한없음',
     },
   ],
-  isAdmin: false,
+  isAdmin: 0,
+};
+
+export const saveMember = createAsyncThunk('saveMember', async (id: number) => {
+  const InterceptedAxios = setupInterceptorsTo(axios.create());
+  let query = '/teachers/' + id.toString();
+  if (id.toString.length == 10) {
+    query = '/students/' + id.toString();
+  }
+
+  // console.log(query);
+  const uData = await InterceptedAxios.get(query);
+  const userData = uData.data;
+
+  // console.log(userData);
+  const { teacherId: tId, ...fUserData } = userData;
+  const { studentId: sId, ...formattedUserData } = fUserData;
+
+  // formattedUserData = { ...formattedUserData };
+  if (userData.teacherId) {
+    formattedUserData.userId = userData.teacherId;
+  } else {
+    formattedUserData.userId = userData.studentId;
+  }
+  // console.log(formattedUserData);
+
+  return formattedUserData;
+});
+
+const convert = (action: PayloadAction<any>) => {
+  const newMember = {
+    userId: action.payload.userId,
+    name: action.payload.name,
+    email: action.payload.email,
+    profileFullPath: action.payload.profileFullPath,
+    grade: action.payload?.grade ? action.payload?.grade : 0,
+    classNum: action.payload?.classNum ? action.payload?.classNum : 0,
+    studentNum: action.payload?.studentNum ? action.payload?.studentNum : 0,
+    introduce: action.payload?.introduce ? action.payload?.introduce : '',
+    point: action.payload?.point ? action.payload?.point : 0,
+    totalPoint: action.payload?.totalPoint ? action.payload?.totalPoint : 0,
+    currentLevel: action.payload?.currentLevel
+      ? action.payload?.currentLevel
+      : '',
+    nextLevel: action.payload?.nextLevel ? action.payload?.nextLevel : '',
+    levelPoint: action.payload?.levelPoint ? action.payload?.levelPoint : 0,
+    myRank: action.payload?.myRank ? action.payload?.myRank : 0,
+    items: action.payload?.items ? action.payload?.items : [],
+    subjects: action.payload?.subjects ? action.payload?.subjects : [],
+    // 선생, 관리자만
+    birth: action.payload?.birth ? action.payload?.birth : '',
+    manageGrade: action.payload?.manageGrade ? action.payload?.manageGrade : 0,
+    authorities: action.payload?.authorities ? action.payload?.authorities : [],
+    isAdmin: action.payload?.isAdmin ? action.payload?.isAdmin : 0,
+  };
+  return newMember;
 };
 
 export const memberSlice = createSlice({
   name: 'member',
   initialState: initialState,
   reducers: {
-    logIn: (state, action: PayloadAction<Member>) => {
-      state.userId = action.payload.userId;
-      state.name = action.payload.name;
-      state.email = action.payload.email;
-      state.profileFullPath = action.payload.profileFullPath;
-
-      state.grade = action.payload?.grade ? action.payload?.grade : 0;
-      state.classNum = action.payload?.classNum ? action.payload?.classNum : 0;
-      state.studentNum = action.payload?.studentNum
-        ? action.payload?.studentNum
-        : 0;
-      state.introduce = action.payload?.introduce
-        ? action.payload?.introduce
-        : '';
-      state.point = action.payload?.point ? action.payload?.point : 0;
-      state.totalPoint = action.payload?.totalPoint
-        ? action.payload?.totalPoint
-        : 0;
-      state.currentLevel = action.payload?.currentLevel
-        ? action.payload?.currentLevel
-        : '';
-      state.nextLevel = action.payload?.nextLevel
-        ? action.payload?.nextLevel
-        : '';
-      state.levelPoint = action.payload?.levelPoint
-        ? action.payload?.levelPoint
-        : 0;
-      state.myRank = action.payload?.myRank ? action.payload?.myRank : 0;
-
-      state.items = action.payload?.items ? action.payload?.items : [];
-      state.subjects = action.payload?.subjects ? action.payload?.subjects : [];
-
-      // 선생, 관리자만
-      state.birth = action.payload?.birth ? action.payload?.birth : 0;
-      state.manageGrade = action.payload?.manageGrade
-        ? action.payload?.manageGrade
-        : 0;
-      state.authorities = action.payload?.authorities
-        ? action.payload?.authorities
-        : [];
-      state.isAdmin = action.payload?.isAdmin ? action.payload?.isAdmin : false;
+    logIn: (state, action: PayloadAction<any>) => {
+      return convert(action);
     },
     logOut: () => initialState,
+  },
+  extraReducers: (builder) => {
+    builder.addCase(saveMember.fulfilled, (state, action) => {
+      return convert(action);
+    });
   },
 });
 
@@ -154,7 +177,7 @@ export const { logIn, logOut } = memberSlice.actions;
 
 export default memberSlice.reducer;
 
-export const getMemberInfo = (state) => state.member.value;
+export const getMemberInfo = (state) => state;
 
 // { 학생 정보조회 결과
 //   "studentId": 2022000011,

@@ -5,8 +5,10 @@ import useIntersectionObserver from '@src/utils/useIntersectionObserver';
 import Notice from './Notice';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { setContent, selectContent } from '@src/store/content';
+import { getMemberInfo, logIn, logOut, saveMember } from '@src/store/member';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
+import { getCookie } from '@src/utils/cookie';
 
 export interface NoticeProps {
   noticeId: number;
@@ -55,6 +57,7 @@ const NoticeBoard = () => {
   // const testUserId = 5030001;
 
   const { setTarget } = useIntersectionObserver({ onIntersect });
+
   // 임시 더미 데이터 불러오기
   useEffect(() => {
     console.log(memberStore);

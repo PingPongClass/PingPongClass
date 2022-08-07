@@ -31,12 +31,6 @@ const EditNotice = () => {
     // console.log('키: ' + selector);
   }
 
-  useEffect(() => {}, [tmpTitle]);
-
-  useEffect(() => {
-    console.log('컨텐츠' + tmpContent);
-  }, [tmpContent]);
-
   useEffect(() => {
     // 입력값이 없는 경우 제외
     if (tmpTitle === '' || tmpContent === '') {
@@ -110,13 +104,13 @@ const EditNotice = () => {
       <textarea
         className="editTitle"
         defaultValue={tmpTitle}
-        // onChange={(e) => titleChanged(e)}
+        onChange={(e) => titleChanged(e)}
       ></textarea>
       내용:{' '}
       <textarea
         className="editContent"
         defaultValue={tmpContent}
-        // onChange={(e) => contentChanged(e)}
+        onChange={(e) => contentChanged(e)}
       ></textarea>
       <div className="btn-box">
         <button className="edit-btn" onClick={() => submitPost()}>

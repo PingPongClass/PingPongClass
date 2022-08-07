@@ -86,10 +86,12 @@ const Login = (props: LoginProps) => {
             path: '/',
             // secure: true,
             expires,
+            sameSite: 'Lax',
           });
           setCookie('jwt-refreshToken', response.data, {
             path: '/',
             // secure: true,
+            sameSite: 'Lax',
           });
         }
         //첫 로그인이면,

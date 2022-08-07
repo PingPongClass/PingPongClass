@@ -70,35 +70,13 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
   if (response?.status === 401) {
     const originalRequest = config;
 
-    console.log('에러1');
     let accessToken = getCookie('jwt-accessToken');
-    console.log('쿠키 가져옴0');
-    // let refreshToken = getCookie('jwt-refreshToken');
-    let refreshToken1 = getCookie('jwt-refreshToken1');
-    console.log('쿠키 가져옴1');
-    let refreshToken2 = getCookie('jwt-refreshToken2');
-    console.log('쿠키 가져옴2');
-    // let refreshToken3 = JSON.parse(getCookie('jwt-refreshToken3'));
-    let refreshToken3 = getCookie('jwt-refreshToken3');
-    console.log('쿠키 가져옴3');
-    // let refreshToken4 = JSON.parse(getCookie('jwt-refreshToken4'));
-    let refreshToken4 = getCookie('jwt-refreshToken4');
-    console.log('쿠키 가져옴4');
+    let refreshToken = getCookie('jwt-refreshToken');
     // token refresh 요청
-    let refreshToken = refreshToken1;
-
-    console.log(refreshToken);
-
     axios
       .post(
         `/auth/reissue`, // token refresh api
         refreshToken, // header // 빈 params
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            // 'Content-Type': 'text/plain',
-          },
-        },
       )
       .then((res) => {
         // console.log(res);
@@ -115,7 +93,7 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
           path: '/',
           // secure: true,
           sameSite: 'Lax',
-          httpOnly: true,
+          // httpOnly: true,
         });
         axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
         originalRequest.headers!.Authorization = `Bearer ${newAccessToken}`;

@@ -34,7 +34,6 @@ const App = () => {
 
   const go = async () => {
     const result = await login();
-    console.log(result);
     setToken(result.data.accessToken);
     let refreshToken = result.data;
 
@@ -46,25 +45,7 @@ const App = () => {
         sameSite: 'Lax',
         // httpOnly: true,
       });
-      setCookie('jwt-refreshToken1', result.data, {
-        path: '/',
-        // secure: true,
-        sameSite: 'Lax',
-        // httpOnly: true,
-      });
-      setCookie('jwt-refreshToken2', result.data.refreshToken, {
-        path: '/',
-        // secure: true,
-        sameSite: 'Lax',
-        // httpOnly: true,
-      });
-      setCookie('jwt-refreshToken3', JSON.stringify(result.data), {
-        path: '/',
-        // secure: true,
-        sameSite: 'Lax',
-        // httpOnly: true,
-      });
-      setCookie('jwt-refreshToken4', JSON.stringify(result.data.refreshToken), {
+      setCookie('jwt-refreshToken', JSON.stringify(result.data), {
         path: '/',
         // secure: true,
         sameSite: 'Lax',
