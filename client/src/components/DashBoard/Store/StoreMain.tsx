@@ -187,6 +187,7 @@ const totalContainer = () => css`
     .store1:hover,
     .store2:hover {
       cursor: pointer;
+      background-color: #ffeed1;
     }
 
     .selected {

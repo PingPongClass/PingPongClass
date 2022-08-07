@@ -15,9 +15,9 @@ const IosModalBase = ({ children, width, height }: IosModalBaseStyle) => {
       <div css={YellowBackground} />
       <div css={WhiteBackground}>
         <div css={Header}>
-          <img src={RedEllipse} alt="빨간버튼" />
-          <img src={YellowEllipse} alt="노란버튼" />
-          <img src={GreenEllipse} alt="초록버튼" />
+          <div className="circle1" />
+          <div className="circle2" />
+          <div className="circle3" />
         </div>
         <div className="body" css={Body}>
           {children}
@@ -48,25 +48,44 @@ const YellowBackground = css`
 
 const WhiteBackground = css`
   position: absolute;
-  width: 99.5%;
+  width: 99%;
   height: 98%;
-  left: 1.5rem;
+  left: 1.1rem;
   background: #ffffff;
   border: 2px solid #000000;
   border-radius: 20px;
 `;
 
 const Header = css`
+  align-items: center;
   width: 100.1%;
-  height: 3rem;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  height: 3rem;
   border-bottom: 2px solid #000000;
 
-  img {
-    width: 1.5rem;
-    margin-left: 0.5rem;
+  div {
+    border: 2px solid black;
+    width: 12px;
+    height: 12px;
+    border-radius: 75px;
+    background-color: #000000;
+    float: left;
+    margin-left: 0.7rem;
+  }
+
+  .circle1 {
+    background-color: #ef8181;
+  }
+
+  .circle2 {
+    background-color: #ffe381;
+    margin-left: 0.3rem;
+  }
+
+  .circle3 {
+    background-color: #96ba85;
+    margin-left: 0.3rem;
   }
 `;
 
