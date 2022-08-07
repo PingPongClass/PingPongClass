@@ -12,10 +12,12 @@ import QuizModal from "./quiz/QuizModal";
 import QuizModalStudent from "./quiz/QuizModalStudent";
 import ShieldModal from "./items/ShieldModal";
 import Sticker from "./pointClickEvent/PointSticker";
+import { getVideos, getAudios, getSpeakers } from "./utils/customUseDevice";
 
 import OpenViduLayout from "../layout/openvidu-layout";
 import UserModel from "../models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
+import Setting from "./settings/Setting";
 
 var localUser = new UserModel();
 
@@ -41,7 +43,7 @@ class VideoRoomComponent extends Component {
     // sessionName: 세션 이름을 담은 변수 (기본값 SessionA)
     let sessionName = this.props.sessionName
       ? this.props.sessionName
-      : "Session031";
+      : "Session031311";
     // userName: 유저의 이름 (기본 OpenVidu_User + 0부터 99까지의 랜덤한 숫자)
     let userName = this.props.user
       ? this.props.user
@@ -66,7 +68,14 @@ class VideoRoomComponent extends Component {
       quizDisplay: false,
       quizDisplayStudent: false,
       shieldDisplay: false,
-      currentVideoDevice: undefined,
+      videos: this.props.setDevices.videos,
+      audios: this.props.setDevices.audios,
+      speakers: this.props.setDevices.speakers,
+      currentVideoDevice: this.props.setDevices.selectedVideoTrack,
+      currentAudioDevice: this.props.setDevices.selectedAudioTrack,
+      currentVideoDeviceId: this.props.setDevices.selectedVideo,
+      currentAudioDeviceId: this.props.setDevices.selectedAudio,
+      currentSpeakerDeviceId: this.props.setDevices.selectedSpeaker,
       randPick: undefined,
       smile: smile,
       outAngle: outAngle,
@@ -75,6 +84,7 @@ class VideoRoomComponent extends Component {
       totalWidth: 0,
       stickers: [],
       quiz: {},
+      settingDisplay: false,
     };
 
     // 메서드 바인딩 과정
@@ -109,8 +119,10 @@ class VideoRoomComponent extends Component {
     this.closeDialogExtension = this.closeDialogExtension.bind(this);
     // toggleChat: 채팅 토글 버튼 함수
     this.toggleChat = this.toggleChat.bind(this);
-    // toggleParticipant: 채팅 토글 버튼 함수
+    // toggleParticipant: 참가자 목록 토글 버튼 함수
     this.toggleParticipant = this.toggleParticipant.bind(this);
+    // toggleSetting: 설정 토글 버튼 함수
+    this.toggleSetting = this.toggleSetting.bind(this);
     // checkNotification: 알림 확인 함수
     this.checkNotification = this.checkNotification.bind(this);
     // checkSize: 화면 크기 체크 함수
@@ -131,6 +143,13 @@ class VideoRoomComponent extends Component {
     this.startStickerEvent = this.startStickerEvent.bind(this);
     // answerUpdate: 퀴즈 정답 수신해서 통계에 적용하는 함수
     this.answerUpdate = this.answerUpdate.bind(this);
+    // 설정용 함수
+    this.setMyVideos = this.setMyVideos.bind(this);
+    this.setMyAudios = this.setMyAudios.bind(this);
+    this.setMySpeakers = this.setMySpeakers.bind(this);
+    this.setVideo = this.setVideo.bind(this);
+    this.setAudio = this.setAudio.bind(this);
+    this.setSpeaker = this.setSpeaker.bind(this);
   }
 
   // componentDidMount: 컴포넌트가 마운트 되었을 때 작동하는 리액트 컴포넌트 생명주기함수
@@ -236,6 +255,11 @@ class VideoRoomComponent extends Component {
       ":" +
       String(time.getSeconds()).padStart(2, "0");
     localUser.setAttendenceTime(attTime);
+
+    // 시작할 때 장치 상태를 localUser에 저장
+    localUser.setAudioActive(this.props.setDevices.isAudioOn);
+    localUser.setVideoActive(this.props.setDevices.isVideoOn);
+
     // 유저끼리 데이터 교환
     this.state.session
       .connect(token, {
@@ -267,14 +291,14 @@ class VideoRoomComponent extends Component {
   // connectWebCam: 웹캠을 연결하는 함수 (실제 WebRTC와 연관된 내부 메서드들과 유사)
   async connectWebCam() {
     // 현재 연결된 디바이스를 받음
-    var devices = await this.OV.getDevices();
+    // var devices = await this.OV.getDevices();
     // 연결된 디바이스 중에서 비디오 디바이스를 필터링
-    var videoDevices = devices.filter((device) => device.kind === "videoinput");
+    // var videoDevices = devices.filter((device) => device.kind === "videoinput");
 
     // publisher 초기설정(자기자신)
     let publisher = this.OV.initPublisher(undefined, {
-      audioSource: undefined,
-      videoSource: videoDevices[0].deviceId,
+      audioSource: this.state.currentAudioDevice,
+      videoSource: this.state.currentVideoDevice,
       publishAudio: localUser.isAudioActive(),
       publishVideo: localUser.isVideoActive(),
       resolution: "1280x720",
@@ -309,7 +333,12 @@ class VideoRoomComponent extends Component {
     });
 
     this.setState(
-      { currentVideoDevice: videoDevices[0], localUser: localUser },
+      {
+        currentVideoDevice: this.state.currentVideoDevice,
+        currentAudioDevice: this.state.currentAudioDevice,
+        currentSpeakerDeviceId: this.state.currentSpeakerDeviceId,
+        localUser: localUser,
+      },
       () => {
         this.state.localUser.getStreamManager().on("streamPlaying", (e) => {
           this.updateLayout();
@@ -442,6 +471,8 @@ class VideoRoomComponent extends Component {
       newUser.setStreamManager(subscriber);
       newUser.setConnectionId(event.stream.connection.connectionId);
       newUser.setType("remote");
+      newUser.setAudioActive(event.stream.audioActive);
+      newUser.setVideoActive(event.stream.videoActive);
 
       newUser.setAttendenceTime(
         JSON.parse(event.stream.connection.data).attTime,
@@ -594,6 +625,103 @@ class VideoRoomComponent extends Component {
         document.webkitExitFullscreen();
       }
     }
+  }
+
+  // 디바이스들 갱신하기
+  setMyVideos(videos) {
+    this.setState({ videos: videos });
+  }
+
+  // 디바이스들 갱신하기
+  setMyAudios(audios) {
+    this.setState({ audios: audios });
+  }
+
+  // 디바이스들 갱신하기
+  setMySpeakers(speakers) {
+    this.setState({ speakers: speakers });
+  }
+
+  async setVideo(deviceId, devices) {
+    try {
+      const newVideoDevice = devices.filter(
+        (device) => deviceId === device.deviceId,
+      );
+
+      // 새로운 디바이스가 존재한다면
+      if (newVideoDevice.length > 0) {
+        // Creating a new publisher with specific videoSource
+        // In mobile devices the default and first camera is the front one
+        // Publisher를 새롭게 설정
+        const newPublisher = this.OV.initPublisher(undefined, {
+          audioSource: undefined,
+          videoSource: newVideoDevice[0].deviceId,
+          publishAudio: localUser.isAudioActive(),
+          publishVideo: localUser.isVideoActive(),
+          mirror: true,
+        });
+
+        //newPublisher.once("accessAllowed", () => {
+        // 현재 스트림매니저가 관리하는 값들을 publish 해제하고 위에서 만든 새로운 Publisher를 발행 후 localUser에 등록
+        await this.state.session.unpublish(
+          this.state.localUser.getStreamManager(),
+        );
+        await this.state.session.publish(newPublisher);
+        this.state.localUser.setStreamManager(newPublisher);
+        // 현재 컴포넌트의 상태값 변경
+        this.setState({
+          currentVideoDevice: newVideoDevice[0],
+          currentVideoDeviceId: newVideoDevice[0].deviceId,
+          localUser: localUser,
+        });
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async setAudio(deviceId, devices) {
+    try {
+      const newAudioDevice = devices.filter(
+        (device) => deviceId === device.deviceId,
+      );
+
+      // 새로운 디바이스가 존재한다면
+      if (newAudioDevice.length > 0) {
+        // Creating a new publisher with specific videoSource
+        // In mobile devices the default and first camera is the front one
+        // Publisher를 새롭게 설정
+        const newPublisher = this.OV.initPublisher(undefined, {
+          audioSource: newAudioDevice[0].deviceId,
+          videoSource: undefined,
+          publishVideo: localUser.isVideoActive(),
+          publishAudio: localUser.isAudioActive(),
+          mirror: true,
+        });
+
+        //newPublisher.once("accessAllowed", () => {
+        // 현재 스트림매니저가 관리하는 값들을 publish 해제하고 위에서 만든 새로운 Publisher를 발행 후 localUser에 등록
+        await this.state.session.unpublish(
+          this.state.localUser.getStreamManager(),
+        );
+        await this.state.session.publish(newPublisher);
+        this.state.localUser.setStreamManager(newPublisher);
+        // 현재 컴포넌트의 상태값 변경
+        this.setState({
+          currentAudioDevice: newAudioDevice[0],
+          currentAudioDeviceId: newAudioDevice[0].deviceId,
+          localUser: localUser,
+        });
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  setSpeaker(deviceId) {
+    this.setState({
+      currentSpeakerDeviceId: deviceId,
+    });
   }
 
   // switchCamera: 카메라를 변경할 때 작동하는 함수 (주의 - async!!!)
@@ -970,6 +1098,14 @@ class VideoRoomComponent extends Component {
     }, 1.5 * 1000);
   };
 
+  // name: 오석호
+  // date: 2022/08/05
+  // desc: 설정창 켜고끄기
+  toggleSetting() {
+    console.log(this.state.settingDisplay);
+    this.setState({ settingDisplay: !this.state.settingDisplay });
+  }
+
   // name: 원재호
   // date: 2022/08/02
   // desc: 퀴즈 관련 함수 모아놓음
@@ -1021,7 +1157,7 @@ class VideoRoomComponent extends Component {
     console.log(this.state.quiz);
   };
 
-  // render: 렌더링을 담당하는 함수
+  // render: 렌더링을 담당setMy하는 함수
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
@@ -1032,6 +1168,24 @@ class VideoRoomComponent extends Component {
     return (
       <>
         <div className="container" id="container">
+          <Setting
+            display={this.state.settingDisplay}
+            toggleSetting={this.toggleSetting}
+            header="Setting"
+            setMyVideos={this.setMyVideos}
+            setMyAudios={this.setMyAudios}
+            setMySpeakers={this.setMySpeakers}
+            videos={this.state.videos}
+            audios={this.state.audios}
+            speakers={this.state.speakers}
+            setVideo={this.setVideo}
+            setAudio={this.setAudio}
+            setSpeaker={this.setSpeaker}
+            currentVideoDeviceId={this.state.currentVideoDeviceId}
+            currentAudioDeviceId={this.state.currentAudioDeviceId}
+            currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
+          />
+
           <QuizModal
             display={this.state.quizDisplay}
             toggleQuiz={this.toggleQuiz}
@@ -1092,6 +1246,7 @@ class VideoRoomComponent extends Component {
                   <StreamComponent
                     user={localUser}
                     handleNickname={this.nicknameChanged}
+                    currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
                   />
                   <FaceDetection
                     autoPlay={localUser.isScreenShareActive() ? false : true}
@@ -1110,6 +1265,7 @@ class VideoRoomComponent extends Component {
                 <StreamComponent
                   user={sub}
                   streamId={sub.streamManager.stream.streamId}
+                  currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
                 />
                 <EmojiFilter user={sub} />
               </div>
@@ -1186,6 +1342,7 @@ class VideoRoomComponent extends Component {
               toggleChat={this.toggleChat}
               toggleParticipant={this.toggleParticipant}
               toggleQuiz={this.toggleQuiz}
+              toggleSetting={this.toggleSetting}
               startStickerEvent={this.startStickerEvent}
             />
           </div>

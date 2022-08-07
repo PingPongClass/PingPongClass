@@ -18,6 +18,6 @@
   margin-right: 0.5rem;
 }
 
-.left-side button .zero {
-  cursor: not-allowed;
+.left-side button {
+  cursor: pointer;
 }

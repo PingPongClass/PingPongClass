@@ -126,6 +126,7 @@ export default class StreamComponent extends Component {
             <OvVideoComponent
               user={this.props.user}
               mutedSound={this.state.mutedSound}
+              currentSpeakerDeviceId={this.props.currentSpeakerDeviceId}
             />
             <div id="statusIcons">
               {!this.props.user.isVideoActive() ? (

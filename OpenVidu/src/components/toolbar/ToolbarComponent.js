@@ -11,6 +11,7 @@ import VideocamOff from "@material-ui/icons/VideocamOff";
 import Fullscreen from "@material-ui/icons/Fullscreen";
 import FullscreenExit from "@material-ui/icons/FullscreenExit";
 import SwitchVideoIcon from "@material-ui/icons/SwitchVideo";
+import SettingsIcon from "@material-ui/icons/Settings";
 import PictureInPicture from "@material-ui/icons/PictureInPicture";
 import ScreenShare from "@material-ui/icons/ScreenShare";
 import StopScreenShare from "@material-ui/icons/StopScreenShare";
@@ -42,6 +43,7 @@ export default class ToolbarComponent extends Component {
     this.toggleQuiz = this.toggleQuiz.bind(this);
     this.pickRandomStudent = this.pickRandomStudent.bind(this);
     this.startStickerEvent = this.startStickerEvent.bind(this);
+    this.toggleSetting = this.toggleSetting.bind(this);
   }
 
   // micStatusChanged: 마이크 상태변화 토글 함수
@@ -82,6 +84,10 @@ export default class ToolbarComponent extends Component {
   // toggleChat: 채팅 토글 함수
   toggleChat() {
     this.props.toggleChat();
+  }
+
+  toggleSetting() {
+    this.props.toggleSetting();
   }
 
   toggleParticipant() {
@@ -258,13 +264,14 @@ export default class ToolbarComponent extends Component {
             <IconButton
               color="inherit"
               className="navButton"
-              onClick={this.switchCamera}
+              onClick={this.toggleSetting}
             >
               <div className="buttonStyle">
-                <SwitchVideoIcon />
-                <p>비디오 전환</p>
+                <SettingsIcon />
+                <p>설정</p>
               </div>
             </IconButton>
+
             <IconButton
               color="inherit"
               className="navButton"

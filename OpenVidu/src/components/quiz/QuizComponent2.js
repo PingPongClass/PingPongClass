@@ -6,8 +6,8 @@ import "./QuizComponent.css";
 class QuizComponent extends Component {
   state = {
     question: this.props.quiz.question,
-    A1: 'O',
-    A2: 'X',
+    A1: "O",
+    A2: "X",
     select: "none",
   };
 

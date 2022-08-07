@@ -57,6 +57,7 @@ export default class ParticipantComponent extends Component {
               alt="참여자 목록 닫기"
             />
           </div>
+          {/* 수업 참여 여부 */}
           {/* 참여자 */}
           <div className="participants-wrap" ref={this.participantScroll}>
             <div>
