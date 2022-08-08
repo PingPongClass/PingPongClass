@@ -109,21 +109,17 @@ export const saveMember = createAsyncThunk('saveMember', async (id: number) => {
     query = '/students/' + id.toString();
   }
 
-  // console.log(query);
   const uData = await InterceptedAxios.get(query);
   const userData = uData.data;
 
-  // console.log(userData);
   const { teacherId: tId, ...fUserData } = userData;
   const { studentId: sId, ...formattedUserData } = fUserData;
 
-  // formattedUserData = { ...formattedUserData };
   if (userData.teacherId) {
     formattedUserData.userId = userData.teacherId;
   } else {
     formattedUserData.userId = userData.studentId;
   }
-  // console.log(formattedUserData);
 
   return formattedUserData;
 });
