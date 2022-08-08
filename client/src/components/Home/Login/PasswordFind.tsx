@@ -11,10 +11,9 @@ interface PasswordFindProps {
 const PasswordFind = (props: PasswordFindProps) => {
   const { setTap } = props;
   const [userId, setUserId] = useState('');
-  const [userEmail, setUserEmail] = useState('');
   const [email, setEmail] = useState('');
   const [email1, setEmail1] = useState('');
-  const [email2, setEmail2] = useState('');
+  const [email2, setEmail2] = useState('naver.com');
   const InterceptedAxios = setupInterceptorsTo(axios.create());
 
   const onChangeId = (e) => {
@@ -33,16 +32,15 @@ const PasswordFind = (props: PasswordFindProps) => {
   };
 
   const onClickFind = (e) => {
-    setEmail(email1 + '@' + email2);
     if (email1 == null) {
       alert('이메일을 입력해주세요.');
     } else {
       InterceptedAxios.post('/users/password', {
-        user_id: userId,
-        email: userEmail,
+        userId: userId,
+        email: email1 + '@' + email2,
       })
         .then(function (response) {
-          alert('이메일을 확인해주세요.');
+          alert('이메일로 비밀번호 재설정 링크를 발송했습니다.');
         })
         .catch(function (error) {
           alert('존재하지 않는 회원정보입니다.');

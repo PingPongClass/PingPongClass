@@ -38,7 +38,7 @@ public class NoticeController {
 
     @ApiOperation(value = "공지사항 조회 및 검색", notes = "공지사항을 조회하고, 필터에 따라 검색합니다.")
     @GetMapping("/list")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('STUDENT')")
     public Page<NoticeResponse> selectNotice(@RequestParam(value="userId") int userId, @RequestParam(value="classId") int classId, @RequestParam(value="titleSearch", required = false) String titleSearch, Pageable pageable){
         Page<NoticeResponse> result = null;
         int type = Integer.toString(userId).length();

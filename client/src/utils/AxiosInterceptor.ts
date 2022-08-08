@@ -25,8 +25,6 @@ import { setCookie, getCookie } from './cookie';
 const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
   // console.info(`[요청] [${JSON.stringify(config)}]`);
   // config.baseURL = 'http://i7a403.p.ssafy.io:8080';
-
-  config.timeout = 0;
   return config;
 };
 
@@ -61,7 +59,6 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
     let accessToken = getCookie('jwt-accessToken');
     let refreshToken = getCookie('jwt-refreshToken');
     // token refresh 요청
-    console.log('JWT 토큰 요청');
     axios
       .post(
         `/auth/reissue`, // token refresh api

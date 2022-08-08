@@ -98,7 +98,7 @@ public class TeacherServiceImpl implements TeacherService {
     @Transactional
     public void modifyPassword(int teacherId, String password) {
         TeacherEntity teacherEntity = repository.findById(teacherId).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
-        teacherEntity.updateRandomPassword(password);
+        teacherEntity.updateRandomPassword(passwordEncoder.encode(password));
     }
 
     @Override

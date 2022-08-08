@@ -1,5 +1,7 @@
 package com.pingpong.backend.api.controller;
 
+import com.pingpong.backend.Exception.CustomException;
+import com.pingpong.backend.Exception.ErrorCode;
 import com.pingpong.backend.api.domain.StudentEntity;
 import com.pingpong.backend.api.domain.TeacherEntity;
 import com.pingpong.backend.api.domain.request.FindPwdRequest;
@@ -15,6 +17,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.SecureRandom;
+import java.util.Date;
 
 @Api(value = "유저 API", tags={"Users(학생, 선생님) 비밀번호 찾기"})
 @RestController
@@ -35,18 +40,28 @@ public class UserController {
     public ResponseEntity<?> findPassword(@RequestBody FindPwdRequest findPwdRequest){
         try{
             if(Integer.toString(findPwdRequest.getUserId()).length()==10){
-                StudentEntity student = studentRepository.getOne(findPwdRequest.getUserId());
+                StudentEntity student = studentRepository.findById(findPwdRequest.getUserId()).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
                 if(findPwdRequest.getEmail().equals(student.getEmail())) {
-                    emailService.sendStudentMail(student);
-                    return new ResponseEntity<String>("입력된 이메일로 비밀번호 재설정링크 전송 성공",HttpStatus.OK);
+                    //임시비밀번호 생성
+                    String randomPassword = getRamdomPassword(10);
+                    StudentEntity studentEntity =new StudentEntity().builder().studentId(findPwdRequest.getUserId()).password(randomPassword).build();
+                    //비밀번호 재설정
+                    studentService.modify(studentEntity);
+                    emailService.sendStudentMail(student, randomPassword);
+                    return new ResponseEntity<String>("입력된 이메일로 임시비밀번호 제공",HttpStatus.OK);
                 } else {
                     return new ResponseEntity<String>("일치하는 정보가 존재하지 않음",HttpStatus.BAD_REQUEST);
                 }
             } else if(Integer.toString(findPwdRequest.getUserId()).length()==7){
-                TeacherEntity teacher = teacherRepository.getOne(findPwdRequest.getUserId());
+                TeacherEntity teacher = teacherRepository.findById(findPwdRequest.getUserId()).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
                 if(findPwdRequest.getEmail().equals(teacher.getEmail())) {
-                    emailService.sendTeacherMail(teacher);
-                    return new ResponseEntity<String>("입력된 이메일로 비밀번호 재설정링크 전송 성공",HttpStatus.OK);
+                    //임시비밀번호 생성
+                    String randomPassword = getRamdomPassword(10);
+                    //비밀번호 재설정
+                    teacherService.modifyPassword(findPwdRequest.getUserId(), randomPassword);
+                    //이메일 발송
+                    emailService.sendTeacherMail(teacher, randomPassword);
+                    return new ResponseEntity<String>("입력된 이메일로 임시비밀번호 제공",HttpStatus.OK);
                 } else {
                     return new ResponseEntity<String>("일치하는 정보가 존재하지 않음",HttpStatus.BAD_REQUEST);
                 }
@@ -57,6 +72,28 @@ public class UserController {
             e.printStackTrace();
             return new ResponseEntity<String>("비밀번호 찾기 실패",HttpStatus.FORBIDDEN);
         }
+    }
+
+    public String getRamdomPassword(int size) {
+        char[] charSet = new char[] {
+                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+                '!', '@', '#', '$', '%', '^', '&' };
+
+        StringBuffer sb = new StringBuffer();
+        SecureRandom sr = new SecureRandom();
+        sr.setSeed(new Date().getTime());
+
+        int idx = 0;
+        int len = charSet.length;
+        for (int i=0; i<size; i++) {
+            // idx = (int) (len * Math.random());
+            idx = sr.nextInt(len);    // 강력한 난수를 발생시키기 위해 SecureRandom을 사용한다.
+            sb.append(charSet[idx]);
+        }
+
+        return sb.toString();
     }
 
     @GetMapping("/email/{email}")

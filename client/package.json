@@ -43,7 +43,10 @@
     "redux": "^4.2.0",
     "swiper": "^8.3.2",
     "typescript": "^4.7.4",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "face-api.js": "^0.22.2",
+    "jquery": "3.5.0",
+    "openvidu-browser": "2.22.0"
   },
   "scripts": {
     "start": "craco start",
@@ -71,6 +74,5 @@
   },
   "devDependencies": {
     "@types/react-calendar-heatmap": "^1.6.3"
-  },
-  "proxy": "http://i7a403.p.ssafy.io:8080"
+  }
 }

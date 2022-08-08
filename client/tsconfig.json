@@ -20,14 +20,17 @@
     /* Type Checking */
     "strict": true /* 엄격한 타입 체킹 */,
     "noImplicitAny": false /* any 안쓸겁니다.. 하지만.. 지금은 안돼요... */,
-    "skipLibCheck": true /* 정의파일 (.d.ts)의 타입 확인을 건너 뛸 것인지 여부 */
+    "skipLibCheck": true /* 정의파일 (.d.ts)의 타입 확인을 건너 뛸 것인지 여부 */,
+
+    "outDir": "build"
   },
   "include": [
     "craco.config.ts",
     "tsconfig.json",
     "src",
     "src/**/*.ts",
-    "src/store/*.ts"
+    "src/store/*.ts",
+    "build/**/*"
   ] /* 컴파일할 파일 경로 */,
   "exclude": ["node_modules", "build"] /* 컴파일 안할 파일 경로 */
 }

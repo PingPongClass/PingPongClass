@@ -20,10 +20,11 @@ function Email(props: EmailProps) {
 
   const onChangeEmail1 = (e) => {
     setEmail1(e.target.value);
+    setEmail(e.target.value + '@' + email2);
   };
   const onChangeEmail2 = (e) => {
     setEmail2(e.target.value);
-    console.log(email2);
+    setEmail(email1 + '@' + e.target.value);
   };
 
   const onClickReturn = () => {
@@ -32,15 +33,12 @@ function Email(props: EmailProps) {
 
   //중복체크 클릭시,
   const emailCheck = async () => {
+    const mergedEmail = email1 + '@' + email2;
     //유효성검사
     if (email1 == null) {
       alert('이메일을 입력해주세요.');
     } else {
-      InterceptedAxios.get('/users/email/{email}', {
-        params: {
-          email: email1 + '@' + email2,
-        },
-      })
+      InterceptedAxios.get(`/users/email/${mergedEmail}`)
         .then(function () {
           console.log('이메일 중복안됨');
           setEmail(email1 + '@' + email2);

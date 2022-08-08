@@ -26,15 +26,18 @@
         "endOfLine": "auto"
       }
     ],
-    "no-param-reassign": ["error", { "props": false }],
+    "no-param-reassign": ["off", { "props": false }],
     "react/state-in-constructor": "off",
     "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
     "no-use-before-define": "off",
     "react/button-has-type": "off",
     "react/jsx-boolean-value": "off",
     "arrow-body-style": "off",
     "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/no-use-before-define": "off",
+    "@typescript-eslint/lines-between-class-members": "off",
+    "@typescript-eslint/no-shadow": "off",
     "no-unused-vars": "off",
     "no-undef": "warn",
     "react/function-component-definition": [

@@ -134,9 +134,6 @@ public class StudentController {
         }
     }
 
-
-
-
     @PatchMapping("/profile")
     @ApiOperation(value = "학생 프로필 이미지 수정", notes = "학생 프로필 수정")
     @PreAuthorize("hasRole('STUDENT')")
