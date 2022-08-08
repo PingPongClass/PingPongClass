@@ -17,11 +17,11 @@ const InputPassword = () => {
           <br />
           <br />
           {memberStore.userId.length == 10 ? (
-            <Link to="studentmyinfo">
+            <Link to="/student/studentmyinfo">
               <button>입력</button>
             </Link>
           ) : (
-            <Link to="teachermyinfo">
+            <Link to="/teacher/teachermyinfo">
               <button>입력</button>
             </Link>
           )}
