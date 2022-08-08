@@ -1,0 +1,69 @@
+#participantContainer {
+  position: absolute;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#participantToolbar {
+  position: relative;
+  height: 30px;
+  background-color: #3b4d6b;
+  box-sizing: border-box;
+  font-weight: bold;
+  font-size: 14px;
+  text-align: center;
+  padding-top: 4px;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  color: #ffffff;
+}
+
+#closeButton {
+  width: 20px;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#closeButton:hover {
+  cursor: pointer;
+}
+
+#participantComponent {
+  background-color: #373737;
+  position: absolute;
+  z-index: 99999;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  height: calc(100% - 30px);
+  width: calc(100% - 30px);
+  border-radius: 20px;
+}
+
+.participants-wrap {
+  color: white;
+  margin-left: 1rem;
+  margin-top: 1rem;
+  height: calc(100% - 60px);
+  overflow: auto;
+}
+
+.participants-wrap > * {
+  margin-bottom: 0.5rem;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #696969;
+}
+
+.participantComponentLight ::-webkit-scrollbar-thumb {
+  background-color: #eeeeee !important;
+}

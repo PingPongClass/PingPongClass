@@ -79,7 +79,7 @@ const Login = (props: LoginProps) => {
             expires,
             sameSite: 'Lax',
           });
-          setCookie('jwt-refreshToken', JSON.stringify(response.data), {
+          setCookie('jwt-refreshToken', response.data, {
             path: '/',
             // secure: true,
             sameSite: 'Lax',

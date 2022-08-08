@@ -2,10 +2,9 @@
 import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import React, { useState, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '@src/store/hooks';
-import { setContent, setParam, selectContent } from '@src/store/content';
-import { Router, Routes, Link, useParams } from 'react-router-dom';
-import { saveMember } from '@src/store/member';
+import { useAppSelector } from '@src/store/hooks';
+import { Link, useParams } from 'react-router-dom';
+import { Subject } from '@src/store/member';
 
 interface PostNoticeProps {
   noticeId?: number;
@@ -22,6 +21,8 @@ const EditNotice = () => {
   const [tmpCode, setTmpCode] = useState(-1);
   const [tmpTitle, setTmpTitle] = useState('');
   const [tmpContent, setTmpContent] = useState('');
+  const allSubject: Subject = { code: -1, title: '전체' };
+  const [subjectCodes, setSubjectCodes] = useState<Subject[]>([allSubject]);
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   const memberStore = useAppSelector((state) => state.member);
   let newPost = false;
@@ -33,19 +34,32 @@ const EditNotice = () => {
   }
 
   useEffect(() => {
-    // console.log(noticeId);
+    getSubjects(memberStore.userId);
   }, []);
 
   useEffect(() => {
-    if (tmpTitle === '' || tmpContent === '') {
+    // 입력값이 없는 경우 제외
+    if (tmpTitle === '' || tmpContent === '' || tmpContent === '') {
       return;
     }
+
     if (noticeId) {
       changePost();
     } else {
       postNew();
     }
   }, [notice]);
+
+  const getSubjects = (id: number) => {
+    setSubjectCodes([allSubject]);
+    InterceptedAxios.get('/classes/' + id).then((res) => {
+      const contents = res.data.content;
+      contents.map((newSub: Subject) => {
+        setSubjectCodes([...subjectCodes, newSub]);
+      });
+    });
+    setSubjectCodes([...subjectCodes, { code: 1, title: '국어' }]);
+  };
 
   const titleChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     // onChange 이벤트
@@ -56,19 +70,20 @@ const EditNotice = () => {
     setTmpContent(e.target.value);
   };
 
-  const codeChanged = (e) => {
-    console.log(e);
-    setTmpContent(e.target.value);
+  const codeChanged = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setTmpCode(+e.target.value);
   };
 
   const changePost = () => {
     InterceptedAxios.patch('/notice/' + noticeId, notice).then(() => {
-      console.log('성공');
+      alert('수정 완료');
     });
   };
 
   const postNew = () => {
-    InterceptedAxios.post('/notice/', notice);
+    InterceptedAxios.post('/notice/', notice).then(() => {
+      alert('추가 완료');
+    });
   };
 
   const submitPost = () => {
@@ -76,35 +91,54 @@ const EditNotice = () => {
       title: tmpTitle,
       content: tmpContent,
       teacherId: memberStore.userId,
-      classId: memberStore.classNum,
+      classId: tmpCode,
     });
   };
 
   return (
     <div>
-      <select onChange={(e) => codeChanged(e)}>
-        <option value="1">1</option>
-        <option value="2">2</option>
+      과목:{' '}
+      <select
+        onChange={(e) => {
+          codeChanged(e);
+        }}
+      >
+        {subjectCodes.map((s) => (
+          <option key={s.code} value={s.code}>
+            {s.title}
+          </option>
+        ))}
       </select>
       제목:{' '}
       <textarea
         className="editTitle"
         defaultValue={tmpTitle}
-        onChange={(e) => titleChanged(e)}
+        onChange={(e) => {
+          titleChanged(e);
+        }}
       ></textarea>
       내용:{' '}
       <textarea
         className="editContent"
         defaultValue={tmpContent}
-        onChange={(e) => contentChanged(e)}
+        onChange={(e) => {
+          contentChanged(e);
+        }}
       ></textarea>
       <div className="btn-box">
-        <button className="edit-btn" onClick={() => submitPost()}>
-          <Link to="notice">작성</Link>
+        {/* <Link to="/admin/notice"> */}
+        <button
+          className="edit-btn"
+          onClick={() => {
+            submitPost();
+          }}
+        >
+          작성
         </button>
-        <button className="del-btn">
-          <Link to="notice">취소</Link>
-        </button>
+        {/* </Link> */}
+        <Link to="/admin/notice">
+          <button className="del-btn">뒤로가기</button>
+        </Link>
       </div>
     </div>
   );

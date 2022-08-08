@@ -44,7 +44,7 @@ const App = () => {
         sameSite: 'Lax',
         // httpOnly: true,
       });
-      setCookie('jwt-refreshToken', JSON.stringify(result.data), {
+      setCookie('jwt-refreshToken', result.data, {
         path: '/',
         // secure: true,
         sameSite: 'Lax',
@@ -54,13 +54,13 @@ const App = () => {
       // 로그인한 회원 정보 저장
 
       const userData = await getInfo();
-      let formattedUserData = { ...userData };
+      let userId = 0;
       if (userData.teacherId) {
-        formattedUserData.userId = userData.teacherId;
+        userId = userData.teacherId;
       } else {
-        formattedUserData.userId = userData.studentId;
+        userId = userData.studentId;
       }
-      // dispatch(saveMember(5030001));
+      dispatch(saveMember(userId));
     }
   };
 

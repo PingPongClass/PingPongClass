@@ -1,0 +1,23 @@
+#oneParticipant {
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.right-side {
+  font-weight: 600;
+}
+
+.left-side {
+  display: flex;
+  justify-content: center;
+}
+
+.left-side > * {
+  margin-right: 0.5rem;
+}
+
+.left-side button {
+  cursor: pointer;
+}

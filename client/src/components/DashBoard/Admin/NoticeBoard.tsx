@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { Link } from 'react-router-dom';
 import Notice from './Notice';
+import { Subject } from '@store/member';
 import axios from 'axios';
 
 export interface NoticeProps {
@@ -17,28 +18,16 @@ export interface NoticeProps {
   regtime: string;
 }
 
-export interface SubjectProps {
-  subjectCode: number;
-  classTitle: string;
-}
-
 const NoticeBoard = () => {
   const dispatch = useAppDispatch();
   const memberStore = useAppSelector((state) => state.member);
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   const [isTeacher, setIsTeacher] = useState(false);
   const [keyword, setKeyword] = useState('');
-  const [selected, setSelected] = useState<SubjectProps>({
-    subjectCode: -1,
-    classTitle: '전체 선택',
-  });
+  const allSubject: Subject = { code: -1, title: '전체' };
+  const [selected, setSelected] = useState<Subject>(allSubject);
   const [articles, setArticles] = useState<NoticeProps[]>([]);
-  const [subjects, setSubjects] = useState<SubjectProps[]>([
-    {
-      subjectCode: -1,
-      classTitle: '전체 선택',
-    },
-  ]);
+  const [subjects, setSubjects] = useState<Subject[]>([allSubject]);
   const [page, setPage] = useState(1);
   let totalPage = 0;
   let userId = -1;
@@ -59,10 +48,7 @@ const NoticeBoard = () => {
 
   // 임시 더미 데이터 불러오기
   useEffect(() => {
-    console.log(memberStore.userId);
     userId = memberStore.userId;
-    // memberStore.subjects;
-    // getSubjects();
 
     setSubjects(memberStore.subjects);
 
@@ -101,34 +87,6 @@ const NoticeBoard = () => {
     getNotice();
   };
 
-  // const getSubjects = () => {
-  //   InterceptedAxios.get('/classes/' + userId.toString())
-  //     .then((response) => {
-  //       let list = response.data.content;
-  //       let newList: SubjectProps[] = list.map((ele) => {
-  //         newList.map((elem) => {
-  //           if (elem.subjectCode !== ele.subjectEntity.classSubjectCode) {
-  //             return {
-  //               subjectCode: ele.subjectEntity.classSubjectCode,
-  //               classTitle: ele.subjectEntity.name,
-  //             };
-  //           }
-  //         });
-  //       });
-  //       newList = [
-  //         {
-  //           subjectCode: -1,
-  //           classTitle: '전체 선택',
-  //         },
-  //         ...newList,
-  //       ];
-  //       setSubjects(newList);
-  //     })
-  //     .catch(() => {
-  //       console.log('학생 수업정보 에러');
-  //     });
-  // };
-
   const getNotice = () => {
     let word = '';
     if (keyword !== '') {
@@ -137,7 +95,7 @@ const NoticeBoard = () => {
 
     let searchQuery =
       '/notice/list?paged=true&sort.sorted=true&sort.unsorted=false&classId=' +
-      selected.subjectCode.toString() +
+      selected.code.toString() +
       '&userId=' +
       userId.toString() +
       '&pageNumber=' +
@@ -173,13 +131,13 @@ const NoticeBoard = () => {
     let code = parseInt(e.target.value);
     let title = '';
     subjects.forEach((s) => {
-      if (s.subjectCode === code) {
-        title = s.classTitle;
+      if (s.code === code) {
+        title = s.title;
       }
     });
     setSelected({
-      subjectCode: code,
-      classTitle: title,
+      code: code,
+      title: title,
     });
   };
 
@@ -190,8 +148,8 @@ const NoticeBoard = () => {
         <form onSubmit={search}>
           <select onChange={handleSelect}>
             {subjects.map((s) => (
-              <option key={s.subjectCode} value={s.subjectCode}>
-                {s.classTitle}
+              <option key={s.code} value={s.code}>
+                {s.title}
               </option>
             ))}
           </select>

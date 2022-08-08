@@ -1,0 +1,18 @@
+#pointSticker {
+  width: 0%;
+  height: 0%;
+  position: relative;
+  z-index: 50000;
+}
+
+#pointSticker img {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  user-drag: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}

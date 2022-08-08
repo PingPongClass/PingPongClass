@@ -61,27 +61,22 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
     let accessToken = getCookie('jwt-accessToken');
     let refreshToken = getCookie('jwt-refreshToken');
     // token refresh 요청
+    console.log('JWT 토큰 요청');
     axios
       .post(
         `/auth/reissue`, // token refresh api
         refreshToken, // header // 빈 params
       )
       .then((res) => {
-        // console.log(res);
-
         const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
           res.data;
         setCookie('jwt-accessToken', newAccessToken, {
           path: '/',
-          // secure: true,
-          // sameSite: 'none',
           sameSite: 'Lax',
         });
         setCookie('jwt-refreshToken', newRefreshToken, {
           path: '/',
-          // secure: true,
           sameSite: 'Lax',
-          // httpOnly: true,
         });
         axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
         originalRequest.headers!.Authorization = `Bearer ${newAccessToken}`;
