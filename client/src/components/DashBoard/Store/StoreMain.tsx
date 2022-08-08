@@ -154,14 +154,14 @@ const totalContainer = () => css`
 
   .getItemList {
     width: 55%;
-    height: 25vh;
+    height: 23vh;
     margin: auto;
     border-radius: 20px;
   }
 
   .example {
     width: 40%;
-    height: 25vh;
+    height: 23vh;
     margin: auto;
     background-color: gray;
   }

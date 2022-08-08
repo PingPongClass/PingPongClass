@@ -170,7 +170,7 @@ public class TeacherController {
             }
             TeacherEntity teacher = repository.getOne(teacherId);
             String imgPath = s3Service.upload(teacher.getProfile(), file);
-            TeacherEntity modteacher = new TeacherEntity(teacher.getTeacherId(), teacher.getName(), teacher.getEmail(), teacher.getIsAdmin(), teacher.getPassword(),
+            TeacherEntity modteacher = new TeacherEntity(teacher.getTeacherId(), teacher.getName(), teacher.getEmail(), teacher.getIsAdmin(),"",
                     teacher.getBirth(), teacher.getManageGrade(), imgPath);
             service.modify(modteacher);
             return new ResponseEntity<String>("선생님 정보수정 성공.", HttpStatus.OK);

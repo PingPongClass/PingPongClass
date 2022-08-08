@@ -155,7 +155,7 @@ public class StudentController {
             StudentEntity student = repository.getOne(studentId);
             String imgPath = s3Service.upload(student.getProfile(), file);
             StudentEntity modstudent = new StudentEntity(student.getStudentId(), student.getName(), student.getGrade(),
-                    student.getClassNum(), student.getStudentNum(), student.getEmail(), student.getPassword(),imgPath,
+                    student.getClassNum(), student.getStudentNum(), student.getEmail(), "",imgPath,
                     student.getPoint(), student.getTotalPoint(), student.getIntroduce());
             service.modify(modstudent);
             return new ResponseEntity<String>("학생 정보수정 성공.", HttpStatus.OK);
