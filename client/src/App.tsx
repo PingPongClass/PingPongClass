@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from '@pages/Home';
 import DashBoard from '@pages/DashBoard';
+import TeacherDashBoard from '@pages/TeacherDashBoard';
 import Style from '@pages/Style';
 import Login from '@pages/Login';
 import OpenVidu from './openvidu/App';
@@ -8,6 +9,10 @@ import MainContent from '@components/DashBoard/MainContent';
 import NoticeBoard from '@src/components/DashBoard/Board/NoticeBoard';
 import ClassList from '@src/components/DashBoard/TodaysClass/ClassList';
 import StoreMain from '@src/components/DashBoard/Store/StoreMain';
+import TeacherMainContent from '@components/DashBoard/Teacher/TeacherMainContent';
+import TeacherNoticeBoard from '@src/components/DashBoard/Board/NoticeBoard';
+import TeacherClassList from '@src/components/DashBoard/Teacher/TeacherClassList';
+import TeacherNewClass from '@src/components/DashBoard/Teacher/TeacherNewClass';
 import InputPassword from './components/DashBoard/MyPage/InputPassword';
 import StudentMyInfo from './components/DashBoard/MyPage/StudentMyInfo';
 import TeacherMyInfo from './components/DashBoard/MyPage/TeacherMyInfo';

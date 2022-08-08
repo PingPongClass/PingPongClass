@@ -89,7 +89,6 @@ const ClassList = () => {
 
 const totalContainer = css`
   width: 100%;
-  height: 100%;
   background: #fdfcf3;
   display: flex;
   flex-direction: column;
@@ -135,12 +134,13 @@ const totalContainer = css`
 
   .cardContainer {
     width: 100%;
-    height: 800px;
+    margin: 50px 0px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 50px;
+    box-sizing: border-box;
   }
 
   .upCardContainer {
