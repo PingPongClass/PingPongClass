@@ -1,39 +1,38 @@
 import { css } from '@emotion/react';
-import PropTypes from 'prop-types';
 import mainLogo from '@assets/images/mainLogo.png';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CampaignIcon from '@mui/icons-material/Campaign';
 import StorefrontIcon from '@mui/icons-material/Storefront';
-import PersonIcon from '@mui/icons-material/Person';
 import { Link } from 'react-router-dom';
 
-interface NavBarProps {
-  changeContent: Function;
-}
-
-const NavBar = ({ changeContent }: NavBarProps) => {
-  const onClick = (toGo: string) => {
-    changeContent(toGo);
-  };
+const NavBar = () => {
   return (
     <div css={totalContainer}>
-      <img src={mainLogo} alt="" onClick={() => onClick('mainContent')} />
-      <div className="navButton" onClick={() => onClick('mainContent')}>
+      <img src={mainLogo} alt="" />
+      <div className="navButton">
         <DashboardIcon style={{ fontSize: '40px' }} />
-        <h4>대시보드</h4>
+        <h4>
+          <Link to="">대시보드</Link>
+        </h4>
       </div>
-      <div className="navButton" onClick={() => onClick('timeTable')}>
+      <div className="navButton">
         <CalendarMonthIcon style={{ fontSize: '40px' }} />
-        <h4>수업목록</h4>
+        <h4>
+          <Link to="classes">수업목록</Link>
+        </h4>
       </div>
-      <div className="navButton" onClick={() => onClick('notice')}>
+      <div className="navButton">
         <CampaignIcon style={{ fontSize: '40px' }} />
-        <h4>공지사항</h4>
+        <h4>
+          <Link to="notice">공지사항</Link>
+        </h4>
       </div>
-      <div className="navButton" onClick={() => onClick('shop')}>
+      <div className="navButton">
         <StorefrontIcon style={{ fontSize: '40px' }} />
-        <h4>상점</h4>
+        <h4>
+          <Link to="store">상점</Link>
+        </h4>
       </div>
     </div>
   );

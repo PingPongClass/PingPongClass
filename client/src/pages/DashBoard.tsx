@@ -15,14 +15,9 @@ import Footer from '@components/DashBoard/Footer/Footer';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ClassList from '@src/components/DashBoard/TodaysClass/ClassList';
+import { Outlet, BrowserRouter, Routes, Route } from 'react-router-dom';
 
 const DashBoard = () => {
-  const contentStore = useAppSelector((state) => state.content.content);
-  const [content, setContent] = useState('mainContent');
-  const changeContent = (toGo: string) => {
-    setContent(toGo);
-  };
-
   const [toastMsg, setToast] = useState('원재호 님 로그인 되었습니다.');
   const notify = () =>
     toast.success(toastMsg, {
@@ -43,37 +38,19 @@ const DashBoard = () => {
     setToast('');
   }
 
-  useEffect(() => {
-    // 리렌더링을 위한 함수
-    setContent(contentStore);
-  }, [contentStore]);
-
   return (
     <div css={totalContainer}>
       <ToastContainer />
       <div className="dashBoardContainer">
         <div className="navBar">
-          <NavBar changeContent={changeContent} />
+          <NavBar />
         </div>
         <div className="userInfo">
           <div className="infoBar">
-            <IconGroup changeContent={changeContent} />
+            <IconGroup />
           </div>
           <div className="infoContent">
-            {
-              {
-                mainContent: <MainContent />,
-                timeTable: <ClassList />,
-                notice: <NoticeBoard />,
-                postNotice: <EditNotice />,
-                editNotice: <EditNotice />,
-                class: <ManagedClassBoard />,
-                addClass: <EditClass />,
-                editClass: <EditClass />,
-                shop: <StoreMain />,
-                myPage: <InputPassword />,
-              }[content]
-            }
+            <Outlet />
           </div>
           <div className="footer">
             <Footer />

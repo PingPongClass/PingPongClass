@@ -11,10 +11,9 @@ import { DELETE_TOKEN } from '../../store/Auth';
 
 https: interface MyPageModalStyle {
   close: any;
-  changeContent: Function;
 }
 
-const MyPageModal = ({ close, changeContent }: MyPageModalStyle) => {
+const MyPageModal = ({ close }: MyPageModalStyle) => {
   const { accessToken } = useSelector((state: any) => state.token);
   const dispatch = useDispatch();
   const refreshToken = getCookieToken();
@@ -57,10 +56,6 @@ const MyPageModal = ({ close, changeContent }: MyPageModalStyle) => {
     location.href = '/';
   };
 
-  const onClick = () => {
-    changeContent('myPage');
-  };
-
   return (
     <div css={totalContainer}>
       <div className="navBar"></div>
@@ -74,7 +69,7 @@ const MyPageModal = ({ close, changeContent }: MyPageModalStyle) => {
             />
           </div>
           <h3 onClick={onClickLogout}>로그아웃</h3>
-          <h3 onClick={onClick}>마이페이지</h3>
+          <h3>마이페이지</h3>
         </div>
       </div>
     </div>
