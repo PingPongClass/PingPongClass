@@ -3,6 +3,7 @@ import Home from '@pages/Home';
 import DashBoard from '@pages/DashBoard';
 import Style from '@pages/Style';
 import Login from '@pages/Login';
+import OpenVidu from './openvidu/App';
 import MainContent from '@components/DashBoard/MainContent';
 import NoticeBoard from '@src/components/DashBoard/Board/NoticeBoard';
 import ClassList from '@src/components/DashBoard/TodaysClass/ClassList';
@@ -35,6 +36,7 @@ const App = () => {
             <Route path="teachermyinfo" element={<TeacherMyInfo />} />
           </Route>
           <Route path="/style" element={<Style />} />
+          <Route path="/class" element={<OpenVidu />} />
         </Routes>
       </BrowserRouter>
     </div>

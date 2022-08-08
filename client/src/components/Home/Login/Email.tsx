@@ -33,13 +33,14 @@ function Email(props: EmailProps) {
 
   //중복체크 클릭시,
   const emailCheck = async () => {
+    const mergedEmail = email1 + '@' + email2;
     //유효성검사
     if (email1 == null) {
       alert('이메일을 입력해주세요.');
     } else {
-      InterceptedAxios.get(`/users/email/${email}`)
-        .then(function (response) {
-          console.log('이메일 중복안됨', response);
+      InterceptedAxios.get(`/users/email/${mergedEmail}`)
+        .then(function () {
+          console.log('이메일 중복안됨');
           setEmail(email1 + '@' + email2);
           setEmailConfirmed(email);
           setUse(true);
