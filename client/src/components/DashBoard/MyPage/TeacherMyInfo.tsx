@@ -11,11 +11,19 @@ const TeacherMyInfo = () => {
         <form>
           <div className="info">
             <div className="profile">
-              <img
-                src={memberStore.profileFullPath}
-                alt={ProfilImage}
-                className="profile-logo"
-              />
+              {memberStore.profileFullPath === '' ? (
+                <img
+                  src={ProfilImage}
+                  alt="프로필사진"
+                  className="profile-logo"
+                />
+              ) : (
+                <img
+                  src={memberStore.profileFullPath}
+                  alt="프로필사진"
+                  className="profile-logo"
+                />
+              )}
               <p>프로필 수정</p>
             </div>
 
@@ -84,7 +92,7 @@ const ModalCSS = css`
   .profile {
     text-align: center;
     .profile-logo {
-      width: 12vw;
+      width: 11vw;
       height: auto;
     }
   }
@@ -118,7 +126,7 @@ const ModalCSS = css`
   #passwordConfirm,
   #email,
   #id {
-    width: 25vw;
+    width: 20vw;
   }
 
   #name,

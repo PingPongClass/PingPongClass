@@ -8,6 +8,8 @@ import NoticeBoard from '@src/components/DashBoard/Board/NoticeBoard';
 import ClassList from '@src/components/DashBoard/TodaysClass/ClassList';
 import StoreMain from '@src/components/DashBoard/Store/StoreMain';
 import InputPassword from './components/DashBoard/MyPage/InputPassword';
+import StudentMyInfo from './components/DashBoard/MyPage/StudentMyInfo';
+import TeacherMyInfo from './components/DashBoard/MyPage/TeacherMyInfo';
 import '@src/App.css';
 
 const App = () => {
@@ -23,6 +25,8 @@ const App = () => {
             <Route path="classes" element={<ClassList />} />
             <Route path="store" element={<StoreMain />} />
             <Route path="mypage" element={<InputPassword />} />
+            <Route path="studentmyinfo" element={<StudentMyInfo />} />
+            <Route path="teachermyinfo" element={<TeacherMyInfo />} />
           </Route>
           <Route path="/style" element={<Style />} />
         </Routes>
