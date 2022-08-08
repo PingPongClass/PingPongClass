@@ -25,20 +25,8 @@ import { setCookie, getCookie } from './cookie';
 const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
   // console.info(`[요청] [${JSON.stringify(config)}]`);
   // config.baseURL = 'http://i7a403.p.ssafy.io:8080';
-  // config.headers['Content-Type'] = 'application/json';
-  // config.headers['Content-Type'] = 'application/json';
-  // console.log(config.headers);
 
-  config.timeout = 1000;
-  // console.log(config.url);
-  if (config.method === 'post' || config.method === 'POST') {
-    if (config.url === '/auth/login') {
-    }
-  } else if (config.method === 'get' || config.method === 'GET') {
-  } else if (config.method === 'patch' || config.method === 'PATCH') {
-  } else if (config.method === 'delete' || config.method === 'DELETE') {
-  }
-
+  config.timeout = 0;
   return config;
 };
 
@@ -104,7 +92,7 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
       });
     // 새로운 토큰 저장
   }
-  console.error(`[응답 에러] [${JSON.stringify(error)}]`);
+  // console.error(`[응답 에러] [${JSON.stringify(error)}]`);
   return Promise.reject(error);
 };
 

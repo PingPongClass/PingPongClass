@@ -2,13 +2,11 @@
 import { css } from '@emotion/react';
 import React, { useEffect, useState } from 'react';
 import useIntersectionObserver from '@src/utils/useIntersectionObserver';
-import Notice from './Notice';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
-import { setContent, selectContent } from '@src/store/content';
-import { logIn, logOut, saveMember } from '@src/store/member';
-import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
-import { getCookie } from '@src/utils/cookie';
+import { Link } from 'react-router-dom';
+import Notice from './Notice';
+import axios from 'axios';
 
 export interface NoticeProps {
   noticeId: number;
@@ -43,6 +41,7 @@ const NoticeBoard = () => {
   ]);
   const [page, setPage] = useState(1);
   let totalPage = 0;
+  let userId = -1;
 
   const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
     // console.log(`감지결과 : ${isIntersecting}`);
@@ -53,16 +52,19 @@ const NoticeBoard = () => {
     }
   };
 
-  const testUserId = 2022000003;
+  // const testUserId = 2022000003;
   // const testUserId = 5030001;
 
   const { setTarget } = useIntersectionObserver({ onIntersect });
 
   // 임시 더미 데이터 불러오기
   useEffect(() => {
-    console.log(memberStore);
+    console.log(memberStore.userId);
+    userId = memberStore.userId;
+    // memberStore.subjects;
+    // getSubjects();
 
-    getSubjects();
+    setSubjects(memberStore.subjects);
 
     if (memberStore.userId > 0 && memberStore.userId < 5040000) {
       setIsTeacher(true);
@@ -90,10 +92,6 @@ const NoticeBoard = () => {
     }
   };
 
-  const postNotice = () => {
-    dispatch(setContent({ content: 'postNotice' }));
-  };
-
   const search = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setArticles([]);
@@ -103,33 +101,33 @@ const NoticeBoard = () => {
     getNotice();
   };
 
-  const getSubjects = () => {
-    InterceptedAxios.get('/classes/' + testUserId.toString())
-      .then((response) => {
-        let list = response.data.content;
-        let newList: SubjectProps[] = list.map((ele) => {
-          newList.map((elem) => {
-            if (elem.subjectCode !== ele.subjectEntity.classSubjectCode) {
-              return {
-                subjectCode: ele.subjectEntity.classSubjectCode,
-                classTitle: ele.subjectEntity.name,
-              };
-            }
-          });
-        });
-        newList = [
-          {
-            subjectCode: -1,
-            classTitle: '전체 선택',
-          },
-          ...newList,
-        ];
-        setSubjects(newList);
-      })
-      .catch(() => {
-        console.log('학생 수업정보 에러');
-      });
-  };
+  // const getSubjects = () => {
+  //   InterceptedAxios.get('/classes/' + userId.toString())
+  //     .then((response) => {
+  //       let list = response.data.content;
+  //       let newList: SubjectProps[] = list.map((ele) => {
+  //         newList.map((elem) => {
+  //           if (elem.subjectCode !== ele.subjectEntity.classSubjectCode) {
+  //             return {
+  //               subjectCode: ele.subjectEntity.classSubjectCode,
+  //               classTitle: ele.subjectEntity.name,
+  //             };
+  //           }
+  //         });
+  //       });
+  //       newList = [
+  //         {
+  //           subjectCode: -1,
+  //           classTitle: '전체 선택',
+  //         },
+  //         ...newList,
+  //       ];
+  //       setSubjects(newList);
+  //     })
+  //     .catch(() => {
+  //       console.log('학생 수업정보 에러');
+  //     });
+  // };
 
   const getNotice = () => {
     let word = '';
@@ -141,24 +139,22 @@ const NoticeBoard = () => {
       '/notice/list?paged=true&sort.sorted=true&sort.unsorted=false&classId=' +
       selected.subjectCode.toString() +
       '&userId=' +
-      testUserId.toString() +
+      userId.toString() +
       '&pageNumber=' +
       page.toString() +
       word;
 
     // console.log(searchQuery);
 
-    InterceptedAxios.get(searchQuery)
-      .then((response) => {
-        let list = response.data.content;
-        totalPage = response.data.totalPages;
-        if (totalPage >= page) {
-          checkNewNotice(list);
-        } else {
-          alert('마지막 페이지입니다!');
-        }
-      })
-      .catch(() => {});
+    InterceptedAxios.get(searchQuery).then((response) => {
+      let list = response.data.content;
+      totalPage = response.data.totalPages;
+      if (totalPage >= page) {
+        checkNewNotice(list);
+      } else {
+        alert('마지막 페이지입니다!');
+      }
+    });
   };
 
   const checkNewNotice = (value: NoticeProps[]) => {
@@ -190,7 +186,7 @@ const NoticeBoard = () => {
   return (
     <div css={totalContainer}>
       <div className="upperModalArea">
-        <div className="pageTitle">공지사항</div>
+        <div className="pageTitle">공지사항(관리자)</div>
         <form onSubmit={search}>
           <select onChange={handleSelect}>
             {subjects.map((s) => (
@@ -211,8 +207,8 @@ const NoticeBoard = () => {
               <button type="submit" className="sub-btn">
                 검색
               </button>
-              <button type="button" className="main-btn" onClick={postNotice}>
-                글 쓰기
+              <button type="button" className="main-btn">
+                <Link to="/admin/noticePost">글 쓰기</Link>
               </button>
             </>
           ) : (

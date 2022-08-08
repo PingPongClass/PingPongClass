@@ -1,24 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '@src/store/hooks';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import IconGroup from '@components/DashBoard/IconGroup';
-import MainContent from '@components/DashBoard/MainContent';
 import NavBar from '@components/DashBoard/NavBar';
 import dashboardBackground from '@assets/images/dashboardBackground.png';
-import InputPassword from '@components/DashBoard/MyPage/InputPassword';
-import NoticeBoard from '@components/DashBoard/Board/NoticeBoard';
-import EditNotice from '@components/DashBoard/Board/EditNotice';
-import ManagedClassBoard from '@components/DashBoard/Board/ManagedClassBoard';
-import EditClass from '@components/DashBoard/Board/EditClass';
-import StoreMain from '@components/DashBoard/Store/StoreMain';
 import Footer from '@components/DashBoard/Footer/Footer';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ClassList from '@src/components/DashBoard/TodaysClass/ClassList';
 import { Outlet, BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '@src/store/hooks';
+import { logIn, logOut, saveMember } from '@src/store/member';
 
 const DashBoard = () => {
-  const [toastMsg, setToast] = useState('원재호 님 로그인 되었습니다.');
+  const [toastMsg, setToast] = useState(' 님 로그인 되었습니다.');
   const notify = () =>
     toast.success(toastMsg, {
       position: 'top-center',

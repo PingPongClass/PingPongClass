@@ -2,8 +2,8 @@ import { css } from '@emotion/react';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 import { setCookie } from '@utils/cookie';
-import { useState } from 'react';
-import { logIn, logOut, getMemberInfo } from '@src/store/member';
+import { useEffect, useState } from 'react';
+import { saveMember, logIn, logOut } from '@src/store/member';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 
 const App = () => {
@@ -35,7 +35,6 @@ const App = () => {
   const go = async () => {
     const result = await login();
     setToken(result.data.accessToken);
-    let refreshToken = result.data;
 
     if (result.data) {
       setCookie('jwt-accessToken', result.data.accessToken, {
@@ -61,11 +60,7 @@ const App = () => {
       } else {
         formattedUserData.userId = userData.studentId;
       }
-      dispatch(logIn(formattedUserData));
-
-      console.log(memberStore);
-
-      // JSON.parse();
+      // dispatch(saveMember(5030001));
     }
   };
 
