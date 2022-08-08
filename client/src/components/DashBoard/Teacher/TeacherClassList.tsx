@@ -46,7 +46,9 @@ const ClassList = () => {
           </div>
         </div>
         <div className="createTab">
-          <Link to="/teacher/create">수업 열기</Link>
+          <Link to="/teacher/create" className="linkButton">
+            수업 열기
+          </Link>
         </div>
       </div>
       <Swiper
@@ -192,6 +194,11 @@ const totalContainer = css`
 
   .swiper-pagination-progressbar-fill {
     background-color: #029371;
+  }
+
+  .linkButton {
+    text-decoration: none;
+    color: white;
   }
 `;
 

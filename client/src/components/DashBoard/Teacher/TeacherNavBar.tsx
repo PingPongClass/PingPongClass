@@ -9,22 +9,28 @@ const TeacherNavBar = () => {
   return (
     <div css={totalContainer}>
       <img src={mainLogo} alt="" />
-      <div className="navButton">
+      <div className="teacherNavButton">
         <DashboardIcon style={{ fontSize: '40px' }} />
         <h4>
-          <Link to="">대시보드</Link>
+          <Link to="" className="linkButton">
+            대시보드
+          </Link>
         </h4>
       </div>
-      <div className="navButton">
+      <div className="teacherNavButton">
         <CalendarMonthIcon style={{ fontSize: '40px' }} />
         <h4>
-          <Link to="classes">수업목록</Link>
+          <Link to="classes" className="linkButton">
+            수업목록
+          </Link>
         </h4>
       </div>
-      <div className="navButton">
+      <div className="teacherNavButton">
         <CampaignIcon style={{ fontSize: '40px' }} />
         <h4>
-          <Link to="notice">공지사항</Link>
+          <Link to="notice" className="linkButton">
+            공지사항
+          </Link>
         </h4>
       </div>
     </div>
@@ -44,7 +50,7 @@ const totalContainer = css`
   margin-top: 50px;
   box-shadow: 2px 2px 15px -5px;
 
-  .navButton {
+  .teacherNavButton {
     width: 90%;
     height: 40px;
     display: flex;
@@ -58,17 +64,22 @@ const totalContainer = css`
     transition: all 0.1s ease-in-out;
   }
 
-  .navButton:hover {
+  .teacherNavButton:hover {
     transform: scale(1.1);
   }
 
-  .navButton h4 {
+  .teacherNavButton h4 {
     font-size: 20px;
     width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
+  }
+
+  .linkButton {
+    text-decoration: none;
+    color: black;
   }
 
   img {

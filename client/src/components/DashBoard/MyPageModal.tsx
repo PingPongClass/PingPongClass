@@ -58,14 +58,9 @@ const MyPageModal = ({ close }: MyPageModalStyle) => {
     location.href = '/';
   };
 
-  const onClickMyPage = () => {
-    location.href = '/mypage';
-  };
-
   return (
     <div css={totalContainer}>
-      <div className="navBar"></div>
-      <div className="MyPageInfo">
+      <div className="settingContainer">
         <div className="myPageModal">
           <div className="myPageNav">
             <CloseIcon
@@ -75,8 +70,8 @@ const MyPageModal = ({ close }: MyPageModalStyle) => {
             />
           </div>
           <h3 onClick={onClickLogout}>로그아웃</h3>
-          <Link to="mypage">
-            <h3>마이페이지</h3>
+          <Link to="mypage" className="linkButton">
+            <h3 onClick={() => close()}>마이페이지</h3>
           </Link>
         </div>
       </div>
@@ -103,10 +98,18 @@ const totalContainer = css`
     justify-content: end;
   }
 
+  .settingContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    width: 1250px;
+  }
+
   .myPageModal {
     width: 220px;
     height: 220px;
     padding: 20px;
+    margin-top: 120px;
     background-color: rgba(249, 249, 249);
     box-sizing: border-box;
     border-radius: 20px;
@@ -122,14 +125,9 @@ const totalContainer = css`
     cursor: pointer;
   }
 
-  .MyPageInfo {
-    height: 80%;
-    width: 1000px;
-    min-width: 1000px;
-    margin-top: 100px;
-    display: flex;
-    flex-direction: row;
-    justify-content: end;
+  .linkButton {
+    text-decoration: none;
+    color: black;
   }
 
   @keyframes fadeIns {
