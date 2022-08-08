@@ -2,8 +2,8 @@ import { css } from '@emotion/react';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 import { setCookie } from '@utils/cookie';
-import { useState } from 'react';
-import { logIn, logOut, getMemberInfo } from '@src/store/member';
+import { useEffect, useState } from 'react';
+import { saveMember, logIn, logOut } from '@src/store/member';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 
 const App = () => {
@@ -35,7 +35,6 @@ const App = () => {
   const go = async () => {
     const result = await login();
     setToken(result.data.accessToken);
-    let refreshToken = result.data;
 
     if (result.data) {
       setCookie('jwt-accessToken', result.data.accessToken, {
@@ -45,7 +44,7 @@ const App = () => {
         sameSite: 'Lax',
         // httpOnly: true,
       });
-      setCookie('jwt-refreshToken', JSON.stringify(result.data), {
+      setCookie('jwt-refreshToken', result.data, {
         path: '/',
         // secure: true,
         sameSite: 'Lax',
@@ -55,17 +54,13 @@ const App = () => {
       // 로그인한 회원 정보 저장
 
       const userData = await getInfo();
-      let formattedUserData = { ...userData };
+      let userId = 0;
       if (userData.teacherId) {
-        formattedUserData.userId = userData.teacherId;
+        userId = userData.teacherId;
       } else {
-        formattedUserData.userId = userData.studentId;
+        userId = userData.studentId;
       }
-      dispatch(logIn(formattedUserData));
-
-      console.log(memberStore);
-
-      // JSON.parse();
+      dispatch(saveMember(userId));
     }
   };
 

@@ -173,8 +173,6 @@ export const { logIn, logOut } = memberSlice.actions;
 
 export default memberSlice.reducer;
 
-export const getMemberInfo = (state) => state;
-
 // { 학생 정보조회 결과
 //   "studentId": 2022000011,
 //   "name": "전민재",

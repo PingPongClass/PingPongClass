@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Outlet } from 'react-router-dom';
 
 const DashBoard = () => {
-  const [toastMsg, setToast] = useState('원재호 님 로그인 되었습니다.');
+  const [toastMsg, setToast] = useState(' 님 로그인 되었습니다.');
   const notify = () =>
     toast.success(toastMsg, {
       position: 'top-center',
