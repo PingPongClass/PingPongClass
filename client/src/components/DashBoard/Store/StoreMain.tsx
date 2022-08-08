@@ -10,9 +10,10 @@ import CircleIcon from '@mui/icons-material/Circle';
 import { yellow } from '@mui/material/colors';
 import Animation from './Animation';
 import { motion } from 'framer-motion';
-import { autocompleteClasses } from '@mui/material';
+import { useAppSelector } from '@src/store/hooks';
 
 const StoreMain = () => {
+  const memberStore = useAppSelector((state) => state.member);
   const [itemtap, setTap] = useState('itemTap');
   const [gettap, setGetTap] = useState('getItemTap');
   const [isOpenBbobkki, setOpenBbobkki] = useState<boolean>(false);
@@ -81,7 +82,7 @@ const StoreMain = () => {
           <div className="pongCount">
             <span>
               <CircleIcon fontSize="small" sx={{ color: yellow[700] }} />
-              &nbsp; X 보유개수
+              &nbsp; X {memberStore.point}
             </span>
           </div>
         </div>

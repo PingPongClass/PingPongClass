@@ -1,69 +1,79 @@
 import { css } from '@emotion/react';
 import IosModal from '../../Common/IosModal';
 import ProfilImage from '../../../assets/images/profile.png';
+import { useAppSelector } from '@src/store/hooks';
 
-const TeacherMyInfo = () => (
-  <IosModal renderCenter={true} isRelative={true} width="75%" height="80%">
-    <div css={ModalCSS}>
-      <form>
-        <div className="info">
-          <div className="profile">
-            <img
-              src={ProfilImage}
-              alt="프로필 기본로고"
-              className="profile-logo"
-            />
-            <p>프로필 수정</p>
-          </div>
+const TeacherMyInfo = () => {
+  const memberStore = useAppSelector((state) => state.member);
+  return (
+    <IosModal renderCenter={true} isRelative={true} width="75%" height="80%">
+      <div css={ModalCSS}>
+        <form>
+          <div className="info">
+            <div className="profile">
+              <img
+                src={memberStore.profileFullPath}
+                alt={ProfilImage}
+                className="profile-logo"
+              />
+              <p>프로필 수정</p>
+            </div>
 
-          <div className="infolist">
-            <div>
-              <span>이름</span>
-              <input id="name" readOnly />
-            </div>
-            <div>
-              <span>아이디</span>
-              <input id="id" type="text" readOnly />
-            </div>
-            <div>
-              <span>이메일</span>
-              <input
-                id="email"
-                type="email"
-                placeholder=" 이메일을 입력하세요."
-              />
-            </div>
-            <div>
-              <span>비밀번호</span>
-              <input
-                id="password"
-                type="password"
-                placeholder=" 8자리 이상 16자리 이하, 영문자, 숫자 포함."
-              />
-            </div>
-            <div>
-              <span>비밀번호 확인</span>
-              <input
-                id="passwordConfirm"
-                type="password"
-                placeholder=" 비밀번호를 입력하세요."
-              />
+            <div className="infolist">
+              <div>
+                <span>이름</span>
+                <input id="name" value={memberStore.name} readOnly />
+              </div>
+              <div>
+                <span>아이디</span>
+                <input
+                  id="id"
+                  value={memberStore.userId}
+                  type="text"
+                  readOnly
+                />
+              </div>
+              <div>
+                <span>이메일</span>
+                <input
+                  id="email"
+                  type="email"
+                  value={memberStore.email}
+                  placeholder=" 이메일을 입력하세요."
+                />
+              </div>
+              <div>
+                <span>비밀번호</span>
+                <input
+                  id="password"
+                  type="password"
+                  placeholder=" 8자리 이상 16자리 이하, 영문자, 숫자 포함."
+                />
+              </div>
+              <div>
+                <span>비밀번호 확인</span>
+                <input
+                  id="passwordConfirm"
+                  type="password"
+                  placeholder=" 비밀번호를 입력하세요."
+                />
+              </div>
             </div>
           </div>
-        </div>
-        <br />
-        <div className="buttons">
-          <button type="submit" className="submit">
-            수정
-          </button>
-          <button type="button" className="cancel">
-            취소
-          </button>
-        </div>
-      </form>
-    </div>
-  </IosModal>
-);
+          <br />
+          <div className="buttons">
+            <button type="submit" className="submit">
+              수정
+            </button>
+            <button type="button" className="cancel">
+              취소
+            </button>
+          </div>
+        </form>
+      </div>
+    </IosModal>
+  );
+};
 
 const ModalCSS = css`
   display: flex;

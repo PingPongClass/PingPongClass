@@ -101,12 +101,23 @@ const Login = (props: LoginProps) => {
           alert('로그인 성공. 첫 로그인시, 정보입력이 필요합니다.');
           setTap('email');
         } else {
-          alert('로그인 성공');
-          location.href = '/dashboard';
+          if (userId.length == 10) {
+            alert('로그인 성공');
+            location.href = '/student';
+          }
+          if (userId.length == 7 && userId.charAt(0) === '4') {
+            alert('로그인 성공');
+            location.href = '/teacher';
+          }
+          if (userId.length == 7 && userId.charAt(0) === '5') {
+            alert('로그인 성공');
+            location.href = '/admin';
+          }
         }
         console.log('로그인 성공', response);
       })
       .catch(function (error) {
+        alert('아이디와 비밀번호를 다시 확인해주세요.');
         console.log('로그인 실패', error);
       });
   };

@@ -14,9 +14,9 @@ https: interface MyPageModalStyle {
 }
 
 const MyPageModal = ({ close }: MyPageModalStyle) => {
-  const { accessToken } = useSelector((state: any) => state.token);
-  const dispatch = useDispatch();
-  const refreshToken = getCookieToken();
+  // const { accessToken } = useSelector((state: any) => state.token);
+  // const dispatch = useDispatch();
+  // const refreshToken = getCookieToken();
 
   const onClickLogout = () => {
     // // store에 저장된 Access Token 정보를 받아 온다
@@ -56,6 +56,10 @@ const MyPageModal = ({ close }: MyPageModalStyle) => {
     location.href = '/';
   };
 
+  const onClickMyPage = () => {
+    location.href = '/mypage';
+  };
+
   return (
     <div css={totalContainer}>
       <div className="navBar"></div>
@@ -69,7 +73,9 @@ const MyPageModal = ({ close }: MyPageModalStyle) => {
             />
           </div>
           <h3 onClick={onClickLogout}>로그아웃</h3>
-          <h3>마이페이지</h3>
+          <Link to="mypage">
+            <h3>마이페이지</h3>
+          </Link>
         </div>
       </div>
     </div>
