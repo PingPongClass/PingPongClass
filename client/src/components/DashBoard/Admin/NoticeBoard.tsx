@@ -29,7 +29,6 @@ const NoticeBoard = () => {
   const [classes, setclasses] = useState<ClassProps[]>([allClass]);
   const [page, setPage] = useState(1);
   let totalPage = 0;
-  let userId = -1;
 
   const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
     // console.log(`감지결과 : ${isIntersecting}`);
@@ -44,7 +43,6 @@ const NoticeBoard = () => {
 
   useEffect(() => {
     dispatch(saveMember());
-    userId = memberStore.userId;
     dispatch(getClasses(memberStore.userId));
     setclasses(memberStore.classes);
 
@@ -58,10 +56,6 @@ const NoticeBoard = () => {
   useEffect(() => {
     getNotice();
   }, [page]);
-
-  useEffect(() => {
-    // console.log(selected);
-  }, [selected]);
 
   const deleteNotice = (key: number) => {
     if (memberStore.isAdmin) {
@@ -93,11 +87,11 @@ const NoticeBoard = () => {
 
     let searchQuery =
       '/notice/list?paged=true&sort.sorted=true&sort.unsorted=false&classId=' +
-      selected.classId.toString() +
+      selected.classId +
       '&userId=' +
-      userId.toString() +
+      memberStore.userId +
       '&pageNumber=' +
-      page.toString() +
+      page +
       word;
 
     // console.log(searchQuery);

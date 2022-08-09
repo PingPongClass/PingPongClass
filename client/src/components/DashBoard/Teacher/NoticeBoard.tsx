@@ -29,7 +29,6 @@ const NoticeBoard = () => {
   const [classes, setclasses] = useState<ClassProps[]>([allClass]);
   const [page, setPage] = useState(1);
   let totalPage = 0;
-  let userId = -1;
 
   const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
     // console.log(`감지결과 : ${isIntersecting}`);
@@ -44,7 +43,6 @@ const NoticeBoard = () => {
 
   useEffect(() => {
     dispatch(saveMember());
-    userId = memberStore.userId;
     dispatch(getClasses(memberStore.userId));
     setclasses(memberStore.classes);
 
@@ -119,7 +117,7 @@ const NoticeBoard = () => {
       '/notice/list?paged=true&sort.sorted=true&sort.unsorted=false&classId=' +
       selected.classId.toString() +
       '&userId=' +
-      userId.toString() +
+      memberStore.userId.toString() +
       '&pageNumber=' +
       page.toString() +
       word;
@@ -185,7 +183,7 @@ const NoticeBoard = () => {
                 검색
               </button>
               <button type="button" className="main-btn">
-                <Link to="/admin/noticePost">글 쓰기</Link>
+                <Link to="/teacher/noticePost">글 쓰기</Link>
               </button>
             </>
           ) : (

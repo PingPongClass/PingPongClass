@@ -69,7 +69,7 @@ const EditNotice = () => {
     InterceptedAxios.patch('/notice/' + noticeId, notice)
       .then(() => {
         alert('수정 완료');
-        navigate('/admin/notice');
+        navigate('/taecher/notice');
       })
       .catch(() => {
         alert('수정 실패! 정보를 다시 확인해 주세요.');
@@ -80,7 +80,7 @@ const EditNotice = () => {
     InterceptedAxios.post('/notice/', notice)
       .then(() => {
         alert('추가 완료');
-        navigate('/admin/notice');
+        navigate('/taecher/notice');
       })
       .catch(() => {
         alert('작성 실패! 정보를 다시 확인해 주세요.');
@@ -137,7 +137,7 @@ const EditNotice = () => {
           작성
         </button>
         {/* </Link> */}
-        <Link to="/admin/notice">
+        <Link to="/teacher/notice">
           <button className="del-btn">뒤로가기</button>
         </Link>
       </div>

@@ -26,10 +26,6 @@ const StudentBoard = () => {
   const [keyword, setKeyword] = useState('');
   const [students, setStudents] = useState<StudentProps[]>([]);
 
-  // const testUserId = 2022000003;
-  // const testUserId = 5030001;
-
-  // 임시 더미 데이터 불러오기
   useEffect(() => {
     // console.log(memberStore.userId);
   }, []);
@@ -37,7 +33,7 @@ const StudentBoard = () => {
   const deleteStudent = (key: number) => {
     let finalCheck = confirm('정말로 삭제하시겠습니까?');
     if (finalCheck) {
-      InterceptedAxios.delete('/Student/' + key.toString())
+      InterceptedAxios.delete('/student/' + key.toString())
         .then(() => {
           setStudents(students.filter((s) => s.studentNum !== key));
         })
