@@ -4,6 +4,7 @@ import { StudentProps } from './StudentBoard';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { setContent, setParam, selectContent } from '@src/store/content';
 import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Student = (props: {
   key: number;
@@ -31,7 +32,7 @@ const Student = (props: {
       <div className="col StudentId">{article.studentNum}</div>
       <div className="col StudentTitle">{article.email}</div>
       <div className="col StudentId">
-        <Link to="studentEdit">
+        <Link to={`/teacher/studentEdit/${article.studentId}`}>
           <button type="button" className="edit-btn">
             수정
           </button>

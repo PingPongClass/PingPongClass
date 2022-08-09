@@ -10,13 +10,14 @@ import NoticeBoard from '@components/DashBoard/Board/NoticeBoard';
 import ClassList from '@components/DashBoard/TodaysClass/ClassList';
 import StoreMain from '@components/DashBoard/Store/StoreMain';
 import TeacherMainContent from '@components/DashBoard/Teacher/TeacherMainContent';
-import TeacherNoticeBoard from '@src/components/DashBoard/Board/NoticeBoard';
+import TeacherNoticeBoard from '@src/components/DashBoard/Teacher/NoticeBoard';
+import TeacherEditNotice from '@src/components/DashBoard/Teacher/EditNotice';
 import TeacherClassList from '@src/components/DashBoard/Teacher/TeacherClassList';
 import TeacherNewClass from '@src/components/DashBoard/Teacher/TeacherNewClass';
 import InputPassword from '@components/DashBoard/MyPage/InputPassword';
 import AdminDashBoard from '@pages/AdminDashBoard';
 import AdminNotice from '@components/DashBoard/Admin/NoticeBoard';
-import EditNotice from '@components/DashBoard/Admin/EditNotice';
+import AdminEditNotice from '@components/DashBoard/Admin/EditNotice';
 import AddStudent from '@components/DashBoard/Admin/AddStudent';
 import AddStudentBulk from '@components/DashBoard/Admin/AddStudentBulk';
 import EditStudent from '@components/DashBoard/Admin/EditStudent';
@@ -43,6 +44,11 @@ const App = () => {
           <Route path="/teacher" element={<TeacherDashBoard />}>
             <Route path="" element={<TeacherMainContent />} />
             <Route path="notice" element={<TeacherNoticeBoard />} />
+            <Route
+              path="noticeEdit/:noticeId"
+              element={<TeacherEditNotice />}
+            />
+            <Route path="noticePost" element={<TeacherEditNotice />} />
             <Route path="classes" element={<TeacherClassList />} />
             <Route path="create" element={<TeacherNewClass />} />
             <Route path="mypage" element={<InputPassword />} />
@@ -51,12 +57,12 @@ const App = () => {
           <Route path="/admin" element={<AdminDashBoard />}>
             <Route path="" element={<MainContent />} />
             <Route path="notice" element={<AdminNotice />} />
-            <Route path="noticeEdit/:noticeId" element={<EditNotice />} />
-            <Route path="noticePost" element={<EditNotice />} />
+            <Route path="noticeEdit/:noticeId" element={<AdminEditNotice />} />
+            <Route path="noticePost" element={<AdminEditNotice />} />
             <Route path="students" element={<StudentBoard />} />
             <Route path="studentAdd" element={<AddStudent />} />
             <Route path="studentAddBulk" element={<AddStudentBulk />} />
-            <Route path="studentEdit" element={<EditStudent />} />
+            <Route path="studentEdit/:studentId" element={<EditStudent />} />
           </Route>
           <Route path="/style" element={<Style />} />
           <Route path="/class" element={<OpenVidu />} />

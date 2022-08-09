@@ -5,7 +5,7 @@ import useIntersectionObserver from '@src/utils/useIntersectionObserver';
 import Notice from './Notice';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { setContent, selectContent } from '@src/store/content';
-import { logIn, logOut, saveMember } from '@src/store/member';
+import { logIn, logOut, saveMember, Subject } from '@src/store/member';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { getCookie } from '@src/utils/cookie';
@@ -19,28 +19,18 @@ export interface NoticeProps {
   regtime: string;
 }
 
-export interface SubjectProps {
-  subjectCode: number;
-  classTitle: string;
-}
-
 const NoticeBoard = () => {
   const dispatch = useAppDispatch();
   const memberStore = useAppSelector((state) => state.member);
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   const [isTeacher, setIsTeacher] = useState(false);
   const [keyword, setKeyword] = useState('');
-  const [selected, setSelected] = useState<SubjectProps>({
-    subjectCode: -1,
-    classTitle: '전체 선택',
+  const [selected, setSelected] = useState<Subject>({
+    code: -1,
+    title: '전체',
   });
   const [articles, setArticles] = useState<NoticeProps[]>([]);
-  const [subjects, setSubjects] = useState<SubjectProps[]>([
-    {
-      subjectCode: -1,
-      classTitle: '전체 선택',
-    },
-  ]);
+  const [subjects, setSubjects] = useState<Subject[]>([]);
   const [page, setPage] = useState(1);
   let totalPage = 0;
 
@@ -53,18 +43,11 @@ const NoticeBoard = () => {
     }
   };
 
-  const testUserId = 2022000003;
-  // const testUserId = 5030001;
-
   const { setTarget } = useIntersectionObserver({ onIntersect });
 
-  // 임시 더미 데이터 불러오기
   useEffect(() => {
-    console.log(memberStore);
-
-    getSubjects();
-
-    if (memberStore.userId > 0 && memberStore.userId < 5040000) {
+    setSubjects(memberStore.subjects);
+    if (memberStore.userId.toString().length !== 10) {
       setIsTeacher(true);
     } else {
       setIsTeacher(false);
@@ -79,21 +62,6 @@ const NoticeBoard = () => {
     // console.log(selected);
   }, [selected]);
 
-  const deleteNotice = (key: number) => {
-    let finalCheck = confirm('정말로 삭제하시겠습니까?');
-    if (finalCheck) {
-      InterceptedAxios.delete('/notice/' + key.toString())
-        .then(() => {
-          setArticles(articles.filter((article) => article.noticeId !== key));
-        })
-        .catch(() => {});
-    }
-  };
-
-  const postNotice = () => {
-    dispatch(setContent({ content: 'postNotice' }));
-  };
-
   const search = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setArticles([]);
@@ -101,34 +69,6 @@ const NoticeBoard = () => {
 
     // 검색 로직
     getNotice();
-  };
-
-  const getSubjects = () => {
-    InterceptedAxios.get('/classes/' + testUserId.toString())
-      .then((response) => {
-        let list = response.data.content;
-        let newList: SubjectProps[] = list.map((ele) => {
-          newList.map((elem) => {
-            if (elem.subjectCode !== ele.subjectEntity.classSubjectCode) {
-              return {
-                subjectCode: ele.subjectEntity.classSubjectCode,
-                classTitle: ele.subjectEntity.name,
-              };
-            }
-          });
-        });
-        newList = [
-          {
-            subjectCode: -1,
-            classTitle: '전체 선택',
-          },
-          ...newList,
-        ];
-        setSubjects(newList);
-      })
-      .catch(() => {
-        console.log('학생 수업정보 에러');
-      });
   };
 
   const getNotice = () => {
@@ -139,14 +79,12 @@ const NoticeBoard = () => {
 
     let searchQuery =
       '/notice/list?paged=true&sort.sorted=true&sort.unsorted=false&classId=' +
-      selected.subjectCode.toString() +
+      selected.code.toString() +
       '&userId=' +
-      testUserId.toString() +
+      memberStore.userId.toString() +
       '&pageNumber=' +
       page.toString() +
       word;
-
-    // console.log(searchQuery);
 
     InterceptedAxios.get(searchQuery)
       .then((response) => {
@@ -155,7 +93,7 @@ const NoticeBoard = () => {
         if (totalPage >= page) {
           checkNewNotice(list);
         } else {
-          alert('마지막 페이지입니다!');
+          console.log('마지막 페이지입니다!');
         }
       })
       .catch(() => {});
@@ -177,13 +115,13 @@ const NoticeBoard = () => {
     let code = parseInt(e.target.value);
     let title = '';
     subjects.forEach((s) => {
-      if (s.subjectCode === code) {
-        title = s.classTitle;
+      if (s.code === code) {
+        title = s.title;
       }
     });
     setSelected({
-      subjectCode: code,
-      classTitle: title,
+      code: code,
+      title: title,
     });
   };
 
@@ -194,8 +132,8 @@ const NoticeBoard = () => {
         <form onSubmit={search}>
           <select onChange={handleSelect}>
             {subjects.map((s) => (
-              <option key={s.subjectCode} value={s.subjectCode}>
-                {s.classTitle}
+              <option key={s.code} value={s.code}>
+                {s.title}
               </option>
             ))}
           </select>
@@ -206,20 +144,9 @@ const NoticeBoard = () => {
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
           />
-          {isTeacher ? (
-            <>
-              <button type="submit" className="sub-btn">
-                검색
-              </button>
-              <button type="button" className="main-btn" onClick={postNotice}>
-                글 쓰기
-              </button>
-            </>
-          ) : (
-            <button type="submit" className="main-btn">
-              검색
-            </button>
-          )}
+          <button type="submit" className="main-btn">
+            검색
+          </button>
         </form>
       </div>
       <div className="tableArea">
@@ -233,13 +160,7 @@ const NoticeBoard = () => {
 
         <div className="articleArea">
           {articles.map((article) => {
-            return (
-              <Notice
-                key={article.noticeId}
-                article={article}
-                deleteNotice={() => deleteNotice(article.noticeId)}
-              />
-            );
+            return <Notice key={article.noticeId} article={article} />;
           })}
           <div ref={setTarget} className="Loading">
             {/* {isLoading && 'Loading...'} */}
@@ -390,28 +311,10 @@ const totalContainer = () => css`
       max-width: -webkit-max-content;
     }
 
-    .edit-btn {
-      background-color: #a1b9ce;
-    }
-
-    .del-btn {
-      background-color: #bbbbbb;
-    }
-
     textarea {
       background-color: rgba(255, 255, 255, 0.7);
       border: none;
       resize: none;
-    }
-    #editTitle {
-      border-radius: 20rem;
-      padding: 0 0.5rem;
-    }
-    #editContent {
-      height: 200px;
-      border-radius: 0.5rem;
-      padding: 0.5rem;
-      margin: 0.5rem;
     }
   }
   /* 특정 열 별 설정 */

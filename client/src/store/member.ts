@@ -102,6 +102,34 @@ const initialState = {
   isAdmin: 0,
 };
 
+export const getSubjects = createAsyncThunk(
+  'getSubjects',
+  async (id: number) => {
+    const InterceptedAxios = setupInterceptorsTo(axios.create());
+    const response = await InterceptedAxios.get('/classes/' + id);
+    let list = response.data.content;
+    let newList: Subject[] = [];
+    list.filter((ele) => {
+      const newEle: Subject = {
+        code: ele.subjectEntity.classSubjectCode,
+        title: ele.classTitle,
+      };
+      if (!list.includes(newEle)) {
+        newList.push(newEle);
+      }
+    });
+
+    newList = [
+      {
+        code: -1,
+        title: '전체 선택',
+      },
+      ...newList,
+    ];
+    return newList;
+  },
+);
+
 export const saveMember = createAsyncThunk('saveMember', async (id: number) => {
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   let query = '/teachers/' + id.toString();
@@ -163,9 +191,14 @@ export const memberSlice = createSlice({
     logOut: () => initialState,
   },
   extraReducers: (builder) => {
-    builder.addCase(saveMember.fulfilled, (state, action) => {
-      return convert(action);
-    });
+    builder
+      .addCase(saveMember.fulfilled, (state, action) => {
+        return convert(action);
+      })
+      .addCase(getSubjects.fulfilled, (state, action) => {
+        const newUser = { ...state, subjects: action.payload };
+        return newUser;
+      });
   },
 });
 
