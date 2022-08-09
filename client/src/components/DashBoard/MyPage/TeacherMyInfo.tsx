@@ -6,7 +6,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
-import { getCookie } from '../../../utils/cookie';
+// import { getCookie } from '../../../utils/cookie';
 
 const TeacherMyInfo = () => {
   const memberStore = useAppSelector((state) => state.member);
@@ -17,8 +17,8 @@ const TeacherMyInfo = () => {
   const [passwordconfirm, setPasswordConfirm] = useState('');
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   const [isUse, setUse] = useState(false);
-  const accessToken = getCookie('jwt-accessToken');
-
+  const [files, setFiles] = useState('');
+  // const accessToken = getCookie('jwt-accessToken');
   const onChangePassword = (e) => {
     setPassword(e.target.value);
   };
@@ -31,8 +31,12 @@ const TeacherMyInfo = () => {
   const onChangePasswordConfirm = (e) => {
     setPasswordConfirm(e.target.value);
   };
+  const onChangeFiles = (e) => {
+    const file = e.target.files[0];
+    setFiles(file);
+  };
 
-  const emailCheck = () => {
+  const emailCheck = async () => {
     //유효성검사
     if (email === null) {
       console.log('email null~~');
@@ -69,27 +73,27 @@ const TeacherMyInfo = () => {
       alert('비밀번호가 일치하지 않습니다. 다시 확인해주세요.');
     } else {
       const frm = new FormData();
-      const data = [
+      const teacher = [
         {
           teacherId: memberStore.userId,
           manageGrade: manageGrade,
           email: email,
           password: password,
+          profile: '',
         },
       ];
       frm.append(
         'teacher',
-        new Blob([JSON.stringify(data)], {
+        new Blob([JSON.stringify(teacher)], {
           type: 'application/json',
         }),
       );
-      axios
-        .patch('/teachers', frm, {
-          headers: {
-            Authorization: 'Bearer ' + accessToken,
-            'Content-Type': `multipart/form-data`,
-          },
-        })
+      frm.append('file', files);
+      InterceptedAxios.patch('/teachers', frm, {
+        headers: {
+          'Content-Type': `multipart/form-data`,
+        },
+      })
         .then(function (response) {
           alert('정보가 수정되었습니다.');
           navigate('/teacher/teachermyinfo');
@@ -121,6 +125,12 @@ const TeacherMyInfo = () => {
             />
           )}
           <a>프로필 수정</a>
+          <input
+            type="file"
+            id="profileImage"
+            accept="image/*"
+            onChange={(e) => onChangeFiles(e)}
+          />
         </div>
 
         <div className="infoListContainer">
