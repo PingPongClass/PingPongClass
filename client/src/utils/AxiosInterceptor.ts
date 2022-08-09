@@ -64,7 +64,7 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
     axios
       .post(
         `/auth/reissue`, // token refresh api
-        refreshToken, // header // 빈 params
+        { accessToken, refreshToken }, // header // 빈 params
       )
       .then((res) => {
         const { accessToken: newAccessToken, refreshToken: newRefreshToken } =

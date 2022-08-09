@@ -2,11 +2,11 @@
 import { css } from '@emotion/react';
 import React, { useEffect, useState } from 'react';
 import useIntersectionObserver from '@src/utils/useIntersectionObserver';
-import { useAppSelector } from '@src/store/hooks';
+import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { Link } from 'react-router-dom';
 import Notice from './Notice';
-import { Subject } from '@store/member';
+import { allClass, ClassProps, getClasses, saveMember } from '@store/member';
 import axios from 'axios';
 
 export interface NoticeProps {
@@ -19,14 +19,14 @@ export interface NoticeProps {
 }
 
 const NoticeBoard = () => {
+  const dispatch = useAppDispatch();
   const memberStore = useAppSelector((state) => state.member);
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   const [isTeacher, setIsTeacher] = useState(false);
   const [keyword, setKeyword] = useState('');
-  const allSubject: Subject = { code: -1, title: '전체' };
-  const [selected, setSelected] = useState<Subject>(allSubject);
+  const [selected, setSelected] = useState<ClassProps>(allClass);
   const [articles, setArticles] = useState<NoticeProps[]>([]);
-  const [subjects, setSubjects] = useState<Subject[]>([allSubject]);
+  const [classes, setclasses] = useState<ClassProps[]>([allClass]);
   const [page, setPage] = useState(1);
   let totalPage = 0;
   let userId = -1;
@@ -42,9 +42,11 @@ const NoticeBoard = () => {
 
   const { setTarget } = useIntersectionObserver({ onIntersect });
 
-  // 임시 더미 데이터 불러오기
   useEffect(() => {
-    setSubjects(memberStore.subjects);
+    dispatch(saveMember());
+    userId = memberStore.userId;
+    dispatch(getClasses(memberStore.userId));
+    setclasses(memberStore.classes);
 
     if (memberStore.userId.toString().length !== 10) {
       setIsTeacher(true);
@@ -56,6 +58,10 @@ const NoticeBoard = () => {
   useEffect(() => {
     getNotice();
   }, [page]);
+
+  useEffect(() => {
+    // console.log(selected);
+  }, [selected]);
 
   const isYourNotice = (key: number) => {
     let currentNotice = {
@@ -111,16 +117,17 @@ const NoticeBoard = () => {
 
     let searchQuery =
       '/notice/list?paged=true&sort.sorted=true&sort.unsorted=false&classId=' +
-      selected.code.toString() +
+      selected.classId.toString() +
       '&userId=' +
       userId.toString() +
       '&pageNumber=' +
       page.toString() +
       word;
 
+    // console.log(searchQuery);
+
     InterceptedAxios.get(searchQuery).then((response) => {
       let list = response.data.content;
-
       totalPage = response.data.totalPages;
       if (totalPage >= page) {
         checkNewNotice(list);
@@ -143,17 +150,14 @@ const NoticeBoard = () => {
   };
 
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    let code = parseInt(e.target.value);
-    let title = '';
-    subjects.forEach((s) => {
-      if (s.code === code) {
-        title = s.title;
+    let classId = parseInt(e.target.value);
+    let current = allClass;
+    classes.forEach((s) => {
+      if (s.classId === classId) {
+        current = s;
       }
     });
-    setSelected({
-      code: code,
-      title: title,
-    });
+    setSelected(current);
   };
 
   return (
@@ -162,9 +166,9 @@ const NoticeBoard = () => {
         <div className="pageTitle">공지사항(관리자)</div>
         <form onSubmit={search}>
           <select onChange={handleSelect}>
-            {subjects.map((s) => (
-              <option key={s.code} value={s.code}>
-                {s.title}
+            {classes.map((s) => (
+              <option key={s.classId} value={s.classId}>
+                {s.classTitle}
               </option>
             ))}
           </select>
@@ -181,7 +185,7 @@ const NoticeBoard = () => {
                 검색
               </button>
               <button type="button" className="main-btn">
-                <Link to="/teacher/noticePost">글 쓰기</Link>
+                <Link to="/admin/noticePost">글 쓰기</Link>
               </button>
             </>
           ) : (

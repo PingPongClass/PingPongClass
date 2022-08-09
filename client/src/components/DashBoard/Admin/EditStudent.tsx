@@ -4,7 +4,7 @@ import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import React, { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { Subject, getSubjects } from '@src/store/member';
+import { Subject, getClasses } from '@src/store/member';
 
 interface StudentProps {
   noticeId?: number;
@@ -37,7 +37,7 @@ const EditNotice = () => {
 
   useEffect(() => {
     // getSubjects(memberStore.userId);
-    dispatch(getSubjects(memberStore.userId));
+    dispatch(getClasses(memberStore.userId));
   }, []);
 
   useEffect(() => {

@@ -15,6 +15,30 @@ export interface Subject {
   code: number;
   title: string;
 }
+export interface ClassProps {
+  classId: number;
+  teacherName: string;
+  subjectEntity: {
+    classSubjectCode: number;
+    name: string;
+  };
+  classTitle: string;
+  classDay: number;
+  classDesc: string;
+  timetableId: number;
+}
+export const allClass = {
+  classId: -1,
+  teacherName: '',
+  subjectEntity: {
+    classSubjectCode: -1,
+    name: '',
+  },
+  classTitle: '전체',
+  classDay: 0,
+  classDesc: '',
+  timetableId: 0,
+};
 
 export interface Member {
   userId: number;
@@ -36,7 +60,7 @@ export interface Member {
   myRank?: number;
 
   items?: Item[];
-  subjects?: Subject[];
+  classes?: ClassProps[];
 
   // 선생, 관리자만
   birth?: string;
@@ -85,50 +109,22 @@ const initialState = {
       cnt: 0,
     },
   ],
-  subjects: [
-    {
-      code: -1,
-      title: '모두 조회',
-    },
-  ],
+  classes: [],
   // 선생, 관리자만
   birth: '',
   manageGrade: 0,
-  authorities: [
-    {
-      authorityName: '권한없음',
-    },
-  ],
+  authorities: [],
   isAdmin: 0,
 };
 
-export const getSubjects = createAsyncThunk(
-  'getSubjects',
-  async (id: number) => {
-    const InterceptedAxios = setupInterceptorsTo(axios.create());
-    const response = await InterceptedAxios.get('/classes/' + id);
-    let list = response.data.content;
-    let newList: Subject[] = [];
-    list.filter((ele) => {
-      const newEle: Subject = {
-        code: ele.subjectEntity.classSubjectCode,
-        title: ele.classTitle,
-      };
-      if (!list.includes(newEle)) {
-        newList.push(newEle);
-      }
-    });
-
-    newList = [
-      {
-        code: -1,
-        title: '전체 선택',
-      },
-      ...newList,
-    ];
-    return newList;
-  },
-);
+export const getClasses = createAsyncThunk('getClasses', async (id: number) => {
+  const InterceptedAxios = setupInterceptorsTo(axios.create());
+  const response = await InterceptedAxios.get('/classes/' + id);
+  const list = response.data.content;
+  let newList: ClassProps[] = [];
+  newList = [allClass, ...list];
+  return newList;
+});
 
 export const saveMember = createAsyncThunk('saveMember', async () => {
   const InterceptedAxios = setupInterceptorsTo(axios.create());
@@ -144,7 +140,7 @@ export const saveMember = createAsyncThunk('saveMember', async () => {
   } else {
     formattedUserData.userId = userData.studentId;
   }
-  console.log(formattedUserData);
+  // console.log(formattedUserData);
   return formattedUserData;
 });
 
@@ -167,7 +163,7 @@ const convert = (action: PayloadAction<any>) => {
     levelPoint: action.payload?.levelPoint ? action.payload?.levelPoint : 0,
     myRank: action.payload?.myRank ? action.payload?.myRank : 0,
     items: action.payload?.items ? action.payload?.items : [],
-    subjects: action.payload?.subjects ? action.payload?.subjects : [],
+    classes: action.payload?.classes ? action.payload?.classes : [],
     // 선생, 관리자만
     birth: action.payload?.birth ? action.payload?.birth : '',
     manageGrade: action.payload?.manageGrade ? action.payload?.manageGrade : 0,
@@ -191,8 +187,8 @@ export const memberSlice = createSlice({
       .addCase(saveMember.fulfilled, (state, action) => {
         return convert(action);
       })
-      .addCase(getSubjects.fulfilled, (state, action) => {
-        const newUser = { ...state, subjects: action.payload };
+      .addCase(getClasses.fulfilled, (state, action) => {
+        const newUser = { ...state, classes: action.payload };
         return newUser;
       });
   },

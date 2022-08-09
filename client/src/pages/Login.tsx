@@ -44,7 +44,7 @@ const App = () => {
         sameSite: 'Lax',
         // httpOnly: true,
       });
-      setCookie('jwt-refreshToken', result.data, {
+      setCookie('jwt-refreshToken', result.data.refreshToken, {
         path: '/',
         // secure: true,
         sameSite: 'Lax',

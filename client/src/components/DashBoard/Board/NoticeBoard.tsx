@@ -2,13 +2,12 @@
 import { css } from '@emotion/react';
 import React, { useEffect, useState } from 'react';
 import useIntersectionObserver from '@src/utils/useIntersectionObserver';
-import Notice from './Notice';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
-import { setContent, selectContent } from '@src/store/content';
-import { logIn, logOut, saveMember, Subject } from '@src/store/member';
-import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
-import { getCookie } from '@src/utils/cookie';
+import { Link } from 'react-router-dom';
+import Notice from './Notice';
+import { allClass, ClassProps, getClasses, saveMember } from '@store/member';
+import axios from 'axios';
 
 export interface NoticeProps {
   noticeId: number;
@@ -25,14 +24,12 @@ const NoticeBoard = () => {
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   const [isTeacher, setIsTeacher] = useState(false);
   const [keyword, setKeyword] = useState('');
-  const [selected, setSelected] = useState<Subject>({
-    code: -1,
-    title: '전체',
-  });
+  const [selected, setSelected] = useState<ClassProps>(allClass);
   const [articles, setArticles] = useState<NoticeProps[]>([]);
-  const [subjects, setSubjects] = useState<Subject[]>([]);
+  const [classes, setclasses] = useState<ClassProps[]>([allClass]);
   const [page, setPage] = useState(1);
   let totalPage = 0;
+  let userId = -1;
 
   const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
     // console.log(`감지결과 : ${isIntersecting}`);
@@ -46,7 +43,11 @@ const NoticeBoard = () => {
   const { setTarget } = useIntersectionObserver({ onIntersect });
 
   useEffect(() => {
-    setSubjects(memberStore.subjects);
+    dispatch(saveMember());
+    userId = memberStore.userId;
+    dispatch(getClasses(memberStore.userId));
+    setclasses(memberStore.classes);
+
     if (memberStore.userId.toString().length !== 10) {
       setIsTeacher(true);
     } else {
@@ -61,6 +62,19 @@ const NoticeBoard = () => {
   useEffect(() => {
     // console.log(selected);
   }, [selected]);
+
+  const deleteNotice = (key: number) => {
+    if (memberStore.isAdmin) {
+      let finalCheck = confirm('정말로 삭제하시겠습니까?');
+      if (finalCheck) {
+        InterceptedAxios.delete('/notice/' + key.toString())
+          .then(() => {
+            setArticles(articles.filter((article) => article.noticeId !== key));
+          })
+          .catch(() => {});
+      }
+    }
+  };
 
   const search = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -79,24 +93,24 @@ const NoticeBoard = () => {
 
     let searchQuery =
       '/notice/list?paged=true&sort.sorted=true&sort.unsorted=false&classId=' +
-      selected.code.toString() +
+      selected.classId.toString() +
       '&userId=' +
-      memberStore.userId.toString() +
+      userId.toString() +
       '&pageNumber=' +
       page.toString() +
       word;
 
-    InterceptedAxios.get(searchQuery)
-      .then((response) => {
-        let list = response.data.content;
-        totalPage = response.data.totalPages;
-        if (totalPage >= page) {
-          checkNewNotice(list);
-        } else {
-          console.log('마지막 페이지입니다!');
-        }
-      })
-      .catch(() => {});
+    // console.log(searchQuery);
+
+    InterceptedAxios.get(searchQuery).then((response) => {
+      let list = response.data.content;
+      totalPage = response.data.totalPages;
+      if (totalPage >= page) {
+        checkNewNotice(list);
+      } else {
+        console.log('마지막 페이지입니다!');
+      }
+    });
   };
 
   const checkNewNotice = (value: NoticeProps[]) => {
@@ -112,28 +126,25 @@ const NoticeBoard = () => {
   };
 
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    let code = parseInt(e.target.value);
-    let title = '';
-    subjects.forEach((s) => {
-      if (s.code === code) {
-        title = s.title;
+    let classId = parseInt(e.target.value);
+    let current = allClass;
+    classes.forEach((s) => {
+      if (s.classId === classId) {
+        current = s;
       }
     });
-    setSelected({
-      code: code,
-      title: title,
-    });
+    setSelected(current);
   };
 
   return (
     <div css={totalContainer}>
       <div className="upperModalArea">
-        <div className="pageTitle">공지사항</div>
+        <div className="pageTitle">공지사항(관리자)</div>
         <form onSubmit={search}>
           <select onChange={handleSelect}>
-            {subjects.map((s) => (
-              <option key={s.code} value={s.code}>
-                {s.title}
+            {classes.map((s) => (
+              <option key={s.classId} value={s.classId}>
+                {s.classTitle}
               </option>
             ))}
           </select>
@@ -144,9 +155,20 @@ const NoticeBoard = () => {
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
           />
-          <button type="submit" className="main-btn">
-            검색
-          </button>
+          {isTeacher ? (
+            <>
+              <button type="submit" className="sub-btn">
+                검색
+              </button>
+              <button type="button" className="main-btn">
+                <Link to="/admin/noticePost">글 쓰기</Link>
+              </button>
+            </>
+          ) : (
+            <button type="submit" className="main-btn">
+              검색
+            </button>
+          )}
         </form>
       </div>
       <div className="tableArea">
