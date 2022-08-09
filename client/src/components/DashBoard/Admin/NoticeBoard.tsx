@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { Link } from 'react-router-dom';
 import Notice from './Notice';
-import { Subject } from '@store/member';
+import { allClass, ClassProps, getClasses, saveMember } from '@store/member';
 import axios from 'axios';
 
 export interface NoticeProps {
@@ -24,13 +24,11 @@ const NoticeBoard = () => {
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   const [isTeacher, setIsTeacher] = useState(false);
   const [keyword, setKeyword] = useState('');
-  const allSubject: Subject = { code: -1, title: '전체' };
-  const [selected, setSelected] = useState<Subject>(allSubject);
+  const [selected, setSelected] = useState<ClassProps>(allClass);
   const [articles, setArticles] = useState<NoticeProps[]>([]);
-  const [subjects, setSubjects] = useState<Subject[]>([allSubject]);
+  const [classes, setclasses] = useState<ClassProps[]>([allClass]);
   const [page, setPage] = useState(1);
   let totalPage = 0;
-  let userId = -1;
 
   const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
     // console.log(`감지결과 : ${isIntersecting}`);
@@ -44,9 +42,9 @@ const NoticeBoard = () => {
   const { setTarget } = useIntersectionObserver({ onIntersect });
 
   useEffect(() => {
-    userId = memberStore.userId;
-    setSubjects(memberStore.subjects);
-    // getSubjects();
+    dispatch(saveMember());
+    dispatch(getClasses(memberStore.userId));
+    setclasses(memberStore.classes);
 
     if (memberStore.userId.toString().length !== 10) {
       setIsTeacher(true);
@@ -58,10 +56,6 @@ const NoticeBoard = () => {
   useEffect(() => {
     getNotice();
   }, [page]);
-
-  useEffect(() => {
-    // console.log(selected);
-  }, [selected]);
 
   const deleteNotice = (key: number) => {
     if (memberStore.isAdmin) {
@@ -93,11 +87,11 @@ const NoticeBoard = () => {
 
     let searchQuery =
       '/notice/list?paged=true&sort.sorted=true&sort.unsorted=false&classId=' +
-      selected.code.toString() +
+      selected.classId +
       '&userId=' +
-      userId.toString() +
+      memberStore.userId +
       '&pageNumber=' +
-      page.toString() +
+      page +
       word;
 
     // console.log(searchQuery);
@@ -126,17 +120,14 @@ const NoticeBoard = () => {
   };
 
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    let code = parseInt(e.target.value);
-    let title = '';
-    subjects.forEach((s) => {
-      if (s.code === code) {
-        title = s.title;
+    let classId = parseInt(e.target.value);
+    let current = allClass;
+    classes.forEach((s) => {
+      if (s.classId === classId) {
+        current = s;
       }
     });
-    setSelected({
-      code: code,
-      title: title,
-    });
+    setSelected(current);
   };
 
   return (
@@ -145,9 +136,9 @@ const NoticeBoard = () => {
         <div className="pageTitle">공지사항(관리자)</div>
         <form onSubmit={search}>
           <select onChange={handleSelect}>
-            {subjects.map((s) => (
-              <option key={s.code} value={s.code}>
-                {s.title}
+            {classes.map((s) => (
+              <option key={s.classId} value={s.classId}>
+                {s.classTitle}
               </option>
             ))}
           </select>

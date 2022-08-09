@@ -4,7 +4,7 @@ import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import React, { useState, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '@src/store/hooks';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { Subject, getSubjects } from '@src/store/member';
+import { ClassProps, allClass, getClasses } from '@src/store/member';
 
 interface PostNoticeProps {
   noticeId?: number;
@@ -23,8 +23,7 @@ const EditNotice = () => {
   const [tmpCode, setTmpCode] = useState(-1);
   const [tmpTitle, setTmpTitle] = useState('');
   const [tmpContent, setTmpContent] = useState('');
-  const allSubject: Subject = { code: -1, title: '전체' };
-  const [subjectCodes, setSubjectCodes] = useState<Subject[]>([allSubject]);
+  const [subjectCodes, setSubjectCodes] = useState<ClassProps[]>([allClass]);
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   const memberStore = useAppSelector((state) => state.member);
   let newPost = false;
@@ -36,8 +35,8 @@ const EditNotice = () => {
   }
 
   useEffect(() => {
-    dispatch(getSubjects(memberStore.userId));
-    setSubjectCodes(memberStore.subjects);
+    dispatch(getClasses(memberStore.userId));
+    setSubjectCodes(memberStore.classes);
   }, []);
 
   useEffect(() => {
@@ -70,7 +69,7 @@ const EditNotice = () => {
     InterceptedAxios.patch('/notice/' + noticeId, notice)
       .then(() => {
         alert('수정 완료');
-        navigate('/admin/notice');
+        navigate('/taecher/notice');
       })
       .catch(() => {
         alert('수정 실패! 정보를 다시 확인해 주세요.');
@@ -81,7 +80,7 @@ const EditNotice = () => {
     InterceptedAxios.post('/notice/', notice)
       .then(() => {
         alert('추가 완료');
-        navigate('/admin/notice');
+        navigate('/taecher/notice');
       })
       .catch(() => {
         alert('작성 실패! 정보를 다시 확인해 주세요.');
@@ -106,8 +105,8 @@ const EditNotice = () => {
         }}
       >
         {subjectCodes.map((s) => (
-          <option key={s.code} value={s.code}>
-            {s.title}
+          <option key={s.classId} value={s.classId}>
+            {s.classTitle}
           </option>
         ))}
       </select>
@@ -138,7 +137,7 @@ const EditNotice = () => {
           작성
         </button>
         {/* </Link> */}
-        <Link to="/admin/notice">
+        <Link to="/teacher/notice">
           <button className="del-btn">뒤로가기</button>
         </Link>
       </div>

@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { Link } from 'react-router-dom';
+import { saveMember } from '@src/store/member';
 
 export interface StudentProps {
   isSelected: boolean;
@@ -26,23 +27,39 @@ const StudentBoard = () => {
   const [keyword, setKeyword] = useState('');
   const [students, setStudents] = useState<StudentProps[]>([]);
 
-  // const testUserId = 2022000003;
-  // const testUserId = 5030001;
-
-  // 임시 더미 데이터 불러오기
   useEffect(() => {
-    // console.log(memberStore.userId);
+    dispatch(saveMember());
+    getStudent();
   }, []);
 
-  const deleteStudent = (key: number) => {
-    let finalCheck = confirm('정말로 삭제하시겠습니까?');
-    if (finalCheck) {
-      InterceptedAxios.delete('/Student/' + key.toString())
-        .then(() => {
-          setStudents(students.filter((s) => s.studentNum !== key));
-        })
-        .catch(() => {});
-    }
+  const deleteStudent = (id: number) => {
+    InterceptedAxios.delete('/students/' + id.toString())
+      .then(() => {
+        setStudents(students.filter((s) => s.studentId !== id));
+      })
+      .catch(() => {});
+  };
+
+  const deleteSelected = () => {
+    alert('현재 봉인된 기능입니다.');
+    // let finalCheck = confirm('정말로 삭제하시겠습니까?');
+    // if (finalCheck) {
+    //   students.forEach((s) => {
+    //     if (s.isSelected === true) {
+    //       deleteStudent(s.studentId);
+    //     }
+    //   });
+    // }
+  };
+
+  const deleteAll = () => {
+    alert('현재 봉인된 기능입니다.');
+    // let finalCheck = confirm('정말로 삭제하시겠습니까?');
+    // if (finalCheck) {
+    //   students.forEach((s) => {
+    //     deleteStudent(s.studentId);
+    //   });
+    // }
   };
 
   const search = (e: React.FormEvent<HTMLFormElement>) => {
@@ -70,21 +87,35 @@ const StudentBoard = () => {
     InterceptedAxios.get(searchQuery)
       .then((response) => {
         let list = response.data;
-        // checkNewStudent(list);
-        setStudents(list);
+        let newList: StudentProps[] = [];
+        list.forEach((element) => {
+          const newElem = { ...element, isSelected: false };
+          newList.push(newElem);
+        });
+        setStudents(newList);
       })
       .catch(() => {});
   };
 
   const toggleAll = () => {
-    console.log(students);
+    let newList: StudentProps[] = [];
+    students.forEach((s) => {
+      const newElem = { ...s, isSelected: !s.isSelected };
+      newList.push(newElem);
+    });
+    setStudents(newList);
+    console.log(newList);
+  };
 
-    // students.forEach((s) => {
-    //   return {
-    //     ...s,
-    //     isSelected: !s.isSelected,
-    //   };
-    // });
+  const toggle = (id: number) => {
+    const newList = students.map((s) => {
+      if (s.studentId === id) {
+        return { ...s, isSelected: !s.isSelected };
+      } else {
+        return s;
+      }
+    });
+    setStudents(newList);
   };
 
   return (
@@ -123,7 +154,7 @@ const StudentBoard = () => {
       </div>
       <div className="tableArea">
         <div className="row titleRow">
-          <div className="col StudentId">
+          <div className="col col4">
             <input
               type="checkbox"
               name=""
@@ -132,12 +163,12 @@ const StudentBoard = () => {
             />
             이름
           </div>
-          <div className="col classTitle">학번</div>
-          <div className="col StudentId">학년</div>
-          <div className="col StudentId">반</div>
-          <div className="col StudentId">번호</div>
-          <div className="col StudentTitle">이메일</div>
-          <div className="col StudentId">수정</div>
+          <div className="col col3">학번</div>
+          <div className="col col1">학년</div>
+          <div className="col col1">반</div>
+          <div className="col col1">번호</div>
+          <div className="col col2">이메일</div>
+          <div className="col col1">수정</div>
         </div>
 
         <div className="articleArea">
@@ -146,7 +177,8 @@ const StudentBoard = () => {
               <Student
                 key={student.studentId}
                 article={student}
-                deleteStudent={deleteStudent}
+                selected={student.isSelected}
+                toggle={toggle}
               />
             );
           })}
@@ -161,10 +193,10 @@ const StudentBoard = () => {
               일괄 추가
             </button>
           </Link>
-          <button type="button" className="main-btn">
+          <button type="button" className="main-btn" onClick={deleteSelected}>
             선택 삭제
           </button>
-          <button type="button" className="main-btn">
+          <button type="button" className="main-btn" onClick={deleteAll}>
             일괄 삭제
           </button>
         </div>
@@ -287,21 +319,25 @@ const totalContainer = () => css`
     }
   }
   /* 특정 열 별 설정 */
-  .StudentId {
+  .col1 {
     max-width: 3rem;
   }
-  .classTitle,
+  .col3,
   .writer,
   .regtime {
     min-width: 14%;
     max-width: 17%;
   }
-  .StudentTitle {
+  .col2 {
     white-space: nowrap;
     text-overflow: ellipsis;
     min-width: calc(46%);
     width: calc(46%);
     max-width: calc(50%);
+  }
+  .col4 {
+    text-align: left;
+    max-width: 4rem;
   }
 `;
 
