@@ -30,7 +30,7 @@ import java.util.Map;
 @Api(value = "학생 API", tags={"학생"})
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/students")
+@RequestMapping("/be/students")
 @RequiredArgsConstructor
 public class StudentController {
     private final StudentServiceImpl service;

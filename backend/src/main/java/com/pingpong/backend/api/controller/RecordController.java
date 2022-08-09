@@ -16,7 +16,7 @@ import java.util.List;
 
 @Api(value = "강의 다시보기 API", tags={"다시보기"})
 @RestController
-@RequestMapping("/records")
+@RequestMapping("/be/records")
 @RequiredArgsConstructor
 public class RecordController {
     private final RecordService recordService;

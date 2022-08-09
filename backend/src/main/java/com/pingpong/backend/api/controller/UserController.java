@@ -24,7 +24,7 @@ import java.util.Date;
 @Api(value = "유저 API", tags={"Users(학생, 선생님) 비밀번호 찾기"})
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/users")
+@RequestMapping("/be/users")
 @RequiredArgsConstructor
 public class UserController {
 
