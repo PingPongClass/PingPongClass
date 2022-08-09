@@ -71,6 +71,7 @@ const TeacherMyInfo = () => {
           manageGrade: manageGrade,
           email: email,
           password: password,
+          profile: '',
         },
       })
         .then(function (response) {
@@ -82,6 +83,7 @@ const TeacherMyInfo = () => {
           }
         })
         .catch(function (error) {
+          console.log(error);
           alert('정보 수정에 실패하였습니다.');
         });
     }

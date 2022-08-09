@@ -4,6 +4,7 @@ import com.pingpong.backend.Exception.CustomException;
 import com.pingpong.backend.Exception.ErrorCode;
 import com.pingpong.backend.api.domain.Authority;
 import com.pingpong.backend.api.domain.TeacherEntity;
+import com.pingpong.backend.api.domain.request.TeacherRequest;
 import com.pingpong.backend.api.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
