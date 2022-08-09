@@ -245,7 +245,7 @@ const ModalCSS = css`
   }
 
   .profileContainer img {
-    height: 200px;
+    height: 150px;
   }
 
   .infoListContainer {

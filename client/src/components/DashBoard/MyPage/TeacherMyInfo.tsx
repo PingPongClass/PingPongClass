@@ -97,8 +97,7 @@ const TeacherMyInfo = () => {
       })
         .then(function (response) {
           alert('정보가 수정되었습니다.');
-          console.log(memberStore.profileFullPath);
-          navigate('/teacher/teachermyinfo');
+          location.href = '/student/mypage';
         })
         .catch(function (error) {
           console.log(error);
@@ -126,7 +125,7 @@ const TeacherMyInfo = () => {
               className="profile-logo"
             />
           )}
-          <a>프로필 수정</a>
+          <p>프로필 수정</p>
           <input
             type="file"
             id="profileImage"
@@ -230,7 +229,7 @@ const ModalCSS = css`
   }
 
   .profileContainer img {
-    height: 200px;
+    height: 150px;
   }
 
   .infoListContainer {
