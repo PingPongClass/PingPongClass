@@ -6,6 +6,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
+import { getCookie } from '../../../utils/cookie';
 
 const TeacherMyInfo = () => {
   const memberStore = useAppSelector((state) => state.member);
@@ -16,6 +17,7 @@ const TeacherMyInfo = () => {
   const [passwordconfirm, setPasswordConfirm] = useState('');
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   const [isUse, setUse] = useState(false);
+  const accessToken = getCookie('jwt-accessToken');
 
   const onChangePassword = (e) => {
     setPassword(e.target.value);
@@ -30,16 +32,17 @@ const TeacherMyInfo = () => {
     setPasswordConfirm(e.target.value);
   };
 
-  const emailCheck = async () => {
+  const emailCheck = () => {
     //유효성검사
-    console.log(email);
-    console.log(memberStore.email);
-    if (email == null) {
-      alert('이메일을 입력해주세요.');
+    if (email === null) {
+      console.log('email null~~');
+      setUse(false);
     } else if (email === memberStore.email) {
-      console.log('gd');
+      console.log('email 같음!');
       setUse(true);
     } else {
+      console.log(email);
+      console.log(memberStore.email);
       InterceptedAxios.get(`/users/email/${email}`)
         .then(function () {
           setEmail(email);
@@ -54,33 +57,42 @@ const TeacherMyInfo = () => {
 
   const onEditMyInfo = (e) => {
     emailCheck();
-    if (password == null) {
+    if (password === null) {
       alert('비밀번호를 입력해주세요.');
     } else if (isUse === false) {
-      alert('사용할 수 없는 이메일입니다. 다시 확인해주세요.');
+      alert('이메일을 확인해주세요.');
     } else if (manageGrade === null) {
       alert('담당학년을 입력해주세요.');
-    } else if (passwordconfirm == null) {
+    } else if (passwordconfirm === null) {
       alert('비밀번호확인을 입력해주세요.');
     } else if (!(password === passwordconfirm)) {
       alert('비밀번호가 일치하지 않습니다. 다시 확인해주세요.');
     } else {
-      InterceptedAxios.patch('/teachers', {
-        teacher: {
+      const frm = new FormData();
+      const data = [
+        {
           teacherId: memberStore.userId,
           manageGrade: manageGrade,
           email: email,
           password: password,
-          profile: '',
         },
-      })
+      ];
+      frm.append(
+        'teacher',
+        new Blob([JSON.stringify(data)], {
+          type: 'application/json',
+        }),
+      );
+      axios
+        .patch('/teachers', frm, {
+          headers: {
+            Authorization: 'Bearer ' + accessToken,
+            'Content-Type': `multipart/form-data`,
+          },
+        })
         .then(function (response) {
           alert('정보가 수정되었습니다.');
-          if (memberStore.userId >= 2022000000) {
-            navigate('/student/studentmyinfo');
-          } else {
-            navigate('/teacher/teachermyinfo');
-          }
+          navigate('/teacher/teachermyinfo');
         })
         .catch(function (error) {
           console.log(error);
@@ -124,7 +136,7 @@ const TeacherMyInfo = () => {
             <span>담당학년</span>
             <input
               id="manageGrade"
-              value={memberStore.manageGrade}
+              value={manageGrade}
               type="text"
               onChange={(e) => onChangeManageGrade(e)}
             />
@@ -134,7 +146,7 @@ const TeacherMyInfo = () => {
             <input
               id="email"
               type="text"
-              value={memberStore.email}
+              value={email}
               placeholder=" 이메일을 입력하세요."
               onChange={(e) => onChangeEmail(e)}
             />
