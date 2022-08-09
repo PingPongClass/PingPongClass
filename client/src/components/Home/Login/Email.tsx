@@ -44,7 +44,7 @@ function Email(props: EmailProps) {
           setEmail(email1 + '@' + email2);
           setEmailConfirmed(email);
           setUse(true);
-          alert('사용 가능한 이메일입니다.' + email);
+          alert('사용 가능한 이메일입니다.');
         })
         .catch(function (error) {
           alert('중복된 이메일입니다. 다른 이메일을 입력해주세요.');

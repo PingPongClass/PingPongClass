@@ -12,9 +12,10 @@ import { DELETE_TOKEN } from '../../store/Auth';
 
 https: interface MyPageModalStyle {
   close: any;
+  setToggle: Function;
 }
 
-const MyPageModal = ({ close }: MyPageModalStyle) => {
+const MyPageModal = ({ close, setToggle }: MyPageModalStyle) => {
   // const { accessToken } = useSelector((state: any) => state.token);
   // const dispatch = useDispatch();
   // const refreshToken = getCookieToken();
@@ -56,6 +57,12 @@ const MyPageModal = ({ close }: MyPageModalStyle) => {
     alert('로그아웃 하시겠습니까?');
     cookies.remove('jwt-refreshToken');
     location.href = '/';
+    setToggle('');
+  };
+
+  const onClickMyPage = () => {
+    location.href = '/teacher/mypage';
+    setToggle('');
   };
 
   return (
@@ -70,6 +77,7 @@ const MyPageModal = ({ close }: MyPageModalStyle) => {
             />
           </div>
           <h3 onClick={onClickLogout}>로그아웃</h3>
+
           <Link to="mypage" className="linkButton">
             <h3 onClick={() => close()}>마이페이지</h3>
           </Link>

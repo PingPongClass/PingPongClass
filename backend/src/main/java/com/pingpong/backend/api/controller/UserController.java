@@ -10,6 +10,7 @@ import com.pingpong.backend.api.repository.TeacherRepository;
 import com.pingpong.backend.api.service.EmailService;
 import com.pingpong.backend.api.service.StudentServiceImpl;
 import com.pingpong.backend.api.service.TeacherServiceImpl;
+import com.pingpong.backend.util.SecurityUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -104,6 +105,19 @@ public class UserController {
             return new ResponseEntity<String>("중복된 이메일입니다.", HttpStatus.FORBIDDEN);
         } else{
             return new ResponseEntity<String>("사용가능한 이메일입니다.", HttpStatus.OK);
+        }
+    }
+
+    @PostMapping("/info")
+    @PreAuthorize("hasRole('STUDENT')")
+    @ApiOperation(value = "유저 정보 제공!!!", notes = "")
+    public ResponseEntity<?> getUserInfo() {
+        String id = SecurityUtil.getCurrentUsername();
+        if(id == null) return new ResponseEntity<String>("로그인된 회원을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+        if(id.length() == 10){
+            return ResponseEntity.ok(studentRepository.findById(Integer.parseInt(id)));
+        } else{
+            return ResponseEntity.ok(teacherRepository.findById(Integer.parseInt(id)));
         }
     }
 }

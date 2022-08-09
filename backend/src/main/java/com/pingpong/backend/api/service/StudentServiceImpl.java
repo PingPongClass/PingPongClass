@@ -2,9 +2,10 @@ package com.pingpong.backend.api.service;
 
 import com.pingpong.backend.Exception.CustomException;
 import com.pingpong.backend.Exception.ErrorCode;
-import com.pingpong.backend.api.domain.*;
+import com.pingpong.backend.api.domain.Authority;
+import com.pingpong.backend.api.domain.RankingEntity;
+import com.pingpong.backend.api.domain.StudentEntity;
 import com.pingpong.backend.api.domain.request.StudentRequest;
-import com.pingpong.backend.api.domain.response.NoticeResponse;
 import com.pingpong.backend.api.domain.response.RankResponse;
 import com.pingpong.backend.api.repository.LogRepository;
 import com.pingpong.backend.api.repository.RankingRepository;

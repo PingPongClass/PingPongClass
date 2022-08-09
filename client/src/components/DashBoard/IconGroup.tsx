@@ -8,23 +8,25 @@ import MyPageModal from './MyPageModal';
 
 const IconGroup = () => {
   const [toggle, setToggle] = useState('');
-  const onClick = (method: any) => {
-    setToggle(method);
+  const onClickIcon = (icon: string) => {
+    setToggle(icon);
   };
 
   return (
     <div css={totalContainer}>
-      <button onClick={() => onClick('timeTable')}>
+      <button onClick={() => onClickIcon('timeTable')}>
         <EventIcon />
       </button>
-      <button onClick={() => onClick('alarm')}>
+      <button onClick={() => onClickIcon('alarm')}>
         <NotificationsNoneIcon />
       </button>
-      <button onClick={() => onClick('myPage')}>
+      <button onClick={() => onClickIcon('myPage')}>
         <AccountCircleIcon />
       </button>
-      {toggle === 'alarm' ? <AlarmModal close={onClick} /> : null}
-      {toggle === 'myPage' ? <MyPageModal close={onClick} /> : null}
+      {toggle === 'alarm' ? <AlarmModal close={onClickIcon} /> : null}
+      {toggle === 'myPage' ? (
+        <MyPageModal close={onClickIcon} setToggle={setToggle} />
+      ) : null}
     </div>
   );
 };

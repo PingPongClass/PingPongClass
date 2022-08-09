@@ -36,11 +36,13 @@ public class JwtFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
+        System.out.println("---------------doFilter");
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         String jwt = resolveToken(httpServletRequest);  //request에서 토큰 받기
         String requestURI = httpServletRequest.getRequestURI();
 
         if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {         //유효성 검증 메서드 통과
+            System.out.println("---------------Security Context에 저장함");
             Authentication authentication = tokenProvider.getAuthentication(jwt);   //정상 토큰이면 SecurityContext에 저장
             SecurityContextHolder.getContext().setAuthentication(authentication);
             logger.debug("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getName(), requestURI);
