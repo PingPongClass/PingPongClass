@@ -125,7 +125,6 @@ const TeacherMyInfo = () => {
               className="profile-logo"
             />
           )}
-          <p>프로필 수정</p>
           <input
             type="file"
             id="profileImage"
@@ -220,8 +219,10 @@ const ModalCSS = css`
   }
 
   .profileContainer {
-    height: 100%;
+    width: 200px;
+    height: 200px;
     box-sizing: border-box;
+    border-radius: 200px;
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -229,10 +230,24 @@ const ModalCSS = css`
   }
 
   .profileContainer img {
-    height: 150px;
+    border-radius: 200px;
+    width: 100%;
+    height: 100%;
   }
 
-  .infoListContainer {
+  .profileContainer img:hover {
+    transform: scale(1.03);
+  }
+
+  .profileContainer input {
+    position: absolute;
+    border-radius: 200px;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+  }
+
+  .profileContainer .infoListContainer {
     width: 480px;
     height: 100%;
     box-sizing: border-box;

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import SetupComponent from './components/SetupComponent';
 import VideoRoomComponent from './components/VideoRoomComponent';
+import { useParams } from 'react-router-dom';
 
 const App = () => {
   const [tap, setTap] = useState('setup');
@@ -18,6 +19,9 @@ const App = () => {
   // 비디오를 켜고 들어갈 것인지 끄고 들어갈 것인지
   const [isVideoOn, setIsVideoOn] = useState(true);
   const [isAudioOn, setIsAudioOn] = useState(true);
+
+  // 입장코드
+  const { code } = useParams();
 
   const setDevices = {
     videos,
@@ -45,9 +49,11 @@ const App = () => {
   return (
     <>
       {tap === 'setup' && (
-        <SetupComponent setTap={setTap} setDevices={setDevices} />
+        <SetupComponent setTap={setTap} setDevices={setDevices} code={code} />
       )}
-      {tap === 'class' && <VideoRoomComponent setDevices={setDevices} />}
+      {tap === 'class' && (
+        <VideoRoomComponent setDevices={setDevices} code={code} />
+      )}
     </>
   );
 };

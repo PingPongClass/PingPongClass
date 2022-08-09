@@ -17,7 +17,7 @@ import Videocam from '@mui/icons-material/Videocam';
 import VideocamOff from '@mui/icons-material/VideocamOff';
 
 const SetupComponent = (props) => {
-  const { setTap, setDevices } = props;
+  const { setTap, setDevices, code } = props;
   const {
     videos,
     setVideos,
@@ -142,6 +142,9 @@ const SetupComponent = (props) => {
 
   return (
     <div className="totalContainer">
+      <div className="RoomName">
+        <h3>{code}</h3>
+      </div>
       <div className="preview">
         <video ref={previewFace} autoPlay />
       </div>

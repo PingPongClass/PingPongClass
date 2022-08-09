@@ -118,7 +118,6 @@ const StudentMyInfo = () => {
               className="profile-logo"
             />
           )}
-          <p>프로필 수정</p>
           <input
             type="file"
             id="profileImage"
@@ -236,8 +235,10 @@ const ModalCSS = css`
   }
 
   .profileContainer {
+    width: 100%;
     height: 100%;
     box-sizing: border-box;
+    border-radius: 200px;
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -245,7 +246,8 @@ const ModalCSS = css`
   }
 
   .profileContainer img {
-    height: 150px;
+    height: 200px;
+    border-radius: 200px;
   }
 
   .infoListContainer {

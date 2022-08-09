@@ -41,9 +41,7 @@ class VideoRoomComponent extends Component {
     // layout: 현재 레이아웃 (openvidu-layout.js와 연결)
     this.layout = new OpenViduLayout();
     // sessionName: 세션 이름을 담은 변수 (기본값 SessionA)
-    let sessionName = this.props.sessionName
-      ? this.props.sessionName
-      : 'Session031311';
+    let sessionName = this.props.code;
     // userName: 유저의 이름 (기본 OpenVidu_User + 0부터 99까지의 랜덤한 숫자)
     let userName = this.props.user
       ? this.props.user

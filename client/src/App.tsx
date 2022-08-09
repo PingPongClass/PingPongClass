@@ -4,7 +4,7 @@ import DashBoard from '@pages/DashBoard';
 import TeacherDashBoard from '@pages/TeacherDashBoard';
 import Style from '@pages/Style';
 import Login from '@pages/Login';
-import OpenVidu from './openvidu/App';
+import OpenVidu from '@openvidu/App';
 import MainContent from '@components/DashBoard/MainContent';
 import NoticeBoard from '@components/DashBoard/Board/NoticeBoard';
 import ClassList from '@components/DashBoard/TodaysClass/ClassList';
@@ -22,8 +22,8 @@ import AddStudent from '@components/DashBoard/Admin/AddStudent';
 import AddStudentBulk from '@components/DashBoard/Admin/AddStudentBulk';
 import EditStudent from '@components/DashBoard/Admin/EditStudent';
 import StudentBoard from '@components/DashBoard/Admin/StudentBoard';
-import StudentMyInfo from './components/DashBoard/MyPage/StudentMyInfo';
-import TeacherMyInfo from './components/DashBoard/MyPage/TeacherMyInfo';
+import StudentMyInfo from '@components/DashBoard/MyPage/StudentMyInfo';
+import TeacherMyInfo from '@components/DashBoard/MyPage/TeacherMyInfo';
 import '@src/App.css';
 
 const App = () => {
@@ -65,7 +65,7 @@ const App = () => {
             <Route path="studentEdit/:studentId" element={<EditStudent />} />
           </Route>
           <Route path="/style" element={<Style />} />
-          <Route path="/class" element={<OpenVidu />} />
+          <Route path="/class/:code" element={<OpenVidu />} />
         </Routes>
       </BrowserRouter>
     </div>

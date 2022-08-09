@@ -23,14 +23,16 @@ function TeacherTodaysClass() {
     });
     setClassList(result.data.content);
     console.log(result);
+    console.log(classList);
   };
 
   useEffect(() => {
     loadClassList();
-  }, [classList]);
+  }, [memberStore]);
 
   return (
     <div css={totalContainer}>
+      {classList.length === 0 && <p>오늘은 수업이 없습니다.</p>}
       <Swiper
         pagination={{
           type: 'progressbar',
