@@ -5,8 +5,27 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import ClassCard from '@components/DashBoard/TodaysClass/ClassCard';
+import axios from 'axios';
+import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
+import { useEffect, useState } from 'react';
+import { useAppSelector } from '@src/store/hooks';
 
 function TodaysClass() {
+  const AXIOS = setupInterceptorsTo(axios.create());
+  const [classList, setClassList] = useState([] as any);
+  const loadClassList = async () => {
+    const studentId = 2022000001;
+    const classDay = 1;
+    const result = await AXIOS.get(`/classes/${studentId}/today`, {
+      params: { id: studentId, day: classDay },
+    });
+    setClassList(result.data.content);
+  };
+
+  useEffect(() => {
+    loadClassList();
+  }, []);
+
   return (
     <div css={totalContainer}>
       <Swiper
@@ -19,24 +38,11 @@ function TodaysClass() {
         modules={[Pagination, Navigation]}
         className="mySwiper"
       >
-        <SwiperSlide>
-          <ClassCard objectName={'수학'} />
-        </SwiperSlide>
-        <SwiperSlide>
-          <ClassCard objectName={'국어'} />
-        </SwiperSlide>
-        <SwiperSlide>
-          <ClassCard objectName={'영어'} />
-        </SwiperSlide>
-        <SwiperSlide>
-          <ClassCard objectName={'사회'} />
-        </SwiperSlide>
-        <SwiperSlide>
-          <ClassCard objectName={'물리'} />
-        </SwiperSlide>
-        <SwiperSlide>
-          <ClassCard objectName={'화학'} />
-        </SwiperSlide>
+        {classList.map((cls, idx) => (
+          <SwiperSlide key={idx}>
+            <ClassCard objectName={cls.classTitle} />
+          </SwiperSlide>
+        ))}
       </Swiper>
     </div>
   );

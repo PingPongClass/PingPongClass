@@ -3,12 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
+import { useNavigate } from 'react-router-dom';
 interface PasswordProps {
   setTap: Function;
   email: String;
   userId: String;
 }
-
+const navigate = useNavigate();
 const PasswordSetting = (props: PasswordProps) => {
   const { setTap, email, userId } = props;
   const [password1, setPassword1] = useState('');
@@ -52,8 +53,7 @@ const PasswordSetting = (props: PasswordProps) => {
           password: password1,
         })
           .then(function (response) {
-            alert('로그인 성공');
-            location.href = '/dashboard';
+            navigate('/student');
           })
           .catch(function (error) {
             alert('회원수정 실패.');
@@ -67,6 +67,7 @@ const PasswordSetting = (props: PasswordProps) => {
         })
           .then(function (response) {
             alert('로그인 성공');
+            navigate('/teacher');
           })
           .catch(function (error) {
             alert('회원수정 실패.');

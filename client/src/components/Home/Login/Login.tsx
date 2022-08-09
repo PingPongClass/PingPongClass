@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import axios from 'axios';
@@ -8,6 +9,7 @@ import { setRefreshToken } from '../../../storage/Cookie';
 import { SET_TOKEN } from '../../../store/Auth';
 import { saveMember, logIn, logOut } from '@src/store/member';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
+import { useNavigate } from 'react-router-dom';
 
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -26,7 +28,7 @@ const Login = (props: LoginProps) => {
   const [toastMsg, setToast] = useState('');
 
   const dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
   const notify = () =>
     toast.success(toastMsg, {
       position: 'top-center',
@@ -93,16 +95,13 @@ const Login = (props: LoginProps) => {
           setTap('email');
         } else {
           if (userId.length == 10) {
-            alert('로그인 성공');
-            location.href = '/student';
+            navigate('/student');
           }
           if (userId.length == 7 && userId.charAt(0) === '4') {
-            alert('로그인 성공');
-            location.href = '/teacher';
+            navigate('/teacher');
           }
           if (userId.length == 7 && userId.charAt(0) === '5') {
-            alert('로그인 성공');
-            location.href = '/admin';
+            navigate('/admin');
           }
         }
         dispatch(saveMember(parseInt(props.userId)));
@@ -188,3 +187,4 @@ const totalContainer = css`
 `;
 
 export default Login;
+>>>>>>> develop
