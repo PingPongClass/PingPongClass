@@ -21,7 +21,6 @@ interface LoginProps {
 const Login = (props: LoginProps) => {
   const { setTap, userId, setUserId } = props;
   const [userPw, setUserPw] = useState('');
-  const [accessToken, setToken] = useState('');
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   const [toastMsg, setToast] = useState('');
 
@@ -70,7 +69,6 @@ const Login = (props: LoginProps) => {
         console.log(response);
         const expires = new Date();
         expires.setMinutes(+expires.getMinutes + 60);
-        setToken(response.data.accessToken);
         // localStorage 저장
         if (response.data) {
           setCookie('jwt-accessToken', response.data.accessToken, {
@@ -79,7 +77,7 @@ const Login = (props: LoginProps) => {
             expires,
             sameSite: 'Lax',
           });
-          setCookie('jwt-refreshToken', response.data, {
+          setCookie('jwt-refreshToken', response.data.refreshToken, {
             path: '/',
             // secure: true,
             sameSite: 'Lax',
