@@ -41,12 +41,22 @@ const App = () => {
             <Route path="studentmyinfo" element={<StudentMyInfo />} />
           </Route>
           <Route path="/teacher" element={<TeacherDashBoard />}>
-            <Route path="" element={<TeacherMainContent />} />
+            <Route path="" element={<TeacherDashBoard />} />
             <Route path="notice" element={<TeacherNoticeBoard />} />
             <Route path="classes" element={<TeacherClassList />} />
             <Route path="create" element={<TeacherNewClass />} />
             <Route path="mypage" element={<InputPassword />} />
             <Route path="teachermyinfo" element={<TeacherMyInfo />} />
+          </Route>
+          <Route path="/admin" element={<AdminDashBoard />}>
+            <Route path="" element={<MainContent />} />
+            <Route path="notice" element={<AdminNotice />} />
+            <Route path="noticeEdit/:noticeId" element={<EditNotice />} />
+            <Route path="noticePost" element={<EditNotice />} />
+            <Route path="students" element={<StudentBoard />} />
+            <Route path="studentAdd" element={<AddStudent />} />
+            <Route path="studentAddBulk" element={<AddStudentBulk />} />
+            <Route path="studentEdit" element={<EditStudent />} />
           </Route>
           <Route path="/style" element={<Style />} />
           <Route path="/class" element={<OpenVidu />} />

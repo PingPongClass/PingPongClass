@@ -25,6 +25,7 @@ import { setCookie, getCookie } from './cookie';
 const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
   // console.info(`[요청] [${JSON.stringify(config)}]`);
   // config.baseURL = 'http://i7a403.p.ssafy.io:8080';
+
   return config;
 };
 
@@ -58,6 +59,7 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
 
     let accessToken = getCookie('jwt-accessToken');
     let refreshToken = getCookie('jwt-refreshToken');
+
     // token refresh 요청
     axios
       .post(
@@ -95,6 +97,8 @@ export function setupInterceptorsTo(
   axiosInstance.interceptors.request.use(onRequest, onRequestError);
   axiosInstance.interceptors.response.use(onResponse, onResponseError);
   axiosInstance.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+  // axiosInstance.defaults.headers.common['Content-Type'] =
+  //   'application/json; charset=UTF-8';
 
   return axiosInstance;
 }
