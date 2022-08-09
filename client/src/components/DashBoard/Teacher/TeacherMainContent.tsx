@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import TeacherMyInfo from '@components/DashBoard/Teacher/TeacherMyInfo';
-import TodaysClass from '@components/DashBoard/TodaysClass';
+import TeacherTodaysClass from '@components/DashBoard/Teacher/TeacherTodaysClass';
 
 const MainContent = () => {
   return (
@@ -10,7 +10,7 @@ const MainContent = () => {
       </div>
       <h2>오늘의 수업</h2>
       <div className="todaysClass">
-        <TodaysClass />
+        <TeacherTodaysClass />
       </div>
     </div>
   );
