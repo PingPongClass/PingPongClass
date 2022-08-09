@@ -102,7 +102,7 @@ const Login = (props: LoginProps) => {
             navigate('/admin');
           }
         }
-        dispatch(saveMember(parseInt(props.userId)));
+        dispatch(saveMember());
         dispatch(getSubjects(parseInt(props.userId)));
         console.log('로그인 성공', response);
       })
@@ -186,4 +186,3 @@ const totalContainer = css`
 `;
 
 export default Login;
-

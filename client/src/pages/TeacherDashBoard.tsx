@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
+import axios from 'axios';
 import IconGroup from '@components/DashBoard/IconGroup';
 import TeacherNavBar from '@components/DashBoard/Teacher/TeacherNavBar';
 import dashboardBackground from '@assets/images/dashboardBackground.png';
 import Footer from '@components/DashBoard/Footer/Footer';
+import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Outlet } from 'react-router-dom';
+import { saveMember } from '@src/store/member';
+import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 
 const DashBoard = () => {
   const [toastMsg, setToast] = useState('원재호 선생님 로그인 되었습니다.');
+  const dispatch = useAppDispatch();
+
   const notify = () =>
     toast.success(toastMsg, {
       position: 'top-center',
@@ -28,6 +34,10 @@ const DashBoard = () => {
     notify();
     setToast('');
   }
+
+  useEffect(() => {
+    dispatch(saveMember());
+  }, []);
 
   return (
     <div css={totalContainer}>
