@@ -6,24 +6,35 @@ import { Link } from 'react-router-dom';
 const Student = (props: {
   key: number;
   article: StudentProps;
-  deleteStudent: Function;
+  selected: boolean;
+  toggle: Function;
 }) => {
-  const [visible, setVisible] = useState(false);
+  const [checked, setChecked] = useState(props.selected);
   const [article, setArticle] = useState<StudentProps>(props.article);
 
+  const toggleCheck = () => {
+    setChecked(!checked);
+    props.toggle(article.studentId);
+  };
+
   return (
-    <div className={visible ? 'row articleRow highlited' : 'row articleRow'}>
+    <div className="row articleRow">
       {/* <button className="row article-btn" onClick={(e) => toggleNotice(e)}> */}
       <div>
-        <input type="checkbox" name="" id={`check` + article.studentId} />
+        <input
+          type="checkbox"
+          name=""
+          onChange={toggleCheck}
+          checked={props.selected}
+        />
       </div>
-      <div className="col StudentId">{article.name}</div>
-      <div className="col classTitle">{article.studentId}</div>
-      <div className="col StudentId">{article.grade}</div>
-      <div className="col StudentId">{article.classNum}</div>
-      <div className="col StudentId">{article.studentNum}</div>
-      <div className="col StudentTitle">{article.email}</div>
-      <div className="col StudentId">
+      <div className="col col4">{article.name}</div>
+      <div className="col col3">{article.studentId}</div>
+      <div className="col col1">{article.grade}</div>
+      <div className="col col1">{article.classNum}</div>
+      <div className="col col1">{article.studentNum}</div>
+      <div className="col col2">{article.email}</div>
+      <div className="col col1">
         <Link to={`/teacher/studentEdit/${article.studentId}`}>
           <button type="button" className="edit-btn">
             수정
@@ -33,5 +44,4 @@ const Student = (props: {
     </div>
   );
 };
-
 export default Student;
