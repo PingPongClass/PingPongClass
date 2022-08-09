@@ -27,7 +27,7 @@ function TeacherTodaysClass() {
 
   useEffect(() => {
     loadClassList();
-  }, []);
+  }, [classList]);
 
   return (
     <div css={totalContainer}>
