@@ -49,6 +49,7 @@ const NoticeBoard = () => {
   // 임시 더미 데이터 불러오기
   useEffect(() => {
     userId = memberStore.userId;
+    console.log(memberStore);
 
     setSubjects(memberStore.subjects);
 

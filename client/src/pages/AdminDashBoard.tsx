@@ -27,7 +27,7 @@ const DashBoard = () => {
 
   useEffect(() => {
     // 테스트용 직원 아이디
-    dispatch(saveMember(5030001));
+    // dispatch(saveMember(5030001));
   }, []);
 
   // toastMsg에 원하는 메시지를 써서 함수를 실행하면 됨
