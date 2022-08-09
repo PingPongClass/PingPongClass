@@ -7,6 +7,7 @@ import lombok.Getter;
 
 @Getter
 public class ClassResponse {
+    private int classId;
     private String teacherName;
     private SubjectEntity subjectEntity;
     private String classTitle;
@@ -15,6 +16,7 @@ public class ClassResponse {
     private int timetableId;
 
     public ClassResponse(ClassEntity classEntity){
+        this.classId=classEntity.getClassId();
         this.teacherName = classEntity.getTeacherEntity().getName();
         this.subjectEntity = classEntity.getSubjectEntity();
         this.classTitle = classEntity.getClassTitle();
