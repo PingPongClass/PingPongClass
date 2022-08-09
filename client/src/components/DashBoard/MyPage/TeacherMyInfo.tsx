@@ -2,9 +2,91 @@ import { css } from '@emotion/react';
 import ProfilImage from '../../../assets/images/profile.png';
 import { useAppSelector } from '@src/store/hooks';
 import IosModalNew from '@src/components/Common/IosModalNew';
+import { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 
 const TeacherMyInfo = () => {
   const memberStore = useAppSelector((state) => state.member);
+  const [email, setEmail] = useState(memberStore.email);
+  const navigate = useNavigate();
+  const [manageGrade, setManageGrade] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordconfirm, setPasswordConfirm] = useState('');
+  const InterceptedAxios = setupInterceptorsTo(axios.create());
+  const [isUse, setUse] = useState(false);
+
+  const onChangePassword = (e) => {
+    setPassword(e.target.value);
+  };
+  const onChangeManageGrade = (e) => {
+    setManageGrade(e.target.value);
+  };
+  const onChangeEmail = (e) => {
+    setEmail(e.target.value);
+  };
+  const onChangePasswordConfirm = (e) => {
+    setPasswordConfirm(e.target.value);
+  };
+
+  const emailCheck = async () => {
+    //유효성검사
+    console.log(email);
+    console.log(memberStore.email);
+    if (email == null) {
+      alert('이메일을 입력해주세요.');
+    } else if (email === memberStore.email) {
+      console.log('gd');
+      setUse(true);
+    } else {
+      InterceptedAxios.get(`/users/email/${email}`)
+        .then(function () {
+          setEmail(email);
+          setUse(true);
+        })
+        .catch(function (error) {
+          setEmail('');
+          setUse(false);
+        });
+    }
+  };
+
+  const onEditMyInfo = (e) => {
+    emailCheck();
+    if (password == null) {
+      alert('비밀번호를 입력해주세요.');
+    } else if (isUse === false) {
+      alert('사용할 수 없는 이메일입니다. 다시 확인해주세요.');
+    } else if (manageGrade === null) {
+      alert('담당학년을 입력해주세요.');
+    } else if (passwordconfirm == null) {
+      alert('비밀번호확인을 입력해주세요.');
+    } else if (!(password === passwordconfirm)) {
+      alert('비밀번호가 일치하지 않습니다. 다시 확인해주세요.');
+    } else {
+      InterceptedAxios.patch('/teachers', {
+        teacher: {
+          teacherId: memberStore.userId,
+          manageGrade: manageGrade,
+          email: email,
+          password: password,
+        },
+      })
+        .then(function (response) {
+          alert('정보가 수정되었습니다.');
+          if (memberStore.userId >= 2022000000) {
+            navigate('/student/studentmyinfo');
+          } else {
+            navigate('/teacher/teachermyinfo');
+          }
+        })
+        .catch(function (error) {
+          alert('정보 수정에 실패하였습니다.');
+        });
+    }
+  };
+
   return (
     <div css={ModalCSS}>
       <div className="commonModal">
@@ -37,12 +119,22 @@ const TeacherMyInfo = () => {
             <input id="id" value={memberStore.userId} type="text" readOnly />
           </div>
           <div className="fieldContainer">
+            <span>담당학년</span>
+            <input
+              id="manageGrade"
+              value={memberStore.manageGrade}
+              type="text"
+              onChange={(e) => onChangeManageGrade(e)}
+            />
+          </div>
+          <div className="fieldContainer">
             <span>이메일</span>
             <input
               id="email"
-              type="email"
+              type="text"
               value={memberStore.email}
               placeholder=" 이메일을 입력하세요."
+              onChange={(e) => onChangeEmail(e)}
             />
           </div>
           <div className="fieldContainer">
@@ -51,6 +143,7 @@ const TeacherMyInfo = () => {
               id="password"
               type="password"
               placeholder=" 8자리 이상 16자리 이하, 영문자, 숫자 포함."
+              onChange={(e) => onChangePassword(e)}
             />
           </div>
           <div className="fieldContainer">
@@ -59,12 +152,13 @@ const TeacherMyInfo = () => {
               id="passwordConfirm"
               type="password"
               placeholder=" 비밀번호를 입력하세요."
+              onChange={(e) => onChangePasswordConfirm(e)}
             />
           </div>
         </div>
       </div>
       <div className="buttonsContainer">
-        <button type="submit" className="submit">
+        <button type="button" className="submit" onClick={onEditMyInfo}>
           수정
         </button>
         <button type="button" className="cancel">

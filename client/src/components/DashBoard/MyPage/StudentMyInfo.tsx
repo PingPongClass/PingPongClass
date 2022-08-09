@@ -97,7 +97,7 @@ const StudentMyInfo = () => {
         </div>
       </div>
       <div className="buttonsContainer">
-        <button type="submit" className="submit">
+        <button type="button" className="submit">
           수정
         </button>
         <button type="button" className="cancel">
