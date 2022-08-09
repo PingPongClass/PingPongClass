@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import axios from 'axios';
 import { useState } from 'react';
@@ -187,4 +185,3 @@ const totalContainer = css`
 `;
 
 export default Login;
->>>>>>> develop

@@ -9,7 +9,7 @@ interface PasswordProps {
   email: String;
   userId: String;
 }
-const navigate = useNavigate();
+
 const PasswordSetting = (props: PasswordProps) => {
   const { setTap, email, userId } = props;
   const [password1, setPassword1] = useState('');
@@ -17,7 +17,7 @@ const PasswordSetting = (props: PasswordProps) => {
   const [emailCheckMsg, setMsg] = useState('');
   const [nextAvailable, setNextAvailable] = useState(false);
   const InterceptedAxios = setupInterceptorsTo(axios.create());
-
+  const navigate = useNavigate();
   const onClickReturn = () => {
     setTap('email');
   };
