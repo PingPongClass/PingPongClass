@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '@src/store/hooks';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { ClassProps, allClass, getClasses } from '@src/store/member';
+import { NoticeBoardStyle } from '../Board/NoticeBoard';
 
 interface PostNoticeProps {
   noticeId?: number;
@@ -69,7 +70,7 @@ const EditNotice = () => {
     InterceptedAxios.patch('/notice/' + noticeId, notice)
       .then(() => {
         alert('수정 완료');
-        navigate('/taecher/notice');
+        navigate('/teacher/notice');
       })
       .catch(() => {
         alert('수정 실패! 정보를 다시 확인해 주세요.');
@@ -80,7 +81,7 @@ const EditNotice = () => {
     InterceptedAxios.post('/notice/', notice)
       .then(() => {
         alert('추가 완료');
-        navigate('/taecher/notice');
+        navigate('/teacher/notice');
       })
       .catch(() => {
         alert('작성 실패! 정보를 다시 확인해 주세요.');
@@ -97,7 +98,7 @@ const EditNotice = () => {
   };
 
   return (
-    <div>
+    <div css={NoticeBoardStyle}>
       과목:{' '}
       <select
         onChange={(e) => {

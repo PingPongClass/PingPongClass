@@ -5,7 +5,7 @@ import Student from './Student';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { saveMember } from '@src/store/member';
 
 export interface StudentProps {
@@ -21,6 +21,7 @@ export interface StudentProps {
 const StudentBoard = () => {
   const dispatch = useAppDispatch();
   const memberStore = useAppSelector((state) => state.member);
+  const navigate = useNavigate();
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   const [classNum, setClassNum] = useState<number>();
   const [grade, setGrade] = useState<number>();
@@ -42,23 +43,29 @@ const StudentBoard = () => {
 
   const deleteSelected = () => {
     alert('현재 봉인된 기능입니다.');
-    // let finalCheck = confirm('정말로 삭제하시겠습니까?');
-    // if (finalCheck) {
-    //   students.forEach((s) => {
-    //     if (s.isSelected === true) {
-    //       deleteStudent(s.studentId);
-    //     }
+    // let finalCheck = confirm('정말로 선택된 학생들을 삭제하시겠습니까?');
+    // const deleteList = students
+    //   .filter((s1) => s1.isSelected === true)
+    //   .map((s2) => {
+    //     return s2.studentId;
     //   });
+    // if (finalCheck) {
+    // InterceptedAxios.delete('/students/student/select', deleteList);
+    // .then(() => {
+    // })
+    // .catch(() => {});
     // }
   };
 
   const deleteAll = () => {
     alert('현재 봉인된 기능입니다.');
-    // let finalCheck = confirm('정말로 삭제하시겠습니까?');
+    // let finalCheck = confirm('정말로 모든 학생들을 삭제하시겠습니까?');
     // if (finalCheck) {
-    //   students.forEach((s) => {
-    //     deleteStudent(s.studentId);
-    //   });
+    //   InterceptedAxios.delete('/students/student/all')
+    //     .then(() => {
+    //       navigate('/admin');
+    //     })
+    //     .catch(() => {});
     // }
   };
 

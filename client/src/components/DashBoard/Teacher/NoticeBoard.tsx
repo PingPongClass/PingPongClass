@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import useIntersectionObserver from '@src/utils/useIntersectionObserver';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import Notice from './Notice';
 import { allClass, ClassProps, getClasses, saveMember } from '@store/member';
 import axios from 'axios';
+import { NoticeBoardStyle } from '../Board/NoticeBoard';
 
 export interface NoticeProps {
   noticeId: number;
@@ -41,17 +42,20 @@ const NoticeBoard = () => {
 
   const { setTarget } = useIntersectionObserver({ onIntersect });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     dispatch(saveMember());
-    dispatch(getClasses(memberStore.userId));
-    setclasses(memberStore.classes);
+  }, []);
 
+  useEffect(() => {
+    dispatch(getClasses(memberStore.userId)).then(() => {
+      setclasses(memberStore.classes);
+    });
     if (memberStore.userId.toString().length !== 10) {
       setIsTeacher(true);
     } else {
       setIsTeacher(false);
     }
-  }, []);
+  }, [memberStore]);
 
   useEffect(() => {
     getNotice();
@@ -59,7 +63,7 @@ const NoticeBoard = () => {
 
   useEffect(() => {
     // console.log(selected);
-  }, [selected]);
+  }, [classes]);
 
   const isYourNotice = (key: number) => {
     let currentNotice = {
@@ -159,9 +163,9 @@ const NoticeBoard = () => {
   };
 
   return (
-    <div css={totalContainer}>
+    <div css={NoticeBoardStyle}>
       <div className="upperModalArea">
-        <div className="pageTitle">공지사항(관리자)</div>
+        <div className="pageTitle">공지사항(선생님)</div>
         <form onSubmit={search}>
           <select onChange={handleSelect}>
             {classes.map((s) => (
@@ -220,197 +224,5 @@ const NoticeBoard = () => {
     </div>
   );
 };
-
-const totalContainer = () => css`
-  /* 전역 */
-  text-align: center;
-  width: -webkit-fill-available;
-  height: inherit;
-  position: relative;
-  /* overflow: hidden; */
-  max-height: inherit;
-  max-width: inherit;
-
-  .pageTitle {
-    text-align: left;
-    /* font-size: 2rem; */
-    border-bottom: 0.15rem solid black;
-    width: inherit;
-  }
-
-  form {
-    margin: 0.5rem;
-    button {
-      border: none;
-    }
-    .main-btn {
-      background-color: pink;
-    }
-    .sub-btn {
-      background-color: grey;
-    }
-  }
-
-  /* table 영역 */
-  .tableArea {
-    border-spacing: 0;
-    width: inherit;
-    height: inherit;
-    position: absolute;
-    /* overflow-y: scroll; */
-  }
-
-  /* 스크롤 바 숨기기 */
-  .tableArea::-webkit-scrollbar {
-    display: none;
-  }
-
-  .tableArea div {
-    display: inline-block;
-  }
-
-  .row,
-  .article.btn {
-    width: -webkit-fill-available;
-    min-width: inherit;
-    max-width: inherit;
-    border: none;
-    background-color: transparent;
-    font-family: 'NanumSquare';
-  }
-
-  .col {
-    overflow: hidden;
-    width: 15%;
-    max-width: 30%;
-    height: 1.25rem;
-  }
-  /* 제목 행 */
-  .titleRow {
-    padding: 0.5rem 0;
-    background-color: #c0d2e5;
-  }
-
-  /* 게시글 항목 영역 */
-  .articleArea {
-    /* padding: 1% 0; */
-    width: -webkit-fill-available;
-    max-width: 100%;
-
-    /* 제목줄 1줄 */
-    .articleRow {
-      padding: 0.5rem 0;
-      border-bottom: 0.15rem solid black;
-    }
-
-    /* 하이라이트 */
-    .articleRow:hover,
-    .highlited {
-      background-color: #dfe9f2;
-      border-bottom: 0.15rem solid black;
-    }
-
-    /* 아코디언 내용 */
-    .detailRow {
-      display: block;
-      padding: 0.5rem 0;
-
-      margin: 0.5rem 0 -0.5rem 0;
-      background-color: #f9f9f9;
-      height: -webkit-max-content;
-    }
-
-    /* 안 보이는 요소 */
-    .hide {
-      display: none;
-    }
-
-    /*  */
-    .detailRow div {
-      display: block;
-    }
-
-    /* 토글 내용 본문 영역 */
-    .detailContent {
-      padding: 0 2%;
-      text-align: left;
-      width: inherit;
-      word-wrap: break-word;
-    }
-
-    /* 토글 내용 바닥 영역 */
-    .detailFooter {
-      background-color: #f9f9f9;
-      padding: 1% 0;
-      position: relative;
-      left: 76%;
-      width: max-content;
-      button {
-        border-radius: 3rem;
-        color: white;
-        border: none;
-        width: max-content;
-        padding: 0.5rem;
-        margin: 0 0.5rem;
-        width: 5rem;
-      }
-    }
-
-    .detailWriter {
-      padding: 0.5rem;
-      max-width: -webkit-max-content;
-    }
-
-    .edit-btn {
-      background-color: #a1b9ce;
-    }
-
-    .del-btn {
-      background-color: #bbbbbb;
-    }
-
-    textarea {
-      background-color: rgba(255, 255, 255, 0.7);
-      border: none;
-      resize: none;
-    }
-    #editTitle {
-      border-radius: 20rem;
-      padding: 0 0.5rem;
-    }
-    #editContent {
-      height: 200px;
-      border-radius: 0.5rem;
-      padding: 0.5rem;
-      margin: 0.5rem;
-    }
-  }
-  /* 특정 열 별 설정 */
-  .noticeId {
-    max-width: 3rem;
-  }
-  .classTitle,
-  .writer,
-  .regtime {
-    min-width: 14%;
-    max-width: 17%;
-  }
-  .classTitleIcon {
-    display: inline-block;
-    border-radius: 0.5rem;
-    background-color: #ffe790;
-    align-self: center;
-    width: 50%;
-    min-width: max-content;
-    vertical-align: top;
-  }
-  .noticeTitle {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    min-width: calc(46%);
-    width: calc(46%);
-    max-width: calc(50%);
-  }
-`;
 
 export default NoticeBoard;

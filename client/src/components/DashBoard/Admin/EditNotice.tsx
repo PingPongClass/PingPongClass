@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '@src/store/hooks';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { ClassProps, allClass, getClasses } from '@src/store/member';
+import { NoticeBoardStyle } from '../Board/NoticeBoard';
 
 interface PostNoticeProps {
   noticeId?: number;
@@ -97,7 +98,7 @@ const EditNotice = () => {
   };
 
   return (
-    <div>
+    <div css={NoticeBoardStyle}>
       과목:{' '}
       <select
         onChange={(e) => {
