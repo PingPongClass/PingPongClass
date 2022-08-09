@@ -5,6 +5,9 @@ import com.pingpong.backend.Exception.ErrorCode;
 import com.pingpong.backend.api.domain.StudentEntity;
 import com.pingpong.backend.api.domain.TeacherEntity;
 import com.pingpong.backend.api.domain.request.FindPwdRequest;
+import com.pingpong.backend.api.domain.response.StudentResponse;
+import com.pingpong.backend.api.domain.response.TeacherResponse;
+import com.pingpong.backend.api.repository.RankingRepository;
 import com.pingpong.backend.api.repository.StudentRepository;
 import com.pingpong.backend.api.repository.TeacherRepository;
 import com.pingpong.backend.api.service.EmailService;
@@ -31,6 +34,7 @@ public class UserController {
 
     private final StudentRepository studentRepository;
     private final TeacherRepository teacherRepository;
+    private final RankingRepository rankingRepository;
     private final EmailService emailService;
 
     private final TeacherServiceImpl teacherService;
@@ -115,9 +119,12 @@ public class UserController {
         String id = SecurityUtil.getCurrentUsername();
         if(id == null) return new ResponseEntity<String>("로그인된 회원을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
         if(id.length() == 10){
-            return ResponseEntity.ok(studentRepository.findById(Integer.parseInt(id)));
+            StudentEntity student = studentRepository.getOne(Integer.parseInt(id));
+            int rank = studentRepository.countByTotalPointGreaterThan(student.getTotalPoint())+1;
+            if(rankingRepository.findFirstByStudent(student)!=null) rank = rankingRepository.findFirstByStudent(student).getRankNum();
+            return ResponseEntity.ok(new StudentResponse(student, rank));
         } else{
-            return ResponseEntity.ok(teacherRepository.findById(Integer.parseInt(id)));
+            return ResponseEntity.ok(new TeacherResponse(teacherRepository.getOne(Integer.parseInt(id))));
         }
     }
 }

@@ -17,7 +17,7 @@ const TeacherMyInfo = () => {
   const [passwordconfirm, setPasswordConfirm] = useState('');
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   const [isUse, setUse] = useState(false);
-  const [files, setFiles] = useState('');
+  const [files, setFiles] = useState<File>();
   // const accessToken = getCookie('jwt-accessToken');
   const onChangePassword = (e) => {
     setPassword(e.target.value);
@@ -32,8 +32,14 @@ const TeacherMyInfo = () => {
     setPasswordConfirm(e.target.value);
   };
   const onChangeFiles = (e) => {
-    const file = e.target.files[0];
-    setFiles(file);
+    if (e.target.files[0] === undefined) return;
+    // 파일 용량 체크
+    if (e.target.files[0] > 1 * 1024 * 1024) {
+      e.target.value = '';
+      alert('업로드 가능한 최대 용량은 1MB입니다. ');
+      return;
+    }
+    setFiles(e.target.files[0]);
   };
 
   const emailCheck = async () => {
@@ -60,10 +66,9 @@ const TeacherMyInfo = () => {
   };
 
   const onEditMyInfo = (e) => {
-    emailCheck();
     if (password === null) {
       alert('비밀번호를 입력해주세요.');
-    } else if (isUse === false) {
+    } else if (email === null) {
       alert('이메일을 확인해주세요.');
     } else if (manageGrade === null) {
       alert('담당학년을 입력해주세요.');
@@ -73,29 +78,26 @@ const TeacherMyInfo = () => {
       alert('비밀번호가 일치하지 않습니다. 다시 확인해주세요.');
     } else {
       const frm = new FormData();
-      const teacher = [
-        {
-          teacherId: memberStore.userId,
-          manageGrade: manageGrade,
-          email: email,
-          password: password,
-          profile: '',
-        },
-      ];
+      const teacher = {
+        teacherId: memberStore.userId,
+        manageGrade: manageGrade,
+        email: email,
+        password: password,
+      };
+      const teacherString = JSON.stringify(teacher);
       frm.append(
         'teacher',
-        new Blob([JSON.stringify(teacher)], {
-          type: 'application/json',
-        }),
+        new Blob([teacherString], { type: 'application/json' }),
       );
-      frm.append('file', files);
-      InterceptedAxios.patch('/teachers', frm, {
+      if (files !== undefined) frm.append('file', files);
+      InterceptedAxios.post('/teachers/modify', frm, {
         headers: {
           'Content-Type': `multipart/form-data`,
         },
       })
         .then(function (response) {
           alert('정보가 수정되었습니다.');
+          console.log(memberStore.profileFullPath);
           navigate('/teacher/teachermyinfo');
         })
         .catch(function (error) {
