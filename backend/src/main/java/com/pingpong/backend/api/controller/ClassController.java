@@ -92,4 +92,11 @@ public class ClassController {
     public ClassStudentResponse findStudentByClassId(final int classId){
         return classService.findParticipant(classId);
     }
+
+    @ApiOperation(value = "수업중인 세션 url 체크")
+    @GetMapping("/checkcode")
+    @PreAuthorize("hasRole('TEACHER')")
+    public List<String> findUrlCheck(){
+        return classService.findOpenUrl();
+    }
 }

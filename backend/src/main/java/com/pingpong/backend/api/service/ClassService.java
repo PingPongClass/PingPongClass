@@ -185,6 +185,16 @@ public class ClassService {
         return classStudentResponse;
     }
 
+    public List<String>findOpenUrl(){
+        List<ClassEntity> classEntityList= classRepository.findAll();
+        List<String> urlList = new ArrayList<>();
+        for(ClassEntity classEntity: classEntityList){
+            if(!classEntity.getClassUrl().isEmpty())
+                urlList.add(classEntity.getClassUrl());
+        }
+        return urlList;
+    }
+
 
 
 }

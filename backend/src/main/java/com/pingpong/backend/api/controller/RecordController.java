@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-@Api(value = "강의 다시보기 API", tags={"다시보기"})
+@Api(value = "강의 다시보기 API", tags={"강의 다시보기 / 로그 저장"})
 @RestController
 @RequestMapping("/be/records")
 @RequiredArgsConstructor
@@ -44,7 +44,7 @@ public class RecordController {
         return recordResponsePage;
     }
 
-    @ApiOperation(value = "로그 저장", notes = "")
+    @ApiOperation(value = "강의 종료 후 학생별 수업 로그 저장", notes = "포인트, 발표횟수(presentCnt), 수업참가여부 저장")
     @PostMapping("/log")
     @PreAuthorize("hasRole('STUDENT')")
     public void insertLog(@RequestBody LogRequest req){
