@@ -119,7 +119,7 @@ public class TeacherController {
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> modifyPassword(@RequestBody TeacherEntity teacher){
         try{
-            service.modifyPassword(teacher.getTeacherId(), passwordEncoder.encode(teacher.getPassword()));
+            service.modifyPassword(teacher.getTeacherId(),teacher.getPassword());
             return new ResponseEntity<String>("선생님 비밀번호 수정 성공", HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<String>("선생님 비밀번호 수정 실패"+e.getMessage(), HttpStatus.FORBIDDEN);
