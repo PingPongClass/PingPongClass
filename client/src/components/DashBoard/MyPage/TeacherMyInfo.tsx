@@ -11,7 +11,7 @@ const TeacherMyInfo = () => {
   const memberStore = useAppSelector((state) => state.member);
   const [email, setEmail] = useState(memberStore.email);
   const navigate = useNavigate();
-  const [manageGrade, setManageGrade] = useState('');
+  const [manageGrade, setManageGrade] = useState(memberStore.manageGrade);
   const [password, setPassword] = useState('');
   const [passwordconfirm, setPasswordConfirm] = useState('');
   const InterceptedAxios = setupInterceptorsTo(axios.create());

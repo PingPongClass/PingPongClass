@@ -1,7 +1,6 @@
 package com.pingpong.backend.api.service;
 
 import com.pingpong.backend.api.domain.TeacherEntity;
-import com.pingpong.backend.api.domain.request.TeacherRequest;
 
 import java.util.List;
 import java.util.Optional;

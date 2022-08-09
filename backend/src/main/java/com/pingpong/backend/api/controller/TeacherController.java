@@ -1,10 +1,7 @@
 package com.pingpong.backend.api.controller;
 
-import com.pingpong.backend.api.domain.StudentEntity;
 import com.pingpong.backend.api.domain.TeacherEntity;
-import com.pingpong.backend.api.domain.request.TeacherRequest;
 import com.pingpong.backend.api.domain.request.UserRequest;
-import com.pingpong.backend.api.domain.response.StudentResponse;
 import com.pingpong.backend.api.domain.response.TeacherResponse;
 import com.pingpong.backend.api.repository.TeacherRepository;
 import com.pingpong.backend.api.service.S3Service;
