@@ -2,11 +2,11 @@
 import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import React, { useState, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '@src/store/hooks';
+import { useAppSelector, useAppDispatch } from '@src/store/hooks';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Subject, getSubjects } from '@src/store/member';
 
-interface StudentProps {
+interface PostNoticeProps {
   noticeId?: number;
   classId: number;
   content: string;
@@ -15,11 +15,11 @@ interface StudentProps {
 }
 
 const EditNotice = () => {
-  const dispatch = useAppDispatch();
   const { noticeId } = useParams();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const [notice, setNotice] = useState<StudentProps>();
+  const [notice, setNotice] = useState<PostNoticeProps>();
   const [tmpCode, setTmpCode] = useState(-1);
   const [tmpTitle, setTmpTitle] = useState('');
   const [tmpContent, setTmpContent] = useState('');
@@ -36,8 +36,8 @@ const EditNotice = () => {
   }
 
   useEffect(() => {
-    // getSubjects(memberStore.userId);
     dispatch(getSubjects(memberStore.userId));
+    setSubjectCodes(memberStore.subjects);
   }, []);
 
   useEffect(() => {
@@ -52,17 +52,6 @@ const EditNotice = () => {
       postNew();
     }
   }, [notice]);
-
-  // const getSubjects = (id: number) => {
-  //   setSubjectCodes([allSubject]);
-  //   InterceptedAxios.get('/classes/' + id).then((res) => {
-  //     const contents = res.data.content;
-  //     contents.map((newSub: Subject) => {
-  //       setSubjectCodes([...subjectCodes, newSub]);
-  //     });
-  //   });
-  //   setSubjectCodes([...subjectCodes, { code: 1, title: '국어' }]);
-  // };
 
   const titleChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     // onChange 이벤트
@@ -81,7 +70,7 @@ const EditNotice = () => {
     InterceptedAxios.patch('/notice/' + noticeId, notice)
       .then(() => {
         alert('수정 완료');
-        navigate('/admin/student');
+        navigate('/admin/notice');
       })
       .catch(() => {
         alert('수정 실패! 정보를 다시 확인해 주세요.');
@@ -92,7 +81,7 @@ const EditNotice = () => {
     InterceptedAxios.post('/notice/', notice)
       .then(() => {
         alert('추가 완료');
-        navigate('/admin/student');
+        navigate('/admin/notice');
       })
       .catch(() => {
         alert('작성 실패! 정보를 다시 확인해 주세요.');

@@ -5,6 +5,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
+import { useAppSelector } from '@src/store/hooks';
+import member from '@src/store/member';
 
 const weeks = [
   {
@@ -133,6 +135,7 @@ const NewClassList = () => {
   const [studentList, setStudentList] = useState('');
   const [timetableId, setTimetableId] = useState(1);
   const [classDes, setClassDes] = useState('');
+  const memberStore = useAppSelector((state) => state.member);
 
   const AXIOS = setupInterceptorsTo(axios.create());
 
@@ -157,7 +160,7 @@ const NewClassList = () => {
 
   const createClass = async () => {
     const data = {
-      teacherId: 4030008,
+      teacherId: memberStore.userId,
       subjectCode: subjectCode,
       classTitle: classTitle,
       classDay: classDay,

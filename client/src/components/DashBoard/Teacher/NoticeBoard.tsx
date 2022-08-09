@@ -2,7 +2,7 @@
 import { css } from '@emotion/react';
 import React, { useEffect, useState } from 'react';
 import useIntersectionObserver from '@src/utils/useIntersectionObserver';
-import { useAppDispatch, useAppSelector } from '@src/store/hooks';
+import { useAppSelector } from '@src/store/hooks';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { Link } from 'react-router-dom';
 import Notice from './Notice';
@@ -19,7 +19,6 @@ export interface NoticeProps {
 }
 
 const NoticeBoard = () => {
-  const dispatch = useAppDispatch();
   const memberStore = useAppSelector((state) => state.member);
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   const [isTeacher, setIsTeacher] = useState(false);
@@ -43,10 +42,9 @@ const NoticeBoard = () => {
 
   const { setTarget } = useIntersectionObserver({ onIntersect });
 
+  // 임시 더미 데이터 불러오기
   useEffect(() => {
-    userId = memberStore.userId;
     setSubjects(memberStore.subjects);
-    // getSubjects();
 
     if (memberStore.userId.toString().length !== 10) {
       setIsTeacher(true);
@@ -59,12 +57,32 @@ const NoticeBoard = () => {
     getNotice();
   }, [page]);
 
-  useEffect(() => {
-    // console.log(selected);
-  }, [selected]);
+  const isYourNotice = (key: number) => {
+    let currentNotice = {
+      noticeId: -1,
+      writer: '',
+      classTitle: '',
+      title: '',
+      content: '',
+      regtime: '',
+    };
+    articles.filter((article) => {
+      if (article.noticeId === key) {
+        currentNotice = article;
+      }
+    });
+
+    if (
+      memberStore.name !== currentNotice.writer &&
+      memberStore.isAdmin === 0
+    ) {
+      return false;
+    }
+    return true;
+  };
 
   const deleteNotice = (key: number) => {
-    if (memberStore.isAdmin) {
+    if (isYourNotice(key)) {
       let finalCheck = confirm('정말로 삭제하시겠습니까?');
       if (finalCheck) {
         InterceptedAxios.delete('/notice/' + key.toString())
@@ -100,10 +118,9 @@ const NoticeBoard = () => {
       page.toString() +
       word;
 
-    // console.log(searchQuery);
-
     InterceptedAxios.get(searchQuery).then((response) => {
       let list = response.data.content;
+
       totalPage = response.data.totalPages;
       if (totalPage >= page) {
         checkNewNotice(list);
@@ -164,7 +181,7 @@ const NoticeBoard = () => {
                 검색
               </button>
               <button type="button" className="main-btn">
-                <Link to="/admin/noticePost">글 쓰기</Link>
+                <Link to="/teacher/noticePost">글 쓰기</Link>
               </button>
             </>
           ) : (

@@ -5,7 +5,7 @@ import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 import { setCookie } from '@utils/cookie';
 import { setRefreshToken } from '../../../storage/Cookie';
 import { SET_TOKEN } from '../../../store/Auth';
-import { saveMember, logIn, logOut } from '@src/store/member';
+import { saveMember, logIn, logOut, getSubjects } from '@src/store/member';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { useNavigate } from 'react-router-dom';
 
@@ -103,6 +103,7 @@ const Login = (props: LoginProps) => {
           }
         }
         dispatch(saveMember(parseInt(props.userId)));
+        dispatch(getSubjects(parseInt(props.userId)));
         console.log('로그인 성공', response);
       })
       .catch(function (error) {

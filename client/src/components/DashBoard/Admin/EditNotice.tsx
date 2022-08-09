@@ -3,7 +3,7 @@ import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import React, { useState, useEffect } from 'react';
 import { useAppSelector } from '@src/store/hooks';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Subject } from '@src/store/member';
 
 interface PostNoticeProps {
@@ -16,6 +16,7 @@ interface PostNoticeProps {
 
 const EditNotice = () => {
   const { noticeId } = useParams();
+  const navigate = useNavigate();
 
   const [notice, setNotice] = useState<PostNoticeProps>();
   const [tmpCode, setTmpCode] = useState(-1);
@@ -58,7 +59,6 @@ const EditNotice = () => {
         setSubjectCodes([...subjectCodes, newSub]);
       });
     });
-    setSubjectCodes([...subjectCodes, { code: 1, title: '국어' }]);
   };
 
   const titleChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -75,15 +75,25 @@ const EditNotice = () => {
   };
 
   const changePost = () => {
-    InterceptedAxios.patch('/notice/' + noticeId, notice).then(() => {
-      alert('수정 완료');
-    });
+    InterceptedAxios.patch('/notice/' + noticeId, notice)
+      .then(() => {
+        alert('수정 완료');
+        navigate('/admin/notice');
+      })
+      .catch(() => {
+        alert('수정 실패! 정보를 다시 확인해 주세요.');
+      });
   };
 
   const postNew = () => {
-    InterceptedAxios.post('/notice/', notice).then(() => {
-      alert('추가 완료');
-    });
+    InterceptedAxios.post('/notice/', notice)
+      .then(() => {
+        alert('추가 완료');
+        navigate('/admin/notice');
+      })
+      .catch(() => {
+        alert('작성 실패! 정보를 다시 확인해 주세요.');
+      });
   };
 
   const submitPost = () => {
