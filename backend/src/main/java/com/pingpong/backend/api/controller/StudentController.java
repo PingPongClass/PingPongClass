@@ -10,6 +10,7 @@ import com.pingpong.backend.api.repository.RankingRepository;
 import com.pingpong.backend.api.repository.StudentRepository;
 import com.pingpong.backend.api.service.S3Service;
 import com.pingpong.backend.api.service.StudentServiceImpl;
+import com.pingpong.backend.util.SecurityUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -122,7 +123,7 @@ public class StudentController {
         }
     }
 
-    @PatchMapping
+    @PostMapping("/modify")
     @ApiOperation(value = "학생 정보 수정", notes = "학생정보 수정")
     @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<String> modify(@RequestPart(value = "student") StudentRequest student, @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
@@ -150,32 +151,19 @@ public class StudentController {
         }
     }
 
-//    @PatchMapping("/profile")
-//    @ApiOperation(value = "학생 프로필 이미지 수정", notes = "학생 프로필 수정")
-//    @PreAuthorize("hasRole('STUDENT')")
-//    public ResponseEntity<String> modifyProfile(@RequestParam("studentId") int studentId, @RequestPart("file") MultipartFile file) throws IOException {
-//        try {
-//            if(file.getSize()>=1048576) {
-//                return new ResponseEntity<String>("이미지 크기 제한은 1MB 입니다.", HttpStatus.FORBIDDEN);
-//            }
-//            String originFile = file.getOriginalFilename();
-//            String originFileExtension = originFile.substring(originFile.lastIndexOf("."));
-//            if(!originFileExtension.equalsIgnoreCase(".jpg") && !originFileExtension.equalsIgnoreCase(".png")
-//                    && !originFileExtension.equalsIgnoreCase(".jpeg")) {
-//                return new ResponseEntity<String>("jpg, jpeg, png의 이미지 파일만 업로드해주세요", HttpStatus.FORBIDDEN);
-//            }
-//
-//            StudentEntity student = repository.getOne(studentId);
-//            String imgPath = s3Service.upload(student.getProfile(), file);
-//            StudentEntity modstudent = new StudentEntity(student.getStudentId(), student.getName(), student.getGrade(),
-//                    student.getClassNum(), student.getStudentNum(), student.getEmail(), "",imgPath,
-//                    student.getPoint(), student.getTotalPoint(), student.getIntroduce());
-//            service.modify(modstudent);
-//            return new ResponseEntity<String>("학생 정보수정 성공.", HttpStatus.OK);
-//        } catch (Exception e){
-//            return new ResponseEntity<String>("학생 정보수정 실패", HttpStatus.FORBIDDEN);
-//        }
-//    }
+    @PatchMapping
+    @ApiOperation(value = "첫 방문 이메일/비밀번호 수정", notes = "첫 방문시 이메일 및 비밀번호 수정")
+    @PreAuthorize("hasRole('STUDENT')")
+    public ResponseEntity<String> modifyEmailAndPWD(@RequestBody StudentRequest request) throws IOException {
+        try {
+            String id = SecurityUtil.getCurrentUsername();
+            request.setStudentId(Integer.parseInt(id));
+            service.modify(request);
+            return new ResponseEntity<String>("학생 정보수정 성공.", HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<String>("학생 정보수정 실패", HttpStatus.FORBIDDEN);
+        }
+    }
 
     @DeleteMapping("/{studentId}")
     @ApiOperation(value = "학생 삭제", notes = "학생정보 삭제")
