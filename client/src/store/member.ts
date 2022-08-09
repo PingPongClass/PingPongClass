@@ -105,7 +105,7 @@ const initialState = {
 export const saveMember = createAsyncThunk('saveMember', async (id: number) => {
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   let query = '/teachers/' + id.toString();
-  if (id.toString.length == 10) {
+  if (id.toString().length == 10) {
     query = '/students/' + id.toString();
   }
 
