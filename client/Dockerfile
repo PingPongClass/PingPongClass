@@ -1,10 +1,12 @@
-FROM node:16-alpine as builder
+FROM node:16-alpine
 
-# 작업 폴더를 만들고 npm 설치
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
+
 COPY package*.json ./
-RUN npm install --silent
+
+RUN npm install 
+
 COPY . .
 
 EXPOSE 3000

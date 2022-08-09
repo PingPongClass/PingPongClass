@@ -4,6 +4,7 @@ import { StudentProps } from './StudentBoard';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { setContent, setParam, selectContent } from '@src/store/content';
 import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Student = (props: {
   key: number;

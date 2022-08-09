@@ -24,7 +24,7 @@ import java.util.Date;
 @Api(value = "유저 API", tags={"Users(학생, 선생님) 비밀번호 찾기"})
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/users")
+@RequestMapping("/be/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -44,9 +44,9 @@ public class UserController {
                 if(findPwdRequest.getEmail().equals(student.getEmail())) {
                     //임시비밀번호 생성
                     String randomPassword = getRamdomPassword(10);
-                    StudentEntity studentEntity =new StudentEntity().builder().studentId(findPwdRequest.getUserId()).password(randomPassword).build();
                     //비밀번호 재설정
-                    studentService.modify(studentEntity);
+                    studentService.modifyPassword(findPwdRequest.getUserId(), randomPassword);
+                    //이메일 발송
                     emailService.sendStudentMail(student, randomPassword);
                     return new ResponseEntity<String>("입력된 이메일로 임시비밀번호 제공",HttpStatus.OK);
                 } else {

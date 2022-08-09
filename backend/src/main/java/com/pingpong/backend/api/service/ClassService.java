@@ -129,9 +129,11 @@ public class ClassService {
             List<ClassStudentEntity> classStudentEntityList = classStudentRepository.findByStudentEntity(studentEntity);
             for(ClassStudentEntity classStudentEntity: classStudentEntityList)
                 classEntityList.add(classStudentEntity.getClassEntity());
-        }else{ //선생님일때
+        }else if(userId>=4030000 && userId<=4039999){ //선생님일때
             TeacherEntity teacherEntity = teacherRepository.getById(userId);
             classEntityList = classRepository.findByTeacherEntity(teacherEntity);
+        } else if(userId>=5030000 && userId<=5039999) { //관리자일때
+            classEntityList = classRepository.findAll();
         }
         List<ClassResponse> list = classEntityList.stream().map(ClassResponse::new).collect(Collectors.toList());
         int start = (int)pageable.getOffset();

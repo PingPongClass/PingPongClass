@@ -2,10 +2,8 @@ package com.pingpong.backend.api.service;
 
 import com.pingpong.backend.Exception.CustomException;
 import com.pingpong.backend.Exception.ErrorCode;
-import com.pingpong.backend.api.domain.Authority;
-import com.pingpong.backend.api.domain.LogEntity;
-import com.pingpong.backend.api.domain.RankingEntity;
-import com.pingpong.backend.api.domain.StudentEntity;
+import com.pingpong.backend.api.domain.*;
+import com.pingpong.backend.api.domain.request.StudentRequest;
 import com.pingpong.backend.api.domain.response.NoticeResponse;
 import com.pingpong.backend.api.domain.response.RankResponse;
 import com.pingpong.backend.api.repository.LogRepository;
@@ -71,16 +69,21 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     @Transactional
-    public void modify(StudentEntity student) {
+    public void modify(StudentRequest student) {
         StudentEntity studentEntity = repository.findById(student.getStudentId()).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
 
-        if("".equals(student.getPassword())==false && student.getPassword() != null){
-            student = new StudentEntity(student.getStudentId(), student.getName(), student.getGrade(),
-                    student.getClassNum(), student.getStudentNum(), student.getEmail(), encoder.encode(student.getPassword()),student.getProfile(),
-                    student.getPoint(), student.getTotalPoint(), student.getIntroduce());
+        if("".equals(student.getPassword())==false && student.getPassword() != null) {
+            String password = student.getPassword();
+            student.setPassword(encoder.encode(password));
         }
-        
         studentEntity.modifyStudent(student);
+    }
+
+    @Override
+    @javax.transaction.Transactional
+    public void modifyPassword(int studentId, String password) {
+        StudentEntity studentEntity = repository.findById(studentId).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
+        studentEntity.updatePassword(encoder.encode(password));
     }
 
     @Override

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Api(value = "로그인 인증 API", tags={"JWT로 로그인인증"})
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/be/auth")
 public class AuthController {
     @Autowired
     AuthService authService;

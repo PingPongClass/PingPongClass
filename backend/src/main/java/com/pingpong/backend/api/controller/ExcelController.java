@@ -13,7 +13,7 @@ import java.io.IOException;
 @Api(value = "학생 엑셀 TEST API", tags={"엑셀"})
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/excel")
+@RequestMapping("/be/excel")
 @RequiredArgsConstructor
 public class ExcelController {
     private final ExcelService excelService;
