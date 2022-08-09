@@ -2,10 +2,14 @@ import { css } from '@emotion/react';
 import ProfilImage from '../../../assets/images/profile.png';
 import { useAppSelector } from '@src/store/hooks';
 import IosModalNew from '@src/components/Common/IosModalNew';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Delete, Edit } from '@mui/icons-material';
+
 // import { getCookie } from '../../../utils/cookie';
 
 const TeacherMyInfo = () => {
@@ -17,7 +21,10 @@ const TeacherMyInfo = () => {
   const [passwordconfirm, setPasswordConfirm] = useState('');
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   const [isUse, setUse] = useState(false);
-  const [files, setFiles] = useState<File>();
+  const [preview, setPreview] = useState<any>(memberStore.profileFullPath);
+  const [isMouseOn, setIsMouseOn] = useState(false);
+  const newImageFile = useRef<HTMLInputElement>(null); // 새로운 사진 보관용
+
   // const accessToken = getCookie('jwt-accessToken');
   const onChangePassword = (e) => {
     setPassword(e.target.value);
@@ -31,15 +38,22 @@ const TeacherMyInfo = () => {
   const onChangePasswordConfirm = (e) => {
     setPasswordConfirm(e.target.value);
   };
+
+  // 이미지 프리뷰 업로드 함수
   const onChangeFiles = (e) => {
-    if (e.target.files[0] === undefined) return;
-    // 파일 용량 체크
-    if (e.target.files[0] > 1 * 1024 * 1024) {
-      e.target.value = '';
-      alert('업로드 가능한 최대 용량은 1MB입니다. ');
-      return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const file = reader.result;
+      if (file) setPreview(file);
+    };
+    if (e.target.files && e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
     }
-    setFiles(e.target.files[0]);
+  };
+
+  const onDeleteFiles = (e) => {
+    if (newImageFile.current) newImageFile.current.files = null;
+    setPreview('https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null');
   };
 
   const emailCheck = async () => {
@@ -89,7 +103,13 @@ const TeacherMyInfo = () => {
         'teacher',
         new Blob([teacherString], { type: 'application/json' }),
       );
-      if (files !== undefined) frm.append('file', files);
+
+      if (newImageFile.current) {
+        if (newImageFile.current.files)
+          frm.append('file', newImageFile.current.files[0]);
+        // else frm.append('file', null);
+        // 만약 file이 빈거 (기본사진으로 초기화)라면? 어떻게 처리할 것인지에 대해서 잘 몰라서 우선 주석처리
+      }
       InterceptedAxios.post('/teachers/modify', frm, {
         headers: {
           'Content-Type': `multipart/form-data`,
@@ -107,30 +127,52 @@ const TeacherMyInfo = () => {
   };
 
   return (
-    <div css={ModalCSS}>
+    <div css={ModalCSS(isMouseOn)}>
       <div className="commonModal">
         <IosModalNew />
       </div>
       <div className="infoContainer">
         <div className="profileContainer">
-          {memberStore.profileFullPath ===
+          {preview ===
             'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null' ||
-          memberStore.profileFullPath ===
+          preview ===
             'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/' ? (
-            <img src={ProfilImage} alt="프로필사진" className="profile-logo" />
-          ) : (
             <img
-              src={memberStore.profileFullPath}
+              src={ProfilImage}
               alt="프로필사진"
               className="profile-logo"
+              onMouseEnter={() => setIsMouseOn(true)}
+              onMouseLeave={() => setIsMouseOn(false)}
+            />
+          ) : (
+            <img
+              src={preview}
+              alt="프로필사진"
+              className="profile-logo"
+              onMouseEnter={() => setIsMouseOn(true)}
+              onMouseLeave={() => setIsMouseOn(false)}
             />
           )}
-          <input
-            type="file"
-            id="profileImage"
-            accept="image/*"
-            onChange={(e) => onChangeFiles(e)}
-          />
+          {isMouseOn ? (
+            <div
+              className="profile-img-button"
+              onMouseEnter={() => setIsMouseOn(true)}
+            >
+              <div className="editbtn">
+                <label htmlFor="profile-image">
+                  <EditIcon className="edit-icon-btn" />
+                </label>
+                <input
+                  ref={newImageFile}
+                  type="file"
+                  id="profile-image"
+                  accept="image/*"
+                  onChange={onChangeFiles}
+                />
+              </div>
+              <DeleteIcon className="delete-icon-btn" onClick={onDeleteFiles} />
+            </div>
+          ) : null}
         </div>
 
         <div className="infoListContainer">
@@ -148,7 +190,7 @@ const TeacherMyInfo = () => {
               id="manageGrade"
               value={manageGrade}
               type="text"
-              onChange={(e) => onChangeManageGrade(e)}
+              onChange={onChangeManageGrade}
             />
           </div>
           <div className="fieldContainer">
@@ -193,7 +235,7 @@ const TeacherMyInfo = () => {
   );
 };
 
-const ModalCSS = css`
+const ModalCSS = (isMouseOn) => css`
   height: 100%;
   width: 100%;
   min-height: 400px;
@@ -219,6 +261,7 @@ const ModalCSS = css`
   }
 
   .profileContainer {
+    position: relative;
     width: 200px;
     height: 200px;
     box-sizing: border-box;
@@ -229,22 +272,46 @@ const ModalCSS = css`
     align-items: center;
   }
 
-  .profileContainer img {
-    border-radius: 200px;
-    width: 100%;
-    height: 100%;
-  }
-
-  .profileContainer img:hover {
-    transform: scale(1.03);
-  }
-
-  .profileContainer input {
+  .profileContainer .profile-logo {
     position: absolute;
     border-radius: 200px;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
+    width: 200px;
+    height: 200px;
+    filter: ${isMouseOn ? 'brightness(70%); ' : ''};
+  }
+
+  .profileContainer .profile-img-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: row;
+  }
+
+  .profileContainer .profile-img-button .editbtn {
+    height: 30px;
+    width: 30px;
+    margin: 1rem;
+  }
+
+  .profileContainer .profile-img-button .editbtn .edit-icon-btn {
+    width: 30px;
+    height: 30px;
+    color: white;
+    cursor: pointer;
+  }
+
+  .profileContainer .profile-img-button .editbtn input {
+    display: none;
+  }
+
+  .profileContainer .profile-img-button .delete-icon-btn {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    color: red;
+    margin: 1rem;
   }
 
   .profileContainer .infoListContainer {
@@ -289,6 +356,7 @@ const ModalCSS = css`
     justify-content: space-between;
     align-items: center;
     font-weight: 700;
+    margin: 1rem;
   }
 
   .fieldContainer input {
