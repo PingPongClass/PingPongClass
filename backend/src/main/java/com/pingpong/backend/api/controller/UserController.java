@@ -108,7 +108,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/info")
+    @GetMapping("/info")
     @PreAuthorize("hasRole('STUDENT')")
     @ApiOperation(value = "유저 정보 제공!!!", notes = "")
     public ResponseEntity<?> getUserInfo() {

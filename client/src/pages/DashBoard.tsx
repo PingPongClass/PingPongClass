@@ -7,9 +7,12 @@ import Footer from '@components/DashBoard/Footer/Footer';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Outlet } from 'react-router-dom';
+import { saveMember } from '@src/store/member';
+import { useAppDispatch } from '@src/store/hooks';
 
 const DashBoard = () => {
   const [toastMsg, setToast] = useState(' 님 로그인 되었습니다.');
+  const dispatch = useAppDispatch();
   const notify = () =>
     toast.success(toastMsg, {
       position: 'top-center',
@@ -28,6 +31,10 @@ const DashBoard = () => {
     notify();
     setToast('');
   }
+
+  useEffect(() => {
+    dispatch(saveMember());
+  }, []);
 
   return (
     <div css={totalContainer}>

@@ -125,7 +125,7 @@ public class StudentController {
     @PatchMapping
     @ApiOperation(value = "학생 정보 수정", notes = "학생정보 수정")
     @PreAuthorize("hasRole('STUDENT')")
-    public ResponseEntity<String> modify(@RequestPart StudentRequest student, @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
+    public ResponseEntity<String> modify(@RequestPart(value = "student") StudentRequest student, @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         try {
             if(!file.isEmpty()) {
                 if (file.getSize() >= 1048576) {

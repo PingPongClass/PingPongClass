@@ -130,14 +130,10 @@ export const getSubjects = createAsyncThunk(
   },
 );
 
-export const saveMember = createAsyncThunk('saveMember', async (id: number) => {
+export const saveMember = createAsyncThunk('saveMember', async () => {
   const InterceptedAxios = setupInterceptorsTo(axios.create());
-  let query = '/teachers/' + id.toString();
-  if (id.toString().length == 10) {
-    query = '/students/' + id.toString();
-  }
 
-  const uData = await InterceptedAxios.get(query);
+  const uData = await InterceptedAxios.get('/users/info');
   const userData = uData.data;
 
   const { teacherId: tId, ...fUserData } = userData;
@@ -148,7 +144,7 @@ export const saveMember = createAsyncThunk('saveMember', async (id: number) => {
   } else {
     formattedUserData.userId = userData.studentId;
   }
-
+  console.log(formattedUserData);
   return formattedUserData;
 });
 

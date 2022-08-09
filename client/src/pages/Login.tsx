@@ -52,15 +52,7 @@ const App = () => {
       });
 
       // 로그인한 회원 정보 저장
-
-      const userData = await getInfo();
-      let userId = 0;
-      if (userData.teacherId) {
-        userId = userData.teacherId;
-      } else {
-        userId = userData.studentId;
-      }
-      dispatch(saveMember(userId));
+      dispatch(saveMember());
     }
   };
 

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { css } from '@emotion/react';
 import axios from 'axios';
 import { useState } from 'react';
@@ -103,7 +102,7 @@ const Login = (props: LoginProps) => {
             navigate('/admin');
           }
         }
-        dispatch(saveMember(parseInt(props.userId)));
+        dispatch(saveMember());
         dispatch(getSubjects(parseInt(props.userId)));
         console.log('로그인 성공', response);
       })
