@@ -2,6 +2,7 @@ package com.pingpong.backend.api.service;
 
 import com.pingpong.backend.api.domain.LogEntity;
 import com.pingpong.backend.api.domain.StudentEntity;
+import com.pingpong.backend.api.domain.request.StudentRequest;
 import com.pingpong.backend.api.domain.response.RankResponse;
 
 import java.util.List;
@@ -22,8 +23,10 @@ public interface StudentService {
     //이메일 중복체크
     boolean hasEmail(String email);
 
-    void modify(StudentEntity student);
+    void modify(StudentRequest student);
 
+    //비밀번호 수정
+    void modifyPassword(int studentId, String password);
 
     //학생 삭제
     void delete(int studentId);

@@ -1,6 +1,7 @@
 package com.pingpong.backend.api.domain;
 
 
+import com.pingpong.backend.api.domain.request.StudentRequest;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
@@ -105,27 +106,31 @@ public class StudentEntity {
         this.borderColor=borderColor;
     }
 
-    public void modifyStudent(StudentEntity entity){
-        if(entity.getGrade()!=0){
-            this.grade = entity.getGrade();
+    public void updatePassword(String password) {
+        this.password=password;
+    }
+
+    public void modifyStudent(StudentRequest request){
+        if(request.getGrade()!=0){
+            this.grade = request.getGrade();
         }
-        if(entity.getClassNum()!=0){
-            this.classNum = entity.getClassNum();
+        if(request.getClassNum()!=0){
+            this.classNum = request.getClassNum();
         }
-        if(entity.getStudentNum()!=0){
-            this.studentNum = entity.getStudentNum();
+        if(request.getStudentNum()!=0){
+            this.studentNum = request.getStudentNum();
         }
-        if("".equals(entity.getEmail())==false && entity.getEmail()!=null){
-            this.email = entity.getEmail();
+        if("".equals(request.getEmail())==false && request.getEmail()!=null){
+            this.email = request.getEmail();
         }
-        if("".equals(entity.getPassword())==false && entity.getPassword()!=null){
-            this.password = entity.getPassword();
+        if("".equals(request.getPassword())==false && request.getPassword()!=null){
+            this.password = request.getPassword();
         }
-        if(entity.getIntroduce()!=null) {
-            this.introduce = entity.getIntroduce();
+        if(request.getIntroduce()!=null) {
+            this.introduce = request.getIntroduce();
         }
-        if("".equals(entity.getProfile())==false && entity.getProfile()!=null){
-            this.profile = entity.getProfile();
+        if("".equals(request.getProfile())==false && request.getProfile()!=null){
+            this.profile = request.getProfile();
         }
     }
 

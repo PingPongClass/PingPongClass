@@ -2,6 +2,7 @@ package com.pingpong.backend.api.controller;
 
 import com.pingpong.backend.api.domain.StudentEntity;
 import com.pingpong.backend.api.domain.TeacherEntity;
+import com.pingpong.backend.api.domain.request.TeacherRequest;
 import com.pingpong.backend.api.domain.request.UserRequest;
 import com.pingpong.backend.api.domain.response.StudentResponse;
 import com.pingpong.backend.api.domain.response.TeacherResponse;
@@ -143,9 +144,24 @@ public class TeacherController {
     @PatchMapping
     @ApiOperation(value = "선생님 정보 수정", notes = "선생님정보 수정")
     @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
-    public ResponseEntity<String> modify(@RequestBody TeacherEntity teacher) throws IOException {
+    public ResponseEntity<String> modify(@RequestPart TeacherRequest teacher, @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         try {
-            service.modify(teacher);
+            if(!file.isEmpty()) {
+                if (file.getSize() >= 1048576) {
+                    return new ResponseEntity<String>("이미지 크기 제한은 1MB 입니다.", HttpStatus.FORBIDDEN);
+                }
+                String originFile = file.getOriginalFilename();
+                String originFileExtension = originFile.substring(originFile.lastIndexOf("."));
+                if (!originFileExtension.equalsIgnoreCase(".jpg") && !originFileExtension.equalsIgnoreCase(".png")
+                        && !originFileExtension.equalsIgnoreCase(".jpeg")) {
+                    return new ResponseEntity<String>("jpg, jpeg, png의 이미지 파일만 업로드해주세요", HttpStatus.FORBIDDEN);
+                }
+                String imgPath = s3Service.upload(teacher.getProfile(), file);
+                teacher.setProfile(imgPath);
+                service.modify(teacher);
+            } else {
+                service.modify(teacher);
+            }
             return new ResponseEntity<String>("선생님 정보수정 성공.", HttpStatus.OK);
         } catch (Exception e){
             e.printStackTrace();
@@ -154,30 +170,30 @@ public class TeacherController {
     }
 
 
-    @PatchMapping("/profile")
-    @ApiOperation(value = "선생님 프로필 이미지 수정", notes = "선생님 프로필 수정")
-    @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<String> modifyProfile(@RequestParam("teacherId") int teacherId, @RequestPart("file") MultipartFile file) throws IOException {
-        try {
-            if(file.getSize()>=1048576) {
-                return new ResponseEntity<String>("이미지 크기 제한은 1MB 입니다.", HttpStatus.FORBIDDEN);
-            }
-            String originFile = file.getOriginalFilename();
-            String originFileExtension = originFile.substring(originFile.lastIndexOf("."));
-            if(!originFileExtension.equalsIgnoreCase(".jpg") && !originFileExtension.equalsIgnoreCase(".png")
-                    && !originFileExtension.equalsIgnoreCase(".jpeg")) {
-                return new ResponseEntity<String>("jpg, jpeg, png의 이미지 파일만 업로드해주세요", HttpStatus.FORBIDDEN);
-            }
-            TeacherEntity teacher = repository.getOne(teacherId);
-            String imgPath = s3Service.upload(teacher.getProfile(), file);
-            TeacherEntity modteacher = new TeacherEntity(teacher.getTeacherId(), teacher.getName(), teacher.getEmail(), teacher.getIsAdmin(),"",
-                    teacher.getBirth(), teacher.getManageGrade(), imgPath);
-            service.modify(modteacher);
-            return new ResponseEntity<String>("선생님 정보수정 성공.", HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<String>("선생님 정보수정 실패", HttpStatus.FORBIDDEN);
-        }
-    }
+//    @PatchMapping("/profile")
+//    @ApiOperation(value = "선생님 프로필 이미지 수정", notes = "선생님 프로필 수정")
+//    @PreAuthorize("hasRole('TEACHER')")
+//    public ResponseEntity<String> modifyProfile(@RequestParam("teacherId") int teacherId, @RequestPart("file") MultipartFile file) throws IOException {
+//        try {
+//            if(file.getSize()>=1048576) {
+//                return new ResponseEntity<String>("이미지 크기 제한은 1MB 입니다.", HttpStatus.FORBIDDEN);
+//            }
+//            String originFile = file.getOriginalFilename();
+//            String originFileExtension = originFile.substring(originFile.lastIndexOf("."));
+//            if(!originFileExtension.equalsIgnoreCase(".jpg") && !originFileExtension.equalsIgnoreCase(".png")
+//                    && !originFileExtension.equalsIgnoreCase(".jpeg")) {
+//                return new ResponseEntity<String>("jpg, jpeg, png의 이미지 파일만 업로드해주세요", HttpStatus.FORBIDDEN);
+//            }
+//            TeacherEntity teacher = repository.getOne(teacherId);
+//            String imgPath = s3Service.upload(teacher.getProfile(), file);
+//            TeacherEntity modteacher = new TeacherEntity(teacher.getTeacherId(), teacher.getName(), teacher.getEmail(), teacher.getIsAdmin(),"",
+//                    teacher.getBirth(), teacher.getManageGrade(), imgPath);
+//            service.modify(modteacher);
+//            return new ResponseEntity<String>("선생님 정보수정 성공.", HttpStatus.OK);
+//        } catch (Exception e){
+//            return new ResponseEntity<String>("선생님 정보수정 실패", HttpStatus.FORBIDDEN);
+//        }
+//    }
     @ApiOperation(value = "선생님 선택 삭제", notes = "선생님 정보 선택 삭제")
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/teacher/select")

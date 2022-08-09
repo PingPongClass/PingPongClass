@@ -5,6 +5,7 @@ import com.pingpong.backend.Exception.ErrorCode;
 import com.pingpong.backend.api.domain.Authority;
 import com.pingpong.backend.api.domain.StudentEntity;
 import com.pingpong.backend.api.domain.TeacherEntity;
+import com.pingpong.backend.api.domain.request.TeacherRequest;
 import com.pingpong.backend.api.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.formula.functions.T;
@@ -82,23 +83,21 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     @Transactional
-    public void modify(TeacherEntity teacher) {
-        TeacherEntity teacherEntity = repository.findById(teacher.getTeacherId()).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
+    public void modify(TeacherRequest request) {
+        TeacherEntity teacherEntity = repository.findById(request.getTeacherId()).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
 
-        if("".equals(teacher.getPassword())==false && teacher.getPassword() != null){
-            teacher = new TeacherEntity(teacher.getTeacherId(), teacher.getName(), teacher.getEmail(),
-                    teacher.getIsAdmin(), passwordEncoder.encode(teacher.getPassword()),
-                    teacher.getBirth(), teacher.getManageGrade(), teacher.getProfile());
+        if("".equals(request.getPassword())==false && request.getPassword() != null){
+            String password = request.getPassword();
+            request.setPassword(passwordEncoder.encode(password));
         }
-
-        teacherEntity.modifyTeacher(teacher);
+        teacherEntity.modifyTeacher(request.getEmail(), request.getPassword(), request.getProfile(), request.getManageGrade());
     }
 
     @Override
     @Transactional
     public void modifyPassword(int teacherId, String password) {
         TeacherEntity teacherEntity = repository.findById(teacherId).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
-        teacherEntity.updateRandomPassword(passwordEncoder.encode(password));
+        teacherEntity.updatePassword(passwordEncoder.encode(password));
     }
 
     @Override

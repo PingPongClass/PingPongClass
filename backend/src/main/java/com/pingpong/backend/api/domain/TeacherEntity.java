@@ -73,7 +73,7 @@ public class TeacherEntity {
         this.isAdmin=isAdmin;
     }
 
-    public void updateRandomPassword(String password){
+    public void updatePassword(String password){
         this.password = password;
     }
 
@@ -81,18 +81,18 @@ public class TeacherEntity {
         this.email = email;
     }
 
-    public void modifyTeacher(TeacherEntity entity){
-        if("".equals(entity.getEmail()) == false && entity.getEmail()!=null){
-            this.email = entity.getEmail();
+    public void modifyTeacher(String email, String password, String profile, int manageGrade){
+        if("".equals(email) == false && email!=null){
+            this.email =email;
         }
-        if("".equals(entity.getPassword()) == false && entity.getPassword()!=null){
-            this.password = entity.getPassword();
+        if("".equals(password) == false && password!=null){
+            this.password = password;
         }
-        if("".equals(entity.getProfile()) == false && entity.getProfile()!=null){
-            this.profile = entity.getProfile();
+        if("".equals(profile) == false && profile!=null){
+            this.profile = profile;
         }
-        if(entity.getManageGrade()!=0){
-            this.manageGrade = entity.getManageGrade();
+        if(manageGrade!=0){
+            this.manageGrade = manageGrade;
         }
     }
 
