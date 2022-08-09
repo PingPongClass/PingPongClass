@@ -12,7 +12,10 @@ const TeacherMyInfo = () => {
       </div>
       <div className="infoContainer">
         <div className="profileContainer">
-          {memberStore.profileFullPath === '' ? (
+          {memberStore.profileFullPath ===
+            'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null' ||
+          memberStore.profileFullPath ===
+            'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/' ? (
             <img src={ProfilImage} alt="프로필사진" className="profile-logo" />
           ) : (
             <img
@@ -145,12 +148,13 @@ const ModalCSS = css`
 
   .fieldContainer {
     width: 100%;
-    font-size: 24px;
+    font-size: 15pt;
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    font-weight: 700;
   }
 
   .fieldContainer input {
@@ -160,6 +164,8 @@ const ModalCSS = css`
     border: solid 1px #d7d7d7;
     border-radius: 5px;
     box-sizing: border-box;
+    font-family: 'NanumSquareRound';
+    font-size: 15pt;
   }
 
   .fieldContainer span {

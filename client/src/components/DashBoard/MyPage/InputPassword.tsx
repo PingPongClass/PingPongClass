@@ -1,26 +1,53 @@
 import { css } from '@emotion/react';
 import IosModalNew from '@src/components/Common/IosModalNew';
 import { useAppSelector } from '@src/store/hooks';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import axios from 'axios';
+import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 
 const InputPassword = () => {
   const memberStore = useAppSelector((state) => state.member);
+  const [password, setPassword] = useState('');
+  const InterceptedAxios = setupInterceptorsTo(axios.create());
+  const navigate = useNavigate();
+  const onChangePassword = (e) => {
+    setPassword(e.target.value);
+  };
+  const onClickInputPWD = (e) => {
+    if (password == null) {
+      alert('비밀번호를 입력해주세요.');
+    } else {
+      InterceptedAxios.post('/auth/login', {
+        id: memberStore.userId,
+        password: password,
+      })
+        .then(function (response) {
+          if (memberStore.userId >= 2022000000) {
+            navigate('/student/studentmyinfo');
+          } else {
+            navigate('/teacher/teachermyinfo');
+          }
+        })
+        .catch(function (error) {
+          alert('비밀번호를 다시 확인해주세요.');
+          console.log('실패', error);
+        });
+    }
+  };
+
   return (
     <div css={ModalCSS}>
       <div className="commonModal">
         <div className="passwordContainer">
           <p>비밀번호:</p>
-          <input type="password" placeholder="비밀번호를 입력하세요." />
+          <input
+            type="password"
+            onChange={(e) => onChangePassword(e)}
+            placeholder="비밀번호를 입력하세요."
+          />
         </div>
-        {memberStore.userId.length == 10 ? (
-          <Link to="/student/studentmyinfo">
-            <button>입력</button>
-          </Link>
-        ) : (
-          <Link to="/teacher/teachermyinfo">
-            <button>입력</button>
-          </Link>
-        )}
+        <button onClick={onClickInputPWD}>입력</button>
       </div>
       <div className="modalSize">
         <IosModalNew />
