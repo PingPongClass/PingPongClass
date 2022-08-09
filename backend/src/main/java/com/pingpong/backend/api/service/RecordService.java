@@ -1,12 +1,13 @@
 package com.pingpong.backend.api.service;
 
+import com.pingpong.backend.Exception.CustomException;
+import com.pingpong.backend.Exception.ErrorCode;
 import com.pingpong.backend.api.domain.*;
+import com.pingpong.backend.api.domain.dto.LogDto;
 import com.pingpong.backend.api.domain.request.LogRequest;
 import com.pingpong.backend.api.domain.request.RecordRequest;
-import com.pingpong.backend.api.domain.response.NoticeResponse;
 import com.pingpong.backend.api.domain.response.RecordResponse;
 import com.pingpong.backend.api.repository.*;
-import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//페이지네이션 안했으니까 잊어버리지말기
 
 @Service
 @RequiredArgsConstructor
@@ -85,19 +85,27 @@ public class RecordService {
         return new  PageImpl<>(list.subList(start, end), pageable, list.size());
     }
 
-    //수업 후 강의 로그 저장하기
+    //수업 후 강의 로그+포인트 저장하기
+    @Transactional
     public void logSave(final LogRequest req){
+        int classId = req.getClassId();
         ClassEntity classEntity = classRepository.getById(req.getClassId());
-        StudentEntity studentEntity = studentRepository.getById(req.getStudentId());
-        LogEntity logEntity = LogEntity.builder()
-                .classEntity(classEntity)
-                .studententity(studentEntity)
-                .regDate(LocalDate.now())
-                .point(req.getPoint())
-                .attendance(req.isAttendance())
-                .presentCnt(req.getPresentCnt())
-                .build();
-        LogEntity saveEntity = logRepository.save(logEntity);
+        for(LogDto log:req.getLogList()){
+            StudentEntity studentEntity = studentRepository.getById(log.getStudentId());
+            //일단 로그저장
+            LogEntity logEntity = LogEntity.builder()
+                    .classEntity(classEntity)
+                    .studententity(studentEntity)
+                    .regDate(LocalDate.now())
+                    .point(log.getPoint())
+                    .attendance(log.isAttendance())
+                    .presentCnt(log.getPresentCnt())
+                    .build();
+            LogEntity saveEntity = logRepository.save(logEntity);
+            //포인트 업데이트
+            studentEntity.updatePoint(log.getPoint());
+        }
+
     }
 
 }
