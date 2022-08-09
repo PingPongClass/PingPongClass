@@ -75,6 +75,7 @@ const TeacherMyInfo = () => {
 const ModalCSS = css`
   height: 100%;
   width: 100%;
+  min-height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -83,14 +84,17 @@ const ModalCSS = css`
 
   .infoContainer {
     position: relative;
-    width: 100%;
-    height: 300px;
+    width: 80%;
+    height: 60%;
+    min-height: 100px;
+    max-height: 250px;
     display: flex;
+    margin-top: 50px;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    z-index: 999;
+    z-index: 3;
   }
 
   .profileContainer {
@@ -121,9 +125,9 @@ const ModalCSS = css`
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    margin-top: 50px;
+    margin-top: 30px;
     gap: 40px;
-    z-index: 999;
+    z-index: 3;
   }
 
   .buttonsContainer button {
@@ -169,7 +173,7 @@ const ModalCSS = css`
   .commonModal {
     position: absolute;
     width: 800px;
-    height: 600px;
+    height: 100%;
   }
 `;
 
