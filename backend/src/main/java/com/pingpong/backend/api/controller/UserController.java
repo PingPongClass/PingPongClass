@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.SecureRandom;
 import java.util.Date;
+import java.util.Map;
 
 @Api(value = "유저 API", tags={"Users(학생, 선생님) 비밀번호 찾기"})
 @RestController
@@ -135,17 +136,19 @@ public class UserController {
     @PostMapping("/myinfo")
     @PreAuthorize("hasRole('STUDENT')")
     @ApiOperation(value = "마이페이지 진입", notes = "마이페이지 진입을 위한 api")
-    public ResponseEntity<?> checkPassword(@RequestBody String password) {
+    public ResponseEntity<?> checkPassword(@RequestBody Map<String, String> map) {
         String id = SecurityUtil.getCurrentUsername();
+        String password = map.get("password");
+        System.out.println(id+" "+password);
         if(id == null) return new ResponseEntity<String>("로그인된 회원을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
         if(id.length() == 10){
             StudentEntity student = studentRepository.getOne(Integer.parseInt(id));
-            if(student.getPassword().equals(passwordEncoder.encode(password)))
+            if(passwordEncoder.matches(password, student.getPassword()))
                 return new ResponseEntity<String>("비밀번호 동일", HttpStatus.OK);
             else return new ResponseEntity<String>("비밀번호 틀림", HttpStatus.FORBIDDEN);
         } else{
             TeacherEntity teacher = teacherRepository.getOne(Integer.parseInt(id));
-            if(teacher.getPassword().equals(passwordEncoder.encode(password)))
+            if(passwordEncoder.matches(password,teacher.getPassword()))
                 return new ResponseEntity<String>("비밀번호 동일", HttpStatus.OK);
             else return new ResponseEntity<String>("비밀번호 틀림", HttpStatus.FORBIDDEN);
         }

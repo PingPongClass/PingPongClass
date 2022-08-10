@@ -195,6 +195,8 @@ public class ClassService {
         return urlList;
     }
 
-
-
+    @Transactional
+    public ClassResponse findClassInfo(int classId){
+        return new ClassResponse(classRepository.getOne(classId));
+    }
 }
