@@ -66,7 +66,6 @@ const Login = (props: LoginProps) => {
     })
       .then((response) => {
         //성공
-        console.log(response);
         const expires = new Date();
         expires.setMinutes(+expires.getDate + 7);
         // localStorage 저장

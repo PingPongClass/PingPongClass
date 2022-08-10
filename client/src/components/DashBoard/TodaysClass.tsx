@@ -12,11 +12,13 @@ import { useAppSelector } from '@src/store/hooks';
 
 function TodaysClass() {
   const AXIOS = setupInterceptorsTo(axios.create());
+  const memberStore = useAppSelector((state) => state.member);
   const [classList, setClassList] = useState([] as any);
+  var dt = new Date();
   const loadClassList = async () => {
-    const studentId = 2022000001;
-    const classDay = 1;
-    const result = await AXIOS.get(`/classes/${studentId}/today`, {
+    const studentId = memberStore.userId;
+    const classDay = dt.getDay();
+    const result = await AXIOS.get(`/classes`, {
       params: { id: studentId, day: classDay },
     });
     setClassList(result.data.content);
@@ -24,7 +26,7 @@ function TodaysClass() {
 
   useEffect(() => {
     loadClassList();
-  }, []);
+  }, [memberStore]);
 
   return (
     <div css={totalContainer}>

@@ -1,12 +1,11 @@
 import { css } from '@emotion/react';
 import { useState } from 'react';
-import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
-import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { useAppSelector } from '@src/store/hooks';
-import member from '@src/store/member';
+import StudentListTransfer from '@components/DashBoard/Teacher/StudentListTransfer';
 
 const weeks = [
   {
@@ -132,9 +131,10 @@ const NewClassList = () => {
   const [classTitle, setClassTitle] = useState('');
   const [classDay, setClassDay] = useState(1);
   const [subjectCode, setSubjectCode] = useState(1);
-  const [studentList, setStudentList] = useState('');
+  const [studentList, setStudentList] = useState([] as any);
   const [timetableId, setTimetableId] = useState(1);
   const [classDes, setClassDes] = useState('');
+
   const memberStore = useAppSelector((state) => state.member);
 
   const AXIOS = setupInterceptorsTo(axios.create());
@@ -149,12 +149,13 @@ const NewClassList = () => {
     setSubjectCode(data);
   };
   const ChangeStudentList = (data) => {
+    console.log(data);
     setStudentList(data);
   };
   const ChangeTimetableId = (data) => {
     setTimetableId(data);
   };
-  const ChangeClassDes = (data) => {
+  const ChangeClassDes = (data: any) => {
     setClassDes(data);
   };
 
@@ -167,7 +168,7 @@ const NewClassList = () => {
       classUrl: '',
       timetableId: timetableId,
       classDesc: classDes,
-      studentIdList: [2022000001],
+      studentIdList: studentList,
     };
     const result = await AXIOS.post('/classes', data);
     console.log(result);
@@ -176,14 +177,6 @@ const NewClassList = () => {
   return (
     <div css={totalContainer}>
       <h1>수업 생성</h1>
-      <div className="inputContainer">
-        <div>수업명: {classTitle}</div>
-        <div>요일: {classDay}</div>
-        <div>과목 코드: {subjectCode}</div>
-        <div>수업 교시: {timetableId}</div>
-        <div>수업 설명: {classDes}</div>
-        <div>학생명단: {studentList}</div>
-      </div>
       <div className="inputContainer">
         <TextField
           onChange={(e) => ChangeTitle(e.target.value)}
@@ -242,19 +235,10 @@ const NewClassList = () => {
           label="수업 설명"
           fullWidth
         />
-        <TextField
-          onChange={(e) => ChangeStudentList(e.target.value)}
-          id="outlined-basic"
-          label="학생추가 (아직 미구현)"
-          fullWidth
-        />
-        <Button
-          onClick={() => createClass()}
-          variant="contained"
-          color="success"
-        >
+        <StudentListTransfer ChangeStudentList={ChangeStudentList} />
+        <button className="listButton" onClick={() => createClass()}>
           수업 생성
-        </Button>
+        </button>
       </div>
     </div>
   );
@@ -263,7 +247,6 @@ const NewClassList = () => {
 const totalContainer = css`
   width: 100%;
   height: auto;
-  background: #fdfcf3;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -280,6 +263,36 @@ const totalContainer = css`
     align-items: center;
     justify-content: center;
     gap: 20px;
+  }
+
+  .studentSearch {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .listButton {
+    width: auto;
+    margin: 0;
+    padding: 10px 20px;
+    border-radius: 20px;
+    color: white;
+    border: 0;
+    box-shadow: 2px 2px 15px -5px;
+    background-color: #5da1ff;
+    box-sizing: border-box;
+    transition: all 0.3s ease-in-out;
+    font-size: 20px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .listButton:hover {
+    transform: scale(1.1);
   }
 `;
 

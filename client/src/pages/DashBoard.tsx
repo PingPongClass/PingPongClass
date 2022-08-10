@@ -32,9 +32,7 @@ const DashBoard = () => {
     setToast('');
   }
 
-  useEffect(() => {
-    dispatch(saveMember());
-  }, []);
+  dispatch(saveMember());
 
   return (
     <div css={totalContainer}>

@@ -18,12 +18,10 @@ function TeacherTodaysClass() {
   const loadClassList = async () => {
     const teacherId = memberStore.userId;
     const classDay = dt.getDay();
-    const result = await AXIOS.get(`/classes/${teacherId}/today`, {
+    const result = await AXIOS.get(`/classes`, {
       params: { id: teacherId, day: classDay },
     });
     setClassList(result.data.content);
-    console.log(result);
-    console.log(classList);
   };
 
   useEffect(() => {
