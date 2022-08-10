@@ -149,11 +149,15 @@ public class ClassService {
             StudentEntity studentEntity = studentRepository.getOne(userId);
             List<ClassStudentEntity> classStudentEntityList = classStudentRepository.findByStudentEntity(studentEntity);
             for (ClassStudentEntity classStudentEntity : classStudentEntityList) {
-                classEntityList = classRepository.findByClassIdAndClassDay(classStudentEntity.getClassEntity().getClassId(), classDay, sort);
+                List<ClassEntity> subList = classRepository.findByClassIdAndClassDay(classStudentEntity.getClassEntity().getClassId(), classDay, sort);
+                for(ClassEntity classEntity:subList)
+                    classEntityList.add(classEntity);
             }
         }else { //선생님일때
             TeacherEntity teacherEntity = teacherRepository.findByTeacherId(userId);
-            classEntityList = classRepository.findByTeacherEntityAndClassDay(teacherEntity, classDay, sort);
+            List<ClassEntity> subList = classRepository.findByTeacherEntityAndClassDay(teacherEntity, classDay, sort);
+            for(ClassEntity classEntity:subList)
+                classEntityList.add(classEntity);
         }
         List<ClassResponse> list = classEntityList.stream().map(ClassResponse::new).collect(Collectors.toList());
         int start = (int)pageable.getOffset();
