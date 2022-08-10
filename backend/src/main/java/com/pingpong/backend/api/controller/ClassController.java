@@ -73,7 +73,7 @@ public class ClassController {
 
     //요청받은 요일에 해당하는 수업 목록 조회
     @ApiOperation(value = "요일에 따른 수업 목록 조회")
-    @GetMapping("/{userId}/today")
+    @GetMapping("/")
     @PreAuthorize("hasRole('STUDENT')")
     public Page<ClassResponse> findTodayClasses(@RequestParam(value="id") final int userId, @RequestParam(value="day") final int classDay, Pageable pageable){
         Page<ClassResponse> pageReponse = null;
