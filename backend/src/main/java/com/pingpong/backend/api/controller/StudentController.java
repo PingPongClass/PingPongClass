@@ -2,6 +2,7 @@ package com.pingpong.backend.api.controller;
 
 import com.pingpong.backend.api.domain.StudentEntity;
 import com.pingpong.backend.api.domain.StudentSpecification;
+import com.pingpong.backend.api.domain.TeacherEntity;
 import com.pingpong.backend.api.domain.request.StudentRequest;
 import com.pingpong.backend.api.domain.request.UserRequest;
 import com.pingpong.backend.api.domain.response.RankResponse;
@@ -128,7 +129,7 @@ public class StudentController {
     @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<String> modify(@RequestPart(value = "student") StudentRequest student, @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         try {
-            if(!file.isEmpty()) {
+            if(file!=null) {
                 if (file.getSize() >= 1048576) {
                     return new ResponseEntity<String>("이미지 크기 제한은 1MB 입니다.", HttpStatus.FORBIDDEN);
                 }
@@ -138,8 +139,17 @@ public class StudentController {
                         && !originFileExtension.equalsIgnoreCase(".jpeg")) {
                     return new ResponseEntity<String>("jpg, jpeg, png의 이미지 파일만 업로드해주세요", HttpStatus.FORBIDDEN);
                 }
-                String imgPath = s3Service.upload(student.getProfile(), file);
+                StudentEntity entity = repository.getOne(student.getStudentId());
+                String imgPath = s3Service.upload(entity.getProfile(), file);
                 student.setProfile(imgPath);
+                service.modify(student);
+            } else if(student.getProfile().equals("reset")) {
+                StudentEntity entity = repository.getOne(student.getStudentId());
+                //이미지 있으면 s3 버킷에서 지움
+                s3Service.delete(entity.getProfile());
+
+                //이미지 컬럼 null로 변경
+                student.setProfile("null");
                 service.modify(student);
             } else {
                 service.modify(student);

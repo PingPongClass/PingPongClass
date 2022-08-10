@@ -48,8 +48,18 @@ public class S3Service {
         // 고유한 key 값을 갖기위해 현재 시간을 postfix로 붙여줌
         SimpleDateFormat date = new SimpleDateFormat("yyyymmddHHmmss");
         String fileName = date.format(new Date())+"-"+file.getOriginalFilename();
-        System.out.println(fileName);
 
+        // key가 존재하면 기존 파일은 삭제
+        delete(currentFilePath);
+
+        // 파일 업로드
+        s3Client.putObject(new PutObjectRequest(bucket, fileName, file.getInputStream(), null)
+                .withCannedAcl(CannedAccessControlList.PublicRead));
+
+        return fileName;
+    }
+
+    public void delete(String currentFilePath) throws IOException {
         // key가 존재하면 기존 파일은 삭제
         if ("".equals(currentFilePath) == false && currentFilePath != null) {
             boolean isExistObject = s3Client.doesObjectExist(bucket, currentFilePath);
@@ -58,11 +68,5 @@ public class S3Service {
                 s3Client.deleteObject(bucket, currentFilePath);
             }
         }
-
-        // 파일 업로드
-        s3Client.putObject(new PutObjectRequest(bucket, fileName, file.getInputStream(), null)
-                .withCannedAcl(CannedAccessControlList.PublicRead));
-
-        return fileName;
     }
 }
