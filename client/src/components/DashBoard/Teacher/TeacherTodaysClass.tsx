@@ -5,8 +5,70 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import ClassCard from '@components/DashBoard/TodaysClass/ClassCard';
+import axios from 'axios';
+import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
+import { useEffect, useState } from 'react';
+import { useAppSelector } from '@src/store/hooks';
+import getCode from '@utils/getCode';
+import { number } from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
-function TeacherTodaysClass({ classList }: any) {
+interface ClassProps {
+  classDay: number;
+  classDesc: string;
+  classId: number;
+  classTitle: string;
+  subjectEntity: {
+    classSubjectCode: number;
+    name: string;
+  };
+  teacherName: string;
+  timetableId: number;
+}
+
+function TeacherTodaysClass() {
+  const AXIOS = setupInterceptorsTo(axios.create());
+  const memberStore = useAppSelector((state) => state.member);
+  const [classList, setClassList] = useState([] as any);
+  const navigate = useNavigate();
+  var dt = new Date();
+  console.log(classList);
+
+  const loadClassList = async () => {
+    const teacherId = memberStore.userId;
+    const classDay = dt.getDay();
+    const result = await AXIOS.get(`/classes`, {
+      params: { id: teacherId, day: classDay },
+    });
+    setClassList(result.data.content);
+  };
+
+  const openClass = async (cls: ClassProps) => {
+    console.log(cls);
+    const newCode = await getCode();
+    const newData = {
+      classId: cls.classId,
+      classUrl: newCode,
+    };
+
+    try {
+      await AXIOS.patch(`/classes/open`, newData);
+      navigate(`/class/${newCode}`, {
+        state: {
+          classId: cls.classId,
+          classTitle: cls.classTitle,
+          teacherName: cls.teacherName,
+        },
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    loadClassList();
+  }, [memberStore]);
+
   return (
     <div css={totalContainer}>
       {classList.length === 0 && <p>오늘은 수업이 없습니다.</p>}
@@ -21,8 +83,14 @@ function TeacherTodaysClass({ classList }: any) {
         className="mySwiper"
       >
         {classList.map((cls, idx) => (
-          <SwiperSlide key={idx}>
-            <ClassCard clsList={cls} />
+          <SwiperSlide key={idx} onClick={() => openClass(cls)}>
+            <ClassCard
+              clsList={{
+                classTitle: cls.classTitle,
+                classDesc: cls.classDesc,
+              }}
+              isActive={true}
+            />
           </SwiperSlide>
         ))}
       </Swiper>

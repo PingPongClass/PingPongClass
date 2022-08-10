@@ -44,6 +44,7 @@ export default class ToolbarComponent extends Component {
     this.pickRandomStudent = this.pickRandomStudent.bind(this);
     this.startStickerEvent = this.startStickerEvent.bind(this);
     this.toggleSetting = this.toggleSetting.bind(this);
+    this.selfLeaveSession = this.selfLeaveSession.bind(this);
   }
 
   // micStatusChanged: 마이크 상태변화 토글 함수
@@ -80,6 +81,11 @@ export default class ToolbarComponent extends Component {
   // leaveSession: 세션 이탈 함수
   leaveSession() {
     this.props.leaveSession();
+  }
+
+  // selfLeaveSession: 혼자 세션 이탈 함수
+  selfLeaveSession() {
+    this.props.selfLeaveSession();
   }
 
   // toggleChat: 채팅 토글 함수
@@ -142,7 +148,9 @@ export default class ToolbarComponent extends Component {
           {this.props.sessionId && (
             <div id="titleContent">
               {/* <span id="session-title">{mySessionId}</span> */}
-              <span id="session-title">2-3 수요일 6교시 국어</span>
+              <span id="session-title">
+                {this.props.classTitle} - {this.props.teacherName}
+              </span>
             </div>
           )}
 
@@ -185,57 +193,69 @@ export default class ToolbarComponent extends Component {
               )}
             </IconButton>
 
-            <IconButton
-              color="inherit"
-              className="navButton"
-              id="navRandButton"
-              onClick={this.pickRandomStudent}
-              disabled={!this.state.randAvailable}
-            >
-              <div className="buttonStyle">
-                {this.state.randAvailable ? (
-                  <Shuffle />
-                ) : (
-                  <Shuffle
-                    color="secondary"
-                    style={{ animation: 'cooldown 5s linear 1' }}
-                  />
-                )}
-                <p>랜덤 학생 뽑기</p>
-              </div>
-            </IconButton>
+            {this.props.whoami === 'teacher' && (
+              <>
+                <IconButton
+                  color="inherit"
+                  className="navButton"
+                  id="navRandButton"
+                  onClick={this.pickRandomStudent}
+                  disabled={!this.state.randAvailable}
+                >
+                  <div className="buttonStyle">
+                    {this.state.randAvailable ? (
+                      <Shuffle />
+                    ) : (
+                      <Shuffle
+                        color="secondary"
+                        style={{ animation: 'cooldown 5s linear 1' }}
+                      />
+                    )}
+                    <p>랜덤 학생 뽑기</p>
+                  </div>
+                </IconButton>
+              </>
+            )}
 
-            <IconButton
-              color="inherit"
-              className="navButton"
-              id="navRandButton"
-              onClick={this.startStickerEvent}
-              disabled={!this.state.stickerAvailable}
-            >
-              <div className="buttonStyle">
-                {this.state.stickerAvailable ? (
-                  <AccessTime />
-                ) : (
-                  <AccessTime
-                    color="secondary"
-                    style={{ animation: 'cooldown 30s linear 1' }}
-                  />
-                )}
-                <p>집중 스티커</p>
-              </div>
-            </IconButton>
+            {this.props.whoami === 'teacher' && (
+              <>
+                <IconButton
+                  color="inherit"
+                  className="navButton"
+                  id="navRandButton"
+                  onClick={this.startStickerEvent}
+                  disabled={!this.state.stickerAvailable}
+                >
+                  <div className="buttonStyle">
+                    {this.state.stickerAvailable ? (
+                      <AccessTime />
+                    ) : (
+                      <AccessTime
+                        color="secondary"
+                        style={{ animation: 'cooldown 30s linear 1' }}
+                      />
+                    )}
+                    <p>집중 스티커</p>
+                  </div>
+                </IconButton>
+              </>
+            )}
 
-            <IconButton
-              color="inherit"
-              className="navButton"
-              id="navRandButton"
-              onClick={this.toggleQuiz}
-            >
-              <div className="buttonStyle">
-                <Quiz />
-                <p>퀴즈 열기</p>
-              </div>
-            </IconButton>
+            {this.props.whoami === 'teacher' && (
+              <>
+                <IconButton
+                  color="inherit"
+                  className="navButton"
+                  id="navRandButton"
+                  onClick={this.toggleQuiz}
+                >
+                  <div className="buttonStyle">
+                    <Quiz />
+                    <p>퀴즈 열기</p>
+                  </div>
+                </IconButton>
+              </>
+            )}
 
             <IconButton
               color="inherit"
@@ -305,17 +325,31 @@ export default class ToolbarComponent extends Component {
               </div>
             </IconButton>
 
-            <IconButton
-              color="secondary"
-              className="navButton"
-              onClick={this.leaveSession}
-              id="navLeaveButton"
-            >
-              <div className="buttonStyle">
-                <PowerSettingsNew />
-                <p>수업 나가기</p>
-              </div>
-            </IconButton>
+            {this.props.whoami !== 'teacher' ? (
+              <IconButton
+                color="secondary"
+                className="navButton"
+                onClick={this.selfLeaveSession}
+                id="navLeaveButton"
+              >
+                <div className="buttonStyle">
+                  <PowerSettingsNew />
+                  <p>수업 나가기</p>
+                </div>
+              </IconButton>
+            ) : (
+              <IconButton
+                color="secondary"
+                className="navButton"
+                onClick={this.leaveSession}
+                id="navLeaveButton"
+              >
+                <div className="buttonStyle">
+                  <PowerSettingsNew />
+                  <p>수업 나가기</p>
+                </div>
+              </IconButton>
+            )}
 
             <IconButton
               color="inherit"

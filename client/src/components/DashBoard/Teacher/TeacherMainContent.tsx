@@ -33,7 +33,7 @@ const MainContent = () => {
       </div>
       <h2>오늘의 수업</h2>
       <div className="todaysClass">
-        <TeacherTodaysClass classList={classList} />
+        <TeacherTodaysClass />
       </div>
     </div>
   );

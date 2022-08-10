@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import InterceptedAxios from '@utils/iAxios';
 import './VideoRoomComponent.css';
 import { OpenVidu } from 'openvidu-browser';
 import StreamComponent from './stream/StreamComponent';
@@ -12,7 +13,6 @@ import QuizModal from './quiz/QuizModal';
 import QuizModalStudent from './quiz/QuizModalStudent';
 import ShieldModal from './items/ShieldModal';
 import Sticker from './pointClickEvent/PointSticker';
-import { getVideos, getAudios, getSpeakers } from './utils/customUseDevice';
 
 import OpenViduLayout from '../layout/openvidu-layout';
 import UserModel from '../models/user-model';
@@ -43,9 +43,8 @@ class VideoRoomComponent extends Component {
     // sessionName: 세션 이름을 담은 변수 (기본값 SessionA)
     let sessionName = this.props.code;
     // userName: 유저의 이름 (기본 OpenVidu_User + 0부터 99까지의 랜덤한 숫자)
-    let userName = this.props.user
-      ? this.props.user
-      : '익명의 유저 ' + Math.floor(Math.random() * 100);
+    let userName = this.props.memberStore.name;
+    if (this.props.whoami === 'teacher') userName += ' (선생님)';
     // remotes:
     this.remotes = [];
     // localUserAccessAllowed:
@@ -90,6 +89,8 @@ class VideoRoomComponent extends Component {
     this.joinSession = this.joinSession.bind(this);
     // leaveSession: 세션 접속해제
     this.leaveSession = this.leaveSession.bind(this);
+    // selfLeaveSession: 학생 혼자 세션 나갔을 때
+    this.selfLeaveSession = this.selfLeaveSession.bind(this);
     // onbeforeunload: 접속 종료 전에 일어나는 일들을 처리하는 함수
     this.onbeforeunload = this.onbeforeunload.bind(this);
     // updateLayout: 레이아웃 업데이트
@@ -150,6 +151,7 @@ class VideoRoomComponent extends Component {
 
   // componentDidMount: 컴포넌트가 마운트 되었을 때 작동하는 리액트 컴포넌트 생명주기함수
   componentDidMount() {
+    console.log('-------------', this.props.code);
     // openViduLayoutOptions: 화면 레이아웃 설정
     const openViduLayoutOptions = {
       maxRatio: 9 / 16, // The narrowest ratio that will be used (default 2x3)
@@ -322,8 +324,10 @@ class VideoRoomComponent extends Component {
     localUser.setStreamManager(publisher);
 
     // 이벤트 등록
+    if (this.props.whoami !== 'teacher') this.subscribeToSessionClosed();
     this.subscribeToUserChanged();
     this.subscribeToStreamDestroyed();
+
     this.sendSignalUserChanged({
       isScreenShareActive: localUser.isScreenShareActive(),
     });
@@ -368,8 +372,8 @@ class VideoRoomComponent extends Component {
     );
   }
 
-  // leaveSession: 세션을 빠져나가는 함수
-  leaveSession() {
+  // 학생이 자기혼자 나간경우
+  selfLeaveSession() {
     const mySession = this.state.session;
 
     if (mySession) {
@@ -386,9 +390,89 @@ class VideoRoomComponent extends Component {
       myUserName: '퇴장한 유저',
       localUser: undefined,
     });
+    if (this.props.selfLeaveSession) {
+      this.props.selfLeaveSession();
+    }
+
+    return this.props.navigate('/student');
+  }
+
+  // leaveSession: 세션을 빠져나가는 함수
+  async leaveSession() {
+    const mySession = this.state.session;
+    this.props.setMyData(this.state.localUser);
+    this.props.setOthersData(this.state.subscribers);
+
+    if (this.props.whoami === 'teacher') {
+      console.log('나는 선생님', this.props.classId);
+      try {
+        const result = await InterceptedAxios.patch(
+          `/classes/${this.props.classId}/close`,
+          {
+            classId: this.props.classId,
+          },
+        );
+        console.log(result);
+      } catch (e) {
+        console.error(e);
+      }
+
+      this.state.localUser.getStreamManager().stream.session.signal({
+        type: 'classClosed',
+      });
+    }
+
+    if (mySession) {
+      mySession.disconnect();
+    }
+
+    // Empty all properties...
+    // 모든 설정들 초기화
+    this.OV = null;
+    this.setState({
+      session: undefined,
+      subscribers: [],
+      mySessionId: 'SessionA',
+      myUserName: '퇴장한 유저',
+      localUser: undefined,
+    });
+
     if (this.props.leaveSession) {
       this.props.leaveSession();
     }
+    this.props.setTap('result');
+
+    // if (this.props.whoami === 'teacher') {
+    //   this.props.user.getStreamManager().stream.session.signal({
+    //     type: 'private-chat',
+    //   });
+    //   // await axios.delete(
+    //   //   `https://i7a403.p.ssafy.io/openvidu/api/sessions/${this.props.code}`,
+    //   //   {
+    //   //     headers: {
+    //   //       Authorization:
+    //   //         `Basic ` +
+    //   //         btoa(
+    //   //           unescape(
+    //   //             encodeURIComponent(
+    //   //               `OPENVIDUAPP:${process.env.REACT_APP_OPENVIDU_SERVER_SECRET}`,
+    //   //             ),
+    //   //           ),
+    //   //         ),
+    //   //     },
+    //   //   },
+    //   // );
+    //   if (this.props.leaveSession) {
+    //     this.props.leaveSession();
+    //   }
+    //   this.props.setTap('result');
+    // } else {
+    //   console.log('wow');
+    //   if (this.props.leaveSession) {
+    //     this.props.leaveSession();
+    //   }
+    //   this.props.setTap('result');
+    // }
   }
 
   // camStatusChanged: 캠 설정 변경
@@ -481,7 +565,6 @@ class VideoRoomComponent extends Component {
       setTimeout(() => {
         this.checkSomeoneShareScreen();
       }, 20);
-      event.preventDefault();
       this.updateLayout();
     });
   }
@@ -558,6 +641,13 @@ class VideoRoomComponent extends Component {
         },
         () => this.checkSomeoneShareScreen(),
       );
+    });
+  }
+
+  subscribeToSessionClosed() {
+    this.state.session.on('signal:classClosed', (event) => {
+      console.log('닫힘');
+      this.leaveSession();
     });
   }
 
@@ -1279,6 +1369,7 @@ class VideoRoomComponent extends Component {
                   style={participantDisplay}
                 >
                   <ParticipantComponent
+                    whoami={this.props.whoami}
                     user={localUser}
                     subscribers={subscribers}
                     participantDisplay={this.state.participantDisplay}
@@ -1313,6 +1404,9 @@ class VideoRoomComponent extends Component {
           {/* 하단 툴바 */}
           <div className="toolbar">
             <ToolbarComponent
+              teacherName={this.props.teacherName}
+              classTitle={this.props.classTitle}
+              whoami={this.props.whoami}
               sessionId={mySessionId}
               user={localUser}
               showNotification={this.state.messageReceived}
@@ -1325,6 +1419,7 @@ class VideoRoomComponent extends Component {
               toggleFullscreen={this.toggleFullscreen}
               switchCamera={this.switchCamera}
               leaveSession={this.leaveSession}
+              selfLeaveSession={this.selfLeaveSession}
               toggleChat={this.toggleChat}
               toggleParticipant={this.toggleParticipant}
               toggleQuiz={this.toggleQuiz}

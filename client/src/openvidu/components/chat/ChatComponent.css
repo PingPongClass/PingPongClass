@@ -46,7 +46,7 @@
 
 .message-wrap {
   padding: 0 15px;
-  height: calc(96% - 110px);
+  height: calc(96% - 135px);
   overflow: auto;
 }
 
@@ -243,6 +243,11 @@ span.triangle {
   bottom: 0;
   margin: auto;
   box-shadow: none !important;
+}
+
+#sendButton:hover {
+  cursor: pointer;
+  width: 2.1rem;
 }
 
 ::-webkit-scrollbar {

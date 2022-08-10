@@ -62,7 +62,9 @@ export default class ParticipantComponent extends Component {
           <div className="participants-wrap" ref={this.participantScroll}>
             <div>
               <SingleParticipantPanel
+                whoami={this.props.whoami}
                 user={this.props.user}
+                isMyself={true}
                 // myinfo={this.props.user.nickname}
                 // point={this.props.user.point}
                 // attendenceTime={this.props.user.attendenceTime}
@@ -75,7 +77,9 @@ export default class ParticipantComponent extends Component {
             {this.props.subscribers.map((sub, i) => (
               <SingleParticipantPanel
                 key={i}
+                whoami={this.props.whoami}
                 user={sub}
+                isMyself={false}
                 // myinfo={sub.nickname}
                 // point={sub.point}
                 // attendenceTime={sub.attendenceTime}

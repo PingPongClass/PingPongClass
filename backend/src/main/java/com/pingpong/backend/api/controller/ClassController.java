@@ -38,12 +38,12 @@ public class ClassController {
     }
 
     @ApiOperation(value = "실시간 수업 여부 체크")
-    @GetMapping("/isoopen/{classId}")
+    @GetMapping("/isopen/{classId}")
     @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<?> isOpenClass(@PathVariable int classId){
         try{
-            boolean isOpen = classService.isOpen(classId);
-            return new ResponseEntity<Boolean>(isOpen, HttpStatus.OK);
+            String isOpen = classService.isOpen(classId);
+            return new ResponseEntity<String>(isOpen, HttpStatus.OK);
         } catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<String>("실시간 수업 여부 체크 실패", HttpStatus.FORBIDDEN);
