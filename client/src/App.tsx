@@ -23,11 +23,25 @@ import EditStudent from '@src/components/DashBoard/Admin/EditStudent';
 import StudentBoard from '@components/DashBoard/Admin/StudentBoard';
 import StudentMyInfo from '@components/DashBoard/MyPage/StudentMyInfo';
 import TeacherMyInfo from '@components/DashBoard/MyPage/TeacherMyInfo';
+import { ToastContainer } from 'react-toastify';
 import '@src/App.css';
 
 const App = () => {
   return (
     <div className="App">
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="colored"
+        newestOnTop={false}
+        rtl={false}
+        pauseOnFocusLoss
+        limit={1}
+      />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />

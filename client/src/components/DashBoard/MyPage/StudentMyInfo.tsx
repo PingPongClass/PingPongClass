@@ -8,6 +8,7 @@ import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const StudentMyInfo = () => {
   const memberStore = useAppSelector((state) => state.member);
@@ -59,7 +60,7 @@ const StudentMyInfo = () => {
   const onChangeFiles = (e) => {
     if (e.target.files[0] > 10 * 1024 * 1024) {
       e.target.value = '';
-      alert('업로드 가능한 최대 용량은 10MB입니다. ');
+      toast.warning('업로드 가능한 최대 용량은 10MB입니다. ');
       return;
     }
     const reader = new FileReader();
@@ -82,11 +83,11 @@ const StudentMyInfo = () => {
 
   const onEditMyInfo = (e) => {
     if (email === null) {
-      alert('이메일을 확인해주세요.');
+      toast.warning('이메일을 확인해주세요.');
     } else if (!(password === passwordconfirm)) {
-      alert('비밀번호가 일치하지 않습니다. 다시 확인해주세요.');
+      toast.warning('비밀번호가 일치하지 않습니다. 다시 확인해주세요.');
     } else if (!isUse) {
-      alert('사용할 수 없는 이메일입니다. 다시 확인해주세요.');
+      toast.warning('사용할 수 없는 이메일입니다. 다시 확인해주세요.');
     } else {
       const frm = new FormData();
       let student: StudentDataInterface;
@@ -127,12 +128,12 @@ const StudentMyInfo = () => {
         },
       })
         .then(function (response) {
-          alert('정보가 수정되었습니다.');
+          toast.success('정보 수정이 완료되었습니다.');
           location.href = '/student/mypage';
         })
         .catch(function (error) {
           console.log(error);
-          alert('정보 수정에 실패하였습니다.');
+          toast.error('정보 수정에 실패하였습니다.');
         });
     }
   };

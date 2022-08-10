@@ -4,39 +4,17 @@ import IconGroup from '@components/DashBoard/IconGroup';
 import NavBar from '@components/DashBoard/NavBar';
 import dashboardBackground from '@assets/images/dashboardBackground.png';
 import Footer from '@components/DashBoard/Footer/Footer';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Outlet } from 'react-router-dom';
 import { saveMember } from '@src/store/member';
-import { useAppDispatch } from '@src/store/hooks';
+import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 
 const DashBoard = () => {
-  const [toastMsg, setToast] = useState(' 님 로그인 되었습니다.');
   const dispatch = useAppDispatch();
-  const notify = () =>
-    toast.success(toastMsg, {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'colored',
-    });
-
-  // toastMsg에 원하는 메시지를 써서 함수를 실행하면 됨
-  // 여기있는 예시처럼 useState 를 활용해서 관리해도되고
-  if (toastMsg) {
-    notify();
-    setToast('');
-  }
-
   dispatch(saveMember());
-
   return (
     <div css={totalContainer}>
-      <ToastContainer />
       <div className="dashBoardContainer">
         <div className="navBar">
           <NavBar />

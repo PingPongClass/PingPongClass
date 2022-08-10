@@ -2,44 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import IconGroup from '@components/DashBoard/IconGroup';
 import NavBar from '@components/DashBoard/Admin/AdminNavBar';
-import dashboardBackground from '@assets/images/dashboardBackground.png';
+import AdminDashboardBackground from '@assets/images/admindashboardBackground.png';
 import Footer from '@components/DashBoard/Footer/Footer';
 import { Outlet, BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { saveMember, logIn, logOut } from '@src/store/member';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 
 const DashBoard = () => {
-  const [toastMsg, setToast] = useState('원재호 님 로그인 되었습니다.');
   const dispatch = useAppDispatch();
-  const notify = () =>
-    toast.success(toastMsg, {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'colored',
-    });
 
   useEffect(() => {
     // 테스트용 직원 아이디
     // dispatch(saveMember(5030001));
   }, []);
 
-  // toastMsg에 원하는 메시지를 써서 함수를 실행하면 됨
-  // 여기있는 예시처럼 useState 를 활용해서 관리해도되고
-  if (toastMsg) {
-    notify();
-    setToast('');
-  }
-
   return (
     <div css={totalContainer}>
-      <ToastContainer />
       <div className="dashBoardContainer">
         <div className="navBar">
           <NavBar />
@@ -61,7 +40,7 @@ const DashBoard = () => {
 };
 
 const totalContainer = css`
-  background-image: url(${dashboardBackground});
+  background-image: url(${AdminDashboardBackground});
   background-size: cover;
   height: 100vh;
 

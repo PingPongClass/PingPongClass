@@ -1,20 +1,39 @@
 import { css } from '@emotion/react';
 import defaultProfile from '@assets/images/defaultProfile.jpeg';
+import { useAppSelector } from '@src/store/hooks';
 
 const TeacherMyinfo = () => {
+  const memberStore = useAppSelector((state) => state.member);
+
   return (
     <div css={totalContainer}>
       <div className="infoContainer">
-        <img src={defaultProfile} alt="" />
+        {memberStore.profileFullPath ===
+          'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null' ||
+        memberStore.profileFullPath ===
+          'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/' ? (
+          <img
+            src={defaultProfile}
+            alt="기본프로필사진"
+            className="profile-logo"
+          />
+        ) : (
+          <img
+            src={memberStore.profileFullPath}
+            alt="지정된프로필사진"
+            className="profile-logo"
+          />
+        )}
         <div className="nameContainer">
-          <h2>원재호 선생님 어서오세요</h2>
+          <h2>{memberStore.name} 선생님</h2>
         </div>
       </div>
       <div className="levelContainer">
-        <h2 className="level">남은수업 2/6</h2>
+        <h2 className="level">수업 현황 0/{memberStore.classes.length}</h2>
         <div className="stickerContainer">
-          <div className="soFarSticker"></div>
-          <div className="currentSticker"></div>
+          <div className="soFarSticker">
+            <span>완료된 수업 : 0</span>
+          </div>
         </div>
       </div>
     </div>
@@ -104,16 +123,17 @@ const totalContainer = css`
     border-radius: 20px;
     z-index: 1;
     animation: barIn2 0.6s;
+    text-align: right;
+
+    span {
+      padding-right: 20px;
+    }
   }
-  .currentSticker {
-    position: absolute;
-    top: 0;
-    width: 50%;
-    height: 100%;
-    background-color: #fdb878;
-    border-radius: 20px;
-    z-index: 99;
-    animation: barIn 0.6s;
+  img {
+    border: 1px solid gray;
+    border-radius: 100px;
+    width: 80px;
+    height: 30%;
   }
 
   @keyframes barIn {

@@ -17,7 +17,6 @@ function Email(props: EmailProps) {
   const [email2, setEmail2] = useState('naver.com');
   const [isUse, setUse] = useState(false);
   const InterceptedAxios = setupInterceptorsTo(axios.create());
-
   const onChangeEmail1 = (e) => {
     setEmail1(e.target.value);
     setEmail(e.target.value + '@' + email2);

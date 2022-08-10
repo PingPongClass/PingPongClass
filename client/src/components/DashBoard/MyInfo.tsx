@@ -1,23 +1,70 @@
 import { css } from '@emotion/react';
 import defaultProfile from '@assets/images/defaultProfile.jpeg';
+import { useAppSelector } from '@src/store/hooks';
 
 const Myinfo = () => {
+  const memberStore = useAppSelector((state) => state.member);
+  var totalRate =
+    (memberStore.totalPoint /
+      (memberStore.totalPoint + memberStore.levelPoint)) *
+    100;
+  var currentRate =
+    (memberStore.point / (memberStore.totalPoint + memberStore.levelPoint)) *
+    100;
+
+  console.log(totalRate);
+
   return (
     <div css={totalContainer}>
       <div className="infoContainer">
-        <img src={defaultProfile} alt="" />
+        {memberStore.profileFullPath ===
+          'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null' ||
+        memberStore.profileFullPath ===
+          'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/' ? (
+          <img
+            src={defaultProfile}
+            alt="기본프로필사진"
+            className="profile-logo"
+          />
+        ) : (
+          <img
+            src={memberStore.profileFullPath}
+            alt="지정된프로필사진"
+            className="profile-logo"
+          />
+        )}
         <div className="nameContainer">
-          <h2>원재호 님 어서오세요</h2>
+          <h2>{memberStore.name} 학생</h2>
+          <p>
+            [{memberStore.nextLevel}] 까지 {memberStore.levelPoint} 퐁퐁
+            남았어요 !
+          </p>
         </div>
       </div>
       <div className="levelContainer">
-        <h2 className="level">레벨</h2>
+        <h2 className="level">{memberStore.currentLevel}</h2>
         <div className="stickerContainer">
-          <div className="soFarSticker"></div>
-          <div className="currentSticker"></div>
+          <div className="soFarSticker" style={{ width: `${totalRate}%` }}>
+            <span>{memberStore.totalPoint}</span>
+          </div>
+          <div className="currentSticker" style={{ width: `${currentRate}%` }}>
+            <span>{memberStore.point}</span>
+          </div>
         </div>
       </div>
       <div className="rankingContainer">
+        <div className="myRanking">
+          <div className="rankingInfo">
+            <div className="rankBox">{memberStore.myRank}위</div>
+            <div className="nameBox">{memberStore.name}</div>
+            <div className="myBio">
+              {memberStore.introduce
+                ? memberStore.introduce
+                : '자기소개가 없습니다.'}
+            </div>
+          </div>
+          <button>수정하기</button>
+        </div>
         <div className="ranking">
           <div className="rankingInfo">
             <div className="rankBox">1위</div>
@@ -109,7 +156,7 @@ const totalContainer = css`
 
   .ranking {
     width: 100%;
-    height: 50px;
+    height: 40px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -122,7 +169,19 @@ const totalContainer = css`
 
   .rankingLow {
     width: 100%;
-    height: 50px;
+    height: 40px;
+    background-color: #f2f2f2;
+    border-top: #d0d0d0 1px solid;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.1s ease-in-out;
+  }
+
+  .myRanking {
+    width: 100%;
+    height: 40px;
     background-color: #f2f2f2;
     border-top: #d0d0d0 1px solid;
     display: flex;
@@ -161,22 +220,36 @@ const totalContainer = css`
   }
   .soFarSticker {
     position: relative;
-    width: 70%;
     height: 100%;
     background-color: #ffe790;
     border-radius: 20px;
     z-index: 1;
+    text-align: right;
     animation: barIn2 0.6s;
   }
   .currentSticker {
     position: absolute;
     top: 0;
-    width: 50%;
     height: 100%;
     background-color: #fdb878;
     border-radius: 20px;
     z-index: 99;
     animation: barIn 0.6s;
+    text-align: right;
+  }
+  span {
+    padding-right: 10px;
+    height: 30px;
+    width: 30px;
+    font-weight: 700;
+    color: #701267;
+  }
+
+  img {
+    border: 1px solid gray;
+    border-radius: 100px;
+    width: 80px;
+    height: 30%;
   }
 
   @keyframes barIn {
