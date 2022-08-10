@@ -93,8 +93,6 @@ const TeacherMyInfo = () => {
       alert('이메일을 확인해주세요.');
     } else if (manageGrade === null) {
       alert('담당학년을 입력해주세요.');
-    } else if (password !== null && passwordconfirm === null) {
-      alert('비밀번호확인을 입력해주세요.');
     } else if (!(password === passwordconfirm)) {
       alert('비밀번호가 일치하지 않습니다. 다시 확인해주세요.');
     } else {

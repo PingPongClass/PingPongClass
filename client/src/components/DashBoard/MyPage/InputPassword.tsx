@@ -18,8 +18,7 @@ const InputPassword = () => {
     if (password == null) {
       alert('비밀번호를 입력해주세요.');
     } else {
-      InterceptedAxios.post('/auth/login', {
-        id: memberStore.userId,
+      InterceptedAxios.post('/users/myinfo', {
         password: password,
       })
         .then(function (response) {
