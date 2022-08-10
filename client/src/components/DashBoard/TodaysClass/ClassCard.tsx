@@ -1,9 +1,9 @@
 import { css } from '@emotion/react';
 
-const ClassCard = ({ clsList, isActive }: any) => {
+const ClassCard = ({ clsList, classUrl }: any) => {
   if (clsList) {
     return (
-      <div css={TotalContainer(isActive)}>
+      <div css={TotalContainer(classUrl)}>
         <h2>{clsList.classTitle}</h2>
         <p>{clsList.classDesc}</p>
       </div>
@@ -13,7 +13,7 @@ const ClassCard = ({ clsList, isActive }: any) => {
   }
 };
 
-const TotalContainer = (isActive: boolean) => css`
+const TotalContainer = (classUrl: string) => css`
   width: 233px;
   height: 233px;
   background: #fdfcf3;
@@ -26,11 +26,13 @@ const TotalContainer = (isActive: boolean) => css`
   padding: 10px;
   box-sizing: border-box;
   transition: all 0.1s ease-in-out;
-  filter: ${isActive ? 'brightness(100%)' : 'brightness(50%)'};
+  filter: ${classUrl !== '링크' && classUrl
+    ? 'brightness(100%)'
+    : 'brightness(50%)'};
 
   :hover {
-    transform: ${isActive ? 'scale(1.05)' : null};
-    cursor: ${isActive ? 'pointer' : null};
+    transform: ${classUrl !== '링크' && classUrl ? 'scale(1.05)' : null};
+    cursor: ${classUrl !== '링크' && classUrl ? 'pointer' : null};
   }
 `;
 

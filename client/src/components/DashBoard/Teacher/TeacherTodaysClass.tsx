@@ -31,7 +31,7 @@ function TeacherTodaysClass() {
   const memberStore = useAppSelector((state) => state.member);
   const [classList, setClassList] = useState([] as any);
   const navigate = useNavigate();
-  var dt = new Date();
+  const dt = new Date();
   console.log(classList);
 
   const loadClassList = async () => {
@@ -89,7 +89,7 @@ function TeacherTodaysClass() {
                 classTitle: cls.classTitle,
                 classDesc: cls.classDesc,
               }}
-              isActive={true}
+              classUrl={true}
             />
           </SwiperSlide>
         ))}
