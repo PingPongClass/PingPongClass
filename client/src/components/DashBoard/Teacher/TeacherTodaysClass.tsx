@@ -5,29 +5,8 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import ClassCard from '@components/DashBoard/TodaysClass/ClassCard';
-import axios from 'axios';
-import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
-import { useEffect, useState } from 'react';
-import { useAppSelector } from '@src/store/hooks';
 
-function TeacherTodaysClass() {
-  const AXIOS = setupInterceptorsTo(axios.create());
-  const memberStore = useAppSelector((state) => state.member);
-  const [classList, setClassList] = useState([] as any);
-  var dt = new Date();
-  const loadClassList = async () => {
-    const teacherId = memberStore.userId;
-    const classDay = dt.getDay();
-    const result = await AXIOS.get(`/classes`, {
-      params: { id: teacherId, day: classDay },
-    });
-    setClassList(result.data.content);
-  };
-
-  useEffect(() => {
-    loadClassList();
-  }, [memberStore]);
-
+function TeacherTodaysClass({ classList }: any) {
   return (
     <div css={totalContainer}>
       {classList.length === 0 && <p>오늘은 수업이 없습니다.</p>}
@@ -36,14 +15,14 @@ function TeacherTodaysClass() {
           type: 'progressbar',
         }}
         slidesPerView={3.5}
-        spaceBetween={20}
+        spaceBetween={0}
         navigation={true}
         modules={[Pagination, Navigation]}
         className="mySwiper"
       >
         {classList.map((cls, idx) => (
           <SwiperSlide key={idx}>
-            <ClassCard objectName={cls.classTitle} />
+            <ClassCard clsList={cls} />
           </SwiperSlide>
         ))}
       </Swiper>
@@ -100,6 +79,14 @@ const totalContainer = css`
 
   .swiper-pagination-progressbar-fill {
     background-color: #d65745;
+  }
+
+  .swiper-slide {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
   }
 `;
 

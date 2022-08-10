@@ -39,7 +39,7 @@ const MyPageModal = ({ close, setToggle }: MyPageModalStyle) => {
 
     //   if (data.status) {
     //     // store에 저장된 Access Token 정보를 삭제
-    //     dispatch(DELETE_TOKEN());
+    //     dispatch(DELETE_TOKEN());ㅞㅡ ㄴㅅㅁㄱ
     //     // Cookie에 저장된 Refresh Token 정보를 삭제
     //     removeCookieToken();
     //     return navigate('/');

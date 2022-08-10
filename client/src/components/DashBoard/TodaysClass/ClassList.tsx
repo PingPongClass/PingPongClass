@@ -1,46 +1,98 @@
 import { css } from '@emotion/react';
-import { useState } from 'react';
 import ClassCard from './ClassCard';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper';
+import axios from 'axios';
+import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
+import { useEffect, useState } from 'react';
+import { useAppSelector } from '@src/store/hooks';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
 const ClassList = () => {
-  const [tab, setTab] = useState('월');
+  var dt = new Date();
+  const [tab, setTab] = useState(dt.getDay());
+  const [clsList, setClsList] = useState([] as any);
+  const AXIOS = setupInterceptorsTo(axios.create());
+  const memberStore = useAppSelector((state) => state.member);
+  const loadClassList = async (tt) => {
+    const studentId = memberStore.userId;
+    const classDay = tt;
+    setTab(tt);
+    const result = await AXIOS.get(`/classes`, {
+      params: { id: studentId, day: classDay },
+    }).then((response) => setClsList(response.data.content));
+    console.log(clsList);
+  };
+
+  useEffect(() => {
+    if (memberStore.userId !== -1) {
+      const rs = loadClassList(dt.getDay());
+    }
+  }, [memberStore]);
+
+  const render = (idx): any => {
+    return (
+      <SwiperSlide key={idx}>
+        <div className="cardContainer">
+          <div className="upCardContainer">
+            <ClassCard clsList={clsList[idx]} />
+            <ClassCard clsList={clsList[idx + 1]} />
+            <ClassCard clsList={clsList[idx + 2]} />
+          </div>
+          <div className="downCardContainer">
+            <ClassCard clsList={clsList[idx + 3]} />
+            <ClassCard clsList={clsList[idx + 4]} />
+            <ClassCard clsList={clsList[idx + 5]} />
+          </div>
+        </div>
+      </SwiperSlide>
+    );
+  };
+
+  const renderList = (): any => {
+    let tmp = [] as any;
+    for (let i = 0; i < clsList.length / 6; i++) {
+      tmp.push(render(i));
+    }
+    return tmp;
+  };
+
   return (
     <div css={totalContainer}>
-      <div className="weekTabs">
-        <div
-          className={tab === '월' ? 'active tabs' : 'tabs'}
-          onClick={() => setTab('월')}
-        >
-          월
-        </div>
-        <div
-          className={tab === '화' ? 'active tabs' : 'tabs'}
-          onClick={() => setTab('화')}
-        >
-          화
-        </div>
-        <div
-          className={tab === '수' ? 'active tabs' : 'tabs'}
-          onClick={() => setTab('수')}
-        >
-          수
-        </div>
-        <div
-          className={tab === '목' ? 'active tabs' : 'tabs'}
-          onClick={() => setTab('목')}
-        >
-          목
-        </div>
-        <div
-          className={tab === '금' ? 'active tabs' : 'tabs'}
-          onClick={() => setTab('금')}
-        >
-          금
+      <div className="tabsContainer">
+        <div className="weekTabs">
+          <div
+            className={tab === 1 ? 'active tabs' : 'tabs'}
+            onClick={() => loadClassList(1)}
+          >
+            월
+          </div>
+          <div
+            className={tab === 2 ? 'active tabs' : 'tabs'}
+            onClick={() => loadClassList(2)}
+          >
+            화
+          </div>
+          <div
+            className={tab === 3 ? 'active tabs' : 'tabs'}
+            onClick={() => loadClassList(3)}
+          >
+            수
+          </div>
+          <div
+            className={tab === 4 ? 'active tabs' : 'tabs'}
+            onClick={() => loadClassList(4)}
+          >
+            목
+          </div>
+          <div
+            className={tab === 5 ? 'active tabs' : 'tabs'}
+            onClick={() => loadClassList(5)}
+          >
+            금
+          </div>
         </div>
       </div>
       <Swiper
@@ -54,34 +106,7 @@ const ClassList = () => {
         modules={[Pagination, Navigation]}
         className="mySwiper"
       >
-        <SwiperSlide>
-          <div className="cardContainer">
-            <div className="upCardContainer">
-              <ClassCard objectName={'수학'} />
-              <ClassCard objectName={'수학'} />
-              <ClassCard objectName={'수학'} />
-            </div>
-            <div className="downCardContainer">
-              <ClassCard objectName={'수학'} />
-              <ClassCard objectName={'수학'} />
-              <ClassCard objectName={'수학'} />
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="cardContainer">
-            <div className="upCardContainer">
-              <ClassCard />
-              <ClassCard />
-              <ClassCard />
-            </div>
-            <div className="downCardContainer">
-              <ClassCard />
-              <ClassCard />
-              <ClassCard />
-            </div>
-          </div>
-        </SwiperSlide>
+        {renderList()}
       </Swiper>
     </div>
   );
@@ -96,6 +121,14 @@ const totalContainer = css`
   justify-content: start;
   border-radius: 20px;
   box-shadow: 2px 2px 15px -5px;
+
+  .tabsContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
 
   .tabs {
     height: 100%;
@@ -166,6 +199,11 @@ const totalContainer = css`
 
   .swiper-pagination-progressbar-fill {
     background-color: #029371;
+  }
+
+  .linkButton {
+    text-decoration: none;
+    color: white;
   }
 `;
 

@@ -6,6 +6,7 @@ import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { useAppSelector } from '@src/store/hooks';
 import StudentListTransfer from '@components/DashBoard/Teacher/StudentListTransfer';
+import { useNavigate } from 'react-router-dom';
 
 const weeks = [
   {
@@ -159,6 +160,8 @@ const NewClassList = () => {
     setClassDes(data);
   };
 
+  const navigate = useNavigate();
+
   const createClass = async () => {
     const data = {
       teacherId: memberStore.userId,
@@ -172,6 +175,7 @@ const NewClassList = () => {
     };
     const result = await AXIOS.post('/classes', data);
     console.log(result);
+    navigate('/teacher/classes');
   };
 
   return (

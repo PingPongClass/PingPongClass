@@ -1,11 +1,16 @@
 import { css } from '@emotion/react';
 
-const ClassCard = ({ objectName }: any) => {
-  return (
-    <div css={totalContainer}>
-      <h2>{objectName}</h2>
-    </div>
-  );
+const ClassCard = ({ clsList }: any) => {
+  if (clsList) {
+    return (
+      <div css={totalContainer}>
+        <h2>{clsList.classTitle}</h2>
+        <p>{clsList.classDesc}</p>
+      </div>
+    );
+  } else {
+    return <div css={totalContainer}> </div>;
+  }
 };
 
 const totalContainer = css`
@@ -14,10 +19,12 @@ const totalContainer = css`
   background: #fdfcf3;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: start;
+  justify-content: end;
   border-radius: 20px;
   box-shadow: 2px 2px 15px -5px;
+  padding: 10px;
+  box-sizing: border-box;
   transition: all 0.1s ease-in-out;
 
   :hover {
