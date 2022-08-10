@@ -75,7 +75,7 @@ public class ClassController {
     @ApiOperation(value = "요일에 따른 수업 목록 조회")
     @GetMapping("")
     @PreAuthorize("hasRole('STUDENT')")
-    public Page<ClassResponse> findTodayClasses(@RequestParam(value="id") final int userId, @RequestParam(value="day") final int classDay, Pageable pageable){
+    public Page<ClassResponse> findTodayClasses(@RequestParam(value="id")int userId, @RequestParam(value="day"int classDay, Pageable pageable){
         Page<ClassResponse> pageReponse = null;
         pageReponse=classService.findTodayClasses(userId, classDay ,pageable);
         return pageReponse;
