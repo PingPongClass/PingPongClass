@@ -47,8 +47,9 @@ const StudentMyInfo = () => {
             setUse(false);
           });
       }
-    } else {
+    } else if (e.target.value === memberStore.email) {
       setEmail(e.target.value);
+      setUse(true);
     }
   };
   const onChangePasswordConfirm = (e) => {
