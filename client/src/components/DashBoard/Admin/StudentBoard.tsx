@@ -33,14 +33,6 @@ const StudentBoard = () => {
     getStudent();
   }, []);
 
-  const deleteStudent = (id: number) => {
-    InterceptedAxios.delete('/students/' + id.toString())
-      .then(() => {
-        setStudents(students.filter((s) => s.studentId !== id));
-      })
-      .catch(() => {});
-  };
-
   const deleteSelected = () => {
     alert('현재 봉인된 기능입니다.');
     // let finalCheck = confirm('정말로 선택된 학생들을 삭제하시겠습니까?');
@@ -111,7 +103,7 @@ const StudentBoard = () => {
       newList.push(newElem);
     });
     setStudents(newList);
-    console.log(newList);
+    // console.log(newList);
   };
 
   const toggle = (id: number) => {
@@ -126,89 +118,91 @@ const StudentBoard = () => {
   };
 
   return (
-    <div css={totalContainer}>
-      <div className="upperModalArea">
-        <div className="pageTitle">학생관리</div>
-        <form onSubmit={search}>
-          학년
-          <input
-            type="number"
-            name=""
-            id=""
-            value={grade}
-            onChange={(e) => setGrade(+e.target.value)}
-          />
-          반
-          <input
-            type="number"
-            name=""
-            id=""
-            value={classNum}
-            onChange={(e) => setClassNum(+e.target.value)}
-          />
-          이름
-          <input
-            type="search"
-            name=""
-            id=""
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-          />
-          <button type="submit" className="sub-btn">
-            검색
-          </button>
-        </form>
+    <>
+      <div className="btn-box" css={btnBox}>
+        <button type="button" className="add-btn stu-bottom-btn">
+          <Link to="/admin/studentAdd">개별 추가</Link>
+        </button>
+        <button type="button" className="add-btn stu-bottom-btn">
+          <Link to="/admin/studentAddBulk">일괄 추가</Link>
+        </button>
+        <button
+          type="button"
+          className="del-btn stu-bottom-btn"
+          onClick={deleteSelected}
+        >
+          선택 삭제
+        </button>
+        <button
+          type="button"
+          className="del-btn stu-bottom-btn"
+          onClick={deleteAll}
+        >
+          일괄 삭제
+        </button>
       </div>
-      <div className="tableArea">
-        <div className="row titleRow">
-          <div className="col col4">
+      <div css={totalContainer}>
+        <div className="upperModalArea">
+          <div className="pageTitle">학생관리</div>
+          <form onSubmit={search}>
+            학년
             <input
-              type="checkbox"
-              name=""
-              id={`checkAll`}
-              onChange={toggleAll}
+              type="number"
+              value={grade || ''}
+              onChange={(e) => setGrade(+e.target.value)}
+            />
+            반
+            <input
+              type="number"
+              value={classNum || ''}
+              onChange={(e) => setClassNum(+e.target.value)}
             />
             이름
-          </div>
-          <div className="col col3">학번</div>
-          <div className="col col1">학년</div>
-          <div className="col col1">반</div>
-          <div className="col col1">번호</div>
-          <div className="col col2">이메일</div>
-          <div className="col col1">수정</div>
+            <input
+              type="search"
+              value={keyword || ''}
+              onChange={(e) => setKeyword(e.target.value)}
+            />
+            <button type="submit" className="sub-btn">
+              검색
+            </button>
+          </form>
         </div>
-
-        <div className="articleArea">
-          {students.map((student) => {
-            return (
-              <Student
-                key={student.studentId}
-                article={student}
-                selected={student.isSelected}
-                toggle={toggle}
+        <div className="tableArea">
+          <div className="row titleRow">
+            <div className="col col1">
+              <input
+                type="checkbox"
+                name=""
+                id={`checkAll`}
+                onChange={toggleAll}
               />
-            );
-          })}
-          {/* <Pagination count={10} variant="outlined" shape="rounded" /> */}
-          <Link to="/admin/studentAdd">
-            <button type="button" className="main-btn">
-              개별 추가
-            </button>
-          </Link>
-          <Link to="/admin/studentAddBulk">
-            <button type="button" className="main-btn">
-              일괄 추가
-            </button>
-          </Link>
-          <button type="button" className="main-btn" onClick={deleteSelected}>
-            선택 삭제
-          </button>
-          <button type="button" className="main-btn" onClick={deleteAll}>
-            일괄 삭제
-          </button>
+            </div>
+            <div className="col col4">이름</div>
+            <div className="col col3">학번</div>
+            <div className="col col1">학년</div>
+            <div className="col col1">반</div>
+            <div className="col col1">번호</div>
+            <div className="col col2">이메일</div>
+            <div className="col col1">수정</div>
+          </div>
+
+          <div className="articleArea">
+            {students.map((student) => {
+              return (
+                <Student
+                  key={student.studentId}
+                  article={student}
+                  selected={student.isSelected}
+                  toggle={toggle}
+                />
+              );
+            })}
+            {/* <Pagination count={10} variant="outlined" shape="rounded" /> */}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -222,6 +216,10 @@ const totalContainer = () => css`
   max-height: inherit;
   max-width: inherit;
 
+  button:hover {
+    cursor: pointer;
+  }
+
   .pageTitle {
     text-align: left;
     /* font-size: 2rem; */
@@ -233,12 +231,15 @@ const totalContainer = () => css`
     margin: 0.5rem;
     button {
       border: none;
+      border-radius: 0.5rem;
     }
     .main-btn {
       background-color: pink;
     }
     .sub-btn {
       background-color: grey;
+      color: white;
+      padding: 0.5rem;
     }
   }
 
@@ -268,13 +269,14 @@ const totalContainer = () => css`
     border: none;
     background-color: transparent;
     font-family: 'NanumSquare';
+    vertical-align: middle;
   }
 
   .col {
     overflow: hidden;
     width: 15%;
     max-width: 30%;
-    height: 1.25rem;
+    text-align: center;
   }
   /* 제목 행 */
   .titleRow {
@@ -292,6 +294,7 @@ const totalContainer = () => css`
     .articleRow {
       padding: 0.5rem 0;
       border-bottom: 0.15rem solid black;
+      height: -webkit-fill-available;
     }
 
     /* 하이라이트 */
@@ -299,20 +302,6 @@ const totalContainer = () => css`
     .highlited {
       background-color: #dfe9f2;
       border-bottom: 0.15rem solid black;
-    }
-
-    .edit-btn {
-      background-color: #a1b9ce;
-    }
-
-    .del-btn {
-      background-color: #bbbbbb;
-    }
-
-    textarea {
-      background-color: rgba(255, 255, 255, 0.7);
-      border: none;
-      resize: none;
     }
     #editTitle {
       border-radius: 20rem;
@@ -343,9 +332,39 @@ const totalContainer = () => css`
     max-width: calc(50%);
   }
   .col4 {
-    text-align: left;
-    max-width: 4rem;
+    max-width: 5rem;
   }
+  input {
+    margin: 0 1em;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+  }
+`;
+
+const btnBox = () => css`
+  position: absolute;
+  z-index: 2;
+  top: 2.85rem;
+  .add-btn {
+    background-color: #7063b5;
+  }
+  .del-btn {
+    background-color: #e56666;
+  }
+  .stu-bottom-btn {
+    margin: 1rem;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+  }
+  a,
+  a:visited {
+    color: white;
+    background-color: transparent;
+    text-decoration: none;
+  }
+  position: absolute;
 `;
 
 export default StudentBoard;

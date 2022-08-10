@@ -3,32 +3,31 @@ import mainLogo from '@assets/images/mainLogo.png';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CampaignIcon from '@mui/icons-material/Campaign';
-import StorefrontIcon from '@mui/icons-material/Storefront';
 import { Link } from 'react-router-dom';
 
 const NavBar = () => {
   return (
     <div css={totalContainer}>
       <img src={mainLogo} alt="" />
-      <div className="navButton">
+      <div className="dashNavButton">
         <DashboardIcon style={{ fontSize: '40px' }} />
         <h4>
           <Link to="students">학생 관리</Link>
         </h4>
       </div>
-      <div className="navButton">
+      <div className="dashNavButton">
         <DashboardIcon style={{ fontSize: '40px' }} />
         <h4>
           <Link to="teachers">교사 관리</Link>
         </h4>
       </div>
-      <div className="navButton">
+      <div className="dashNavButton">
         <CalendarMonthIcon style={{ fontSize: '40px' }} />
         <h4>
           <Link to="classes">수업 관리</Link>
         </h4>
       </div>
-      <div className="navButton">
+      <div className="dashNavButton">
         <CampaignIcon style={{ fontSize: '40px' }} />
         <h4>
           <Link to="notice">공지사항</Link>
@@ -37,7 +36,6 @@ const NavBar = () => {
     </div>
   );
 };
-
 const totalContainer = css`
   width: 210px;
   background: rgba(255, 255, 255, 0.9);
@@ -51,7 +49,7 @@ const totalContainer = css`
   margin-top: 50px;
   box-shadow: 2px 2px 15px -5px;
 
-  .navButton {
+  .dashNavButton {
     width: 90%;
     height: 40px;
     display: flex;
@@ -65,17 +63,24 @@ const totalContainer = css`
     transition: all 0.1s ease-in-out;
   }
 
-  .navButton:hover {
+  .dashNavButton:hover {
     transform: scale(1.1);
   }
 
-  .navButton h4 {
+  .dashNavButton h4 {
     font-size: 20px;
     width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
+  }
+
+  a,
+  a:visited,
+  .linkButton {
+    text-decoration: none;
+    color: black;
   }
 
   img {

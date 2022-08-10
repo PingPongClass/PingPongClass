@@ -18,9 +18,8 @@ import InputPassword from '@components/DashBoard/MyPage/InputPassword';
 import AdminDashBoard from '@pages/AdminDashBoard';
 import AdminNotice from '@components/DashBoard/Admin/NoticeBoard';
 import AdminEditNotice from '@components/DashBoard/Admin/EditNotice';
-import AddStudent from '@components/DashBoard/Admin/AddStudent';
 import AddStudentBulk from '@components/DashBoard/Admin/AddStudentBulk';
-import EditStudent from '@components/DashBoard/Admin/EditStudent';
+import EditStudent from '@src/components/DashBoard/Admin/EditStudent';
 import StudentBoard from '@components/DashBoard/Admin/StudentBoard';
 import StudentMyInfo from '@components/DashBoard/MyPage/StudentMyInfo';
 import TeacherMyInfo from '@components/DashBoard/MyPage/TeacherMyInfo';
@@ -60,7 +59,7 @@ const App = () => {
             <Route path="noticeEdit/:noticeId" element={<AdminEditNotice />} />
             <Route path="noticePost" element={<AdminEditNotice />} />
             <Route path="students" element={<StudentBoard />} />
-            <Route path="studentAdd" element={<AddStudent />} />
+            <Route path="studentAdd" element={<EditStudent />} />
             <Route path="studentAddBulk" element={<AddStudentBulk />} />
             <Route path="studentEdit/:studentId" element={<EditStudent />} />
             <Route path="mypage" element={<InputPassword />} />

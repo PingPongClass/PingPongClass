@@ -33,7 +33,9 @@ const Notice = (props: { key: number; article: NoticeProps }) => {
         </div>
         <div className="col noticeTitle">{article.title}</div>
         <div className="col writer">{article.writer}</div>
-        <div className="col regtime">{article.regtime}</div>
+        <div className="col regtime">
+          {article.regtime.slice(0, article.regtime.indexOf('T'))}
+        </div>
       </button>
       <div className={visible ? 'row detailRow' : 'row detailRow hide'}>
         <div className="detailContent">{article.content}</div>

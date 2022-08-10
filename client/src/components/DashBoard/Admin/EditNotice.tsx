@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '@src/store/hooks';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { ClassProps, allClass, getClasses } from '@src/store/member';
@@ -24,7 +24,7 @@ const EditNotice = () => {
   const [tmpCode, setTmpCode] = useState(-1);
   const [tmpTitle, setTmpTitle] = useState('');
   const [tmpContent, setTmpContent] = useState('');
-  const [subjectCodes, setSubjectCodes] = useState<ClassProps[]>([allClass]);
+  const [classes, setClasses] = useState<ClassProps[]>([allClass]);
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   const memberStore = useAppSelector((state) => state.member);
   let newPost = false;
@@ -35,10 +35,13 @@ const EditNotice = () => {
     newPost = false;
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     dispatch(getClasses(memberStore.userId));
-    setSubjectCodes(memberStore.classes);
   }, []);
+
+  useLayoutEffect(() => {
+    setClasses(memberStore.classes);
+  }, [memberStore]);
 
   useEffect(() => {
     // 입력값이 없는 경우 제외
@@ -105,7 +108,7 @@ const EditNotice = () => {
           codeChanged(e);
         }}
       >
-        {subjectCodes.map((s) => (
+        {classes.map((s) => (
           <option key={s.classId} value={s.classId}>
             {s.classTitle}
           </option>

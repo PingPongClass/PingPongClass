@@ -27,7 +27,7 @@ const NoticeBoard = () => {
   const [keyword, setKeyword] = useState('');
   const [selected, setSelected] = useState<ClassProps>(allClass);
   const [articles, setArticles] = useState<NoticeProps[]>([]);
-  const [classes, setclasses] = useState<ClassProps[]>([allClass]);
+  const [classes, setClasses] = useState<ClassProps[]>([allClass]);
   const [page, setPage] = useState(1);
   let totalPage = 0;
 
@@ -48,7 +48,7 @@ const NoticeBoard = () => {
 
   useEffect(() => {
     dispatch(getClasses(memberStore.userId)).then(() => {
-      setclasses(memberStore.classes);
+      setClasses(memberStore.classes);
     });
     if (memberStore.userId.toString().length !== 10) {
       setIsTeacher(true);
@@ -83,7 +83,7 @@ const NoticeBoard = () => {
     getNotice();
   };
 
-  const getNotice = () => {
+  const getNotice = async () => {
     let word = '';
     if (keyword !== '') {
       word = '&titleSearch=' + keyword;
@@ -100,15 +100,16 @@ const NoticeBoard = () => {
 
     // console.log(searchQuery);
 
-    InterceptedAxios.get(searchQuery).then((response) => {
-      let list = response.data.content;
-      totalPage = response.data.totalPages;
-      if (totalPage >= page) {
-        checkNewNotice(list);
-      } else {
-        console.log('마지막 페이지입니다!');
-      }
-    });
+    const response = await InterceptedAxios.get(searchQuery);
+    let list = response.data.content;
+
+    totalPage = response.data.totalPages;
+    if (totalPage >= page) {
+      // checkNewNotice(list);
+      setArticles(list);
+    } else {
+      console.log('마지막 페이지입니다!');
+    }
   };
 
   const checkNewNotice = (value: NoticeProps[]) => {
@@ -148,9 +149,7 @@ const NoticeBoard = () => {
           </select>
           <input
             type="search"
-            name=""
-            id=""
-            value={keyword}
+            value={keyword || ''}
             onChange={(e) => setKeyword(e.target.value)}
           />
           {isTeacher ? (

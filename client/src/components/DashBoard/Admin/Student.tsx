@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { StudentProps } from './StudentBoard';
 import { Link } from 'react-router-dom';
+import { css } from '@emotion/react';
+import EditIcon from '@mui/icons-material/Edit';
 
 const Student = (props: {
   key: number;
@@ -18,9 +20,9 @@ const Student = (props: {
   };
 
   return (
-    <div className="row articleRow">
+    <div className="row articleRow" css={StudentStyle}>
       {/* <button className="row article-btn" onClick={(e) => toggleNotice(e)}> */}
-      <div>
+      <div className="col col1">
         <input
           type="checkbox"
           name=""
@@ -35,13 +37,27 @@ const Student = (props: {
       <div className="col col1">{article.studentNum}</div>
       <div className="col col2">{article.email}</div>
       <div className="col col1">
-        <Link to={`/teacher/studentEdit/${article.studentId}`}>
+        <Link to={`/admin/studentEdit/${article.studentId}`}>
           <button type="button" className="edit-btn">
-            수정
+            <EditIcon></EditIcon>
           </button>
         </Link>
       </div>
     </div>
   );
 };
+
+export const StudentStyle = () => css`
+  /* 전역 */
+  text-align: center;
+  width: -webkit-fill-available;
+  height: inherit;
+
+  button {
+    border: none;
+    height: -webkit-fill-available;
+    background-color: transparent;
+  }
+`;
+
 export default Student;

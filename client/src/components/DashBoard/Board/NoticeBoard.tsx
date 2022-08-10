@@ -26,7 +26,7 @@ const NoticeBoard = () => {
   const [keyword, setKeyword] = useState('');
   const [selected, setSelected] = useState<ClassProps>(allClass);
   const [articles, setArticles] = useState<NoticeProps[]>([]);
-  const [classes, setclasses] = useState<ClassProps[]>([allClass]);
+  const [classes, setClasses] = useState<ClassProps[]>([allClass]);
   const [page, setPage] = useState(1);
   let totalPage = 0;
 
@@ -47,7 +47,7 @@ const NoticeBoard = () => {
 
   useEffect(() => {
     dispatch(getClasses(memberStore.userId)).then(() => {
-      setclasses(memberStore.classes);
+      setClasses(memberStore.classes);
     });
     if (memberStore.userId.toString().length !== 10) {
       setIsTeacher(true);
@@ -193,6 +193,10 @@ export const NoticeBoardStyle = () => css`
   max-height: inherit;
   max-width: inherit;
 
+  button:hover {
+    cursor: pointer;
+  }
+
   .pageTitle {
     text-align: left;
     /* font-size: 2rem; */
@@ -205,11 +209,24 @@ export const NoticeBoardStyle = () => css`
     button {
       border: none;
     }
+    button:visited {
+      text-decoration: none;
+    }
     .main-btn {
       background-color: pink;
+      text-decoration: none;
+      color: white;
     }
     .sub-btn {
       background-color: grey;
+      color: white;
+    }
+    input,
+    select,
+    button {
+      margin: 0 1rem;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
     }
   }
 
@@ -239,13 +256,14 @@ export const NoticeBoardStyle = () => css`
     border: none;
     background-color: transparent;
     font-family: 'NanumSquare';
+    vertical-align: middle;
   }
 
   .col {
     overflow: hidden;
     width: 15%;
     max-width: 30%;
-    height: 1.25rem;
+    height: -webkit-fill-available;
   }
   /* 제목 행 */
   .titleRow {
@@ -270,6 +288,7 @@ export const NoticeBoardStyle = () => css`
     .highlited {
       background-color: #dfe9f2;
       border-bottom: 0.15rem solid black;
+      cursor: pointer;
     }
 
     /* 아코디언 내용 */
@@ -280,6 +299,22 @@ export const NoticeBoardStyle = () => css`
       margin: 0.5rem 0 -0.5rem 0;
       background-color: #f9f9f9;
       height: -webkit-max-content;
+      button {
+        border-radius: 3rem;
+        color: white;
+        border: none;
+        width: max-content;
+        padding: 0.5rem;
+        margin: 0 0.5rem;
+        width: 5rem;
+      }
+
+      button:visited {
+        text-decoration: none;
+      }
+      Link:visited {
+        text-decoration: none;
+      }
     }
 
     /* 안 보이는 요소 */
@@ -307,15 +342,6 @@ export const NoticeBoardStyle = () => css`
       position: relative;
       left: 76%;
       width: max-content;
-      button {
-        border-radius: 3rem;
-        color: white;
-        border: none;
-        width: max-content;
-        padding: 0.5rem;
-        margin: 0 0.5rem;
-        width: 5rem;
-      }
     }
 
     .detailWriter {
@@ -357,6 +383,14 @@ export const NoticeBoardStyle = () => css`
   }
   select {
     max-width: 8%;
+  }
+  a {
+    color: white;
+    background-color: transparent;
+    text-decoration: none;
+  }
+  a:visited {
+    text-decoration: none;
   }
 `;
 
