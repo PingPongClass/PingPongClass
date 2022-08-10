@@ -164,6 +164,33 @@ public class ClassService {
         int end =  (start + pageable.getPageSize())>list.size()?list.size():(start +pageable.getPageSize());
         return new PageImpl<>(list.subList(start, end), pageable, list.size());
     }
+
+    //시간표 출력용 요일별 수업 리스트 전체
+    public List<List<ClassResponse>> makeTimeTable(final int userId){
+        List<List<ClassResponse>> res = new ArrayList<>();
+        Sort sort = Sort.by(Sort.Direction.DESC,"TimetableEntity");
+        for(int i=1; i<6; i++){
+            List<ClassEntity> classEntityList = new ArrayList<>();
+            if(userId>1000000000) {// 학생일때
+                StudentEntity studentEntity = studentRepository.getOne(userId);
+                List<ClassStudentEntity> classStudentEntityList = classStudentRepository.findByStudentEntity(studentEntity);
+                for (ClassStudentEntity classStudentEntity : classStudentEntityList) {
+                    List<ClassEntity> subList = classRepository.findByClassIdAndClassDay(classStudentEntity.getClassEntity().getClassId(), i, sort);
+                    for(ClassEntity classEntity:subList)
+                        classEntityList.add(classEntity);
+                }
+            }else { //선생님일때
+                TeacherEntity teacherEntity = teacherRepository.findByTeacherId(userId);
+                List<ClassEntity> subList = classRepository.findByTeacherEntityAndClassDay(teacherEntity, i, sort);
+                for(ClassEntity classEntity:subList)
+                    classEntityList.add(classEntity);
+            }
+            List<ClassResponse> list = classEntityList.stream().map(ClassResponse::new).collect(Collectors.toList());
+            res.add(list);
+        }
+        return res;
+    }
+
     //실시간 강의 열기
     @Transactional
     public void saveUrl(OpenRequest openRequest){

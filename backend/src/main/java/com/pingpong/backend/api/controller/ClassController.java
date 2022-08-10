@@ -112,4 +112,14 @@ public class ClassController {
     public ClassResponse findClassInfo(@PathVariable final int classId){
         return classService.findClassInfo(classId);
     }
+
+    @ApiOperation(value= "해당 유저의 시간표를 만들기 위한 치트키API" )
+    @GetMapping("/today/{userId}")
+    @PreAuthorize("hasRole('STUDENT')")
+    public List<List<ClassResponse>> makingTimeTable(@PathVariable final int userId){
+        return classService.makeTimeTable(userId);
+    }
+
+
+
 }
