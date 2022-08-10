@@ -148,8 +148,8 @@ public class TeacherController {
     public ResponseEntity<String> modify(@RequestPart(value="teacher") TeacherRequest teacher, @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         try {
             if(file!=null) {
-                if (file.getSize() >= 1048576) {
-                    return new ResponseEntity<String>("이미지 크기 제한은 1MB 입니다.", HttpStatus.FORBIDDEN);
+                if (file.getSize() >= 10485760) {
+                    return new ResponseEntity<String>("이미지 크기 제한은 10MB 입니다.", HttpStatus.FORBIDDEN);
                 }
                 String originFile = file.getOriginalFilename();
                 String originFileExtension = originFile.substring(originFile.lastIndexOf("."));
@@ -161,7 +161,7 @@ public class TeacherController {
                 String imgPath = s3Service.upload(entity.getProfile(), file);
                 teacher.setProfile(imgPath);
                 service.modify(teacher);
-            } else if(teacher.getProfile().equals("reset")) {
+            } else if(teacher.getProfile()!=null && teacher.getProfile().equals("reset")) {
                 TeacherEntity entity = repository.getOne(teacher.getTeacherId());
                 //이미지 있으면 s3 버킷에서 지움
                 s3Service.delete(entity.getProfile());

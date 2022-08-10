@@ -2,86 +2,124 @@ import { css } from '@emotion/react';
 import IosModalNew from '@src/components/Common/IosModalNew';
 import ProfilImage from '../../../assets/images/profile.png';
 import { useAppSelector } from '@src/store/hooks';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Link } from 'react-router-dom';
 
 const StudentMyInfo = () => {
   const memberStore = useAppSelector((state) => state.member);
   const [email, setEmail] = useState(memberStore.email);
-  const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [passwordconfirm, setPasswordConfirm] = useState('');
   const InterceptedAxios = setupInterceptorsTo(axios.create());
-  const [isUse, setUse] = useState(false);
-  const [files, setFiles] = useState<File>();
-  // const accessToken = getCookie('jwt-accessToken');
+  const [isUse, setUse] = useState(true);
+  const [preview, setPreview] = useState<any>(memberStore.profileFullPath);
+  const [isMouseOn, setIsMouseOn] = useState(false);
+  const [isPreviewReset, setIsPreviewReset] = useState(false); // 리셋했는지 여부 판단용 상태값
+  const newImageFile = useRef<HTMLInputElement>(null); // 새로운 사진 보관용
+
+  interface StudentDataInterface {
+    studentId: number;
+    email: string;
+    password: string;
+    profile?: string;
+  }
   const onChangePassword = (e) => {
     setPassword(e.target.value);
   };
+
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
+    if (e.target.value !== memberStore.email) {
+      var re =
+        /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+      if (!re.test(e.target.value)) setUse(false);
+      else {
+        InterceptedAxios.get(`/users/email/${e.target.value}`)
+          .then(function () {
+            setEmail(e.target.value);
+            setUse(true);
+          })
+          .catch(function (error) {
+            setUse(false);
+          });
+      }
+    } else {
+      setEmail(e.target.value);
+    }
   };
   const onChangePasswordConfirm = (e) => {
     setPasswordConfirm(e.target.value);
   };
+
   const onChangeFiles = (e) => {
-    if (e.target.files[0] === undefined) return;
-    // 파일 용량 체크
-    if (e.target.files[0] > 1 * 1024 * 1024) {
+    if (e.target.files[0] > 10 * 1024 * 1024) {
       e.target.value = '';
-      alert('업로드 가능한 최대 용량은 1MB입니다. ');
+      alert('업로드 가능한 최대 용량은 10MB입니다. ');
       return;
     }
-    setFiles(e.target.files[0]);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const file = reader.result;
+      if (file) {
+        setPreview(file);
+        setIsPreviewReset(false);
+      }
+    };
+    if (e.target.files && e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
   };
 
-  const emailCheck = async () => {
-    //유효성검사
-    if (email === null) {
-      console.log('email null~~');
-      setUse(false);
-    } else if (email === memberStore.email) {
-      console.log('email 같음!');
-      setUse(true);
-    } else {
-      console.log(email);
-      console.log(memberStore.email);
-      InterceptedAxios.get(`/users/email/${email}`)
-        .then(function () {
-          setEmail(email);
-          setUse(true);
-        })
-        .catch(function (error) {
-          setEmail('');
-          setUse(false);
-        });
-    }
+  const onDeleteFiles = (e) => {
+    setIsPreviewReset(true);
+    setPreview('https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null');
   };
 
   const onEditMyInfo = (e) => {
-    if (password === null) {
-      alert('비밀번호를 입력해주세요.');
-    } else if (email === null) {
+    if (email === null) {
       alert('이메일을 확인해주세요.');
-    } else if (passwordconfirm === null) {
-      alert('비밀번호확인을 입력해주세요.');
     } else if (!(password === passwordconfirm)) {
       alert('비밀번호가 일치하지 않습니다. 다시 확인해주세요.');
+    } else if (!isUse) {
+      alert('사용할 수 없는 이메일입니다. 다시 확인해주세요.');
     } else {
       const frm = new FormData();
-      const student = {
-        studentId: memberStore.userId,
-        email: email,
-        password: password,
-      };
-      const studentString = JSON.stringify(student);
+      let student: StudentDataInterface;
+      if (!isPreviewReset) {
+        student = {
+          studentId: memberStore.userId,
+          email: email,
+          password: password,
+        };
+      } else {
+        student = {
+          studentId: memberStore.userId,
+          email: email,
+          password: password,
+          profile: 'reset',
+        };
+      }
+      const teacherString = JSON.stringify(student);
       frm.append(
-        'teacher',
-        new Blob([studentString], { type: 'application/json' }),
+        'student',
+        new Blob([teacherString], { type: 'application/json' }),
       );
-      if (files !== undefined) frm.append('file', files);
+
+      if (
+        !isPreviewReset &&
+        newImageFile.current &&
+        newImageFile.current.files
+      ) {
+        console.log('파일넣음');
+        frm.append('file', newImageFile.current.files[0]);
+        // else frm.append('file', null);
+        // 만약 file이 빈거 (기본사진으로 초기화)라면? 어떻게 처리할 것인지에 대해서 잘 몰라서 우선 주석처리
+      }
+
       InterceptedAxios.post('/students/modify', frm, {
         headers: {
           'Content-Type': `multipart/form-data`,
@@ -89,8 +127,7 @@ const StudentMyInfo = () => {
       })
         .then(function (response) {
           alert('정보가 수정되었습니다.');
-          console.log(memberStore.profileFullPath);
-          navigate('/student/studentmyinfo');
+          location.href = '/student/mypage';
         })
         .catch(function (error) {
           console.log(error);
@@ -105,25 +142,46 @@ const StudentMyInfo = () => {
       </div>
       <div className="infoContainer">
         <div className="profileContainer">
-          {memberStore.profileFullPath ===
+          {preview ===
             'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null' ||
-          memberStore.profileFullPath ===
-            'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/' ||
-          memberStore.profileFullPath === '' ? (
-            <img src={ProfilImage} alt="프로필사진" className="profile-logo" />
+          preview ===
+            'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/' ? (
+            <img
+              src={ProfilImage}
+              alt="기본프로필사진"
+              className="profile-logo"
+              onMouseEnter={() => setIsMouseOn(true)}
+              onMouseLeave={() => setIsMouseOn(false)}
+            />
           ) : (
             <img
-              src={memberStore.profileFullPath}
-              alt="프로필사진"
+              src={preview}
+              alt="지정된프로필사진"
               className="profile-logo"
+              onMouseEnter={() => setIsMouseOn(true)}
+              onMouseLeave={() => setIsMouseOn(false)}
             />
           )}
-          <input
-            type="file"
-            id="profileImage"
-            accept="image/*"
-            onChange={(e) => onChangeFiles(e)}
-          />
+          {isMouseOn ? (
+            <div
+              className="profile-img-button"
+              onMouseEnter={() => setIsMouseOn(true)}
+            >
+              <div className="editbtn">
+                <label htmlFor="profile-image">
+                  <EditIcon className="edit-icon-btn" />
+                </label>
+                <input
+                  ref={newImageFile}
+                  type="file"
+                  id="profile-image"
+                  accept="image/jpg, image/jpeg, image/png"
+                  onChange={onChangeFiles}
+                />
+              </div>
+              <DeleteIcon className="delete-icon-btn" onClick={onDeleteFiles} />
+            </div>
+          ) : null}
         </div>
 
         <div className="infoListContainer">
@@ -201,15 +259,17 @@ const StudentMyInfo = () => {
         <button type="button" className="submit" onClick={onEditMyInfo}>
           수정
         </button>
-        <button type="button" className="cancel">
-          취소
-        </button>
+        <Link to="/student">
+          <button type="button" className="cancel">
+            취소
+          </button>
+        </Link>
       </div>
     </div>
   );
 };
 
-const ModalCSS = css`
+const ModalCSS = (isMouseOn) => css`
   height: 100%;
   width: 100%;
   min-height: 400px;
@@ -235,8 +295,9 @@ const ModalCSS = css`
   }
 
   .profileContainer {
-    width: 100%;
-    height: 100%;
+    position: relative;
+    width: 200px;
+    height: 200px;
     box-sizing: border-box;
     border-radius: 200px;
     display: flex;
@@ -245,9 +306,56 @@ const ModalCSS = css`
     align-items: center;
   }
 
-  .profileContainer img {
-    height: 200px;
+  .profileContainer .profile-logo {
+    position: absolute;
     border-radius: 200px;
+    width: 200px;
+    height: 200px;
+    filter: ${isMouseOn ? 'brightness(70%); ' : ''};
+  }
+
+  .profileContainer .profile-img-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: row;
+  }
+
+  .profileContainer .profile-img-button .editbtn {
+    height: 30px;
+    width: 30px;
+    margin: 1rem;
+  }
+
+  .profileContainer .profile-img-button .editbtn .edit-icon-btn {
+    width: 30px;
+    height: 30px;
+    color: white;
+    cursor: pointer;
+  }
+
+  .profileContainer .profile-img-button .editbtn input {
+    display: none;
+  }
+
+  .profileContainer .profile-img-button .delete-icon-btn {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    color: red;
+    margin: 1rem;
+  }
+
+  .profileContainer .infoListContainer {
+    width: 480px;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .infoListContainer {
@@ -271,7 +379,6 @@ const ModalCSS = css`
   }
 
   .buttonsContainer button {
-    background-color: #f6ac55;
     color: white;
     border: 0;
     padding: 10px 30px;
@@ -281,6 +388,14 @@ const ModalCSS = css`
     box-sizing: border-box;
     font-family: 'NanumSquareRound';
     cursor: pointer;
+  }
+
+  .submit {
+    background-color: #f6ac55;
+  }
+
+  .cancel {
+    background-color: gray;
   }
 
   .fieldContainer {

@@ -7,8 +7,8 @@ import axios from 'axios';
 import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-
-// import { getCookie } from '../../../utils/cookie';
+import member from '@src/store/member';
+import { Link } from 'react-router-dom';
 
 interface TeacherDataInterface {
   teacherId: number;
@@ -31,22 +31,45 @@ const TeacherMyInfo = () => {
   const [isPreviewReset, setIsPreviewReset] = useState(false); // 리셋했는지 여부 판단용 상태값
   const newImageFile = useRef<HTMLInputElement>(null); // 새로운 사진 보관용
 
-  // const accessToken = getCookie('jwt-accessToken');
   const onChangePassword = (e) => {
     setPassword(e.target.value);
   };
   const onChangeManageGrade = (e) => {
     setManageGrade(e.target.value);
   };
+
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
+    if (e.target.value !== memberStore.email) {
+      var re =
+        /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+      if (!re.test(e.target.value)) setUse(false);
+      else {
+        InterceptedAxios.get(`/users/email/${e.target.value}`)
+          .then(function () {
+            setEmail(e.target.value);
+            setUse(true);
+          })
+          .catch(function (error) {
+            setUse(false);
+          });
+      }
+    } else {
+      setEmail(e.target.value);
+    }
   };
+
   const onChangePasswordConfirm = (e) => {
     setPasswordConfirm(e.target.value);
   };
 
   // 이미지 프리뷰 업로드 함수
   const onChangeFiles = (e) => {
+    if (e.target.files[0] > 10 * 1024 * 1024) {
+      e.target.value = '';
+      alert('업로드 가능한 최대 용량은 10MB입니다. ');
+      return;
+    }
     const reader = new FileReader();
     reader.onloadend = () => {
       const file = reader.result;
@@ -65,29 +88,6 @@ const TeacherMyInfo = () => {
     setPreview('https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null');
   };
 
-  const emailCheck = async () => {
-    //유효성검사
-    if (email === null) {
-      console.log('email null~~');
-      setUse(false);
-    } else if (email === memberStore.email) {
-      console.log('email 같음!');
-      setUse(true);
-    } else {
-      console.log(email);
-      console.log(memberStore.email);
-      InterceptedAxios.get(`/users/email/${email}`)
-        .then(function () {
-          setEmail(email);
-          setUse(true);
-        })
-        .catch(function (error) {
-          setEmail('');
-          setUse(false);
-        });
-    }
-  };
-
   const onEditMyInfo = (e) => {
     if (email === null) {
       alert('이메일을 확인해주세요.');
@@ -95,10 +95,12 @@ const TeacherMyInfo = () => {
       alert('담당학년을 입력해주세요.');
     } else if (!(password === passwordconfirm)) {
       alert('비밀번호가 일치하지 않습니다. 다시 확인해주세요.');
+    } else if (!isUse) {
+      alert('사용할 수 없는 이메일입니다. 다시 확인해주세요.');
     } else {
       const frm = new FormData();
       let teacher: TeacherDataInterface;
-      if (!isPreviewReset && password) {
+      if (!isPreviewReset) {
         teacher = {
           teacherId: memberStore.userId,
           manageGrade: manageGrade,
@@ -248,9 +250,11 @@ const TeacherMyInfo = () => {
         <button type="button" className="submit" onClick={onEditMyInfo}>
           수정
         </button>
-        <button type="button" className="cancel">
-          취소
-        </button>
+        <Link to="/teacher">
+          <button type="button" className="cancel">
+            취소
+          </button>
+        </Link>
       </div>
     </div>
   );
@@ -366,6 +370,14 @@ const ModalCSS = (isMouseOn) => css`
     box-sizing: border-box;
     font-family: 'NanumSquareRound';
     cursor: pointer;
+  }
+
+  .submit {
+    background-color: #f6ac55;
+  }
+
+  .cancel {
+    background-color: gray;
   }
 
   .fieldContainer {
