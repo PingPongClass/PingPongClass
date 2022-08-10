@@ -7,7 +7,7 @@ import axios from 'axios';
 import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import member from '@src/store/member';
+import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 
 interface TeacherDataInterface {
@@ -68,7 +68,7 @@ const TeacherMyInfo = () => {
   const onChangeFiles = (e) => {
     if (e.target.files[0] > 10 * 1024 * 1024) {
       e.target.value = '';
-      alert('업로드 가능한 최대 용량은 10MB입니다. ');
+      toast.warning('업로드 가능한 최대 용량은 10MB입니다. ');
       return;
     }
     const reader = new FileReader();
@@ -91,13 +91,13 @@ const TeacherMyInfo = () => {
 
   const onEditMyInfo = (e) => {
     if (email === null) {
-      alert('이메일을 확인해주세요.');
+      toast.warning('이메일을 확인해주세요.');
     } else if (manageGrade === null) {
-      alert('담당학년을 입력해주세요.');
+      toast.warning('담당학년을 입력해주세요.');
     } else if (!(password === passwordconfirm)) {
-      alert('비밀번호가 일치하지 않습니다. 다시 확인해주세요.');
+      toast.warning('비밀번호가 일치하지 않습니다. 다시 확인해주세요.');
     } else if (!isUse) {
-      alert('사용할 수 없는 이메일입니다. 다시 확인해주세요.');
+      toast.warning('사용할 수 없는 이메일입니다. 다시 확인해주세요.');
     } else {
       const frm = new FormData();
       let teacher: TeacherDataInterface;
@@ -128,7 +128,6 @@ const TeacherMyInfo = () => {
         newImageFile.current &&
         newImageFile.current.files
       ) {
-        console.log('파일넣음');
         frm.append('file', newImageFile.current.files[0]);
         // else frm.append('file', null);
         // 만약 file이 빈거 (기본사진으로 초기화)라면? 어떻게 처리할 것인지에 대해서 잘 몰라서 우선 주석처리
@@ -140,12 +139,12 @@ const TeacherMyInfo = () => {
         },
       })
         .then(function (response) {
-          alert('정보가 수정되었습니다.');
-          location.href = '/student/mypage';
+          toast.success('정보 수정이 완료되었습니다.');
+          location.href = '/teacher/mypage';
         })
         .catch(function (error) {
           console.log(error);
-          alert('정보 수정에 실패하였습니다.');
+          toast.error('정보 수정에 실패하였습니다.');
         });
     }
   };
