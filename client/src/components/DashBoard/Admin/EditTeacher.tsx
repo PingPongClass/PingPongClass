@@ -6,67 +6,43 @@ import InterceptedAxios from '@utils/iAxios';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Link, useParams, useNavigate } from 'react-router-dom';
+import { TeacherProps } from './TeacherBoard';
 
-const EditStudent = () => {
-  const { studentId } = useParams();
-  const [student, setStudent] = useState<StudentProps>();
+const EditTeacher = () => {
+  const { teacherId } = useParams();
+  const [teacher, setTeacher] = useState<TeacherProps>();
   const [email, setEmail] = useState('');
   const [grade, setGrade] = useState(0);
-  const [classNum, setClassNum] = useState(0);
-  const [studentNum, setStudentNum] = useState(0);
-  const [introduce, setIntroduce] = useState('');
+  const [subject, setSubject] = useState(0);
   const [password, setPassword] = useState('');
   const [passwordconfirm, setPasswordConfirm] = useState('');
   const [isUse, setUse] = useState(true);
   const [preview, setPreview] = useState<any>(
-    student?.profileFullPath ||
-      'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null',
+    teacher?.profile
+      ? 'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/' +
+          teacher?.profile
+      : undefined,
   );
   const [isMouseOn, setIsMouseOn] = useState(false);
   const [isPreviewReset, setIsPreviewReset] = useState(false); // 리셋했는지 여부 판단용 상태값
   const newImageFile = useRef<HTMLInputElement>(null); // 새로운 사진 보관용
 
-  interface StudentProps {
-    studentId?: number;
-    email?: string;
-    profileFullPath?: string;
-    profile?: string;
-    password?: string;
-    name?: string;
-    grade?: number;
-    classNum?: number;
-    studentNum?: number;
-    introduce?: string;
-  }
-
   const getInfo = () => {
-    if (studentId !== undefined) {
-      InterceptedAxios.get('/students/' + studentId).then((res) => {
-        setStudent(res.data);
+    if (teacherId !== undefined) {
+      InterceptedAxios.get('/teachers/' + teacherId).then((res) => {
+        setTeacher(res.data);
       });
     }
   };
   getInfo();
 
   const nameChanged = (e) => {
-    let newStudent: StudentProps = { ...student, name: e.target.value };
-    setStudent(newStudent);
+    let newTeacher: TeacherProps = { ...teacher, name: e.target.value };
+    setTeacher(newTeacher);
   };
 
-  const gradeChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setGrade(parseInt(e.target.value));
-  };
-
-  const classNumChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setClassNum(parseInt(e.target.value));
-  };
-
-  const studentNumChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setStudentNum(parseInt(e.target.value));
-  };
-
-  const introduceChanged = (e) => {
-    setIntroduce(e.target.value);
+  const subjectChanged = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSubject(parseInt(e.target.value));
   };
 
   const onChangePassword = (e) => {
@@ -75,7 +51,7 @@ const EditStudent = () => {
 
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
-    if (e.target.value !== student?.email) {
+    if (e.target.value !== teacher?.email) {
       var re =
         /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
       if (!re.test(e.target.value)) setUse(false);
@@ -130,20 +106,22 @@ const EditStudent = () => {
     } else if (!isUse) {
       alert('사용할 수 없는 이메일입니다. 다시 확인해주세요.');
     } else {
-      setStudent({
-        studentId: student?.studentId || 0,
+      setTeacher({
+        teacherId: teacher?.teacherId || 0,
+        name: teacher?.name || '',
         email: email,
         password: password,
-        grade: grade || 0,
-        classNum: classNum || 0,
-        studentNum: studentNum || 0,
+        manageGrade: grade || 0,
+        profile: teacher?.profile || 'null',
+        birth: teacher?.birth || '',
+        authorities: teacher?.authorities || [],
       });
     }
 
-    InterceptedAxios.post('/students/', student)
+    InterceptedAxios.post('/teachers/', teacher)
       .then(function (response) {
         alert('회원 추가에 성공했습니다.');
-        location.href = '/admin/students';
+        location.href = '/admin/teachers';
       })
       .catch(function (error) {
         console.log(error);
@@ -151,12 +129,12 @@ const EditStudent = () => {
       });
   };
 
-  const deleteStudent = (e) => {
+  const deleteTeacher = (e) => {
     alert('현재 봉인된 기능입니다.');
-    // InterceptedAxios.delete('/students/' + studentId)
+    // InterceptedAxios.delete('/teachers/' + teacherId)
     //   .then(function (response) {
     //     alert('회원 삭제에 성공했습니다.');
-    //     location.href = '/admin/students';
+    //     location.href = '/admin/teachers';
     //   })
     //   .catch(function (error) {
     //     console.log(error);
@@ -173,32 +151,33 @@ const EditStudent = () => {
       alert('사용할 수 없는 이메일입니다. 다시 확인해주세요.');
     } else {
       const frm = new FormData();
-      let studentData: StudentProps;
+      let teacherData: TeacherProps;
       if (!isPreviewReset) {
-        studentData = {
-          studentId: student?.studentId || 0,
+        teacherData = {
+          teacherId: teacher?.teacherId || 0,
+          name: teacher?.name || '',
           email: email,
           password: password,
-          grade: grade || 0,
-          classNum: classNum || 0,
-          studentNum: studentNum || 0,
-          introduce: introduce || '',
+          manageGrade: grade || 0,
+          profile: teacher?.profile || 'null',
+          birth: teacher?.birth || '',
+          authorities: teacher?.authorities || [],
         };
       } else {
-        studentData = {
-          studentId: student?.studentId || 0,
+        teacherData = {
+          teacherId: teacher?.teacherId || 0,
+          name: teacher?.name || '',
           email: email,
           password: password,
-          grade: grade || 0,
-          classNum: classNum || 0,
-          studentNum: studentNum || 0,
-          introduce: introduce || '',
+          manageGrade: grade || 0,
+          birth: teacher?.birth || '',
+          authorities: teacher?.authorities || [],
           profile: 'reset',
         };
       }
-      const teacherString = JSON.stringify(studentData);
+      const teacherString = JSON.stringify(teacherData);
       frm.append(
-        'student',
+        'teacher',
         new Blob([teacherString], { type: 'application/json' }),
       );
 
@@ -213,14 +192,14 @@ const EditStudent = () => {
         // 만약 file이 빈거 (기본사진으로 초기화)라면? 어떻게 처리할 것인지에 대해서 잘 몰라서 우선 주석처리
       }
 
-      InterceptedAxios.post('/students/modify', frm, {
+      InterceptedAxios.post('/teachers/modify', frm, {
         headers: {
           'Content-Type': `multipart/form-data`,
         },
       })
         .then(function (response) {
           alert('정보가 수정되었습니다.');
-          location.href = '/admin/students';
+          location.href = '/admin/teachers';
         })
         .catch(function (error) {
           console.log(error);
@@ -282,58 +261,33 @@ const EditStudent = () => {
             <span>이름</span>
             <input
               id="name"
-              value={student?.name || ''}
+              value={teacher?.name || ''}
               onChange={nameChanged}
               placeholder=" 이름을 입력하세요."
-              readOnly={student?.studentId !== undefined}
+              readOnly={teacher?.teacherId !== undefined}
             />
           </div>
           <div className="fieldContainer">
-            <span id="infoname">학생정보</span>
-            <div className="studentContainer">
-              <div className="stuinfoContainer">
-                <input
-                  id="grade"
-                  type="text"
-                  defaultValue={student?.grade || ''}
-                  onChange={gradeChanged}
-                />
-                <p id="gradespan">학년</p>
-              </div>
-              <div className="stuinfoContainer">
-                <input
-                  id="groupNum"
-                  type="text"
-                  defaultValue={student?.classNum || ''}
-                  onChange={classNumChanged}
-                />
-                <p id="groupNumspan">반</p>
-              </div>
-              <div className="stuinfoContainer">
-                <input
-                  id="studentNum"
-                  type="text"
-                  defaultValue={student?.studentNum || ''}
-                  onChange={studentNumChanged}
-                />
-                <p id="studentNumspan">번</p>
-              </div>
-            </div>
+            <span>과목</span>
+            <select defaultValue={subject} onChange={subjectChanged}>
+              {classCodes.map((s) => {
+                return (
+                  <option
+                    key={s.class_subject_code}
+                    value={s.class_subject_code}
+                  >
+                    {s.name}
+                  </option>
+                );
+              })}
+            </select>
           </div>
-          {student?.studentId !== undefined ? (
-            <div className="fieldContainer">
-              <span>아이디</span>
-              <input id="id" type="text" value={studentId} readOnly />
-            </div>
-          ) : (
-            <></>
-          )}
           <div className="fieldContainer">
             <span>이메일</span>
             <input
               id="email"
               type="email"
-              defaultValue={student?.email || ''}
+              defaultValue={teacher?.email || ''}
               onChange={(e) => onChangeEmail(e)}
               placeholder=" 이메일을 입력하세요."
             />
@@ -356,24 +310,15 @@ const EditStudent = () => {
               placeholder=" 비밀번호를 입력하세요."
             />
           </div>
-          <div className="fieldContainer">
-            <span>자기소개</span>
-            <textarea
-              id="introduceConfirm"
-              defaultValue={student?.introduce}
-              onChange={(e) => introduceChanged(e)}
-              // placeholder=" 자기소개를 입력해주세요."
-            ></textarea>
-          </div>
         </div>
       </div>
       <div className="buttonsContainer">
-        {studentId ? (
+        {teacherId ? (
           <>
             <button type="button" className="submit" onClick={onEditMyInfo}>
               수정
             </button>
-            <button type="button" className="delete" onClick={deleteStudent}>
+            <button type="button" className="delete" onClick={deleteTeacher}>
               삭제
             </button>
           </>
@@ -536,7 +481,9 @@ const ModalCSS = (isMouseOn) => css`
     font-weight: 700;
   }
 
-  .fieldContainer input {
+  .fieldContainer input,
+  .fieldContainer option,
+  .fieldContainer select {
     width: 270px;
     height: 30px;
     background-color: #f9f7e9;
@@ -555,7 +502,7 @@ const ModalCSS = (isMouseOn) => css`
     align-items: center;
   }
 
-  .studentContainer {
+  .teacherContainer {
     display: flex;
     flex-direction: row;
     width: 270px;
@@ -618,4 +565,71 @@ const ModalCSS = (isMouseOn) => css`
   }
 `;
 
-export default EditStudent;
+export default EditTeacher;
+
+const classCodes = [
+  {
+    class_subject_code: 1,
+    name: '국어',
+  },
+  {
+    class_subject_code: 2,
+    name: '영어',
+  },
+  {
+    class_subject_code: 3,
+    name: '수학',
+  },
+  {
+    class_subject_code: 4,
+    name: '사회',
+  },
+  {
+    class_subject_code: 5,
+    name: '국사',
+  },
+  {
+    class_subject_code: 6,
+    name: '도덕',
+  },
+  {
+    class_subject_code: 7,
+    name: '체육',
+  },
+  {
+    class_subject_code: 8,
+    name: '음악',
+  },
+  {
+    class_subject_code: 9,
+    name: '미술',
+  },
+  {
+    class_subject_code: 10,
+    name: '과학',
+  },
+  {
+    class_subject_code: 11,
+    name: '기술',
+  },
+  {
+    class_subject_code: 12,
+    name: '가정',
+  },
+  {
+    class_subject_code: 13,
+    name: '한문',
+  },
+  {
+    class_subject_code: 14,
+    name: '정보',
+  },
+  {
+    class_subject_code: 15,
+    name: '일본어',
+  },
+  {
+    class_subject_code: 16,
+    name: '중국어',
+  },
+];

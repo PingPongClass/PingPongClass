@@ -193,7 +193,8 @@ const convert = (state, action: PayloadAction<any>) => {
     levelPoint: action.payload?.levelPoint ? action.payload?.levelPoint : 0,
     myRank: action.payload?.myRank ? action.payload?.myRank : 0,
     items: action.payload?.items === [] ? action.payload?.items : state.items,
-    classes: action.payload?.classes ? action.payload?.classes : state.classes,
+    classes:
+      action.payload?.classes === [] ? action.payload?.classes : state.classes,
     // 선생, 관리자만
     birth: action.payload?.birth ? action.payload?.birth : '',
     manageGrade: action.payload?.manageGrade ? action.payload?.manageGrade : 0,
