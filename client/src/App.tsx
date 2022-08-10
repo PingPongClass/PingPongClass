@@ -63,6 +63,8 @@ const App = () => {
             <Route path="studentAdd" element={<AddStudent />} />
             <Route path="studentAddBulk" element={<AddStudentBulk />} />
             <Route path="studentEdit/:studentId" element={<EditStudent />} />
+            <Route path="mypage" element={<InputPassword />} />
+            <Route path="teachermyinfo" element={<TeacherMyInfo />} />
           </Route>
           <Route path="/style" element={<Style />} />
           <Route path="/class/:code" element={<OpenVidu />} />

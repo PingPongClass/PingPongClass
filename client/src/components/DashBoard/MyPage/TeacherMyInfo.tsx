@@ -40,9 +40,6 @@ const TeacherMyInfo = () => {
 
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
-    console.log(e.target.value);
-    console.log(memberStore.email);
-    console.log(e.target.value === memberStore.email);
     if (e.target.value !== memberStore.email) {
       var re =
         /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
