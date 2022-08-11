@@ -286,7 +286,7 @@ const totalContainer = css`
   .level-img {
     border: none;
     height: 100%;
-    width: 27px;
+    width: 29px;
     margin-right: 6px;
   }
 
