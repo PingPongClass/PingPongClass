@@ -1,16 +1,24 @@
 import { css } from '@emotion/react';
 import defaultProfile from '@assets/images/defaultProfile.jpeg';
 import { useAppSelector } from '@src/store/hooks';
+import { useEffect, useState } from 'react';
 
 const Myinfo = () => {
   const memberStore = useAppSelector((state) => state.member);
-  var totalRate =
-    (memberStore.totalPoint /
-      (memberStore.totalPoint + memberStore.levelPoint)) *
-    100;
-  var currentRate =
-    (memberStore.point / (memberStore.totalPoint + memberStore.levelPoint)) *
-    100;
+  const [totalRate, setTotalRate] = useState(0 as number);
+  const [currentRate, setcurrentRate] = useState(0 as number);
+
+  useEffect(() => {
+    setTotalRate(
+      (memberStore.totalPoint /
+        (memberStore.totalPoint + memberStore.levelPoint)) *
+        100,
+    );
+    setcurrentRate(
+      (memberStore.point / (memberStore.totalPoint + memberStore.levelPoint)) *
+        100,
+    );
+  }, [memberStore]);
 
   console.log(totalRate);
 

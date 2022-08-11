@@ -93,7 +93,7 @@ const Login = (props: LoginProps) => {
           setTap('email');
         } else {
           if (userId.length == 10) {
-            toast.success(userId + ' 학생 핑퐁클래스 등교 완료!');
+            toast.success(userId+ ' 학생 핑퐁클래스 등교 완료!');
             navigate('/student');
           }
           if (userId.length == 7 && userId.charAt(0) === '4') {

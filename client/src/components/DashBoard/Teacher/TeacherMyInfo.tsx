@@ -1,9 +1,30 @@
 import { css } from '@emotion/react';
 import defaultProfile from '@assets/images/defaultProfile.jpeg';
 import { useAppSelector } from '@src/store/hooks';
+import axios from 'axios';
+import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const TeacherMyinfo = () => {
   const memberStore = useAppSelector((state) => state.member);
+  const AXIOS = setupInterceptorsTo(axios.create());
+  const [classList, setClassList] = useState([] as any);
+  const navigate = useNavigate();
+  const dt = new Date();
+
+  const loadClassList = async () => {
+    const teacherId = memberStore.userId;
+    const classDay = dt.getDay();
+    const result = await AXIOS.get(`/classes`, {
+      params: { id: teacherId, day: classDay },
+    });
+    setClassList(result.data.content);
+  };
+
+  useEffect(() => {
+    loadClassList();
+  }, [memberStore]);
 
   return (
     <div css={totalContainer}>
@@ -29,7 +50,7 @@ const TeacherMyinfo = () => {
         </div>
       </div>
       <div className="levelContainer">
-        <h2 className="level">수업 현황 0/{memberStore.classes.length}</h2>
+        <h2 className="level">수업 현황 0/{classList.length}</h2>
         <div className="stickerContainer">
           <div className="soFarSticker">
             <span>완료된 수업 : 0</span>
