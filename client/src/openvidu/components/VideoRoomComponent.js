@@ -1301,6 +1301,7 @@ class VideoRoomComponent extends Component {
               top={stickerKey.top}
               removeSticker={this.removeSticker}
               left={stickerKey.left}
+              localUser={localUser}
             ></Sticker>
           ))}
 

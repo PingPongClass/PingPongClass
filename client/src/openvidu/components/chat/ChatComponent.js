@@ -205,7 +205,8 @@ export default class ChatComponent extends Component {
                 id="remoteUsers"
                 className={
                   'message' +
-                  (data.connectionId !== this.props.user.getConnectionId()
+                  (data.connectionId !== this.props.user.getConnectionId() ||
+                  data.nickname === 'System'
                     ? ' left'
                     : ' right') +
                   (data.type === 'chat' ? '' : ' whisper')
@@ -226,7 +227,13 @@ export default class ChatComponent extends Component {
                     </p>
                   </div>
                   <div className="msg-content-wrap">
-                    <div className="msg-content">
+                    <div
+                      className={
+                        data.nickname === 'System'
+                          ? `msg-content system`
+                          : `msg-content`
+                      }
+                    >
                       <span className="triangle" />
                       <p className="text">{data.message}</p>
                     </div>

@@ -19,8 +19,8 @@ const StudentResult = ({
   const [otherModels, setOtherModels] = useState([]);
   console.log(otherModels, '저거');
 
-  // 학생데이터 정렬
-  otherModels.sort((a, b) => a.point - b.point);
+  // 학생데이터 상점 받은 순으로 정렬
+  otherModels.sort((a, b) => b.point - a.point);
 
   useLayoutEffect(() => {
     setTotalStudentNum(othersData.length); // 우선 임시로

@@ -13,6 +13,7 @@ import './SingleParticipantPanel.css';
 // Todo: 사용자의 이름과 같은 상태값들을 한명씩 출력해주는 컴포넌트
 const SingleParticipantPanel = (props) => {
   const { user, whoami, isMyself } = props;
+  console.log(user);
 
   const onClickPointUp = () => {
     // 누가 보냈는지는 중요하지 않다
@@ -45,10 +46,11 @@ const SingleParticipantPanel = (props) => {
                 ▼
               </button>
             )}
-            <span>상점 : {user.point}</span>
           </>
         )}
-
+        {user.nickname.substr(user.nickname.length - 1, 1) !== ')' && (
+          <span>상점 : {user.point}</span>
+        )}
         <span>출석 : {user.attendenceTime}</span>
         {user.videoActive ? <Videocam /> : <VideocamOff color="secondary" />}
         {user.audioActive ? <Mic /> : <MicOff color="secondary" />}

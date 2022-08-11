@@ -140,6 +140,17 @@ span.triangle {
   background-color: #f0f0f0;
   float: left;
 }
+
+.message.left .msg-detail .msg-content.system {
+  background-color: #94e0e7;
+  float: left;
+}
+
+.message.left .msg-detail .msg-content.system span.triangle {
+  background-color: #94e0e7;
+  float: left;
+}
+
 .message.left .msg-detail .msg-content span.triangle {
   background-color: #f0f0f0;
   border-bottom-width: 0;

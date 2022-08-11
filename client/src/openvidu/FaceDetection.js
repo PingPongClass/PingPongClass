@@ -45,8 +45,8 @@ export default class FaceDetection extends Component {
   run = async () => {
     this.log('run started');
     try {
-      await faceApi.nets.tinyFaceDetector.load('/models/');
-      await faceApi.loadFaceExpressionModel(`/models/`);
+      await faceApi.nets.tinyFaceDetector.load('/models');
+      await faceApi.loadFaceExpressionModel(`/models`);
       this.mediaStream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: 'user' },
       });

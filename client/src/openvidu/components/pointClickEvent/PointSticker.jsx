@@ -7,7 +7,7 @@ import './PointSticker.css';
 const stickerImg =
   'https://item.kakaocdn.net/do/d46eb5180f93b19ab3d2a7275827ac0682f3bd8c9735553d03f6f982e10ebe70';
 const PointSticker = (props) => {
-  const { key, point, top, left, removeSticker } = props;
+  const { key, top, left, removeSticker, localUser } = props;
   const [visible, setVisible] = useState(true);
   const css = {
     top: top + 'px',
@@ -20,7 +20,10 @@ const PointSticker = (props) => {
 
   const addPoint = () => {
     removeSticker(key);
-    console.log(point);
+    localUser.getStreamManager().stream.session.signal({
+      to: [localUser],
+      type: 'point-up',
+    });
     setVisible(false);
   };
 
