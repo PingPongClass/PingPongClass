@@ -279,6 +279,7 @@ const ModalCSS = (isMouseOn) => css`
   justify-content: center;
   align-items: center;
   position: relative;
+  animation: 0.5s ease-in-out loadEffect1;
 
   .infoContainer {
     position: relative;
@@ -474,6 +475,15 @@ const ModalCSS = (isMouseOn) => css`
     position: absolute;
     width: 800px;
     height: 100%;
+  }
+
+  @keyframes loadEffect1 {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 `;
 

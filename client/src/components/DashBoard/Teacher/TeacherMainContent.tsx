@@ -47,6 +47,7 @@ const totalContainer = css`
   justify-content: start;
   box-sizing: border-box;
   gap: 10px;
+  animation: 0.5s ease-in-out loadEffect1;
 
   .myInfo {
     width: 100%;

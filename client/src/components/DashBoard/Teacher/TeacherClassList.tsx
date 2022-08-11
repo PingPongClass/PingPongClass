@@ -126,6 +126,7 @@ const totalContainer = css`
   justify-content: start;
   border-radius: 20px;
   box-shadow: 2px 2px 15px -5px;
+  animation: 0.5s ease-in-out loadEffect1;
 
   .tabsContainer {
     width: 100%;
@@ -226,6 +227,15 @@ const totalContainer = css`
   .linkButton {
     text-decoration: none;
     color: white;
+  }
+
+  @keyframes loadEffect1 {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 `;
 

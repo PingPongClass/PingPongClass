@@ -192,6 +192,7 @@ export const NoticeBoardStyle = () => css`
   /* overflow: hidden; */
   max-height: inherit;
   max-width: inherit;
+  animation: 0.5s ease-in-out loadEffect1;
 
   button:hover {
     cursor: pointer;
@@ -391,6 +392,15 @@ export const NoticeBoardStyle = () => css`
   }
   a:visited {
     text-decoration: none;
+  }
+
+  @keyframes loadEffect1 {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 `;
 

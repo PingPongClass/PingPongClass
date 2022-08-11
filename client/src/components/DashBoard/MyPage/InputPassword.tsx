@@ -64,6 +64,7 @@ const ModalCSS = css`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  animation: 0.5s ease-in-out loadEffect1;
 
   .commonModal {
     position: absolute;
@@ -120,6 +121,15 @@ const ModalCSS = css`
   .modalSize {
     width: 70%;
     height: 500px;
+  }
+
+  @keyframes loadEffect1 {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 `;
 

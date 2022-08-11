@@ -51,6 +51,7 @@ const totalContainer = css`
   justify-content: start;
   box-sizing: border-box;
   gap: 10px;
+  animation: 0.5s ease-in-out loadEffect1;
 
   .banner {
     height: auto;
@@ -77,6 +78,15 @@ const totalContainer = css`
   .attandance {
     height: auto;
     width: 100%;
+  }
+
+  @keyframes loadEffect1 {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 `;
 export default MainContent;

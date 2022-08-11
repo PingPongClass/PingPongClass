@@ -232,7 +232,7 @@ const totalContainer = () => css`
   max-width: inherit;
   display: flex;
   flex-direction: column;
-  animation: 0.7s ease-in-out loadEffect1;
+  animation: 0.5s ease-in-out loadEffect1;
 
   .bbobkki {
     display: flex;
