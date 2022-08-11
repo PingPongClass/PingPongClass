@@ -12,6 +12,7 @@ import EmojiFilter from './items/EmojiFilter';
 import QuizModal from './quiz/QuizModal';
 import QuizModalStudent from './quiz/QuizModalStudent';
 import ShieldModal from './items/ShieldModal';
+import ShieldModalLoading from './items/ShieldModalLoading';
 import Sticker from './pointClickEvent/PointSticker';
 
 import OpenViduLayout from '../layout/openvidu-layout';
@@ -65,6 +66,7 @@ class VideoRoomComponent extends Component {
       quizDisplay: false,
       quizDisplayStudent: false,
       shieldDisplay: false,
+      shieldLoadingDisplay: false,
       videos: this.props.setDevices.videos,
       audios: this.props.setDevices.audios,
       speakers: this.props.setDevices.speakers,
@@ -613,6 +615,10 @@ class VideoRoomComponent extends Component {
                   },
                 });
               }
+            } else {
+              if (!data.picked) {
+                this.toggleShieldLoading();
+              }
             }
           }
           if (data.isSmileActive !== undefined) {
@@ -1000,7 +1006,7 @@ class VideoRoomComponent extends Component {
       let studentList = [];
       // 선생님이거나 관리자가 아닌 계정(체크 방식 변경 예정)
       list.forEach((elem) => {
-        if (elem.idType !== 3 && elem.idType !== 4) {
+        if (!elem.nickname.includes('(선생님)')) {
           studentList.push(elem);
         }
       });
@@ -1078,6 +1084,11 @@ class VideoRoomComponent extends Component {
     this.setState({ shieldDisplay: !this.state.shieldDisplay });
     this.updateLayout();
   }
+
+  toggleShieldLoading = () => {
+    this.setState({ shieldLoadingDisplay: !this.state.shieldDisplay });
+    this.updateLayout();
+  };
 
   // name: 한준수
   // date: 2022/07/28
@@ -1274,6 +1285,14 @@ class VideoRoomComponent extends Component {
             toggleQuizStudent={this.toggleQuizStudent}
             header="Quiz Modal"
             quiz={this.state.quiz}
+          />
+          <ShieldModalLoading
+            display={this.state.shieldLoadingDisplay}
+            user={localUser}
+            toggleShield={this.toggleShieldLoading}
+            subscribers={subscribers}
+            timeOut={3}
+            header="방어권 구경"
           />
           <ShieldModal
             display={this.state.shieldDisplay}

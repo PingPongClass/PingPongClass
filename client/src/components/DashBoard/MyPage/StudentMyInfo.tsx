@@ -130,7 +130,7 @@ const StudentMyInfo = () => {
       })
         .then(function (response) {
           alert('정보 수정이 완료되었습니다.');
-          location.href = 'student/mypage';
+          location.href = '/student/mypage';
         })
         .catch(function (error) {
           console.log(error);
