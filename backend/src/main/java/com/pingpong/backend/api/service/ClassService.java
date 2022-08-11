@@ -230,8 +230,8 @@ public class ClassService {
         List<ClassEntity> classEntityList= classRepository.findAll();
         List<String> urlList = new ArrayList<>();
         for(ClassEntity classEntity: classEntityList){
-            if(!classEntity.getClassUrl().isEmpty())
-                urlList.add(classEntity.getClassUrl());
+            if(classEntity.getClassUrl()==null||classEntity.getClassUrl().equals("")) continue;
+            urlList.add(classEntity.getClassUrl());
         }
         return urlList;
     }
