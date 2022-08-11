@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './ShieldModalLoading.css';
 
-class ShieldModal extends Component {
+class ShieldModalLoading extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,16 +20,16 @@ class ShieldModal extends Component {
     }
   }
 
-  // name: 한준수
-  // date: 2022/07/28
-  // desc: 지목받은 학생이 방어권을 사용하는 함수
-  // todo: 호출 시 현재 수업에 참여 중인 자신을 제외한 학생 중 랜덤한 1명을 지목하고, 추첨 결과를 전체 참여자에게 공유한다.
   useShield = () => {
     this.close();
   };
 
+  notUseShield = () => {
+    this.close();
+  };
+
   close() {
-    this.props.toggleShield();
+    this.props.toggleShieldLoading();
   }
 
   count() {
@@ -188,4 +188,4 @@ class ShieldModal extends Component {
   }
 }
 
-export default ShieldModal;
+export default ShieldModalLoading;
