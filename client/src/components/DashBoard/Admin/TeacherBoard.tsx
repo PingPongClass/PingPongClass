@@ -171,28 +171,31 @@ const TeacherBoard = () => {
             );
           })}
         </div>
-        <div className="btn-box" css={btnBox}>
-          <Pagination
-            className="Pagination"
-            count={LAST_PAGE}
-            defaultPage={1}
-            boundaryCount={2}
-            sx={{ margin: 2 }}
-            onChange={(e) => handlePage(e)}
-            variant="outlined"
-            shape="rounded"
-          />
-          <button type="button" className="add-btn stu-bottom-btn">
-            <Link to="/admin/teacherAdd">추가</Link>
-          </button>
-          <button
-            type="button"
-            className="del-btn stu-bottom-btn"
-            onClick={deleteSelected}
-          >
-            선택 삭제
-          </button>
-        </div>
+      </div>
+      <div className="btn-box" css={btnBox}>
+        <Pagination
+          className="Pagination"
+          count={LAST_PAGE}
+          defaultPage={1}
+          boundaryCount={2}
+          sx={{ margin: 2 }}
+          onChange={(e) => handlePage(e)}
+          variant="outlined"
+          shape="rounded"
+        />
+        <button type="button" className="add-btn stu-bottom-btn">
+          <Link to="/admin/teacherAdd">추가</Link>
+        </button>
+        <button type="button" className="add-btn stu-bottom-btn">
+          <Link to="/admin/teacherAddBulk">일괄 추가</Link>
+        </button>
+        <button
+          type="button"
+          className="del-btn stu-bottom-btn"
+          onClick={deleteSelected}
+        >
+          선택 삭제
+        </button>
       </div>
     </>
   );
@@ -260,7 +263,8 @@ const btnBox = () => css`
   justify-content: flex-end;
   align-content: center;
   align-items: center;
-  left: 3rem;
+  position: absolute;
+  bottom: 13%;
   .Pagination {
     /* margin-right: 11.5rem; */
     justify-content: center;

@@ -37,10 +37,10 @@ const Notice = (props: {
         <div className="detailContent">{article.content}</div>
         <div className="detailWriter">- {article.writer}</div>
         <div className="detailFooter">
-          <button className="edit-btn">
+          <button className="edit-btn blue">
             <Link to={`/admin/noticeEdit/${article.noticeId}`}>수정</Link>
           </button>
-          <button className="del-btn" onClick={deleteNotice}>
+          <button className="del-btn pink" onClick={deleteNotice}>
             <Link to="/admin/notice">삭제</Link>
           </button>
         </div>
