@@ -43,7 +43,6 @@ function TodaysClass(props) {
     // promise.all 처리!
     const promises = result.data.content.map(async (elem, i) => {
       const classUrlData = await AXIOS.get(`/classes/isopen/${elem.classId}`);
-      console.log(classUrlData.data, elem.classId);
       elem.classUrl = classUrlData.data;
     });
     await Promise.all(promises);

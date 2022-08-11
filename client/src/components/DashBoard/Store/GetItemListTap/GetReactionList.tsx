@@ -13,7 +13,7 @@ function Item({ item }) {
   const img = '/items/' + item.name + '.gif';
   return (
     <div className="item-div">
-      <img src={img} style={{ width: '100%' }} />
+      <img src={img} style={{ width: '80px' }} />
       <p>{item.name}</p>
     </div>
   );
@@ -53,12 +53,17 @@ const GetReactionList = () => {
 };
 
 const totalContainer = () => css`
+  width: 100%;
+  flex-wrap: wrap;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: start;
+  padding: 10px;
 
   .item-div {
     width: 105px;
+    width: 100px;
+    height: 100px;
     background: #ffffff;
     display: flex;
     flex-direction: column;
@@ -67,7 +72,7 @@ const totalContainer = () => css`
     border-radius: 20px;
     box-shadow: 2px 2px 8px -5px;
     transition: all 0.1s ease-in-out;
-    margin: 0.2rem;
+    margin: 10px;
     border: 1px solid lightgray;
 
     :hover {

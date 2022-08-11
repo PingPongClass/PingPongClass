@@ -223,16 +223,14 @@ const StoreMain = () => {
 
 const totalContainer = () => css`
   /* 전역 */
-  text-align: center;
-  width: inherit;
+  width: 100%;
   height: 100%;
-  position: relative;
-  overflow: hidden;
-  max-height: inherit;
-  max-width: inherit;
   display: flex;
+  text-align: center;
   flex-direction: column;
-  animation: 0.5s ease-in-out loadEffect1;
+  justify-content: start;
+  gap: 60px;
+  animation: 0.7s ease-in-out loadEffect1;
 
   .bbobkki {
     display: flex;
@@ -248,28 +246,34 @@ const totalContainer = () => css`
   .itemList {
     width: 70%;
     height: 100%;
-    margin-left: 29px;
+    margin-left: 30px;
     border-radius: 20px;
   }
 
   .getItemList {
     width: 55%;
-    height: 23vh;
-    margin: auto;
+    height: 100%;
+    margin: 0;
+    margin-left: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     border-radius: 20px;
   }
 
   .example {
-    width: 40%;
-    height: 23vh;
-    margin: auto;
+    width: 35%;
+    height: 100%;
+    box-sizing: border-box;
     background-color: gray;
   }
 
   .item-tap {
+    width: 100%;
+    height: 10%;
     display: flex;
     flex-direction: row;
-    justify-content: stretch;
+    justify-content: start;
     height: 2rem;
     border-bottom: dashed 1px gray;
 
@@ -301,9 +305,9 @@ const totalContainer = () => css`
 
   .item-main {
     background-color: white;
+    width: 100%;
     height: 90%;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
+    border-radius: 0 0 20px 20px;
     text-align: left;
     border-bottom: 1px solid gray;
     border-left: 1px solid gray;
@@ -312,50 +316,61 @@ const totalContainer = () => css`
 
   .pageTitle {
     text-align: left;
-    font-size: calc(0.5rem + 1vw);
+    font-size: 26px;
     font-weight: 700;
+    display: inline-block;
+    height: 40px;
   }
 
   .store-title-div {
+    width: 100%;
     display: flex;
-    align-items: flex-end;
+    flex-direction: row;
     justify-content: space-between;
-    margin-bottom: 15px;
+    align-items: center;
   }
 
   .drawContainer {
-    height: 55%;
-    justify-content: center;
+    width: 100%;
+    height: 380px;
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
   }
 
   .sideContainer {
-    display: inline-flex;
+    display: flex;
     flex-direction: row;
-    vertical-align: middle;
-    margin-top: 0.7rem;
     justify-content: center;
+    align-items: center;
     width: 100%;
-    height: 83%;
+    height: 100%;
   }
 
   .myItemContainer {
-    height: 45%;
+    width: 100%;
+    height: 40%;
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
   }
 
   hr {
-    margin: 0 auto;
+    width: 100%;
+    margin: 10px 0;
   }
 
   .draw {
-    width: 21%;
+    width: 20%;
     height: 80%;
-    display: inline-flex;
     margin: 0;
+    display: flex;
     justify-content: center;
-    background: #fff1bd;
     flex-direction: column;
     align-items: center;
+    background: #fff1bd;
     border-radius: 20px;
     box-shadow: 0 0 3px 0 lightgray;
 
@@ -365,18 +380,19 @@ const totalContainer = () => css`
     }
 
     .bobkkiCapsule {
-      width: 70%;
+      width: 50%;
       height: auto;
-      margin-top: 10px;
     }
   }
 
   .pongCount {
     width: 15%;
-    background-color: white;
+    padding: 10px 0px;
+    display: flex;
+    flex-direction: row;
     justify-content: center;
-    height: 5vh;
-    display: inline-flex;
+    align-items: center;
+    background-color: white;
     border-radius: 5px;
     border: 1px solid lightgray;
     font-weight: 700;
@@ -390,9 +406,9 @@ const totalContainer = () => css`
   }
 
   .bbobkkiBtn {
-    width: 80%;
+    width: 50%;
     background-color: white;
-    height: 4vh;
+    height: 15%;
     border-radius: 5px;
     border: 1px solid lightgray;
     margin: 16px 0 16px 0;

@@ -13,7 +13,7 @@ function Item({ item }) {
   const img = '/items/' + item.itemId + '.png';
   return (
     <div className="colorchangeBorder">
-      <img src={img} style={{ width: '90%' }} />
+      <img src={img} style={{ width: '80%' }} />
       <p>
         {item.name}:{item.cnt}
       </p>
@@ -57,13 +57,16 @@ const GetItemList = () => {
 };
 
 const totalContainer = () => css`
+  width: 100%;
+  padding: 10px;
+  flex-wrap: wrap;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: start;
 
-  div {
-    width: 25%;
-    height: 100%;
+  .colorchangeBorder {
+    width: 100px;
+    height: 100px;
     background: #ffffff;
     display: flex;
     flex-direction: column;
@@ -72,7 +75,7 @@ const totalContainer = () => css`
     border-radius: 20px;
     box-shadow: 2px 2px 8px -5px;
     transition: all 0.1s ease-in-out;
-    margin: 0.5rem;
+    margin: 10px;
     border: 1px solid lightgray;
 
     :hover {

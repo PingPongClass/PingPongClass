@@ -23,7 +23,6 @@ const ClassList = () => {
     const result = await AXIOS.get(`/classes`, {
       params: { id: studentId, day: classDay },
     }).then((response) => setClsList(response.data.content));
-    console.log(clsList);
   };
 
   useEffect(() => {
@@ -53,7 +52,7 @@ const ClassList = () => {
 
   const renderList = (): any => {
     let tmp = [] as any;
-    for (let i = 0; i < clsList.length / 6; i++) {
+    for (let i = 0; i <= clsList.length / 6; i++) {
       tmp.push(render(i));
     }
     return tmp;

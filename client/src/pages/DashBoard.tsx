@@ -49,7 +49,7 @@ const DashBoard = () => {
   return (
     <div css={totalContainer}>
       {loading ? (
-        <div className="loadingImg">
+        <div className="loadingImgBox">
           <h1>로딩중...</h1>
           <img src={loadingImg} alt="" />
         </div>
@@ -65,13 +65,17 @@ const totalContainer = css`
   background-size: cover;
   height: 100vh;
 
-  .loadingImg {
+  .loadingImgBox {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+  }
+  .loadingImgBox img {
+    width: 600px;
+    height: auto;
   }
 
   .dashBoardContainer {
