@@ -28,6 +28,7 @@ import StudentMyInfo from '@components/DashBoard/MyPage/StudentMyInfo';
 import TeacherMyInfo from '@components/DashBoard/MyPage/TeacherMyInfo';
 import { ToastContainer } from 'react-toastify';
 import '@src/App.css';
+import TimeTable from './components/DashBoard/TimeTable/TimeTable';
 
 const App = () => {
   return (
@@ -87,7 +88,7 @@ const App = () => {
             <Route path="teachermyinfo" element={<TeacherMyInfo />} />
           </Route>
           <Route path="/style" element={<Style />} />
-          <Route path="/class/:code" element={<OpenVidu />} />
+          <Route path="/lecture/:code" element={<OpenVidu />} />
         </Routes>
       </BrowserRouter>
     </div>

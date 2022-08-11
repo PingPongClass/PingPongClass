@@ -53,7 +53,7 @@ function TeacherTodaysClass() {
 
     try {
       await AXIOS.patch(`/classes/open`, newData);
-      navigate(`/class/${newCode}`, {
+      navigate(`/lecture/${newCode}`, {
         state: {
           classId: cls.classId,
           classTitle: cls.classTitle,

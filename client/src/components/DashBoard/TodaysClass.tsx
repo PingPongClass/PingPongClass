@@ -52,7 +52,7 @@ function TodaysClass(props) {
 
   const joinClass = async (cls: ClassProps) => {
     if (cls.classUrl && cls.classUrl !== '링크') {
-      navigate(`/class/${cls.classUrl}`, {
+      navigate(`/lecture/${cls.classUrl}`, {
         state: {
           classId: cls.classId,
           classTitle: cls.classTitle,
