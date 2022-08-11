@@ -2,12 +2,25 @@ import { css } from '@emotion/react';
 import defaultProfile from '@assets/images/defaultProfile.jpeg';
 import { useAppSelector } from '@src/store/hooks';
 import { useEffect, useState } from 'react';
+import Ranking from './Ranking';
+import EditIcon from '@mui/icons-material/Edit';
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
+
+interface StudentDataInterface {
+  studentId: number;
+  introduce: string;
+}
 
 const Myinfo = () => {
   const memberStore = useAppSelector((state) => state.member);
   const [totalRate, setTotalRate] = useState(0 as number);
   const [currentRate, setcurrentRate] = useState(0 as number);
   const [levelImg, setLevelImg] = useState('');
+  const [isEdit, setIsEdit] = useState(false);
+  const [introduce, setIntroduce] = useState(memberStore.introduce);
+  const AXIOS = setupInterceptorsTo(axios.create());
 
   useEffect(() => {
     setTotalRate(
@@ -23,7 +36,45 @@ const Myinfo = () => {
     setLevelImg('/levels/' + memberStore.currentLevel + '.png');
   }, [memberStore]);
 
-  console.log(totalRate);
+  const onClickEdit = (e) => {
+    setIsEdit(!isEdit);
+  };
+
+  const onChangeIntroduce = (e) => {
+    setIntroduce(e.target.value);
+  };
+
+  const onEditIntroduce = (e) => {
+    if (introduce == null) {
+      toast.warning('자개소개를 입력해주세요.');
+    } else {
+      const frm = new FormData();
+      let student: StudentDataInterface;
+      student = {
+        studentId: memberStore.userId,
+        introduce: introduce,
+      };
+      const studentString = JSON.stringify(student);
+      frm.append(
+        'student',
+        new Blob([studentString], { type: 'application/json' }),
+      );
+
+      AXIOS.post('/students/modify', frm, {
+        headers: {
+          'Content-Type': `multipart/form-data`,
+        },
+      })
+        .then(function (response) {
+          alert('정보 수정에 성공하였습니다.');
+          location.reload();
+        })
+        .catch(function (error) {
+          console.log(error);
+          toast.error('정보 수정에 실패하였습니다.');
+        });
+    }
+  };
 
   return (
     <div css={totalContainer}>
@@ -78,34 +129,50 @@ const Myinfo = () => {
         </div>
       </div>
       <div className="rankingContainer">
+        <p style={{ width: '100%', fontWeight: '700' }}>실시간 순위</p>
         <div className="myRanking">
           <div className="rankingInfo">
             <div className="rankBox">{memberStore.myRank}위</div>
-            <div className="nameBox">{memberStore.name}</div>
+            <div className="nameBox">
+              {memberStore.name} [{memberStore.totalPoint} 퐁퐁]
+            </div>
             <div className="myBio">
-              {memberStore.introduce
-                ? memberStore.introduce
-                : '자기소개가 없습니다.'}
+              {isEdit && (
+                <input
+                  style={{
+                    height: '35px',
+                    width: '70%',
+                  }}
+                  value={introduce}
+                  onChange={(e) => onChangeIntroduce(e)}
+                />
+              )}
+              {!isEdit && (
+                <p>
+                  {memberStore.introduce
+                    ? memberStore.introduce
+                    : '자기소개가 없습니다.'}
+                </p>
+              )}
             </div>
           </div>
-          <button>수정하기</button>
+          {!isEdit && (
+            <button onClick={onClickEdit}>
+              <EditIcon />
+            </button>
+          )}
+          {isEdit && <button onClick={onEditIntroduce}>수정</button>}
+          {isEdit && (
+            <button onClick={onClickEdit} style={{ color: 'red' }}>
+              취소
+            </button>
+          )}
         </div>
-        <div className="ranking">
-          <div className="rankingInfo">
-            <div className="rankBox">1위</div>
-            <div className="nameBox">오석호</div>
-            <div className="myBio">안녕하세요 쏘콜라스 입니다.</div>
-          </div>
-          <button>펼치기</button>
-        </div>
-        <div className="rankingLow">
-          <div className="rankingInfo">
-            <div className="rankBox">2위</div>
-            <div className="nameBox">원재호호</div>
-            <div className="myBio">안녕하세요 쏘콜라스 선생님 제자입니다.</div>
-          </div>
-          <button>수정하기</button>
-        </div>
+        <br />
+        <p style={{ width: '100%', fontWeight: '700' }}>
+          랭킹 Top 10 (매일 오전 8시 기준)
+        </p>
+        <Ranking />
       </div>
     </div>
   );
@@ -146,16 +213,17 @@ const totalContainer = css`
     margin-left: 20px;
   }
   .rankBox {
-    width: 50px;
+    width: 100px;
   }
   .myBio {
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
+    align-items: center;
   }
   .nameBox {
-    width: 100px;
+    width: 300px;
     display: flex;
     flex-direction: row;
     justify-content: end;
@@ -207,8 +275,7 @@ const totalContainer = css`
   .myRanking {
     width: 100%;
     height: 40px;
-    background-color: #f2f2f2;
-    border-top: #d0d0d0 1px solid;
+    background-color: #f1f5ff;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -288,6 +355,11 @@ const totalContainer = css`
     height: 100%;
     width: 29px;
     margin-right: 6px;
+  }
+
+  button {
+    background-color: transparent;
+    border: none;
   }
 
   @keyframes barIn {

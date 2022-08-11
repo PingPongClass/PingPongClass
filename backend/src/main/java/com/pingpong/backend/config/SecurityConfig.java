@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsUtils;
 
 @EnableWebSecurity      //기본적인 웹 보안 활성화
 @EnableGlobalMethodSecurity(prePostEnabled = true)  //@PreAuthorize 어노테이션을 메소드단위로 추가하기 위해 적용
@@ -101,6 +102,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //추가적�
 
                 .and()
                 .authorizeRequests() //HttpServletRequest를 사용하는 요청들에 대한 접근제한 설정하겠다
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers( "/web-resources/**", "/actuator/**").permitAll()//해당 api 요청은 인증없이 접근 허용하겠다는 의미
                 .antMatchers("/be/items/**").hasRole("STUDENT")
                 .antMatchers("/be/admin/**","/be/excel/**").hasRole("ADMIN")

@@ -66,7 +66,7 @@ const totalContainer = css`
   }
 
   .myInfo {
-    height: 400px;
+    height: 450px;
     width: 100%;
   }
 
