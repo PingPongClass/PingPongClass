@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import IosModalNew from '@src/components/Common/IosModalNew';
 import ProfilImage from '../../../assets/images/profile.png';
-import { useAppSelector } from '@src/store/hooks';
+import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { useState, useRef } from 'react';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
@@ -9,6 +9,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const StudentMyInfo = () => {
   const memberStore = useAppSelector((state) => state.member);
@@ -21,6 +22,7 @@ const StudentMyInfo = () => {
   const [isMouseOn, setIsMouseOn] = useState(false);
   const [isPreviewReset, setIsPreviewReset] = useState(false); // 리셋했는지 여부 판단용 상태값
   const newImageFile = useRef<HTMLInputElement>(null); // 새로운 사진 보관용
+  const navigate = useNavigate();
 
   interface StudentDataInterface {
     studentId: number;
@@ -127,8 +129,8 @@ const StudentMyInfo = () => {
         },
       })
         .then(function (response) {
-          toast.success('정보 수정이 완료되었습니다.');
-          location.href = '/student/mypage';
+          alert('정보 수정이 완료되었습니다.');
+          location.href = 'student/mypage';
         })
         .catch(function (error) {
           console.log(error);

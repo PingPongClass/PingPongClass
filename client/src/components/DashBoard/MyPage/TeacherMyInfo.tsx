@@ -139,7 +139,7 @@ const TeacherMyInfo = () => {
         },
       })
         .then(function (response) {
-          toast.success('정보 수정이 완료되었습니다.');
+          alert('정보 수정이 완료되었습니다.');
           location.href = '/teacher/mypage';
         })
         .catch(function (error) {
