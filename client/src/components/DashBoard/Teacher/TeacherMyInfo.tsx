@@ -24,7 +24,7 @@ const TeacherMyinfo = () => {
 
   useEffect(() => {
     loadClassList();
-  }, [memberStore]);
+  }, []);
 
   return (
     <div css={totalContainer}>

@@ -30,7 +30,7 @@ const ClassList = () => {
     if (memberStore.userId !== -1) {
       const rs = loadClassList(dt.getDay());
     }
-  }, [memberStore]);
+  }, []);
 
   const render = (idx): any => {
     return (

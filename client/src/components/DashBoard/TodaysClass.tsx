@@ -64,7 +64,7 @@ function TodaysClass(props) {
 
   useEffect(() => {
     loadClassList();
-  }, [memberStore]);
+  }, []);
 
   return (
     <div css={totalContainer}>

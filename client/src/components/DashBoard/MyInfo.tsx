@@ -18,7 +18,7 @@ const Myinfo = () => {
       (memberStore.point / (memberStore.totalPoint + memberStore.levelPoint)) *
         100,
     );
-  }, [memberStore]);
+  }, []);
 
   console.log(totalRate);
 

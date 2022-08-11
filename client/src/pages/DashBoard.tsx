@@ -1,20 +1,31 @@
-import React, { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import IconGroup from '@components/DashBoard/IconGroup';
 import NavBar from '@components/DashBoard/NavBar';
 import dashboardBackground from '@assets/images/dashboardBackground.png';
 import Footer from '@components/DashBoard/Footer/Footer';
+import { useEffect, useState, useLayoutEffect } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Outlet } from 'react-router-dom';
-import { saveMember } from '@src/store/member';
+import { saveMember, saveItem } from '@src/store/member';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
+import loadingImg from '@src/openvidu/assets/images/loadingimg.gif';
 
 const DashBoard = () => {
   const dispatch = useAppDispatch();
-  dispatch(saveMember());
-  return (
-    <div css={totalContainer}>
+  const [loading, setLoading] = useState(true);
+  const memberStore = useAppSelector((state) => state.member);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+
+    dispatch(saveMember()).then(() => timer);
+  }, []);
+
+  const render = () => {
+    return (
       <div className="dashBoardContainer">
         <div className="navBar">
           <NavBar />
@@ -33,6 +44,18 @@ const DashBoard = () => {
           </div>
         </div>
       </div>
+    );
+  };
+  return (
+    <div css={totalContainer}>
+      {loading ? (
+        <div className="loadingImg">
+          <h1>로딩중...</h1>
+          <img src={loadingImg} alt="" />
+        </div>
+      ) : (
+        render()
+      )}
     </div>
   );
 };
@@ -41,6 +64,15 @@ const totalContainer = css`
   background-image: url(${dashboardBackground});
   background-size: cover;
   height: 100vh;
+
+  .loadingImg {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 
   .dashBoardContainer {
     height: 100%;

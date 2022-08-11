@@ -25,7 +25,7 @@ const MainContent = () => {
     if (memberStore.userId !== -1) {
       loadClassList();
     }
-  }, [memberStore]);
+  }, []);
   return (
     <div css={totalContainer}>
       <div className="myInfo">

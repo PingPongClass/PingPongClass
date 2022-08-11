@@ -11,12 +11,23 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Outlet } from 'react-router-dom';
 import { saveMember } from '@src/store/member';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
+import loadingImg from '@src/openvidu/assets/images/loadingimg.gif';
 
 const DashBoard = () => {
   const dispatch = useAppDispatch();
-  dispatch(saveMember());
-  return (
-    <div css={totalContainer}>
+  const [loading, setLoading] = useState(true);
+  const memberStore = useAppSelector((state) => state.member);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+
+    dispatch(saveMember()).then(() => timer);
+  }, []);
+
+  const render = () => {
+    return (
       <div className="dashBoardContainer">
         <div className="navBar">
           <TeacherNavBar />
@@ -33,6 +44,18 @@ const DashBoard = () => {
           </div>
         </div>
       </div>
+    );
+  };
+  return (
+    <div css={totalContainer}>
+      {loading ? (
+        <div className="loadingImg">
+          <h1>로딩중...</h1>
+          <img src={loadingImg} alt="" />
+        </div>
+      ) : (
+        render()
+      )}
     </div>
   );
 };
@@ -42,6 +65,14 @@ const totalContainer = css`
   background-size: cover;
   height: 100vh;
 
+  .loadingImg {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
   .dashBoardContainer {
     height: 100%;
     width: 100%;
