@@ -24,6 +24,7 @@ function Item({ item }) {
 const GetItemList = () => {
   // const { items } = props;
   const [items, setItems] = useState<Items[]>([allItems]);
+  const [loading, setLoading] = useState(true);
   const memberStore = useAppSelector((state) => state.member);
   const dispatch = useAppDispatch();
 
@@ -33,6 +34,7 @@ const GetItemList = () => {
       setItems(memberStore.items);
       dispatch(saveMember());
       console.log('-------랜더링 : ', items);
+      setLoading(false);
     });
   }, []);
 
@@ -47,13 +49,11 @@ const GetItemList = () => {
 
   // console.log(items);
 
-  return (
-    <div css={totalContainer}>
-      {filterItem.map((item, index) => (
-        <Item key={index} item={item} />
-      ))}
-    </div>
-  );
+  const render = () => {
+    return filterItem.map((item, index) => <Item key={index} item={item} />);
+  };
+
+  return <div css={totalContainer}>{loading ? null : render()}</div>;
 };
 
 const totalContainer = () => css`

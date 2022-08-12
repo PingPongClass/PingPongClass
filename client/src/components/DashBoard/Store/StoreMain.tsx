@@ -473,6 +473,7 @@ const totalContainer = () => css`
     font-family: 'NanumSquareRound';
     font-weight: 700;
     box-shadow: 0 0 3px 0 lightgray;
+    cursor: pointer;
 
     span {
       width: 100%;
