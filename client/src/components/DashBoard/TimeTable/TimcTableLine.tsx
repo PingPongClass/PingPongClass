@@ -4,10 +4,11 @@ import { useAppSelector } from '@src/store/hooks';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import axios from 'axios';
 
-const TimeTableLine = ({ list }: any) => {
+const TimeTableLine = ({ dayList }: any) => {
+  console.log(dayList);
   return (
     <div className="classArea" css={totalContainer}>
-      {list.map((cls) => (
+      {dayList.map((cls) => (
         <div key={cls.classId} className="classCard">
           {cls.subjectEntity.name}
         </div>
@@ -17,9 +18,9 @@ const TimeTableLine = ({ list }: any) => {
 };
 
 const totalContainer = css`
+  width: 70px;
   .classCard {
-    height: 70px;
-    width: 100%;
+    height: 30px;
     margin-bottom: 10px;
     background: #9580c7;
     display: flex;
@@ -28,8 +29,7 @@ const totalContainer = css`
     justify-content: center;
     border-radius: 5px;
     box-shadow: 2px 2px 15px -5px;
-    transition: all 0.1s ease-in-out;
-    font-size: 30px;
+    font-size: 20px;
   }
 `;
 

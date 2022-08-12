@@ -5,6 +5,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useState } from 'react';
 import AlarmModal from './AlarmModal';
 import MyPageModal from './MyPageModal';
+import TimeTable from './TimeTable/TimeTable';
 
 const IconGroup = () => {
   const [toggle, setToggle] = useState('');
@@ -19,16 +20,21 @@ const IconGroup = () => {
 
   return (
     <div css={totalContainer}>
-      <button onClick={() => onClickIcon('timeTable')}>
+      <button onClick={() => onClickIcon('timetable')}>
         <EventIcon />
       </button>
+
       <button onClick={() => onClickIcon('alarm')}>
         <NotificationsNoneIcon />
       </button>
+
       <button onClick={() => onClickIcon('myPage')}>
         <AccountCircleIcon />
       </button>
+
+      {toggle === 'timetable' ? <TimeTable close={onClickIcon} /> : null}
       {toggle === 'alarm' ? <AlarmModal close={onClickIcon} /> : null}
+
       {toggle === 'myPage' ? (
         <MyPageModal close={onClickIcon} setToggle={setToggle} />
       ) : null}
