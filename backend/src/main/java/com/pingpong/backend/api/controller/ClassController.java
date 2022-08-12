@@ -109,7 +109,7 @@ public class ClassController {
     @ApiOperation(value= "참가 학생 목록 조회" )
     @GetMapping("/student/{classId}")
     @PreAuthorize("hasRole('TEACHER')")
-    public ClassStudentResponse findStudentByClassId(final int classId){
+    public ClassStudentResponse findStudentByClassId(@PathVariable final int classId){
         return classService.findParticipant(classId);
     }
 
