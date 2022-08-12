@@ -24,7 +24,7 @@ const App = () => {
 
   const getInfo = async () => {
     let query = '/teachers/' + id;
-    if (id.toString.length == 10) {
+    if (id.toString.length === 10) {
       query = '/students/' + id;
     }
     const result = await InterceptedAxios.get(query);

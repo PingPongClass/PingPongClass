@@ -72,6 +72,9 @@ class VideoRoomComponent extends Component {
       session: undefined,
       localUser: undefined,
       subscribers: [],
+      teacher: { nickname: '' },
+      students: [],
+      absentStudents: this.props.studentList,
       chatDisplay: 'none',
       participantDisplay: 'none',
       quizDisplay: false,
@@ -161,6 +164,9 @@ class VideoRoomComponent extends Component {
     this.setVideo = this.setVideo.bind(this);
     this.setAudio = this.setAudio.bind(this);
     this.setSpeaker = this.setSpeaker.bind(this);
+    // 결석학생 잡기
+    this.whoAbsent = this.whoAbsent.bind(this);
+    this.whoTeacherOrStudent = this.whoTeacherOrStudent.bind(this);
   }
 
   // componentDidMount: 컴포넌트가 마운트 되었을 때 작동하는 리액트 컴포넌트 생명주기함수
@@ -286,6 +292,10 @@ class VideoRoomComponent extends Component {
       .then(() => {
         this.connectWebCam();
       })
+      .then(() => {
+        this.whoAbsent();
+        this.whoTeacherOrStudent();
+      })
       .catch((error) => {
         if (this.props.error) {
           this.props.error({
@@ -302,6 +312,41 @@ class VideoRoomComponent extends Component {
           error.message,
         );
       });
+  }
+
+  whoTeacherOrStudent() {
+    let updateTeacher;
+    let updateStudents;
+    if (this.props.whoami === 'teacher') updateTeacher = localUser;
+    else
+      updateTeacher = this.remotes.filter(
+        (elem) => elem.nickname.substr(1, 3) === '선생님',
+      );
+
+    if (this.props.whoami === 'teacher') updateStudents = this.remotes;
+    else
+      updateStudents = this.remotes.filter(
+        (elem) => elem.nickname.substr(1, 3) !== '선생님',
+      );
+    this.setState({
+      teacher: updateTeacher,
+      students: updateStudents,
+    });
+  }
+
+  whoAbsent() {
+    let students = this.props.studentList.filter(
+      (elem) => elem !== this.state.myUserName,
+    );
+    console.log(students);
+    this.state.subscribers.forEach((elem) => {
+      if (students.includes(elem.nickname))
+        students = students.filter((stu) => stu !== elem.nickname);
+    });
+    this.setState({
+      absentStudents: students,
+    });
+    console.log(students);
   }
 
   // connectWebCam: 웹캠을 연결하는 함수 (실제 WebRTC와 연관된 내부 메서드들과 유사)
@@ -370,7 +415,7 @@ class VideoRoomComponent extends Component {
 
   // updateSubscribers: 자신의 정보를 구독하고 있는(받고 있는) 유저들의 정보를 업데이트
   updateSubscribers() {
-    var subscribers = this.remotes;
+    const subscribers = this.remotes;
     this.setState(
       {
         subscribers: subscribers,
@@ -386,6 +431,8 @@ class VideoRoomComponent extends Component {
           });
         }
         this.updateLayout();
+        this.whoAbsent();
+        this.whoTeacherOrStudent();
       },
     );
   }
@@ -539,6 +586,8 @@ class VideoRoomComponent extends Component {
         subscribers: remoteUsers,
       });
     }
+    this.whoAbsent();
+    this.whoTeacherOrStudent();
   }
 
   // subscribeToStreamCreated: 새롭게 접속한 사람의 스트림을 구독하는 함수
@@ -571,6 +620,7 @@ class VideoRoomComponent extends Component {
       this.remotes.push(newUser);
       if (this.localUserAccessAllowed) {
         this.updateSubscribers();
+        this.whoAbsent();
       }
     });
   }
@@ -1413,7 +1463,9 @@ class VideoRoomComponent extends Component {
                     close={this.toggleParticipant}
                     upPointChanged={this.upPointChanged}
                     downPointChanged={this.downPointChanged}
-                    studentList={this.props.studentList}
+                    absentStudents={this.state.absentStudents}
+                    teacher={this.state.teacher}
+                    student={this.state.students}
                   />
                 </div>
               )}

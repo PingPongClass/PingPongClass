@@ -44,16 +44,36 @@
   border-radius: 20px;
 }
 
+.teacher-box {
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
+  background-color: #312f35;
+}
+
+.display-box {
+  text-align: right;
+  margin: 0.5rem 1rem;
+}
+
 .participants-wrap {
   color: white;
   margin-left: 1rem;
   margin-top: 1rem;
-  height: calc(100% - 60px);
+  height: calc(100% - 130px);
   overflow: auto;
 }
 
-.participants-wrap > * {
+.participants-wrap .attendence-students > *,
+.participants-wrap .absent-students > * {
   margin-bottom: 0.5rem;
+}
+
+.attendence-students h3,
+.absent-students h3 {
+  text-align: center;
+}
+
+.absent-students {
+  margin-top: 2rem;
 }
 
 ::-webkit-scrollbar {

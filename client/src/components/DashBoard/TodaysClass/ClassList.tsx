@@ -9,8 +9,25 @@ import { useAppSelector } from '@src/store/hooks';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import { useNavigate } from 'react-router-dom'; // 임시함수 - 주말 지나면 지우기
+
+// 임시함수 - 주말 지나면 지우기
+interface ClassProps {
+  classDay: number;
+  classDesc: string;
+  classId: number;
+  classTitle: string;
+  subjectEntity: {
+    classSubjectCode: number;
+    name: string;
+  };
+  teacherName: string;
+  timetableId: number;
+  classUrl: string;
+}
 
 const ClassList = () => {
+  const navigate = useNavigate(); // 임시함수 - 주말 지나면 지우기
   var dt = new Date();
   const [tab, setTab] = useState(dt.getDay());
   const [clsList, setClsList] = useState([] as any);
@@ -22,7 +39,15 @@ const ClassList = () => {
     setTab(tt);
     const result = await AXIOS.get(`/classes`, {
       params: { id: studentId, day: classDay },
-    }).then((response) => setClsList(response.data.content));
+    });
+    // promise.all 처리!
+    const promises = result.data.content.map(async (elem, i) => {
+      const classUrlData = await AXIOS.get(`/classes/isopen/${elem.classId}`);
+      console.log(classUrlData);
+      elem.classUrl = classUrlData.data;
+    });
+    await Promise.all(promises);
+    setClsList(result.data.content);
   };
 
   useEffect(() => {
@@ -31,10 +56,11 @@ const ClassList = () => {
     }
   }, []);
 
+  // 지금 무조건 첫수업으로 가게 해둠
   const render = (idx): any => {
     const clsIdx = idx * 6;
     return (
-      <SwiperSlide key={idx}>
+      <SwiperSlide key={idx} onClick={() => joinClass(clsList[clsIdx])}>
         <div className="cardContainer">
           <div className="upCardContainer">
             <ClassCard clsList={clsList[clsIdx]} />
@@ -57,6 +83,20 @@ const ClassList = () => {
       tmp.push(render(i));
     }
     return tmp;
+  };
+
+  // 임시함수 - 주말 지나면 지우기
+  const joinClass = async (cls: ClassProps) => {
+    console.log(cls.classUrl);
+    if (cls.classUrl && cls.classUrl !== '링크') {
+      navigate(`/lecture/${cls.classUrl}`, {
+        state: {
+          classId: cls.classId,
+          classTitle: cls.classTitle,
+          teacherName: cls.teacherName,
+        },
+      });
+    }
   };
 
   return (

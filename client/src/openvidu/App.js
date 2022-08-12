@@ -28,6 +28,7 @@ const App = () => {
   const [othersData, setOthersData] = useState(true);
   // 학생리스트
   const [studentList, setStudentList] = useState([]);
+  const [studentInfo, setStudentInfo] = useState({});
 
   // 라우팅용
   const navigate = useNavigate();
@@ -38,14 +39,22 @@ const App = () => {
 
   const memberStore = useAppSelector((state) => state.member);
   const whoami = whoru(memberStore.userId);
+  console.log(studentList);
 
   useEffect(() => {
     const getStudentList = async () => {
-      const data = await InterceptedAxios.get(
-        `/classes/student/{classId}?classId=${state.classId}`,
+      const classStudents = await InterceptedAxios.get(
+        `/classes/student/${state.classId}`,
       );
-      console.log(data);
-      setStudentList(data);
+      const nameList = classStudents.data.participantsList.map(
+        (elem) => elem.studentNickname,
+      );
+      const studentSets = {};
+      classStudents.data.participantsList.forEach((elem) => {
+        studentSets[elem.studentNickname] = elem.studentid;
+      });
+      setStudentList(nameList);
+      setStudentInfo(studentSets);
     };
     getStudentList();
   }, []);
@@ -116,6 +125,7 @@ const App = () => {
           classTitle={state.classTitle}
           classId={state.classId}
           studentList={studentList}
+          studentInfo={studentInfo}
         />
       )}
     </>

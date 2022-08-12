@@ -10,8 +10,26 @@ import { useAppSelector } from '@src/store/hooks';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import { useNavigate } from 'react-router-dom'; // 임시함수 - 주말 지나면 지우기
+import getCode from '@utils/getCode'; // 임시함수 - 주말 지나면 지우기
+
+// 임시함수 - 주말 지나면 지우기
+interface ClassProps {
+  classDay: number;
+  classDesc: string;
+  classId: number;
+  classTitle: string;
+  subjectEntity: {
+    classSubjectCode: number;
+    name: string;
+  };
+  teacherName: string;
+  timetableId: number;
+  classUrl: string;
+}
 
 const ClassList = () => {
+  const navigate = useNavigate(); // 임시함수 - 주말 지나면 지우기
   var dt = new Date();
   const [tab, setTab] = useState(dt.getDay());
   const [clsList, setClsList] = useState([] as any);
@@ -26,16 +44,41 @@ const ClassList = () => {
     }).then((response) => setClsList(response.data.content));
   };
 
+  console.log('여기');
+
   useEffect(() => {
     if (memberStore.userId !== -1) {
       const rs = loadClassList(dt.getDay());
     }
   }, []);
 
+  // 임시함수 - 주말 지나면 지우기
+  const openClass = async (cls: ClassProps) => {
+    const newCode = await getCode();
+    const newData = {
+      classId: cls.classId,
+      classUrl: newCode,
+    };
+
+    try {
+      await AXIOS.patch(`/classes/open`, newData);
+      navigate(`/lecture/${newCode}`, {
+        state: {
+          classId: cls.classId,
+          classTitle: cls.classTitle,
+          teacherName: cls.teacherName,
+        },
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  // 지금 무조건 첫수업으로 가게 해둠
   const render = (idx): any => {
     const clsIdx = idx * 6;
     return (
-      <SwiperSlide key={idx}>
+      <SwiperSlide key={idx} onClick={() => openClass(clsList[clsIdx])}>
         <div className="cardContainer">
           <div className="upCardContainer">
             <ClassCard clsList={clsList[clsIdx]} />
