@@ -38,11 +38,6 @@ const Result = (props) => {
               classTitle={classTitle}
               finTime={finTime}
             />
-            <Link to={`/teacher`}>
-              <div className="btn-items">
-                <button>대시보드로</button>
-              </div>
-            </Link>
           </>
         ) : (
           <>
@@ -54,11 +49,6 @@ const Result = (props) => {
               classTitle={classTitle}
               finTime={finTime}
             />
-            <Link to={`/student`}>
-              <div className="btn-items">
-                <button>대시보드로</button>
-              </div>
-            </Link>
           </>
         )}
       </div>

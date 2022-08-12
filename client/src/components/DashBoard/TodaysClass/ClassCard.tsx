@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
 
-const ClassCard = ({ clsList }: any) => {
+const ClassCard = ({ clsList, classUrl }: any) => {
   console.log(clsList);
   if (clsList) {
     return (
-      <div css={TotalContainer(clsList.classUrl)}>
+      <div css={TotalContainer(classUrl)}>
         <h2>{clsList.classTitle}</h2>
         <p>{clsList.classDesc}</p>
         <p>{clsList.timetableId} 교시</p>

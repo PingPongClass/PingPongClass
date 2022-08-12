@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const TeacherResult = ({
   teacherName,
@@ -62,6 +63,13 @@ const TeacherResult = ({
             <div className="s-point">{other.point}</div>
           </div>
         ))}
+      </div>
+      <div css={OtherThings}>
+        <Link to={`/student`}>
+          <div className="btn-items">
+            <button>로그 저장 후 대시보드로 돌아가기</button>
+          </div>
+        </Link>
       </div>
     </div>
   );
@@ -173,5 +181,7 @@ const TotalResult = css`
     }
   }
 `;
+
+const OtherThings = css``;
 
 export default TeacherResult;

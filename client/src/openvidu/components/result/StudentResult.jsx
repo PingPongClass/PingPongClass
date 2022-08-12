@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import { useLayoutEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const StudentResult = ({
   teacherName,
@@ -90,6 +91,13 @@ const StudentResult = ({
             <div className="s-point">{other.point}</div>
           </div>
         ))}
+      </div>
+      <div css={OtherThings}>
+        <Link to={`/student`}>
+          <div className="btn-items">
+            <button>대시보드로 돌아가기</button>
+          </div>
+        </Link>
       </div>
     </div>
   );
@@ -205,5 +213,7 @@ const TotalResult = css`
     }
   }
 `;
+
+const OtherThings = css``;
 
 export default StudentResult;
