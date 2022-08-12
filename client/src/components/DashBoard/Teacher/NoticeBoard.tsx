@@ -28,7 +28,7 @@ const NoticeBoard = () => {
   const [keyword, setKeyword] = useState('');
   const [selected, setSelected] = useState<ClassProps>(allClass);
   const [articles, setArticles] = useState<NoticeProps[]>([]);
-  const [classes, setclasses] = useState<ClassProps[]>([allClass]);
+  const [classes, setClasses] = useState<ClassProps[]>([allClass]);
   const [page, setPage] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
 
@@ -46,12 +46,13 @@ const NoticeBoard = () => {
 
   useLayoutEffect(() => {
     dispatch(saveMember());
+    getNotice();
+    dispatch(getClasses(memberStore.userId));
+    setLoading(false);
   }, []);
 
   useEffect(() => {
-    dispatch(getClasses(memberStore.userId)).then(() => {
-      setclasses(memberStore.classes);
-    });
+    setClasses(memberStore.classes);
     if (memberStore.userId.toString().length !== 10) {
       setIsTeacher(true);
     } else {
