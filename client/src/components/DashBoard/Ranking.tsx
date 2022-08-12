@@ -45,7 +45,7 @@ const Ranking = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 100);
+    }, 500);
 
     loadRankingList().then(() => timer);
   }, []);
