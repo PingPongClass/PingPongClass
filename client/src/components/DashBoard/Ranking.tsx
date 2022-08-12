@@ -45,7 +45,7 @@ const Ranking = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 1000);
+    }, 100);
 
     loadRankingList().then(() => timer);
   }, []);
@@ -133,7 +133,7 @@ const Ranking = () => {
             </div>
           </div>
           {rankingList[0].studentId === memberStore.userId && !isEdit && (
-            <button onClick={onClickEdit}>
+            <button onClick={onClickEdit} style={{ cursor: 'pointer' }}>
               <EditIcon />
             </button>
           )}
@@ -414,7 +414,7 @@ const totalContainer = css`
     align-items: center;
     justify-content: start;
     background-color: white;
-    z-index: 9999;
+    z-index: 990;
     padding: 0 20px 20px 20px;
     border-radius: 0 0 20px 20px;
     box-shadow: 0px 20px 15px 0px;
@@ -427,6 +427,7 @@ const totalContainer = css`
   button {
     background-color: transparent;
     border: none;
+    cursor: pointer;
   }
 `;
 

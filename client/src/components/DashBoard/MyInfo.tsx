@@ -359,6 +359,7 @@ const totalContainer = css`
   button {
     background-color: transparent;
     border: none;
+    cursor: pointer;
   }
 
   @keyframes barIn {

@@ -129,7 +129,7 @@ const totalContainer = css`
     flex-direction: column;
     align-items: center;
     justify-content: start;
-    border-radius: 20px;
+    border-radius: 20px 20px 0 0;
     box-shadow: 2px 2px 15px -5px;
     animation: 0.5s ease-in-out loadEffect1;
   }

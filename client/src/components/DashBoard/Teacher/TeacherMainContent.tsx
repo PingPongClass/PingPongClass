@@ -46,20 +46,16 @@ const totalContainer = css`
   flex-direction: column;
   justify-content: start;
   box-sizing: border-box;
-  gap: 10px;
   animation: 0.5s ease-in-out loadEffect1;
 
   .myInfo {
     width: 100%;
     height: auto;
+    margin-bottom: 30px;
   }
 
   .todaysClass {
     height: 300px;
-    width: 100%;
-  }
-
-  .attandance {
     width: 100%;
   }
 `;

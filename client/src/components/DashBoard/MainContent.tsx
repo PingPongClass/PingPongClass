@@ -13,8 +13,8 @@ const MainContent = () => {
       <div className="todaysClass">
         <TodaysClass />
       </div>
+      <h2>나의 참여도</h2>
       <div className="attandance">
-        <h2>나의 참여도</h2>
         <HeatMap />
       </div>
     </div>
@@ -28,7 +28,6 @@ const totalContainer = css`
   flex-direction: column;
   justify-content: start;
   box-sizing: border-box;
-  gap: 10px;
   animation: 0.5s ease-in-out loadEffect1;
 
   .banner {
@@ -46,15 +45,16 @@ const totalContainer = css`
   .myInfo {
     height: 450px;
     width: 100%;
+    margin-bottom: 30px;
   }
 
   .todaysClass {
     height: 300px;
     width: 100%;
+    box-sizing: border-box;
   }
 
   .attandance {
-    height: auto;
     width: 100%;
   }
 

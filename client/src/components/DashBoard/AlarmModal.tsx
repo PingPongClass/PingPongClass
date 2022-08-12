@@ -42,7 +42,7 @@ const totalContainer = css`
   display: flex;
   flex-direction: row;
   justify-content: end;
-  z-index: 999;
+  z-index: 1000;
 
   .alarmBack {
     position: relative;

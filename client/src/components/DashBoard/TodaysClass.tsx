@@ -77,6 +77,7 @@ function TodaysClass() {
 
   return (
     <div css={totalContainer}>
+      {classList.length === 0 && <p>오늘은 수업이 없습니다.</p>}
       <Swiper
         pagination={{
           type: 'progressbar',

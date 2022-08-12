@@ -3,17 +3,19 @@ import { css } from '@emotion/react';
 const TeacherClassCard = ({ clsList }: any) => {
   if (clsList) {
     return (
-      <div css={totalContainer}>
+      <div css={TotalContainer}>
         <h2>{clsList.classTitle}</h2>
         <p>{clsList.classDesc}</p>
+        <p>{clsList.timetableId} 교시</p>
+        <p>{clsList.teacherName} 선생님</p>
       </div>
     );
   } else {
-    return <div css={totalContainer}> </div>;
+    return <div css={EmptyContainer}> </div>;
   }
 };
 
-const totalContainer = css`
+const TotalContainer = () => css`
   width: 233px;
   height: 233px;
   background: #fdfcf3;
@@ -31,6 +33,20 @@ const totalContainer = css`
     transform: scale(1.05);
     cursor: pointer;
   }
+`;
+
+const EmptyContainer = () => css`
+  width: 233px;
+  height: 233px;
+  background: #fdfcf3;
+  border-radius: 20px;
+  padding: 10px;
+  border: dotted 2px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default TeacherClassCard;
