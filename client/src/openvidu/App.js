@@ -5,6 +5,7 @@ import ResultComponent from './components/ResultComponent';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '@src/store/hooks';
 import whoru from '@utils/whoru';
+import InterceptedAxios from '@src/utils/iAxios';
 
 const App = () => {
   const [tap, setTap] = useState('setup');
@@ -25,6 +26,8 @@ const App = () => {
   // 통계를 내기 위한 자료
   const [myData, setMyData] = useState(true);
   const [othersData, setOthersData] = useState(true);
+  // 학생리스트
+  const [studentList, setStudentList] = useState([]);
 
   // 라우팅용
   const navigate = useNavigate();
@@ -35,6 +38,16 @@ const App = () => {
 
   const memberStore = useAppSelector((state) => state.member);
   const whoami = whoru(memberStore.userId);
+
+  useEffect(() => {
+    const getStudentList = async () => {
+      const data = await InterceptedAxios.get(
+        `/classes/student/${state.classId}`,
+      );
+      setStudentList(data);
+    };
+    getStudentList();
+  }, []);
 
   // 만약 state 없이 한번에 url에 접근하려고 했다면
   if (!state) window.location.href = '/';
@@ -86,6 +99,11 @@ const App = () => {
           navigate={navigate}
           teacherName={state.teacherName}
           classTitle={state.classTitle}
+          userId={memberStore.userId}
+          grade={memberStore.grade}
+          classNum={memberStore.classNum}
+          studentNum={memberStore.studentNum}
+          studentList={studentList}
         />
       )}
       {tap === 'result' && (
@@ -95,6 +113,8 @@ const App = () => {
           othersData={othersData}
           teacherName={state.teacherName}
           classTitle={state.classTitle}
+          classId={state.classId}
+          studentList={studentList}
         />
       )}
     </>

@@ -10,11 +10,13 @@ import { Outlet } from 'react-router-dom';
 import { saveMember, saveItem } from '@src/store/member';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import loadingImg from '@src/openvidu/assets/images/loadingimg.gif';
+import getTthingMessage from '@utils/tthingMessage';
 
 const DashBoard = () => {
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(true);
   const memberStore = useAppSelector((state) => state.member);
+  const [tthingMessage, setTthingMessage] = useState<string>('');
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -22,6 +24,11 @@ const DashBoard = () => {
     }, 2000);
 
     dispatch(saveMember()).then(() => timer);
+  }, []);
+
+  useLayoutEffect(() => {
+    const ttingMsg = getTthingMessage();
+    setTthingMessage(ttingMsg);
   }, []);
 
   const render = () => {
@@ -52,6 +59,7 @@ const DashBoard = () => {
         <div className="loadingImgBox">
           <h1>로딩중...</h1>
           <img src={loadingImg} alt="" />
+          <p>{tthingMessage}</p>
         </div>
       ) : (
         render()
@@ -76,6 +84,7 @@ const totalContainer = css`
   .loadingImgBox img {
     width: 600px;
     height: auto;
+    margin: 32px;
   }
 
   .dashBoardContainer {

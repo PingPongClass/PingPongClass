@@ -16,11 +16,13 @@ class UserModel {
   outAngle; // 수업 참여 확인
   attendenceTime; // 접속 시간
   profile; // 프로필 이미지 정보
+  uid; // 유저 아이디
 
   constructor() {
     this.connectionId = '';
     this.audioActive = true;
     this.videoActive = true;
+    this.uid = '';
     this.screenShareActive = false;
     this.nickname = '';
     this.streamManager = null;
@@ -133,6 +135,10 @@ class UserModel {
     if ((type === 'local') | (type === 'remote')) {
       this.type = type;
     }
+  }
+
+  setUid(uid) {
+    this.uid = uid;
   }
 
   setAttendenceTime(attendenceTime) {

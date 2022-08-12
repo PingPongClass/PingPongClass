@@ -31,12 +31,12 @@ const StudentResult = ({
     setTotalSticker(data);
     // 선생님과 학생 데이터 분리
     const teacherData = othersData.filter(
-      (other) => other.nickname.substr(other.nickname.length - 1, 1) === ')',
+      (other) => other.nickname.substr(0, 5) === '[선생님]',
     )[0];
     setTeacherModel(teacherData);
 
     let otherdata = othersData.filter(
-      (other) => other.nickname.substr(other.nickname.length - 1, 1) !== ')',
+      (other) => other.nickname.substr(0, 5) !== '[선생님]',
     );
     otherdata.unshift(myData);
     setOtherModels(otherdata);
