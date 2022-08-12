@@ -6,6 +6,7 @@ import com.pingpong.backend.api.domain.request.OpenRequest;
 import com.pingpong.backend.api.domain.response.ClassResponse;
 import com.pingpong.backend.api.domain.response.ClassStudentResponse;
 import com.pingpong.backend.api.domain.response.TeacherResponse;
+import com.pingpong.backend.api.domain.response.TimetableResponse;
 import com.pingpong.backend.api.service.ClassService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -130,7 +131,7 @@ public class ClassController {
     @ApiOperation(value= "해당 유저의 시간표를 만들기 위한 치트키" )
     @GetMapping("/today/{userId}")
     @PreAuthorize("hasRole('STUDENT')")
-    public List<List<ClassResponse>> makingTimeTable(@PathVariable final int userId){
+    public List<TimetableResponse> makingTimeTable(@PathVariable final int userId){
         return classService.makeTimeTable(userId);
     }
 

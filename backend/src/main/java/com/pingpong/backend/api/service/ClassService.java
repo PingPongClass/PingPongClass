@@ -5,10 +5,7 @@ import com.pingpong.backend.Exception.ErrorCode;
 import com.pingpong.backend.api.domain.*;
 import com.pingpong.backend.api.domain.request.ClassRequest;
 import com.pingpong.backend.api.domain.request.OpenRequest;
-import com.pingpong.backend.api.domain.response.ClassResponse;
-import com.pingpong.backend.api.domain.response.ClassStudentResponse;
-import com.pingpong.backend.api.domain.response.Participants;
-import com.pingpong.backend.api.domain.response.RecordResponse;
+import com.pingpong.backend.api.domain.response.*;
 import com.pingpong.backend.api.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -177,8 +174,8 @@ public class ClassService {
     }
 
     //시간표 출력용 요일별 수업 리스트 전체
-    public List<List<ClassResponse>> makeTimeTable(final int userId){
-        List<List<ClassResponse>> res = new ArrayList<>();
+    public List<TimetableResponse> makeTimeTable(final int userId){
+        List<TimetableResponse> res = new ArrayList<>();
         Sort sort = Sort.by(Sort.Direction.ASC,"TimetableEntity");
         for(int i=1; i<6; i++){
             List<ClassEntity> classEntityList = new ArrayList<>();
@@ -202,7 +199,8 @@ public class ClassService {
                     resultList.add(classEntity);
             }
             List<ClassResponse> list = resultList.stream().map(ClassResponse::new).collect(Collectors.toList());
-            res.add(list);
+            TimetableResponse timetableResponse = new TimetableResponse(list);
+            res.add(timetableResponse);
         }
         return res;
     }
