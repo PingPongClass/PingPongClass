@@ -97,7 +97,7 @@ const Ranking = () => {
 
   const render = () => {
     return (
-      <div>
+      <div className="outRankingContainer">
         <div className="ranking" style={{ borderTop: ' #d0d0d0 1px solid' }}>
           <div className="rankingInfo">
             <div className="rankBox">{rankingList[0].rankNum}위</div>
@@ -156,6 +156,116 @@ const Ranking = () => {
             </button>
           )}
         </div>
+        <div className={!visible ? 'dropDownEmpty' : 'dropDownContainer'}>
+          {visible &&
+            rankingList.map((ranking, index) => {
+              if (index >= 1 && index % 2 == 0) {
+                return (
+                  <div className="ranking" key={index}>
+                    <div className="rankingInfo">
+                      <div className="rankBox">{ranking.rankNum}위</div>
+                      <div className="nameBox">
+                        {ranking.name} [{ranking.totalPoint} 퐁퐁]
+                      </div>
+                      <div className="myBio">
+                        {ranking.studentId === memberStore.userId && isEdit && (
+                          <input
+                            style={{
+                              height: '35px',
+                              width: '70%',
+                            }}
+                            value={introduce}
+                            onChange={(e) => onChangeIntroduce(e)}
+                          />
+                        )}
+                        {ranking.studentId === memberStore.userId &&
+                          !isEdit && (
+                            <p>
+                              {ranking.introduce
+                                ? ranking.introduce
+                                : '자기소개가 없습니다.'}
+                            </p>
+                          )}
+                        {ranking.studentId !== memberStore.userId && (
+                          <p>
+                            {ranking.introduce
+                              ? ranking.introduce
+                              : '자기소개가 없습니다.'}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    {ranking.studentId === memberStore.userId && !isEdit && (
+                      <button>
+                        <EditIcon onClick={onClickEdit} />
+                      </button>
+                    )}
+                    {ranking.studentId === memberStore.userId && isEdit && (
+                      <button onClick={onEditIntroduce}>수정</button>
+                    )}
+                    {ranking.studentId === memberStore.userId && isEdit && (
+                      <button onClick={onClickEdit} style={{ color: 'red' }}>
+                        취소
+                      </button>
+                    )}
+                  </div>
+                );
+              }
+
+              if (index >= 1 && index % 2 == 1) {
+                return (
+                  <div className="rankingLow" key={index}>
+                    <div className="rankingInfo">
+                      <div className="rankBox">{ranking.rankNum}위</div>
+                      <div className="nameBox">
+                        {ranking.name} [{ranking.totalPoint} 퐁퐁]
+                      </div>
+                      <div className="myBio">
+                        {ranking.studentId === memberStore.userId && isEdit && (
+                          <input
+                            style={{
+                              height: '35px',
+                              width: '70%',
+                            }}
+                            value={introduce}
+                            onChange={(e) => onChangeIntroduce(e)}
+                          />
+                        )}
+                        {ranking.studentId === memberStore.userId &&
+                          !isEdit && (
+                            <p>
+                              {ranking.introduce
+                                ? ranking.introduce
+                                : '자기소개가 없습니다.'}
+                            </p>
+                          )}
+                        {ranking.studentId !== memberStore.userId && (
+                          <p>
+                            {ranking.introduce
+                              ? ranking.introduce
+                              : '자기소개가 없습니다.'}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    {ranking.studentId === memberStore.userId && !isEdit && (
+                      <button>
+                        <EditIcon onClick={onClickEdit} />
+                      </button>
+                    )}
+                    {ranking.studentId === memberStore.userId && isEdit && (
+                      <button onClick={onEditIntroduce}>수정</button>
+                    )}
+                    {ranking.studentId === memberStore.userId && isEdit && (
+                      <button onClick={onClickEdit} style={{ color: 'red' }}>
+                        취소
+                      </button>
+                    )}
+                  </div>
+                );
+              }
+            })}
+        </div>
         <div className="rankingLow">
           <div className="rankingInfo">
             <div className="rankBox">{rankingList[1].rankNum}위</div>
@@ -203,112 +313,6 @@ const Ranking = () => {
             </button>
           )}
         </div>
-        {visible &&
-          rankingList.map((ranking, index) => {
-            if (index >= 2 && index % 2 == 0) {
-              return (
-                <div className="ranking" key={index}>
-                  <div className="rankingInfo">
-                    <div className="rankBox">{ranking.rankNum}위</div>
-                    <div className="nameBox">
-                      {ranking.name} [{ranking.totalPoint} 퐁퐁]
-                    </div>
-                    <div className="myBio">
-                      {ranking.studentId === memberStore.userId && isEdit && (
-                        <input
-                          style={{
-                            height: '35px',
-                            width: '70%',
-                          }}
-                          value={introduce}
-                          onChange={(e) => onChangeIntroduce(e)}
-                        />
-                      )}
-                      {ranking.studentId === memberStore.userId && !isEdit && (
-                        <p>
-                          {ranking.introduce
-                            ? ranking.introduce
-                            : '자기소개가 없습니다.'}
-                        </p>
-                      )}
-                      {ranking.studentId !== memberStore.userId && (
-                        <p>
-                          {ranking.introduce
-                            ? ranking.introduce
-                            : '자기소개가 없습니다.'}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  {ranking.studentId === memberStore.userId && !isEdit && (
-                    <button>
-                      <EditIcon onClick={onClickEdit} />
-                    </button>
-                  )}
-                  {ranking.studentId === memberStore.userId && isEdit && (
-                    <button onClick={onEditIntroduce}>수정</button>
-                  )}
-                  {ranking.studentId === memberStore.userId && isEdit && (
-                    <button onClick={onClickEdit} style={{ color: 'red' }}>
-                      취소
-                    </button>
-                  )}
-                </div>
-              );
-            }
-
-            if (index >= 2 && index % 2 == 1) {
-              return (
-                <div className="rankingLow" key={index}>
-                  <div className="rankingInfo">
-                    <div className="rankBox">{ranking.rankNum}위</div>
-                    <div className="nameBox">
-                      {ranking.name} [{ranking.totalPoint} 퐁퐁]
-                    </div>
-                    <div className="myBio">
-                      {ranking.studentId === memberStore.userId && isEdit && (
-                        <input
-                          style={{
-                            height: '35px',
-                            width: '70%',
-                          }}
-                          value={introduce}
-                          onChange={(e) => onChangeIntroduce(e)}
-                        />
-                      )}
-                      {ranking.studentId === memberStore.userId && !isEdit && (
-                        <p>
-                          {ranking.introduce
-                            ? ranking.introduce
-                            : '자기소개가 없습니다.'}
-                        </p>
-                      )}
-                      {ranking.studentId !== memberStore.userId && (
-                        <p>
-                          {ranking.introduce
-                            ? ranking.introduce
-                            : '자기소개가 없습니다.'}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  {ranking.studentId === memberStore.userId && !isEdit && (
-                    <button>
-                      <EditIcon onClick={onClickEdit} />
-                    </button>
-                  )}
-                  {ranking.studentId === memberStore.userId && isEdit && (
-                    <button onClick={onEditIntroduce}>수정</button>
-                  )}
-                  {ranking.studentId === memberStore.userId && isEdit && (
-                    <button onClick={onClickEdit} style={{ color: 'red' }}>
-                      취소
-                    </button>
-                  )}
-                </div>
-              );
-            }
-          })}
       </div>
     );
   };
@@ -316,7 +320,7 @@ const Ranking = () => {
   return (
     <div css={totalContainer}>
       {loading ? (
-        <div className="loadingImg">
+        <div className="loadingImgBox">
           <p>로딩중...</p>
           <img src={loadingImg} alt="" style={{ border: 'none' }} />
         </div>
@@ -328,7 +332,19 @@ const Ranking = () => {
 };
 
 const totalContainer = css`
-  width: inherit;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .outRankingContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+  }
 
   .rankBox {
     width: 100px;
@@ -367,7 +383,7 @@ const totalContainer = css`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: start;
     transition: all 0.1s ease-in-out;
   }
   .rankingLow:hover {
@@ -381,14 +397,31 @@ const totalContainer = css`
     align-items: center;
   }
 
-  .loadingImg {
-    width: 100%;
-    height: 100%;
+  .loadingImgBox {
+    width: 80px;
+    height: 80px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     border: none;
+  }
+
+  .dropDownContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    background-color: white;
+    z-index: 9999;
+    padding: 0 20px 20px 20px;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0px 20px 15px 0px;
+  }
+
+  .dropDownEmpty {
+    padding: 0;
   }
 
   button {

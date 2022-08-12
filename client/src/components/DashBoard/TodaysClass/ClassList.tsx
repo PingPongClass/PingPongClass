@@ -32,18 +32,19 @@ const ClassList = () => {
   }, []);
 
   const render = (idx): any => {
+    const clsIdx = idx * 6;
     return (
       <SwiperSlide key={idx}>
         <div className="cardContainer">
           <div className="upCardContainer">
-            <ClassCard clsList={clsList[idx]} />
-            <ClassCard clsList={clsList[idx + 1]} />
-            <ClassCard clsList={clsList[idx + 2]} />
+            <ClassCard clsList={clsList[clsIdx]} />
+            <ClassCard clsList={clsList[clsIdx + 1]} />
+            <ClassCard clsList={clsList[clsIdx + 2]} />
           </div>
           <div className="downCardContainer">
-            <ClassCard clsList={clsList[idx + 3]} />
-            <ClassCard clsList={clsList[idx + 4]} />
-            <ClassCard clsList={clsList[idx + 5]} />
+            <ClassCard clsList={clsList[clsIdx + 3]} />
+            <ClassCard clsList={clsList[clsIdx + 4]} />
+            <ClassCard clsList={clsList[clsIdx + 5]} />
           </div>
         </div>
       </SwiperSlide>
@@ -52,7 +53,7 @@ const ClassList = () => {
 
   const renderList = (): any => {
     let tmp = [] as any;
-    for (let i = 0; i <= clsList.length / 6; i++) {
+    for (let i = 0; i < clsList.length / 6; i++) {
       tmp.push(render(i));
     }
     return tmp;
