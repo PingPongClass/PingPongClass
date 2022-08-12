@@ -26,6 +26,8 @@ import EditTeacher from '@src/components/DashBoard/Admin/EditTeacher';
 import TeacherBoard from '@components/DashBoard/Admin/TeacherBoard';
 import StudentMyInfo from '@components/DashBoard/MyPage/StudentMyInfo';
 import TeacherMyInfo from '@components/DashBoard/MyPage/TeacherMyInfo';
+import ManagedClassBoard from '@components/DashBoard/Admin/ManagedClassBoard';
+import EditClass from '@components/DashBoard/Admin/EditClass';
 import { ToastContainer } from 'react-toastify';
 import '@src/App.css';
 import TimeTable from './components/DashBoard/TimeTable/TimeTable';
@@ -86,6 +88,9 @@ const App = () => {
             <Route path="teacherEdit/:teacherId" element={<EditTeacher />} />
             <Route path="mypage" element={<InputPassword />} />
             <Route path="teachermyinfo" element={<TeacherMyInfo />} />
+            <Route path="classes" element={<ManagedClassBoard />} />
+            <Route path="classPost" element={<EditClass />} />
+            <Route path="classEdit/:classId" element={<EditClass />} />
           </Route>
           <Route path="/style" element={<Style />} />
           <Route path="/lecture/:code" element={<OpenVidu />} />
