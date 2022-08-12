@@ -85,6 +85,7 @@ const NoticeBoard = () => {
     } else {
       setIsTeacher(false);
     }
+    getNotice();
   }, []);
 
   useEffect(() => {
