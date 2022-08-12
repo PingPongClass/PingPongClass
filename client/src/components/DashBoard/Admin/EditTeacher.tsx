@@ -1,35 +1,35 @@
 import { css } from '@emotion/react';
-import IosModalNew from '@src/components/Common/IosModalNew';
+import IosModalNew from '@src/components/Common/IosModalNewAdmin';
 import ProfilImage from '@assets/images/profile.png';
 import React, { useState, useRef, useEffect } from 'react';
 import InterceptedAxios from '@utils/iAxios';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Link, useParams, useNavigate } from 'react-router-dom';
 import { TeacherProps } from './TeacherBoard';
 
-const EditTeacher = () => {
-  const navigate = useNavigate();
-  const { teacherId } = useParams();
+interface ModalDefaultType {
+  onClickOpenModal: () => void;
+  teacherId: number;
+}
+
+const EditTeacher = ({ onClickOpenModal, teacherId }: ModalDefaultType) => {
   const [teacher, setTeacher] = useState<TeacherProps>();
   const [email, setEmail] = useState('');
-  const [grade, setGrade] = useState(0);
-  const [subject, setSubject] = useState(0);
+  const [manageGrade, setManageGrade] = useState(0 as number);
   const [password, setPassword] = useState('');
+  const [birth, setBirth] = useState('');
   const [passwordconfirm, setPasswordConfirm] = useState('');
   const [isUse, setUse] = useState(true);
   const [preview, setPreview] = useState<any>(
-    teacher?.profile
-      ? 'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/' +
-          teacher?.profile
-      : 'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null',
+    'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null',
   );
+
   const [isMouseOn, setIsMouseOn] = useState(false);
   const [isPreviewReset, setIsPreviewReset] = useState(false); // 리셋했는지 여부 판단용 상태값
   const newImageFile = useRef<HTMLInputElement>(null); // 새로운 사진 보관용
 
   const getInfo = () => {
-    if (teacherId !== undefined) {
+    if (teacherId !== undefined && teacherId !== 0) {
       InterceptedAxios.get('/teachers/' + teacherId).then((res) => {
         setTeacher(res.data);
         setPreview(
@@ -41,22 +41,29 @@ const EditTeacher = () => {
       });
     }
   };
-
   useEffect(() => {
     getInfo();
-  }, []);
+  }, [teacherId]);
+
+  useEffect(() => {
+    setPreview(teacher?.profileFullPath);
+  }, [teacher]);
 
   const nameChanged = (e) => {
     let newTeacher: TeacherProps = { ...teacher, name: e.target.value };
     setTeacher(newTeacher);
   };
 
-  const subjectChanged = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSubject(parseInt(e.target.value));
+  const onChangeManageGrade = (e) => {
+    setManageGrade(e.target.value);
   };
 
   const onChangePassword = (e) => {
     setPassword(e.target.value);
+  };
+
+  const birthChanged = (e) => {
+    setBirth(e.target.value);
   };
 
   const onChangeEmail = (e) => {
@@ -121,10 +128,9 @@ const EditTeacher = () => {
         name: teacher?.name || '',
         email: email,
         password: password,
-        manageGrade: grade || 0,
+        manageGrade: manageGrade || 0,
         profile: teacher?.profile || 'null',
-        birth: teacher?.birth || '',
-        authorities: teacher?.authorities || [],
+        birth: birth || '',
       });
     }
 
@@ -166,23 +172,16 @@ const EditTeacher = () => {
       if (!isPreviewReset) {
         teacherData = {
           teacherId: teacher?.teacherId || 0,
-          name: teacher?.name || '',
           email: email,
           password: password,
-          manageGrade: grade || 0,
-          profile: teacher?.profile || 'null',
-          birth: teacher?.birth || '',
-          authorities: teacher?.authorities || [],
+          manageGrade: manageGrade || 0,
         };
       } else {
         teacherData = {
           teacherId: teacher?.teacherId || 0,
-          name: teacher?.name || '',
           email: email,
           password: password,
-          manageGrade: grade || 0,
-          birth: teacher?.birth || '',
-          authorities: teacher?.authorities || [],
+          manageGrade: manageGrade || 0,
           profile: 'reset',
         };
       }
@@ -229,7 +228,8 @@ const EditTeacher = () => {
           {preview ===
             'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null' ||
           preview ===
-            'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/' ? (
+            'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/' ||
+          teacherId === 0 ? (
             <img
               src={ProfilImage}
               alt="기본프로필사진"
@@ -280,19 +280,24 @@ const EditTeacher = () => {
             />
           </div>
           <div className="fieldContainer">
-            <span>과목</span>
-            <select defaultValue={subject} onChange={subjectChanged}>
-              {classCodes.map((s) => {
-                return (
-                  <option
-                    key={s.class_subject_code}
-                    value={s.class_subject_code}
-                  >
-                    {s.name}
-                  </option>
-                );
-              })}
-            </select>
+            <span>생년월일</span>
+            <input
+              id="birth"
+              value={teacher?.birth || ''}
+              onChange={birthChanged}
+              placeholder="생년월일 ex)20220101"
+              readOnly={teacher?.teacherId !== undefined}
+            />
+          </div>
+          <div className="fieldContainer">
+            <span>담당학년</span>
+            <input
+              id="managegrade"
+              type="text"
+              defaultValue={teacher?.manageGrade || ''}
+              onChange={(e) => onChangeManageGrade(e)}
+              placeholder=" 담당학년을 입력하세요."
+            />
           </div>
           <div className="fieldContainer">
             <span>이메일</span>
@@ -339,25 +344,27 @@ const EditTeacher = () => {
             추가
           </button>
         )}
-        <Link to="/admin/teachers">
-          <button type="button" className="cancel">
-            취소
-          </button>
-        </Link>
+        <button type="button" className="cancel" onClick={onClickOpenModal}>
+          취소
+        </button>
       </div>
     </div>
   );
 };
 
 const ModalCSS = (isMouseOn) => css`
-  height: 100%;
-  width: 100%;
   min-height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: relative;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.409);
+  z-index: 9999;
 
   .infoContainer {
     position: relative;
@@ -471,15 +478,15 @@ const ModalCSS = (isMouseOn) => css`
   }
 
   .delete {
-    background-color: #f65570;
+    background-color: var(--pink);
   }
 
   .submit {
-    background-color: #f6ac55;
+    background-color: var(--blue);
   }
 
   .cancel {
-    background-color: gray;
+    background-color: var(--gray);
   }
 
   .fieldContainer {
@@ -494,11 +501,10 @@ const ModalCSS = (isMouseOn) => css`
   }
 
   .fieldContainer input,
-  .fieldContainer option,
-  .fieldContainer select {
+  .fieldContainer option {
     width: 270px;
     height: 30px;
-    background-color: #f9f7e9;
+    background-color: #dddddd;
     border: solid 1px #d7d7d7;
     border-radius: 5px;
     box-sizing: border-box;
@@ -533,7 +539,7 @@ const ModalCSS = (isMouseOn) => css`
     width: 30px;
     height: 30px;
     text-align: center;
-    background-color: #f9f7e9;
+    background-color: #dddddd;
     border: solid 1px #d7d7d7;
     border-radius: 5px;
     box-sizing: border-box;
@@ -541,21 +547,6 @@ const ModalCSS = (isMouseOn) => css`
     font-size: 15pt;
     justify-content: center;
     align-items: center;
-  }
-
-  #introduceConfirm {
-    width: 270px;
-    height: 90px;
-    text-align: start;
-    background-color: #f9f7e9;
-    border: solid 1px #d7d7d7;
-    border-radius: 5px;
-    box-sizing: border-box;
-    font-family: 'NanumSquareRound';
-    font-size: 15pt;
-    justify-content: center;
-    align-items: center;
-    resize: none;
   }
 
   .stuinfoContainer p {
@@ -573,75 +564,8 @@ const ModalCSS = (isMouseOn) => css`
   .commonModal {
     position: absolute;
     width: 800px;
-    height: 100%;
+    height: 60%;
   }
 `;
 
 export default EditTeacher;
-
-const classCodes = [
-  {
-    class_subject_code: 1,
-    name: '국어',
-  },
-  {
-    class_subject_code: 2,
-    name: '영어',
-  },
-  {
-    class_subject_code: 3,
-    name: '수학',
-  },
-  {
-    class_subject_code: 4,
-    name: '사회',
-  },
-  {
-    class_subject_code: 5,
-    name: '국사',
-  },
-  {
-    class_subject_code: 6,
-    name: '도덕',
-  },
-  {
-    class_subject_code: 7,
-    name: '체육',
-  },
-  {
-    class_subject_code: 8,
-    name: '음악',
-  },
-  {
-    class_subject_code: 9,
-    name: '미술',
-  },
-  {
-    class_subject_code: 10,
-    name: '과학',
-  },
-  {
-    class_subject_code: 11,
-    name: '기술',
-  },
-  {
-    class_subject_code: 12,
-    name: '가정',
-  },
-  {
-    class_subject_code: 13,
-    name: '한문',
-  },
-  {
-    class_subject_code: 14,
-    name: '정보',
-  },
-  {
-    class_subject_code: 15,
-    name: '일본어',
-  },
-  {
-    class_subject_code: 16,
-    name: '중국어',
-  },
-];

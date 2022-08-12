@@ -1,14 +1,18 @@
 import { css } from '@emotion/react';
-import IosModalNew from '@src/components/Common/IosModalNew';
+import IosModalNew from '@src/components/Common/IosModalNewAdmin';
 import ProfilImage from '@assets/images/profile.png';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import InterceptedAxios from '@utils/iAxios';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 
-const EditStudent = () => {
-  const { studentId } = useParams();
+interface ModalDefaultType {
+  onClickOpenModal: () => void;
+  studentId: number;
+}
+
+const EditStudent = ({ onClickOpenModal, studentId }: ModalDefaultType) => {
   const [student, setStudent] = useState<StudentProps>();
   const [email, setEmail] = useState('');
   const [grade, setGrade] = useState(0);
@@ -19,8 +23,7 @@ const EditStudent = () => {
   const [passwordconfirm, setPasswordConfirm] = useState('');
   const [isUse, setUse] = useState(true);
   const [preview, setPreview] = useState<any>(
-    student?.profileFullPath ||
-      'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null',
+    'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null',
   );
   const [isMouseOn, setIsMouseOn] = useState(false);
   const [isPreviewReset, setIsPreviewReset] = useState(false); // 리셋했는지 여부 판단용 상태값
@@ -40,13 +43,16 @@ const EditStudent = () => {
   }
 
   const getInfo = () => {
-    if (studentId !== undefined) {
+    if (studentId !== undefined && studentId !== 0) {
       InterceptedAxios.get('/students/' + studentId).then((res) => {
         setStudent(res.data);
       });
     }
   };
-  getInfo();
+
+  useEffect(() => {
+    getInfo();
+  }, [studentId]);
 
   const nameChanged = (e) => {
     let newStudent: StudentProps = { ...student, name: e.target.value };
@@ -238,7 +244,8 @@ const EditStudent = () => {
           {preview ===
             'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null' ||
           preview ===
-            'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/' ? (
+            'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/' ||
+          studentId === 0 ? (
             <img
               src={ProfilImage}
               alt="기본프로필사진"
@@ -358,12 +365,12 @@ const EditStudent = () => {
           </div>
           <div className="fieldContainer">
             <span>자기소개</span>
-            <textarea
+            <input
               id="introduceConfirm"
-              defaultValue={student?.introduce}
+              type="text"
               onChange={(e) => introduceChanged(e)}
-              // placeholder=" 자기소개를 입력해주세요."
-            ></textarea>
+              placeholder=" 자기소개를 입력하세요."
+            />
           </div>
         </div>
       </div>
@@ -382,25 +389,27 @@ const EditStudent = () => {
             추가
           </button>
         )}
-        <Link to="/admin">
-          <button type="button" className="cancel">
-            취소
-          </button>
-        </Link>
+        <button type="button" className="cancel" onClick={onClickOpenModal}>
+          취소
+        </button>
       </div>
     </div>
   );
 };
 
 const ModalCSS = (isMouseOn) => css`
-  height: 100%;
-  width: 100%;
   min-height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: relative;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.409);
+  z-index: 9999;
 
   .infoContainer {
     position: relative;
@@ -514,19 +523,19 @@ const ModalCSS = (isMouseOn) => css`
   }
 
   .delete {
-    background-color: #f65570;
+    background-color: var(--pink);
   }
 
   .submit {
-    background-color: #f6ac55;
+    background-color: var(--blue);
   }
 
   .cancel {
-    background-color: gray;
+    background-color: var(--gray);
   }
 
   .fieldContainer {
-    width: 100%;
+    width: 90%;
     font-size: 15pt;
     box-sizing: border-box;
     display: flex;
@@ -539,12 +548,12 @@ const ModalCSS = (isMouseOn) => css`
   .fieldContainer input {
     width: 270px;
     height: 30px;
-    background-color: #f9f7e9;
+    background-color: #dddddd;
     border: solid 1px #d7d7d7;
     border-radius: 5px;
     box-sizing: border-box;
     font-family: 'NanumSquareRound';
-    font-size: 15pt;
+    font-size: 13pt;
   }
 
   .fieldContainer span {
@@ -574,7 +583,7 @@ const ModalCSS = (isMouseOn) => css`
     width: 30px;
     height: 30px;
     text-align: center;
-    background-color: #f9f7e9;
+    background-color: #dddddd;
     border: solid 1px #d7d7d7;
     border-radius: 5px;
     box-sizing: border-box;
@@ -582,21 +591,6 @@ const ModalCSS = (isMouseOn) => css`
     font-size: 15pt;
     justify-content: center;
     align-items: center;
-  }
-
-  #introduceConfirm {
-    width: 270px;
-    height: 90px;
-    text-align: start;
-    background-color: #f9f7e9;
-    border: solid 1px #d7d7d7;
-    border-radius: 5px;
-    box-sizing: border-box;
-    font-family: 'NanumSquareRound';
-    font-size: 15pt;
-    justify-content: center;
-    align-items: center;
-    resize: none;
   }
 
   .stuinfoContainer p {
@@ -614,7 +608,7 @@ const ModalCSS = (isMouseOn) => css`
   .commonModal {
     position: absolute;
     width: 800px;
-    height: 100%;
+    height: 60%;
   }
 `;
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
-import IconGroup from '@components/DashBoard/IconGroup';
+import IconGroup from '@components/DashBoard/Admin/AdminIconGroup';
 import NavBar from '@components/DashBoard/Admin/AdminNavBar';
 import AdminDashboardBackground from '@assets/images/admindashboardBackground.png';
 import Footer from '@components/DashBoard/Footer/Footer';

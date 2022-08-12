@@ -1,9 +1,10 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { StudentProps } from './StudentBoard';
 import { Link } from 'react-router-dom';
 import { css } from '@emotion/react';
 import EditIcon from '@mui/icons-material/Edit';
+import EditStudent from './EditStudent';
 
 const Student = (props: {
   key: number;
@@ -19,8 +20,22 @@ const Student = (props: {
     props.toggle(article.studentId);
   };
 
+  const [isModal, setIsModal] = useState<boolean>(false);
+  const [studentId, setStudentId] = useState(0 as number);
+
+  const onClickOpenModal = useCallback(() => {
+    if (props.article.studentId) setStudentId(props.article.studentId);
+    setIsModal(!isModal);
+  }, [isModal]);
+
   return (
     <div className="row articleRow" css={StudentStyle}>
+      {isModal && (
+        <EditStudent
+          onClickOpenModal={onClickOpenModal}
+          studentId={studentId}
+        />
+      )}
       {/* <button className="row article-btn" onClick={(e) => toggleNotice(e)}> */}
       <div className="col col1">
         <input
@@ -37,11 +52,9 @@ const Student = (props: {
       <div className="col col1">{article.studentNum}</div>
       <div className="col col2">{article.email}</div>
       <div className="col col1">
-        <Link to={`/admin/studentEdit/${article.studentId}`}>
-          <button type="button" className="edit-btn">
-            <EditIcon></EditIcon>
-          </button>
-        </Link>
+        <button type="button" className="edit-btn" onClick={onClickOpenModal}>
+          <EditIcon />
+        </button>
       </div>
     </div>
   );

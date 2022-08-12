@@ -1,9 +1,9 @@
 import { css } from '@emotion/react';
 
-const IosModalBase = () => {
+const IosModalBaseAdmin = () => {
   return (
     <div css={totalContainer}>
-      <div className="yellowBackground"></div>
+      <div className="grayBackground"></div>
       <div className="whiteBackground">
         <div className="header">
           <div className="circle1" />
@@ -20,12 +20,12 @@ const totalContainer = () => css`
   width: 100%;
   height: 100%;
 
-  .yellowBackground {
+  .grayBackground {
     position: absolute;
     left: 0px;
     width: 96%;
     height: 100%;
-    background: #fff1bf;
+    background: #d7d7d7;
     border: 2px solid #000000;
     border-radius: 20px;
     margin: 0px;
@@ -85,4 +85,4 @@ const totalContainer = () => css`
   }
 `;
 
-export default IosModalBase;
+export default IosModalBaseAdmin;

@@ -10,6 +10,13 @@ import loadingImg from '@src/openvidu/assets/images/loadingimg.gif';
 import { allClass, ClassProps, getClasses, saveMember } from '@store/member';
 import axios from 'axios';
 import { NoticeBoardStyle } from '../Board/NoticeBoard';
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from '@mui/material';
 import { Rtt } from '@mui/icons-material';
 
 export interface NoticeProps {
@@ -33,6 +40,17 @@ const NoticeBoard = () => {
   const [classes, setClasses] = useState<ClassProps[]>([allClass]);
   const [page, setPage] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
+
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
 
   const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
     // console.log(`감지결과 : ${isIntersecting}`);
@@ -135,7 +153,7 @@ const NoticeBoard = () => {
     setArticles([...articles, ...newNotice]);
   };
 
-  const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleSelect = (e) => {
     let classId = parseInt(e.target.value);
     let current = allClass;
     classes.forEach((s) => {
@@ -151,30 +169,41 @@ const NoticeBoard = () => {
     <div css={NoticeBoardStyle}>
       <div className="upperModalArea">
         <div className="pageTitle">공지사항(관리자)</div>
-        <form onSubmit={search}>
-          <select onChange={handleSelect}>
-            {classes.map((s) => (
-              <option key={s.classId} value={s.classId}>
-                {s.classTitle}
-              </option>
-            ))}
-          </select>
-          <input
+        <form onSubmit={search} className="search-div">
+          <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+            <InputLabel id="demo-simple-select-label">수업명</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-select-small"
+              label="수업명"
+              onChange={handleSelect}
+              MenuProps={MenuProps}
+            >
+              {classes.map((s) => (
+                <MenuItem key={s.classId} value={s.classId}>
+                  {s.classTitle}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <TextField
             type="search"
+            id="outlined-basic"
+            variant="outlined"
             value={keyword || ''}
             onChange={(e) => setKeyword(e.target.value)}
           />
           {isTeacher ? (
             <>
-              <button type="submit" className="sub-btn">
+              <button type="submit" className="button-sm blue">
                 검색
               </button>
-              <button type="button" className="main-btn">
+              <button type="button" className="button-sm pink">
                 <Link to="/admin/noticePost">글 쓰기</Link>
               </button>
             </>
           ) : (
-            <button type="submit" className="main-btn">
+            <button type="submit" className="button-sm blue">
               검색
             </button>
           )}

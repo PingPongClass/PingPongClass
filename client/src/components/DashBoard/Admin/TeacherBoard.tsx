@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Teacher from './Teacher';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import axios from 'axios';
@@ -8,6 +8,8 @@ import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { Link, useNavigate } from 'react-router-dom';
 import { saveMember } from '@src/store/member';
 import Pagination from '@mui/material/Pagination';
+import EditTeacher from './EditTeacher';
+import AddTeacherBulk from './AddTeacherBulk';
 
 export interface TeacherProps {
   teacherId?: number;
@@ -18,8 +20,7 @@ export interface TeacherProps {
   manageGrade?: number;
   isAdmin?: number;
   profile?: string;
-  activated?: string;
-  authorities?: Authorities[];
+  profileFullPath?: string;
   isSelected?: boolean;
 }
 interface Authorities {
@@ -39,6 +40,9 @@ const TeacherBoard = () => {
       : Math.floor(teachers.length / 12 + 1); // 마지막 페이지
   const [page, setPage] = useState(1); // 처음 페이지는 1이다.
   const [data, setData] = useState<TeacherProps[]>([]);
+  const [isModal, setIsModal] = useState<boolean>(false);
+  const [isBulkModal, setIsBulkModal] = useState<boolean>(false);
+  const [teacherId, setTeacherId] = useState(0 as number);
 
   useEffect(() => {
     dispatch(saveMember());
@@ -55,6 +59,15 @@ const TeacherBoard = () => {
   useEffect(() => {
     refreshCheck();
   }, [page]);
+
+  const onClickOpenModal = useCallback(() => {
+    setTeacherId(0);
+    setIsModal(!isModal);
+  }, [isModal]);
+
+  const onClickOpenBulkModal = useCallback(() => {
+    setIsBulkModal(!isBulkModal);
+  }, [isBulkModal]);
 
   const handlePage = (event) => {
     const nowPageInt = parseInt(event.target.outerText);
@@ -139,6 +152,15 @@ const TeacherBoard = () => {
   return (
     <>
       <div css={totalContainer}>
+        {isModal && (
+          <EditTeacher
+            onClickOpenModal={onClickOpenModal}
+            teacherId={teacherId}
+          />
+        )}
+        {isBulkModal && (
+          <AddTeacherBulk onClickOpenBulkModal={onClickOpenBulkModal} />
+        )}
         <div className="upperModalArea">
           <div className="pageTitle">선생님 관리</div>
           <form onSubmit={search}>
@@ -148,15 +170,44 @@ const TeacherBoard = () => {
               value={classId || ''}
               onChange={(e) => setClassId(+e.target.value)}
             /> */}
-            이름
-            <input
-              type="search"
-              value={keyword || ''}
-              onChange={(e) => setKeyword(e.target.value)}
-            />
-            <button type="submit" className="sub-btn">
-              검색
-            </button>
+            <div
+              style={{
+                marginLeft: '10px',
+              }}
+            >
+              이름
+              <input
+                type="search"
+                value={keyword || ''}
+                onChange={(e) => setKeyword(e.target.value)}
+              />
+              <button type="submit" className="sub-btn">
+                검색
+              </button>
+            </div>
+            <div style={{ marginRight: '10px' }}>
+              <button
+                type="button"
+                className="add-btn stu-bottom-btn"
+                onClick={onClickOpenModal}
+              >
+                추가
+              </button>
+              <button
+                type="button"
+                className="add-btn stu-bottom-btn"
+                onClick={onClickOpenBulkModal}
+              >
+                일괄 추가
+              </button>
+              <button
+                type="button"
+                className="del-btn stu-bottom-btn"
+                onClick={deleteSelected}
+              >
+                선택 삭제
+              </button>
+            </div>
           </form>
         </div>
         <div className="tableArea">
@@ -171,31 +222,18 @@ const TeacherBoard = () => {
             );
           })}
         </div>
-        <div className="btn-box" css={btnBox}>
-          <Pagination
-            className="Pagination"
-            count={LAST_PAGE}
-            defaultPage={1}
-            boundaryCount={2}
-            sx={{ margin: 2 }}
-            onChange={(e) => handlePage(e)}
-            variant="outlined"
-            shape="rounded"
-          />
-          <button type="button" className="add-btn stu-bottom-btn">
-            <Link to="/admin/teacherAdd">추가</Link>
-          </button>
-          <button type="button" className="add-btn stu-bottom-btn">
-            <Link to="/admin/teacherAddBulk">일괄 추가</Link>
-          </button>
-          <button
-            type="button"
-            className="del-btn stu-bottom-btn"
-            onClick={deleteSelected}
-          >
-            선택 삭제
-          </button>
-        </div>
+      </div>
+      <div className="btn-box" css={btnBox}>
+        <Pagination
+          className="Pagination"
+          count={LAST_PAGE}
+          defaultPage={1}
+          boundaryCount={2}
+          sx={{ mb: 2 }}
+          onChange={(e) => handlePage(e)}
+          variant="outlined"
+          shape="rounded"
+        />
       </div>
     </>
   );
@@ -209,6 +247,7 @@ const totalContainer = () => css`
   height: max-content;
   position: relative;
   overflow: hidden;
+  animation: 0.5s ease-in-out loadEffect1;
 
   .upperModalArea {
     background-color: white;
@@ -222,6 +261,9 @@ const totalContainer = () => css`
   }
 
   form {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     margin: 0.5rem;
     button {
       border: none;
@@ -243,10 +285,6 @@ const totalContainer = () => css`
   }
   .tableArea {
     /* width: 40rem; */
-    margin: 0.5rem;
-    margin-bottom: 0px;
-    padding: 0.5rem;
-    padding-bottom: 0px;
     display: grid;
     grid-template-rows: 3fr;
     grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -256,6 +294,28 @@ const totalContainer = () => css`
     margin: 0 1em;
     border-radius: 0.5rem;
     padding: 0.5rem;
+    border: 1px solid gray;
+  }
+
+  a,
+  a:visited {
+    color: white;
+    background-color: transparent;
+    text-decoration: none;
+  }
+
+  .add-btn {
+    background-color: var(--blue);
+  }
+  .del-btn {
+    background-color: var(--gray);
+  }
+  .stu-bottom-btn {
+    margin-left: 4px;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
   }
 `;
 
@@ -273,25 +333,19 @@ const btnBox = () => css`
     /* margin-right: 11.5rem; */
     justify-content: center;
   }
-  .stu-bottom-btn {
-    /* position: relative; */
-    margin: 0px 1rem;
-    padding: 0.5rem;
-    border: none;
-    border-radius: 0.5rem;
-    color: white;
-  }
-  .add-btn {
-    background-color: #7063b5;
-  }
-  .del-btn {
-    background-color: #e56666;
-  }
   a,
   a:visited {
     color: white;
     background-color: transparent;
     text-decoration: none;
+  }
+  @keyframes loadEffect1 {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 `;
 

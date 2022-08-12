@@ -18,11 +18,7 @@ import InputPassword from '@components/DashBoard/MyPage/InputPassword';
 import AdminDashBoard from '@pages/AdminDashBoard';
 import AdminNotice from '@components/DashBoard/Admin/NoticeBoard';
 import AdminEditNotice from '@components/DashBoard/Admin/EditNotice';
-import AddStudentBulk from '@components/DashBoard/Admin/AddStudentBulk';
-import AddTeacherBulk from '@components/DashBoard/Admin/AddTeacherBulk';
-import EditStudent from '@src/components/DashBoard/Admin/EditStudent';
 import StudentBoard from '@components/DashBoard/Admin/StudentBoard';
-import EditTeacher from '@src/components/DashBoard/Admin/EditTeacher';
 import TeacherBoard from '@components/DashBoard/Admin/TeacherBoard';
 import StudentMyInfo from '@components/DashBoard/MyPage/StudentMyInfo';
 import TeacherMyInfo from '@components/DashBoard/MyPage/TeacherMyInfo';
@@ -79,13 +75,7 @@ const App = () => {
             <Route path="noticeEdit/:noticeId" element={<AdminEditNotice />} />
             <Route path="noticePost" element={<AdminEditNotice />} />
             <Route path="students" element={<StudentBoard />} />
-            <Route path="studentAdd" element={<EditStudent />} />
-            <Route path="studentAddBulk" element={<AddStudentBulk />} />
-            <Route path="studentEdit/:studentId" element={<EditStudent />} />
             <Route path="teachers" element={<TeacherBoard />} />
-            <Route path="teacherAdd" element={<EditTeacher />} />
-            <Route path="teacherAddBulk" element={<AddTeacherBulk />} />
-            <Route path="teacherEdit/:teacherId" element={<EditTeacher />} />
             <Route path="mypage" element={<InputPassword />} />
             <Route path="teachermyinfo" element={<TeacherMyInfo />} />
             <Route path="classes" element={<ManagedClassBoard />} />
