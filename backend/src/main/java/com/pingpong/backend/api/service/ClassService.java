@@ -60,12 +60,14 @@ public class ClassService {
     }
 
     //수업 삭제
+    @Transactional
     public void delete(final int classId){
         ClassEntity classEntity = classRepository.findById(classId).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
         classRepository.delete(classEntity);
     }
 
     //수업 수정
+    @Transactional
     public void modify(int classId, ClassRequest req){
         ClassEntity cEntity = classRepository.getOne(classId);
 
@@ -111,7 +113,6 @@ public class ClassService {
                 }
             }
         }
-
         //수업 정보 수정(timetableEntity, subjectEntity, classTitle, classDesc, classDay)
         SubjectEntity subjectEntity = subjectRepository.getOne(req.getSubjectCode());
         TimetableEntity timetableEntity = timetableRepository.getOne(req.getTimetableId());

@@ -75,8 +75,10 @@ public class ClassEntity {
     }
 
     public void chanageState(){
-        this.isActivated=this.isActivated==0?1:0;
-
-        System.out.println(this.isActivated);
+        if(this.isActivated==1){
+            this.isActivated=0;
+        }else{
+            this.isActivated=1;
+        }
     }
 }
