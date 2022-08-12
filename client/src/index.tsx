@@ -3,9 +3,10 @@ import '@src/index.css';
 import { CookiesProvider } from 'react-cookie';
 import { Provider } from 'react-redux';
 import App from '@src/App';
-import store from '@store/store';
+import { store, persistor } from '@store/store';
 import { ThemeProvider } from '@emotion/react';
 import theme from './theme';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -13,9 +14,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <CookiesProvider>
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
+      <PersistGate persistor={persistor}>
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
+      </PersistGate>
     </Provider>
   </CookiesProvider>,
 );

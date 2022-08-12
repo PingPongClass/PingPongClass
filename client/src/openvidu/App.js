@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SetupComponent from './components/SetupComponent';
 import VideoRoomComponent from './components/VideoRoomComponent';
 import ResultComponent from './components/ResultComponent';
@@ -32,12 +32,12 @@ const App = () => {
   // 입장코드
   const { code } = useParams();
   const { state } = useLocation();
-  console.log(state, typeof state);
 
   const memberStore = useAppSelector((state) => state.member);
-  console.log(memberStore, '얘');
   const whoami = whoru(memberStore.userId);
-  console.log(state.classTitle, state.teacherName);
+
+  // 만약 state 없이 한번에 url에 접근하려고 했다면
+  if (!state) window.location.href = '/';
 
   const setDevices = {
     videos,
