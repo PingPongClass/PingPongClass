@@ -7,7 +7,7 @@ import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { useAppSelector } from '@src/store/hooks';
 // import StudentListTransfer from '@components/DashBoard/Admin/PreLoadedStudentListTransfer';
 import StudentListTransfer from '@components/DashBoard/Teacher/StudentListTransfer';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { TextFields } from '@mui/icons-material';
 
 const weeks = [
@@ -210,9 +210,26 @@ const NewClassList = () => {
     navigate('/admin/classes');
   };
 
+  const editClass = async () => {
+    const data = {
+      teacherId: memberStore.userId,
+      subjectCode: subjectCode,
+      classTitle: classTitle,
+      classDay: classDay,
+      classUrl: '',
+      timetableId: timetableId,
+      classDesc: classDes,
+      studentIdList: studentList,
+    };
+    const result = await AXIOS.patch('/classes/' + classId, data);
+    console.log(result);
+    navigate('/admin/classes');
+  };
+
   return (
     <div css={totalContainer}>
-      <h1>수업 생성</h1>
+      {classId ? <h1>수업 수정</h1> : <h1>수업 생성</h1>}
+      <hr />
       <div className="inputContainer">
         <TextField
           onChange={(e) => ChangeTitle(e.target.value)}
@@ -277,9 +294,20 @@ const NewClassList = () => {
           ChangeStudentList={ChangeStudentList}
           // preloaded={preLoadedList}
         />
-        <button className="listButton" onClick={() => createClass()}>
-          수업 생성
-        </button>
+        <div className="buttonContainer">
+          {classId ? (
+            <button className="listButton" onClick={() => editClass()}>
+              수정
+            </button>
+          ) : (
+            <button className="listButton" onClick={() => createClass()}>
+              생성
+            </button>
+          )}
+          <Link to="/admin/classes/">
+            <button className="listButton cancel">취소</button>
+          </Link>
+        </div>
       </div>
     </div>
   );
@@ -293,7 +321,6 @@ const totalContainer = css`
   align-items: center;
   justify-content: space-around;
   border-radius: 20px;
-  box-shadow: 2px 2px 15px -5px;
   box-sizing: border-box;
 
   .inputContainer {
@@ -324,7 +351,7 @@ const totalContainer = css`
     color: white;
     border: 0;
     box-shadow: 2px 2px 15px -5px;
-    background-color: #5da1ff;
+    background-color: var(--blue);
     box-sizing: border-box;
     transition: all 0.3s ease-in-out;
     font-size: 20px;
@@ -332,8 +359,23 @@ const totalContainer = css`
     white-space: nowrap;
   }
 
+  .cancel {
+    background-color: var(--gray);
+    margin-left: 1rem;
+  }
+
   .listButton:hover {
     transform: scale(1.1);
+  }
+
+  .buttonContainer {
+    display: flex;
+    flex-direction: row;
+  }
+
+  hr {
+    width: 80%;
+    margin: 20px;
   }
 `;
 

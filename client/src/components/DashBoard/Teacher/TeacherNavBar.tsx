@@ -4,42 +4,68 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CampaignIcon from '@mui/icons-material/Campaign';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 const TeacherNavBar = () => {
+  const [isDashboard, setIsDashboard] = useState(true);
+  const [isClasses, setIsClasses] = useState(false);
+  const [isNotices, setIsNotices] = useState(false);
+
+  const onClickDashboard = () => {
+    setIsDashboard(true);
+    setIsClasses(false);
+    setIsNotices(false);
+  };
+
+  const onClickClasses = () => {
+    setIsDashboard(false);
+    setIsClasses(true);
+    setIsNotices(false);
+  };
+
+  const onClickNotices = () => {
+    setIsDashboard(false);
+    setIsClasses(false);
+    setIsNotices(true);
+  };
+
   return (
     <div css={totalContainer}>
       <img src={mainLogo} alt="" />
-      <div className="teacherNavButton">
-        <DashboardIcon style={{ fontSize: '40px' }} />
-        <h4>
-          <Link to="" className="linkButton">
-            대시보드
-          </Link>
-        </h4>
-      </div>
-      <div className="teacherNavButton">
-        <CalendarMonthIcon style={{ fontSize: '40px' }} />
-        <h4>
-          <Link to="classes" className="linkButton">
-            수업목록
-          </Link>
-        </h4>
-      </div>
-      <div className="teacherNavButton">
-        <CampaignIcon style={{ fontSize: '40px' }} />
-        <h4>
-          <Link to="notice" className="linkButton">
-            공지사항
-          </Link>
-        </h4>
-      </div>
+      <Link to="" className="linkButton">
+        <div
+          className={isDashboard ? 'clickButton' : 'teacherNavButton'}
+          onClick={onClickDashboard}
+        >
+          <DashboardIcon style={{ fontSize: '40px' }} />
+          대시보드
+        </div>
+      </Link>
+      <Link to="classes" className="linkButton">
+        <div
+          className={isClasses ? 'clickButton' : 'teacherNavButton'}
+          onClick={onClickClasses}
+        >
+          <CalendarMonthIcon style={{ fontSize: '40px' }} />
+          수업목록
+        </div>
+      </Link>
+      <Link to="notice" className="linkButton">
+        <div
+          className={isNotices ? 'clickButton' : 'teacherNavButton'}
+          onClick={onClickNotices}
+        >
+          <CampaignIcon style={{ fontSize: '40px' }} />
+          공지사항
+        </div>
+      </Link>
     </div>
   );
 };
 
 const totalContainer = css`
   width: 210px;
-  background: rgba(255, 255, 255, 0.9);
+  background: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -48,33 +74,44 @@ const totalContainer = css`
   gap: 26px;
   padding: 30px 10px;
   margin-top: 50px;
-  box-shadow: 2px 2px 15px -5px;
+  box-shadow: 2px 2px 10px -5px;
 
   .teacherNavButton {
-    width: 90%;
-    height: 40px;
+    width: 180px;
+    height: 60px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
-    font-size: calc(0.3rem + 1vw);
-    padding-left: 18px;
+    justify-content: space-evenly;
+    font-size: 20px;
+    font-weight: 700;
     cursor: pointer;
     box-sizing: border-box;
     transition: all 0.1s ease-in-out;
   }
 
-  .teacherNavButton:hover {
-    transform: scale(1.1);
-  }
-
-  .teacherNavButton h4 {
-    font-size: 20px;
-    width: 100%;
+  .clickButton {
+    width: 180px;
+    height: 60px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: all 0.1s ease-in-out;
+    background-color: var(--pink);
+    border-radius: 10px;
+    color: white;
+  }
+
+  .teacherNavButton:hover {
+    transform: scale(1.1);
+    background-color: var(--pink);
+    border-radius: 10px;
+    color: white;
   }
 
   .linkButton {

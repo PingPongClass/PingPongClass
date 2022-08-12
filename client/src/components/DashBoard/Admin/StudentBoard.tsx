@@ -331,7 +331,7 @@ const totalContainer = () => css`
     /* 제목줄 1줄 */
     .articleRow {
       padding: 0.5rem 0;
-      border-bottom: 0.15rem solid black;
+      border-bottom: 1.5px solid gray;
       height: -webkit-fill-available;
     }
 
@@ -339,7 +339,7 @@ const totalContainer = () => css`
     .articleRow:hover,
     .highlited {
       background-color: #dfe9f2;
-      border-bottom: 0.15rem solid black;
+      border-bottom: 1.5px solid gray;
     }
     #editTitle {
       border-radius: 20rem;

@@ -204,7 +204,7 @@ const NoticeBoard = () => {
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
           />
-          <button type="submit" className="button-sm pink">
+          <button type="submit" className="searchbutton">
             검색
           </button>
         </form>
@@ -336,14 +336,14 @@ export const NoticeBoardStyle = () => css`
     /* 제목줄 1줄 */
     .articleRow {
       padding: 0.5rem 0;
-      border-bottom: 0.15rem solid black;
+      border-bottom: 1.5px solid gray;
     }
 
     /* 하이라이트 */
     .articleRow:hover,
     .highlited {
       background-color: #dfe9f2;
-      border-bottom: 0.15rem solid black;
+      border-bottom: 1.5px solid gray;
       cursor: pointer;
     }
 
@@ -455,6 +455,15 @@ export const NoticeBoardStyle = () => css`
   }
   a:visited {
     text-decoration: none;
+  }
+
+  .searchbutton {
+    width: 100px;
+    height: 40px;
+    background-color: var(--pink);
+    color: white;
+    font-size: 13pt;
+    font-family: 'NanumSqaureRound';
   }
 
   @keyframes loadEffect1 {

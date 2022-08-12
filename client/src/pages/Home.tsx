@@ -121,8 +121,8 @@ const totalContainer = css`
   .container {
     display: flex;
     flex-direction: column;
-    justify-content: start;
     width: 100%;
+    justify-content: start;
   }
 
   .sideContainer {
@@ -141,7 +141,10 @@ const totalContainer = css`
   }
 
   .circles {
-    margin: 10px 0 0 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    margin: 10px 10px 0 10px;
     div {
       border: 2px solid black;
       width: 10px;
@@ -152,7 +155,7 @@ const totalContainer = css`
     }
 
     .circle1 {
-      background-color: #ef8181;
+      background-color: #96ba85;
     }
 
     .circle2 {
@@ -161,7 +164,7 @@ const totalContainer = css`
     }
 
     .circle3 {
-      background-color: #96ba85;
+      background-color: #ef8181;
       margin-left: 0.3rem;
     }
   }

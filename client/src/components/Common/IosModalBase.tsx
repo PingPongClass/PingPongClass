@@ -75,7 +75,7 @@ const Header = css`
   }
 
   .circle1 {
-    background-color: #ef8181;
+    background-color: #96ba85;
   }
 
   .circle2 {
@@ -84,7 +84,7 @@ const Header = css`
   }
 
   .circle3 {
-    background-color: #96ba85;
+    background-color: #ef8181;
     margin-left: 0.3rem;
   }
 `;

@@ -193,20 +193,12 @@ const NoticeBoard = () => {
             value={keyword || ''}
             onChange={(e) => setKeyword(e.target.value)}
           />
-          {isTeacher ? (
-            <>
-              <button type="submit" className="button-sm blue">
-                검색
-              </button>
-              <button type="button" className="button-sm pink">
-                <Link to="/admin/noticePost">글 쓰기</Link>
-              </button>
-            </>
-          ) : (
-            <button type="submit" className="button-sm blue">
-              검색
-            </button>
-          )}
+          <button type="submit" className="button-sm gray">
+            검색
+          </button>
+          <button type="button" className="button-sm blue">
+            <Link to="/admin/noticePost">글 쓰기</Link>
+          </button>
         </form>
       </div>
       <div className="tableArea">

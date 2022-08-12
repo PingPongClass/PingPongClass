@@ -149,30 +149,26 @@ const ClassBoard = () => {
       <div className="upperModalArea">
         <div className="pageTitle">수업관리(관리자)</div>
         <form onSubmit={search}>
-          {selectedCnt !== 0 ? (
-            <>
-              <span className="selected-cnt">({selectedCnt}) 개 선택</span>
-            </>
-          ) : null}
-          <input
-            type="search"
-            value={keyword || ''}
-            onChange={(e) => setKeyword(e.target.value)}
-          />
-          {isTeacher ? (
-            <>
-              <button type="submit" className="sub-btn">
-                검색
-              </button>
-              <button type="button" className="main-btn">
-                <Link to="/admin/classPost">수업 추가</Link>
-              </button>
-            </>
-          ) : (
-            <button type="submit" className="main-btn">
+          <div>
+            {selectedCnt !== 0 ? (
+              <>
+                <span className="selected-cnt">({selectedCnt}) 개 선택</span>
+              </>
+            ) : null}
+            <input
+              type="search"
+              value={keyword || ''}
+              onChange={(e) => setKeyword(e.target.value)}
+            />
+            <button type="submit" className="sub-btn">
               검색
             </button>
-          )}
+          </div>
+          <div>
+            <button type="button" className="main-btn">
+              <Link to="/admin/classPost">수업 추가</Link>
+            </button>
+          </div>
         </form>
       </div>
       <div className="tableArea">
@@ -249,6 +245,9 @@ const totalContainer = () => css`
 
   form {
     margin: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     button {
       margin: 1rem;
       padding: 0.5rem;
@@ -257,12 +256,12 @@ const totalContainer = () => css`
       color: white;
     }
     .main-btn {
-      background-color: pink;
+      background-color: var(--blue);
       color: white;
       padding: 0.5rem;
     }
     .sub-btn {
-      background-color: grey;
+      background-color: var(--gray);
       color: white;
       padding: 0.5rem;
     }
@@ -318,14 +317,14 @@ const totalContainer = () => css`
     /* 제목줄 1줄 */
     .articleRow {
       padding: 0.5rem 0;
-      border-bottom: 0.15rem solid black;
+      border-bottom: 1.5px solid gray;
       height: -webkit-fill-available;
     }
 
     /* 하이라이트 */
     .highlited {
       background-color: #dfe9f2;
-      border-bottom: 0.15rem solid black;
+      border-bottom: 1.5px solid gray;
     }
     a,
     a:visited {
@@ -341,6 +340,12 @@ const totalContainer = () => css`
   }
   .selected-cnt {
     padding-right: 0.5rem;
+  }
+
+  input {
+    height: 35px;
+    border-radius: 10px;
+    border: 1px solid gray;
   }
 `;
 

@@ -279,6 +279,10 @@ const totalContainer = () => css`
     }
   }
 
+  .pageTitle {
+    border-bottom: 0.15rem solid black;
+  }
+
   /* 스크롤 바 숨기기 */
   .tableArea::-webkit-scrollbar {
     display: none;
