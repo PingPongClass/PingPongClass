@@ -79,6 +79,8 @@ const App = () => {
             <Route path="mypage" element={<InputPassword />} />
             <Route path="teachermyinfo" element={<TeacherMyInfo />} />
             <Route path="classes" element={<ManagedClassBoard />} />
+            <Route path="classPost" element={<EditClass />} />
+            <Route path="classEdit/:classId" element={<EditClass />} />
           </Route>
           <Route path="/style" element={<Style />} />
           <Route path="/lecture/:code" element={<OpenVidu />} />
