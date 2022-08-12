@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import IosModalNew from '@src/components/Common/IosModalNew';
 import ProfilImage from '@assets/images/profile.png';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import InterceptedAxios from '@utils/iAxios';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -9,6 +9,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { TeacherProps } from './TeacherBoard';
 
 const EditTeacher = () => {
+  const navigate = useNavigate();
   const { teacherId } = useParams();
   const [teacher, setTeacher] = useState<TeacherProps>();
   const [email, setEmail] = useState('');
@@ -21,7 +22,7 @@ const EditTeacher = () => {
     teacher?.profile
       ? 'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/' +
           teacher?.profile
-      : undefined,
+      : 'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null',
   );
   const [isMouseOn, setIsMouseOn] = useState(false);
   const [isPreviewReset, setIsPreviewReset] = useState(false); // 리셋했는지 여부 판단용 상태값
@@ -31,10 +32,19 @@ const EditTeacher = () => {
     if (teacherId !== undefined) {
       InterceptedAxios.get('/teachers/' + teacherId).then((res) => {
         setTeacher(res.data);
+        setPreview(
+          res.data?.profile
+            ? 'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/' +
+                res.data?.profile
+            : 'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null',
+        );
       });
     }
   };
-  getInfo();
+
+  useEffect(() => {
+    getInfo();
+  }, []);
 
   const nameChanged = (e) => {
     let newTeacher: TeacherProps = { ...teacher, name: e.target.value };
@@ -121,7 +131,8 @@ const EditTeacher = () => {
     InterceptedAxios.post('/teachers/', teacher)
       .then(function (response) {
         alert('회원 추가에 성공했습니다.');
-        location.href = '/admin/teachers';
+        // location.href = '/admin/teachers';
+        navigate('/admin/teachers');
       })
       .catch(function (error) {
         console.log(error);
@@ -199,7 +210,8 @@ const EditTeacher = () => {
       })
         .then(function (response) {
           alert('정보가 수정되었습니다.');
-          location.href = '/admin/teachers';
+          navigate('/admin/teachers');
+          // location.href = '/admin/teachers';
         })
         .catch(function (error) {
           console.log(error);
@@ -327,7 +339,7 @@ const EditTeacher = () => {
             추가
           </button>
         )}
-        <Link to="/admin">
+        <Link to="/admin/teachers">
           <button type="button" className="cancel">
             취소
           </button>

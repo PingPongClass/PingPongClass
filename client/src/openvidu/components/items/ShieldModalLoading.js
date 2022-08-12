@@ -33,14 +33,10 @@ class ShieldModalLoading extends Component {
   }
 
   count() {
-    let interval = setInterval(() => {
-      this.setState({ countDown: this.state.countDown - 1 });
-    }, 1000);
     setTimeout(() => {
       if (this.state.display === true) {
         this.notUseShield();
       }
-      clearInterval(interval);
     }, this.props.timeOut * 1000);
   }
 

@@ -20,6 +20,7 @@ export interface NoticeProps {
 }
 
 const NoticeBoard = () => {
+  const [loading, setLoading] = useState(true);
   const dispatch = useAppDispatch();
   const memberStore = useAppSelector((state) => state.member);
   const InterceptedAxios = setupInterceptorsTo(axios.create());
@@ -28,13 +29,14 @@ const NoticeBoard = () => {
   const [selected, setSelected] = useState<ClassProps>(allClass);
   const [articles, setArticles] = useState<NoticeProps[]>([]);
   const [classes, setclasses] = useState<ClassProps[]>([allClass]);
-  const [page, setPage] = useState(1);
-  let totalPage = 0;
+  const [page, setPage] = useState(0);
+  const [totalPage, setTotalPage] = useState(0);
 
   const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
     // console.log(`감지결과 : ${isIntersecting}`);
+    if (loading === true) return;
     if (isIntersecting) {
-      if (totalPage >= page) {
+      if (totalPage > page) {
         setPage((prev) => prev + 1);
       }
     }
@@ -58,12 +60,10 @@ const NoticeBoard = () => {
   }, []);
 
   useEffect(() => {
-    getNotice();
+    if (totalPage > page) {
+      getNotice();
+    }
   }, [page]);
-
-  useEffect(() => {
-    // console.log(selected);
-  }, [classes]);
 
   const isYourNotice = (key: number) => {
     let currentNotice = {
@@ -105,13 +105,14 @@ const NoticeBoard = () => {
   const search = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setArticles([]);
-    setPage(1);
+    setTotalPage(0);
+    setPage(0);
 
     // 검색 로직
     getNotice();
   };
 
-  const getNotice = () => {
+  const getNotice = async () => {
     let word = '';
     if (keyword !== '') {
       word = '&titleSearch=' + keyword;
@@ -119,24 +120,21 @@ const NoticeBoard = () => {
 
     let searchQuery =
       '/notice/list?paged=true&sort.sorted=true&sort.unsorted=false&classId=' +
-      selected.classId.toString() +
+      selected.classId +
       '&userId=' +
-      memberStore.userId.toString() +
-      '&pageNumber=' +
-      page.toString() +
+      memberStore.userId +
+      '&page=' +
+      (page - 1) +
       word;
 
-    // console.log(searchQuery);
-
-    InterceptedAxios.get(searchQuery).then((response) => {
-      let list = response.data.content;
-      totalPage = response.data.totalPages;
-      if (totalPage >= page) {
-        checkNewNotice(list);
-      } else {
-        console.log('마지막 페이지입니다!');
-      }
-    });
+    const response = await InterceptedAxios.get(searchQuery);
+    setTotalPage(response.data.totalPages);
+    let list = response.data.content;
+    if (keyword !== '' || selected.classId !== -1) {
+      setArticles(list);
+    } else {
+      checkNewNotice(list);
+    }
   };
 
   const checkNewNotice = (value: NoticeProps[]) => {

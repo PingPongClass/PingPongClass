@@ -171,31 +171,31 @@ const TeacherBoard = () => {
             );
           })}
         </div>
-      </div>
-      <div className="btn-box" css={btnBox}>
-        <Pagination
-          className="Pagination"
-          count={LAST_PAGE}
-          defaultPage={1}
-          boundaryCount={2}
-          sx={{ margin: 2 }}
-          onChange={(e) => handlePage(e)}
-          variant="outlined"
-          shape="rounded"
-        />
-        <button type="button" className="add-btn stu-bottom-btn">
-          <Link to="/admin/teacherAdd">추가</Link>
-        </button>
-        <button type="button" className="add-btn stu-bottom-btn">
-          <Link to="/admin/teacherAddBulk">일괄 추가</Link>
-        </button>
-        <button
-          type="button"
-          className="del-btn stu-bottom-btn"
-          onClick={deleteSelected}
-        >
-          선택 삭제
-        </button>
+        <div className="btn-box" css={btnBox}>
+          <Pagination
+            className="Pagination"
+            count={LAST_PAGE}
+            defaultPage={1}
+            boundaryCount={2}
+            sx={{ margin: 2 }}
+            onChange={(e) => handlePage(e)}
+            variant="outlined"
+            shape="rounded"
+          />
+          <button type="button" className="add-btn stu-bottom-btn">
+            <Link to="/admin/teacherAdd">추가</Link>
+          </button>
+          <button type="button" className="add-btn stu-bottom-btn">
+            <Link to="/admin/teacherAddBulk">일괄 추가</Link>
+          </button>
+          <button
+            type="button"
+            className="del-btn stu-bottom-btn"
+            onClick={deleteSelected}
+          >
+            선택 삭제
+          </button>
+        </div>
       </div>
     </>
   );
@@ -244,7 +244,9 @@ const totalContainer = () => css`
   .tableArea {
     /* width: 40rem; */
     margin: 0.5rem;
+    margin-bottom: 0px;
     padding: 0.5rem;
+    padding-bottom: 0px;
     display: grid;
     grid-template-rows: 3fr;
     grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -263,24 +265,27 @@ const btnBox = () => css`
   justify-content: flex-end;
   align-content: center;
   align-items: center;
-  position: absolute;
-  bottom: 13%;
+  background-color: transparent;
+  margin: 0px;
+  /* position: absolute;
+  bottom: 13%; */
   .Pagination {
     /* margin-right: 11.5rem; */
     justify-content: center;
+  }
+  .stu-bottom-btn {
+    /* position: relative; */
+    margin: 0px 1rem;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
   }
   .add-btn {
     background-color: #7063b5;
   }
   .del-btn {
     background-color: #e56666;
-  }
-  .stu-bottom-btn {
-    margin: 1rem;
-    padding: 0.5rem;
-    border: none;
-    border-radius: 0.5rem;
-    color: white;
   }
   a,
   a:visited {

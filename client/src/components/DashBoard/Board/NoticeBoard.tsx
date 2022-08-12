@@ -5,6 +5,7 @@ import useIntersectionObserver from '@src/utils/useIntersectionObserver';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { Link } from 'react-router-dom';
+import loadingImg from '@src/openvidu/assets/images/loadingimg.gif';
 import Notice from './Notice';
 import { allClass, ClassProps, getClasses, saveMember } from '@store/member';
 import axios from 'axios';
@@ -26,6 +27,7 @@ export interface NoticeProps {
 }
 
 const NoticeBoard = () => {
+  const [loading, setLoading] = useState(true);
   const dispatch = useAppDispatch();
   const memberStore = useAppSelector((state) => state.member);
   const InterceptedAxios = setupInterceptorsTo(axios.create());
@@ -35,7 +37,7 @@ const NoticeBoard = () => {
   const [articles, setArticles] = useState<NoticeProps[]>([]);
   const [classes, setClasses] = useState<ClassProps[]>([allClass]);
   const [page, setPage] = useState(1);
-  let totalPage = 0;
+  const [totalPage, setTotalPage] = useState(1);
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -50,14 +52,29 @@ const NoticeBoard = () => {
 
   const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
     // console.log(`감지결과 : ${isIntersecting}`);
+    if (loading === true) return;
     if (isIntersecting) {
-      if (totalPage >= page) {
+      if (totalPage > page) {
         setPage((prev) => prev + 1);
       }
     }
   };
 
   const { setTarget } = useIntersectionObserver({ onIntersect });
+
+  // 로딩 2번 보는게 신경쓰여서 일단 막고 useLayoutEffect 사용함
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setLoading(false);
+  //   }, 2000);
+
+  //   dispatch(saveMember()).then(() => timer);
+  // }, []);
+
+  useLayoutEffect(() => {
+    dispatch(saveMember());
+    setLoading(false);
+  }, []);
 
   useEffect(() => {
     dispatch(getClasses(memberStore.userId)).then(() => {
@@ -69,15 +86,14 @@ const NoticeBoard = () => {
     } else {
       setIsTeacher(false);
     }
+    getNotice();
   }, []);
 
   useEffect(() => {
-    getNotice();
+    if (totalPage > page) {
+      getNotice();
+    }
   }, [page]);
-
-  useEffect(() => {
-    // console.log(selected);
-  }, [selected]);
 
   const deleteNotice = (key: number) => {
     if (memberStore.isAdmin) {
@@ -95,13 +111,13 @@ const NoticeBoard = () => {
   const search = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setArticles([]);
-    setPage(1);
-
+    setTotalPage(0);
+    setPage(0);
     // 검색 로직
     getNotice();
   };
 
-  const getNotice = () => {
+  const getNotice = async () => {
     let word = '';
     if (keyword !== '') {
       word = '&titleSearch=' + keyword;
@@ -109,24 +125,21 @@ const NoticeBoard = () => {
 
     let searchQuery =
       '/notice/list?paged=true&sort.sorted=true&sort.unsorted=false&classId=' +
-      selected.classId.toString() +
+      selected.classId +
       '&userId=' +
-      memberStore.userId.toString() +
-      '&pageNumber=' +
-      page.toString() +
+      memberStore.userId +
+      '&page=' +
+      (page - 1) +
       word;
 
-    // console.log(searchQuery);
-
-    InterceptedAxios.get(searchQuery).then((response) => {
-      let list = response.data.content;
-      totalPage = response.data.totalPages;
-      if (totalPage >= page) {
-        checkNewNotice(list);
-      } else {
-        console.log('마지막 페이지입니다!');
-      }
-    });
+    const response = await InterceptedAxios.get(searchQuery);
+    setTotalPage(response.data.totalPages);
+    let list = response.data.content;
+    if (keyword !== '' || selected.classId !== -1) {
+      setArticles(list);
+    } else {
+      checkNewNotice(list);
+    }
   };
 
   const checkNewNotice = (value: NoticeProps[]) => {
@@ -274,7 +287,7 @@ export const NoticeBoardStyle = () => css`
   /* table 영역 */
   .tableArea {
     border-spacing: 0;
-    width: inherit;
+    width: -webkit-fill-available;
     height: inherit;
     position: absolute;
     /* overflow-y: scroll; */

@@ -6,9 +6,11 @@ import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { Link } from 'react-router-dom';
 import Notice from './Notice';
+import loadingImg from '@src/openvidu/assets/images/loadingimg.gif';
 import { allClass, ClassProps, getClasses, saveMember } from '@store/member';
 import axios from 'axios';
 import { NoticeBoardStyle } from '../Board/NoticeBoard';
+import { Rtt } from '@mui/icons-material';
 
 export interface NoticeProps {
   noticeId: number;
@@ -20,6 +22,7 @@ export interface NoticeProps {
 }
 
 const NoticeBoard = () => {
+  const [loading, setLoading] = useState(true);
   const dispatch = useAppDispatch();
   const memberStore = useAppSelector((state) => state.member);
   const InterceptedAxios = setupInterceptorsTo(axios.create());
@@ -28,13 +31,14 @@ const NoticeBoard = () => {
   const [selected, setSelected] = useState<ClassProps>(allClass);
   const [articles, setArticles] = useState<NoticeProps[]>([]);
   const [classes, setClasses] = useState<ClassProps[]>([allClass]);
-  const [page, setPage] = useState(1);
-  let totalPage = 0;
+  const [page, setPage] = useState(0);
+  const [totalPage, setTotalPage] = useState(0);
 
   const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
     // console.log(`감지결과 : ${isIntersecting}`);
+    if (loading === true) return;
     if (isIntersecting) {
-      if (totalPage >= page) {
+      if (totalPage > page) {
         setPage((prev) => prev + 1);
       }
     }
@@ -42,8 +46,19 @@ const NoticeBoard = () => {
 
   const { setTarget } = useIntersectionObserver({ onIntersect });
 
+  // 로딩 2번 보는게 신경쓰여서 일단 막고 useLayoutEffect 사용함
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setLoading(false);
+  //   }, 2000);
+
+  //   dispatch(saveMember()).then(() => timer);
+  // }, []);
+
   useLayoutEffect(() => {
     dispatch(saveMember());
+    getNotice();
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -55,7 +70,7 @@ const NoticeBoard = () => {
     } else {
       setIsTeacher(false);
     }
-  }, [memberStore]);
+  }, []);
 
   useEffect(() => {
     getNotice();
@@ -77,7 +92,8 @@ const NoticeBoard = () => {
   const search = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setArticles([]);
-    setPage(1);
+    setTotalPage(0);
+    setPage(0);
 
     // 검색 로직
     getNotice();
@@ -94,21 +110,17 @@ const NoticeBoard = () => {
       selected.classId +
       '&userId=' +
       memberStore.userId +
-      '&pageNumber=' +
-      page +
+      '&page=' +
+      (page - 1) +
       word;
 
-    // console.log(searchQuery);
-
     const response = await InterceptedAxios.get(searchQuery);
+    setTotalPage(response.data.totalPages);
     let list = response.data.content;
-
-    totalPage = response.data.totalPages;
-    if (totalPage >= page) {
-      // checkNewNotice(list);
+    if (keyword !== '' || selected.classId !== -1) {
       setArticles(list);
     } else {
-      console.log('마지막 페이지입니다!');
+      checkNewNotice(list);
     }
   };
 
@@ -135,6 +147,7 @@ const NoticeBoard = () => {
     setSelected(current);
   };
 
+  // const render = () => {
   return (
     <div css={NoticeBoardStyle}>
       <div className="upperModalArea">
@@ -194,6 +207,19 @@ const NoticeBoard = () => {
       </div>
     </div>
   );
+  // };
+  // return (
+  //   <div css={NoticeBoardStyle}>
+  //     {loading ? (
+  //       <div className="loadingImgBox">
+  //         <h1>로딩중...</h1>
+  //         <img src={loadingImg} alt="" />
+  //       </div>
+  //     ) : (
+  //       render()
+  //     )}
+  //   </div>
+  // );
 };
 
 export default NoticeBoard;
