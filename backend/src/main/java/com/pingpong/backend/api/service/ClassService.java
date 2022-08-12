@@ -50,6 +50,7 @@ public class ClassService {
                 .timetableEntity(timetableEntity)
                 .classDesc(req.getClassDesc())
                 .classUrl(req.getClassUrl())
+                .isActivated(1)
                 .build();
         ClassEntity saveEntity = classRepository.save(classEntity);
 
@@ -135,7 +136,12 @@ public class ClassService {
         } else if(userId>=5030000 && userId<=5039999) { //관리자일때
             classEntityList = classRepository.findAll();
         }
-        List<ClassResponse> list = classEntityList.stream().map(ClassResponse::new).collect(Collectors.toList());
+        List<ClassEntity> resultList = new ArrayList<>();
+        for(ClassEntity classEntity:classEntityList){
+            if(classEntity.getIsActivated()==1)
+                resultList.add(classEntity);
+        }
+        List<ClassResponse> list = resultList.stream().map(ClassResponse::new).collect(Collectors.toList());
         int start = (int)pageable.getOffset();
         int end =  (start + pageable.getPageSize())>list.size()?list.size():(start +pageable.getPageSize());
         return new PageImpl<>(list.subList(start, end), pageable, list.size());
@@ -143,7 +149,7 @@ public class ClassService {
 
     //요일별 수업 목록 조회(학생/선생님)
     public Page<ClassResponse> findTodayClasses(final int userId, final int classDay, Pageable pageable){
-        Sort sort = Sort.by(Sort.Direction.DESC,"TimetableEntity");
+        Sort sort = Sort.by(Sort.Direction.ASC,"TimetableEntity");
         List<ClassEntity> classEntityList = new ArrayList<>();
         if(userId>1000000000) {// 학생일때
             StudentEntity studentEntity = studentRepository.getOne(userId);
@@ -159,7 +165,12 @@ public class ClassService {
             for(ClassEntity classEntity:subList)
                 classEntityList.add(classEntity);
         }
-        List<ClassResponse> list = classEntityList.stream().map(ClassResponse::new).collect(Collectors.toList());
+        List<ClassEntity> resultList = new ArrayList<>();
+        for(ClassEntity classEntity:classEntityList){
+            if(classEntity.getIsActivated()==1)
+                resultList.add(classEntity);
+        }
+        List<ClassResponse> list = resultList.stream().map(ClassResponse::new).collect(Collectors.toList());
         int start = (int)pageable.getOffset();
         int end =  (start + pageable.getPageSize())>list.size()?list.size():(start +pageable.getPageSize());
         return new PageImpl<>(list.subList(start, end), pageable, list.size());
@@ -168,7 +179,7 @@ public class ClassService {
     //시간표 출력용 요일별 수업 리스트 전체
     public List<List<ClassResponse>> makeTimeTable(final int userId){
         List<List<ClassResponse>> res = new ArrayList<>();
-        Sort sort = Sort.by(Sort.Direction.DESC,"TimetableEntity");
+        Sort sort = Sort.by(Sort.Direction.ASC,"TimetableEntity");
         for(int i=1; i<6; i++){
             List<ClassEntity> classEntityList = new ArrayList<>();
             if(userId>1000000000) {// 학생일때
@@ -185,7 +196,12 @@ public class ClassService {
                 for(ClassEntity classEntity:subList)
                     classEntityList.add(classEntity);
             }
-            List<ClassResponse> list = classEntityList.stream().map(ClassResponse::new).collect(Collectors.toList());
+            List<ClassEntity> resultList = new ArrayList<>();
+            for(ClassEntity classEntity:classEntityList){
+                if(classEntity.getIsActivated()==1)
+                    resultList.add(classEntity);
+            }
+            List<ClassResponse> list = resultList.stream().map(ClassResponse::new).collect(Collectors.toList());
             res.add(list);
         }
         return res;
@@ -239,5 +255,10 @@ public class ClassService {
     @Transactional
     public ClassResponse findClassInfo(int classId){
         return new ClassResponse(classRepository.getOne(classId));
+    }
+    @Transactional
+    public void updateState(int classId){
+        ClassEntity classEntity = classRepository.getById(classId);
+        classEntity.chanageState();
     }
 }

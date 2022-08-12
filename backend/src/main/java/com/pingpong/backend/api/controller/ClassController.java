@@ -127,12 +127,22 @@ public class ClassController {
         return classService.findClassInfo(classId);
     }
 
-    @ApiOperation(value= "해당 유저의 시간표를 만들기 위한 치트키API" )
+    @ApiOperation(value= "해당 유저의 시간표를 만들기 위한 치트키" )
     @GetMapping("/today/{userId}")
     @PreAuthorize("hasRole('STUDENT')")
     public List<List<ClassResponse>> makingTimeTable(@PathVariable final int userId){
         return classService.makeTimeTable(userId);
     }
+
+    @ApiOperation(value= "수업 활성화 상태 (휴강, 폐강) 변화" )
+    @PatchMapping("/update/{classId}")
+    @PreAuthorize("hasRole('TEACHER')")
+    public String updateClassState(@PathVariable final int classId){
+        classService.updateState(classId);
+        return "수업 활성화 상태 변경";
+    }
+
+
 
 
 

@@ -1,16 +1,22 @@
 package com.pingpong.backend.api.controller;
 
 import com.pingpong.backend.api.domain.request.LogRequest;
+import com.pingpong.backend.api.domain.request.LogdateRequest;
 import com.pingpong.backend.api.domain.request.RecordRequest;
+import com.pingpong.backend.api.domain.response.LogResponse;
 import com.pingpong.backend.api.domain.response.RecordResponse;
+import com.pingpong.backend.api.domain.response.TeacherLogResponse;
 import com.pingpong.backend.api.service.RecordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -49,6 +55,20 @@ public class RecordController {
     @PreAuthorize("hasRole('STUDENT')")
     public void insertLog(@RequestBody LogRequest req){
         recordService.logSave(req);
+    }
+
+    @ApiOperation(value = "학생의 강의 로그 조회 - 일자별", notes = "학생아이디, 일자로 수업 - 강의 로그 조회")
+    @PostMapping("/log/student")
+    @PreAuthorize("hasRole('STUDENT')")
+    public List<LogResponse> findStudentLog(@RequestBody LogdateRequest req){
+        return recordService.fingstudentlog(req.getStudentId(), req.getRegDate());
+    }
+
+    @ApiOperation(value = "선생님의 강의 로그 조회 - 일자별", notes = "classID -> 일자별 로그객체 ")
+    @GetMapping("/teacher/{classId}")
+    @PreAuthorize("hasRole('TEACHER')")
+    public List<TeacherLogResponse> findTeacherLog(@PathVariable int classId){
+        return recordService.findteacherlog(classId);
     }
 
 }

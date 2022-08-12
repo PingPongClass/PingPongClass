@@ -46,8 +46,12 @@ public class ClassEntity {
     @Column(nullable = false)
     private int classDay;
 
+    //1이 활성화 0이 폐강, 휴강 등등
+    @Column(nullable = false, name = "activated")
+    private int isActivated;
+
     @Builder
-    public ClassEntity(TeacherEntity teacherEntity, SubjectEntity subjectEntity, TimetableEntity timetableEntity, String classTitle, String classDesc, String classUrl,  int classDay) {
+    public ClassEntity(TeacherEntity teacherEntity, SubjectEntity subjectEntity, TimetableEntity timetableEntity, String classTitle, String classDesc, String classUrl,  int classDay, int isActivated) {
         this.teacherEntity = teacherEntity;
         this.subjectEntity = subjectEntity;
         this.timetableEntity = timetableEntity;
@@ -55,6 +59,7 @@ public class ClassEntity {
         this.classUrl = classUrl;
         this.classDesc = classDesc;
         this.classTitle = classTitle;
+        this.isActivated = isActivated;
     }
 
     public void update(TimetableEntity timetableEntity, SubjectEntity subjectEntity, String classTitle, String classDesc, int classDay){
@@ -67,5 +72,11 @@ public class ClassEntity {
 
     public void updateUrl(String classUrl){
         this.classUrl = classUrl;
+    }
+
+    public void chanageState(){
+        this.isActivated=this.isActivated==0?1:0;
+
+        System.out.println(this.isActivated);
     }
 }

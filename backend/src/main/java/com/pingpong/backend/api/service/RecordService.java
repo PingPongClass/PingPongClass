@@ -6,7 +6,9 @@ import com.pingpong.backend.api.domain.*;
 import com.pingpong.backend.api.domain.dto.LogDto;
 import com.pingpong.backend.api.domain.request.LogRequest;
 import com.pingpong.backend.api.domain.request.RecordRequest;
+import com.pingpong.backend.api.domain.response.LogResponse;
 import com.pingpong.backend.api.domain.response.RecordResponse;
+import com.pingpong.backend.api.domain.response.TeacherLogResponse;
 import com.pingpong.backend.api.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -107,5 +109,36 @@ public class RecordService {
         }
 
     }
+    //학생로그기록 조회-> 해당 일자에 들은 수업과 강의 로그 리스트 반환
+    public List<LogResponse> fingstudentlog(int studentId, LocalDate regDate){
+        List<LogResponse> logResponseList =new ArrayList<>();
+        StudentEntity studentEntity = studentRepository.getById(studentId);
+        List<LogEntity> classEntityList = logRepository.findByRegDate(regDate);
+        for(LogEntity logEntity: classEntityList){
+            List<LogEntity> logEntityList= logRepository.findByClassEntityAndStudentEntity(logEntity.getClassEntity(), studentEntity);
+            logResponseList.add(new LogResponse(logEntity.getClassEntity(),logEntityList ));
+        }
+        return logResponseList;
+    }
+    //선생님 로그 기록 조회 -> 수업에 일자별 로그 리스트 반환
+    public List<TeacherLogResponse> findteacherlog(int classId){
+        List<TeacherLogResponse> teacherLogResponseList = new ArrayList<>();
+        ClassEntity classEntity = classRepository.getById(classId);
+        List<Integer> list = logRepository.getdistinctdate(classId);
+        for(int id :list){
+            LogEntity logEntity = logRepository.getById(id);
+            List<LogEntity> logEntities = logRepository.findByRegDateAndClassEntity(logEntity.getRegDate(), classEntity);
+            for(LogEntity log: logEntities) {
+                System.out.println(log.getLogId()+" "+log.getStudentEntity()
+                        .getName());
+                teacherLogResponseList.add(new TeacherLogResponse(logEntity.getRegDate(), logEntities));
+            }
+        }
+        return teacherLogResponseList;
+    }
+
+
+
+
 
 }

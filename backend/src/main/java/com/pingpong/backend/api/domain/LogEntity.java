@@ -22,12 +22,12 @@ public class LogEntity {
     @ManyToOne
     @JoinColumn(name="class_id", nullable = false)
     @OnDelete(action= OnDeleteAction.CASCADE)
-    private ClassEntity classentity;
+    private ClassEntity classEntity;
 
     @ManyToOne
     @JoinColumn(name="student_id", nullable = false)
     @OnDelete(action= OnDeleteAction.CASCADE)
-    private StudentEntity studententity;
+    private StudentEntity studentEntity;
 
     @Column(nullable = false, columnDefinition = "DATE")
     private LocalDate regDate;
@@ -43,8 +43,8 @@ public class LogEntity {
 
     @Builder
     public LogEntity(ClassEntity classEntity, StudentEntity studententity, LocalDate regDate, int point, boolean attendance, int presentCnt){
-        this.classentity = classEntity;
-        this.studententity = studententity;
+        this.classEntity = classEntity;
+        this.studentEntity = studententity;
         this.regDate = regDate;
         this.point = point;
         this.attendance = attendance;
