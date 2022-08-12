@@ -10,20 +10,28 @@ const TeacherResult = ({
   myData,
   othersData,
   finTime,
+  classId,
 }) => {
   console.log(myData);
+  console.log(othersData);
   const [totalStudentNum, setTotalStudentNum] = useState(0);
   const [attStudentNum, setAttStudentNum] = useState(0);
   const [totalSticker, setTotalSticker] = useState(0);
 
   const applyToDB = async () => {
-    const promises = othersData.map(async (elem) => {
-      InterceptedAxios.patch(
-        `/students/points/${elem.point}?studentId=${elem.uid}`,
+    try {
+      const promises = othersData.map(async (elem) => {
+        InterceptedAxios.patch(
+          `/students/points/${elem.point}?studentId=${elem.uid}`,
+        );
+      });
+      await Promise.all(promises);
+      console.log('DB에 포인트들 저장 완료~');
+    } catch (e) {
+      alert(
+        '오류가 발생하여 정상적으로 저장되지 않았습니다. 행정실에 문의하세요.',
       );
-    });
-    await Promise.all(promises);
-    console.log('DB에 포인트들 저장 완료~');
+    }
   };
 
   useEffect(() => {
@@ -175,21 +183,21 @@ const TotalResult = css`
 
     & > .s-nickname {
       display: flex;
-      width: 100px;
+      width: 150px;
       justify-content: center;
       align-items: center;
     }
 
     & > .s-attendence-time {
       display: flex;
-      width: 100px;
+      width: 150px;
       justify-content: center;
       align-items: center;
     }
 
     & > .s-point {
       display: flex;
-      width: 100px;
+      width: 150px;
       justify-content: center;
       align-items: center;
     }

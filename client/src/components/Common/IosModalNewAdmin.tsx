@@ -1,6 +1,10 @@
 import { css } from '@emotion/react';
 
-const IosModalBaseAdmin = () => {
+interface IosModalNewProps {
+  onClickOpenModal?: any;
+}
+
+const IosModalBaseAdmin = (props?: IosModalNewProps) => {
   return (
     <div css={totalContainer}>
       <div className="grayBackground"></div>
@@ -8,7 +12,11 @@ const IosModalBaseAdmin = () => {
         <div className="header">
           <div className="circle1" />
           <div className="circle2" />
-          <div className="circle3" />
+          {props ? (
+            <div className="circle3" onClick={props.onClickOpenModal} />
+          ) : (
+            <div className="circle3" />
+          )}
         </div>
       </div>
     </div>

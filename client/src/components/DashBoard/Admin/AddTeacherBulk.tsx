@@ -51,7 +51,7 @@ const AddTeacherBulk = ({ onClickOpenBulkModal }: ModalDefaultType) => {
   return (
     <div css={ModalCSS}>
       <div className="commonModal">
-        <IosModalNew />
+        <IosModalNew onClickOpenModal={onClickOpenBulkModal} />
       </div>
       <div className="infoContainer">
         <div className="downloadContainer">

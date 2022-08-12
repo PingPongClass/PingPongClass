@@ -42,8 +42,9 @@ const App = () => {
   useEffect(() => {
     const getStudentList = async () => {
       const data = await InterceptedAxios.get(
-        `/classes/student/${state.classId}`,
+        `/classes/student/{classId}?classId=${state.classId}`,
       );
+      console.log(data);
       setStudentList(data);
     };
     getStudentList();

@@ -281,6 +281,7 @@ class VideoRoomComponent extends Component {
         clientData: this.state.myUserName,
         attTime: localUser.attendenceTime,
         randPick: this.state.randPick,
+        uid: this.props.userId,
       })
       .then(() => {
         this.connectWebCam();
@@ -564,6 +565,7 @@ class VideoRoomComponent extends Component {
       newUser.setAttendenceTime(
         JSON.parse(event.stream.connection.data).attTime,
       );
+      newUser.setUid(JSON.parse(event.stream.connection.data).uid);
       const nickname = event.stream.connection.data.split('%')[0];
       newUser.setNickname(JSON.parse(nickname).clientData);
       this.remotes.push(newUser);
@@ -1262,7 +1264,7 @@ class VideoRoomComponent extends Component {
     console.log(this.state.quiz);
   };
 
-  // render: 렌더링을 담당setMy하는 함수
+  // render: 렌더링을 담당하는 함수
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
@@ -1411,6 +1413,7 @@ class VideoRoomComponent extends Component {
                     close={this.toggleParticipant}
                     upPointChanged={this.upPointChanged}
                     downPointChanged={this.downPointChanged}
+                    studentList={this.props.studentList}
                   />
                 </div>
               )}

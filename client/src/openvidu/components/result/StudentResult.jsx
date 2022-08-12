@@ -193,21 +193,21 @@ const TotalResult = css`
 
     & > .s-nickname {
       display: flex;
-      width: 100px;
+      width: 150px;
       justify-content: center;
       align-items: center;
     }
 
     & > .s-attendence-time {
       display: flex;
-      width: 100px;
+      width: 150px;
       justify-content: center;
       align-items: center;
     }
 
     & > .s-point {
       display: flex;
-      width: 100px;
+      width: 150px;
       justify-content: center;
       align-items: center;
     }

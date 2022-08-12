@@ -237,7 +237,7 @@ const EditStudent = ({ onClickOpenModal, studentId }: ModalDefaultType) => {
   return (
     <div css={ModalCSS}>
       <div className="commonModal">
-        <IosModalNew />
+        <IosModalNew onClickOpenModal={onClickOpenModal} />
       </div>
       <div className="infoContainer">
         <div className="profileContainer">

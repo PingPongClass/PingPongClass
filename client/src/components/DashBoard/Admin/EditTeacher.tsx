@@ -6,6 +6,7 @@ import InterceptedAxios from '@utils/iAxios';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { TeacherProps } from './TeacherBoard';
+import { useNavigate } from 'react-router-dom';
 
 interface ModalDefaultType {
   onClickOpenModal: () => void;
@@ -23,6 +24,7 @@ const EditTeacher = ({ onClickOpenModal, teacherId }: ModalDefaultType) => {
   const [preview, setPreview] = useState<any>(
     'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null',
   );
+  const navigate = useNavigate();
 
   const [isMouseOn, setIsMouseOn] = useState(false);
   const [isPreviewReset, setIsPreviewReset] = useState(false); // 리셋했는지 여부 판단용 상태값
@@ -221,7 +223,7 @@ const EditTeacher = ({ onClickOpenModal, teacherId }: ModalDefaultType) => {
   return (
     <div css={ModalCSS}>
       <div className="commonModal">
-        <IosModalNew />
+        <IosModalNew onClickOpenModal={onClickOpenModal} />
       </div>
       <div className="infoContainer">
         <div className="profileContainer">
