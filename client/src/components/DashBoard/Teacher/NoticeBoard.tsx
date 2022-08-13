@@ -190,6 +190,7 @@ const NoticeBoard = () => {
               labelId="demo-simple-select-label"
               id="demo-select-small"
               label="수업명"
+              defaultValue={''}
               onChange={handleSelect}
               MenuProps={MenuProps}
             >
