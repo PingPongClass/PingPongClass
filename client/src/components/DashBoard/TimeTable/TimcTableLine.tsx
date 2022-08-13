@@ -22,7 +22,7 @@ const totalContainer = css`
   .classCard {
     height: 30px;
     margin-bottom: 10px;
-    background: #9580c7;
+    background: #dd7e8f;
     display: flex;
     flex-direction: column;
     align-items: center;

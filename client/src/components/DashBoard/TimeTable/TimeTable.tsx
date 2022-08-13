@@ -36,6 +36,7 @@ const TimeTable = ({ close }: TimeTableModalStyle) => {
   const render = () => {
     return (
       <div css={totalContainer} onClick={close}>
+        <h2>시간표</h2>
         <div className="upperpart">
           <div className="blankspace"></div>
           <div className="classday">
@@ -73,32 +74,29 @@ const TimeTable = ({ close }: TimeTableModalStyle) => {
     );
   };
 
-  return (
-    <div>
-      {loading ? (
-        <div className="loadingImgBox">
-          <h1>로딩중...</h1>
-        </div>
-      ) : (
-        render()
-      )}
-    </div>
-  );
+  return <div>{loading ? <div></div> : render()}</div>;
 };
 
 const totalContainer = css`
   position: absolute;
-  top: 50px;
-  right: 50px;
-  z-index: 999;
-  width: 450px;
-  height: 350px;
+  top: 0px;
+  right: 0px;
+  width: 500px;
+  height: 420px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: white;
-  border-radius: 20px;
+  margin-top: 50px;
+  background-color: rgba(249, 249, 249);
+  box-sizing: border-box;
+  border-radius: 20px 0px 0px 20px;
+  box-shadow: 2px 2px 10px -5px;
+  z-index: 1000;
+  animation: fadeIn 0.4s;
 
+  h2 {
+    margin-top: 30px;
+  }
   .upperpart,
   .mainPart {
     width: 100%;
@@ -144,7 +142,6 @@ const totalContainer = css`
   }
 
   .timeline {
-    height: 100%
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -160,8 +157,8 @@ const totalContainer = css`
   .day {
     height: 30px;
   }
-  .time{
-    margin-bottom:10px;
+  .time {
+    margin-bottom: 10px;
   }
   @keyframes fadeIn {
     from {
@@ -175,7 +172,6 @@ const totalContainer = css`
       opacity: 1;
     }
   }
-
 `;
 
 export default TimeTable;

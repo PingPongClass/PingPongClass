@@ -4,6 +4,8 @@ import Mic from '@mui/icons-material/Mic';
 import MicOff from '@mui/icons-material/MicOff';
 import Videocam from '@mui/icons-material/Videocam';
 import VideocamOff from '@mui/icons-material/VideocamOff';
+import ErrorIcon from '@mui/icons-material/Error';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import './SingleParticipantPanel.css';
 
@@ -37,8 +39,13 @@ const SingleParticipantPanel = (props) => {
       <div className="left-side">
         {whoami === 'teacher' && isMyself === false && (
           <>
+            {/* 08/13 추가 : 선생님한테만 학생이 졸고있다는 것을 알람표시 해주기 */}
+            {user.outAngle ? (
+              <ErrorIcon color="error" />
+            ) : (
+              <AccountCircleIcon />
+            )}
             <button onClick={onClickPointUp}>▲</button>
-
             {user.point ? (
               <button onClick={onClickPointDown}>▼</button>
             ) : (
