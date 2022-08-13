@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { useAppSelector } from '@src/store/hooks';
-import StudentListTransfer from '@components/DashBoard/Teacher/StudentListTransfer';
-import { Link, useNavigate } from 'react-router-dom';
+import StudentEditListTransfer from '@components/DashBoard/Teacher/StudentEditListTransfer';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const weeks = [
   {
@@ -128,17 +128,23 @@ const subjects = [
   },
 ];
 
-const NewClassList = () => {
+const EditClassList = () => {
+  const { classId } = useParams();
   const [classTitle, setClassTitle] = useState('');
   const [classDay, setClassDay] = useState(1);
   const [subjectCode, setSubjectCode] = useState(1);
   const [studentList, setStudentList] = useState([] as any);
   const [timetableId, setTimetableId] = useState(1);
   const [classDes, setClassDes] = useState('');
+  const [preLoadedList, setPreLoadedList] = useState([] as any);
 
   const memberStore = useAppSelector((state) => state.member);
 
   const AXIOS = setupInterceptorsTo(axios.create());
+
+  useLayoutEffect(() => {
+    getClassInfo();
+  }, []);
 
   const ChangeDay = (data) => {
     setClassDay(data);
@@ -150,7 +156,6 @@ const NewClassList = () => {
     setSubjectCode(data);
   };
   const ChangeStudentList = (data) => {
-    console.log(data);
     setStudentList(data);
   };
   const ChangeTimetableId = (data) => {
@@ -162,7 +167,28 @@ const NewClassList = () => {
 
   const navigate = useNavigate();
 
-  const createClass = async () => {
+  const getClassInfo = async () => {
+    if (classId) {
+      const result = await AXIOS.get('/classes/classinfo/' + classId);
+      const classinfo = result.data;
+      const studentListData = await AXIOS.get('/classes/student/' + classId);
+      const studentList = studentListData.data.participantsList;
+      // let studentList: string[] = [];
+      // studentListData.data.participantsList.forEach((elem) => {
+      //   studentList.push(elem?.studentid.toString());
+      // });
+      setClassTitle(classinfo.classTitle);
+      setClassDay(classinfo.classDay);
+      setSubjectCode(classinfo.subjectEntity.classSubjectCode);
+
+      setPreLoadedList(studentList);
+      setTimetableId(classinfo.timetableId);
+      setClassDes(classinfo.classDesc);
+    }
+    // navigate('/teacher/classes');
+  };
+
+  const editClass = async () => {
     const data = {
       teacherId: memberStore.userId,
       subjectCode: subjectCode,
@@ -173,14 +199,43 @@ const NewClassList = () => {
       classDesc: classDes,
       studentIdList: studentList,
     };
-    const result = await AXIOS.post('/classes', data);
+    const result = await AXIOS.patch('/classes/' + classId, data);
     console.log(result);
+    alert('수업이 수정되었습니다.');
     navigate('/teacher/classes');
+  };
+
+  const deleteManagedClass = () => {
+    let finalCheck = confirm(
+      '정말로 삭제하시겠습니까? 삭제하시면 수업 기록을 볼 수 없습니다.',
+    );
+    if (finalCheck) {
+      AXIOS.delete('/classes/' + classId)
+        .then(() => {
+          alert('삭제되었습니다.');
+          navigate('/teacher/classes');
+        })
+        .catch(() => {});
+    }
+  };
+
+  const disabledClass = () => {
+    let finalCheck = confirm(
+      '정말로 비활성화하시겠습니까? 다시는 수업을 열 수 없습니다.',
+    );
+    if (finalCheck) {
+      AXIOS.patch('/classes/update/' + classId)
+        .then(() => {
+          alert('비활성화되었습니다.');
+          navigate('/teacher/classes');
+        })
+        .catch(() => {});
+    }
   };
 
   return (
     <div css={totalContainer}>
-      <h1>수업 생성</h1>
+      <h1>수업 수정</h1>
       <br />
       <div className="inputContainer">
         <TextField
@@ -189,6 +244,7 @@ const NewClassList = () => {
           label="수업명"
           fullWidth
           size="small"
+          value={classTitle}
         />
         <div className="timeContainer">
           <TextField
@@ -247,15 +303,30 @@ const NewClassList = () => {
           label="수업 설명"
           fullWidth
           size="small"
+          value={classDes}
         />
-        <StudentListTransfer ChangeStudentList={ChangeStudentList} />
+        <StudentEditListTransfer
+          ChangeStudentList={ChangeStudentList}
+          preLoadedList={preLoadedList}
+        />
         <div className="buttonContainer">
-          <button className="listButton blue" onClick={() => createClass()}>
-            생성
+          <button className="listButton blue" onClick={() => editClass()}>
+            수정
           </button>
           <Link to="/teacher/classes">
             <button className="listButton gray">취소</button>
           </Link>
+        </div>
+        <div className="deleteContainer">
+          <button
+            className="listButton pink"
+            onClick={() => deleteManagedClass()}
+          >
+            삭제
+          </button>
+          <button className="listButton pink" onClick={() => disabledClass()}>
+            비활성화
+          </button>
         </div>
       </div>
     </div>
@@ -328,6 +399,20 @@ const totalContainer = css`
     background: var(--gray);
     margin-left: 20px;
   }
+
+  .pink {
+    background: var(--pink);
+    height: 40px;
+    font-size: 12pt;
+    margin-right: 5px;
+  }
+
+  .deleteContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    width: 100%;
+  }
 `;
 
-export default NewClassList;
+export default EditClassList;

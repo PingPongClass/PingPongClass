@@ -77,7 +77,7 @@ const Myinfo = () => {
   };
 
   return (
-    <div css={totalContainer}>
+    <div css={totalContainer(currentRate, totalRate)}>
       <div
         css={css`
           width: 100%;
@@ -178,7 +178,7 @@ const Myinfo = () => {
   );
 };
 
-const totalContainer = css`
+const totalContainer = (currentRate: number, totalRate: number) => css`
   width: 100%;
   height: 100%;
   background: #ffffff;
@@ -367,7 +367,7 @@ const totalContainer = css`
       width: 0%;
     }
     to {
-      width: 50%;
+      width: ${currentRate}%;
     }
   }
 
@@ -376,7 +376,7 @@ const totalContainer = css`
       width: 0%;
     }
     to {
-      width: 70%;
+      width: ${totalRate}%;
     }
   }
 `;

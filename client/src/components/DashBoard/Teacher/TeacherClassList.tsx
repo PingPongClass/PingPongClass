@@ -10,26 +10,8 @@ import { useAppSelector } from '@src/store/hooks';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import { useNavigate } from 'react-router-dom'; // 임시함수 - 주말 지나면 지우기
-import getCode from '@utils/getCode'; // 임시함수 - 주말 지나면 지우기
-
-// 임시함수 - 주말 지나면 지우기
-interface ClassProps {
-  classDay: number;
-  classDesc: string;
-  classId: number;
-  classTitle: string;
-  subjectEntity: {
-    classSubjectCode: number;
-    name: string;
-  };
-  teacherName: string;
-  timetableId: number;
-  classUrl: string;
-}
 
 const ClassList = () => {
-  const navigate = useNavigate(); // 임시함수 - 주말 지나면 지우기
   var dt = new Date();
   const [tab, setTab] = useState(dt.getDay());
   const [clsList, setClsList] = useState([] as any);
@@ -44,41 +26,17 @@ const ClassList = () => {
     }).then((response) => setClsList(response.data.content));
   };
 
-  console.log('여기');
-
   useEffect(() => {
     if (memberStore.userId !== -1) {
       const rs = loadClassList(dt.getDay());
     }
   }, []);
 
-  // 임시함수 - 주말 지나면 지우기
-  const openClass = async (cls: ClassProps) => {
-    const newCode = await getCode();
-    const newData = {
-      classId: cls.classId,
-      classUrl: newCode,
-    };
-
-    try {
-      await AXIOS.patch(`/classes/open`, newData);
-      navigate(`/lecture/${newCode}`, {
-        state: {
-          classId: cls.classId,
-          classTitle: cls.classTitle,
-          teacherName: cls.teacherName,
-        },
-      });
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
   // 지금 무조건 첫수업으로 가게 해둠
   const render = (idx): any => {
     const clsIdx = idx * 6;
     return (
-      <SwiperSlide key={idx} onClick={() => openClass(clsList[clsIdx])}>
+      <SwiperSlide key={idx}>
         <div className="cardContainer">
           <div className="upCardContainer">
             <ClassCard clsList={clsList[clsIdx]} />
@@ -97,96 +55,116 @@ const ClassList = () => {
 
   const renderList = (): any => {
     let tmp = [] as any;
-    for (let i = 0; i < clsList.length / 6; i++) {
-      tmp.push(render(i));
+    if (clsList.length !== 0) {
+      for (let i = 0; i < clsList.length / 6; i++) {
+        tmp.push(render(i));
+      }
+    } else {
+      tmp.push(render(1));
     }
     return tmp;
   };
 
   return (
     <div css={totalContainer}>
-      <div className="tabsContainer">
-        <div className="weekTabs">
-          <div
-            className={tab === 1 ? 'active tabs' : 'tabs'}
-            onClick={() => loadClassList(1)}
-          >
-            월
-          </div>
-          <div
-            className={tab === 2 ? 'active tabs' : 'tabs'}
-            onClick={() => loadClassList(2)}
-          >
-            화
-          </div>
-          <div
-            className={tab === 3 ? 'active tabs' : 'tabs'}
-            onClick={() => loadClassList(3)}
-          >
-            수
-          </div>
-          <div
-            className={tab === 4 ? 'active tabs' : 'tabs'}
-            onClick={() => loadClassList(4)}
-          >
-            목
-          </div>
-          <div
-            className={tab === 5 ? 'active tabs' : 'tabs'}
-            onClick={() => loadClassList(5)}
-          >
-            금
+      <div className="pageTitle">수업목록</div>
+      <hr
+        css={css`
+          margin-bottom: 30px;
+        `}
+      />
+      <div className="total-container">
+        <div className="tabsContainer">
+          <div className="weekTabs">
+            <div
+              className={tab === 1 ? 'active tabs' : 'tabs'}
+              onClick={() => loadClassList(1)}
+            >
+              월
+            </div>
+            <div
+              className={tab === 2 ? 'active tabs' : 'tabs'}
+              onClick={() => loadClassList(2)}
+            >
+              화
+            </div>
+            <div
+              className={tab === 3 ? 'active tabs' : 'tabs'}
+              onClick={() => loadClassList(3)}
+            >
+              수
+            </div>
+            <div
+              className={tab === 4 ? 'active tabs' : 'tabs'}
+              onClick={() => loadClassList(4)}
+            >
+              목
+            </div>
+            <div
+              className={tab === 5 ? 'active tabs' : 'tabs'}
+              onClick={() => loadClassList(5)}
+            >
+              금
+            </div>
+            <div className="createTab">
+              <Link to="/teacher/create" className="linkButton">
+                수업 열기
+              </Link>
+            </div>
           </div>
         </div>
-        <div className="createTab">
-          <Link to="/teacher/create" className="linkButton">
-            수업 열기
-          </Link>
-        </div>
+        <Swiper
+          style={{
+            width: '100%',
+            borderLeft: '1px solid gray',
+            borderRight: '1px solid gray',
+            borderBottom: '1px solid gray',
+            borderBottomLeftRadius: '20px',
+            borderBottomRightRadius: '20px',
+          }}
+          pagination={{
+            type: 'progressbar',
+          }}
+          slidesPerView={1}
+          spaceBetween={0}
+          navigation={true}
+          modules={[Pagination, Navigation]}
+          className="mySwiper"
+        >
+          {renderList()}
+        </Swiper>
       </div>
-      <Swiper
-        style={{ width: '100%' }}
-        pagination={{
-          type: 'progressbar',
-        }}
-        slidesPerView={1}
-        spaceBetween={0}
-        navigation={true}
-        modules={[Pagination, Navigation]}
-        className="mySwiper"
-      >
-        {renderList()}
-      </Swiper>
     </div>
   );
 };
 
 const totalContainer = css`
   width: 100%;
-  background: #fdfcf3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: start;
-  border-radius: 20px;
-  box-shadow: 2px 2px 15px -5px;
   animation: 0.5s ease-in-out loadEffect1;
+
+  .total-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    border-radius: 20px 20px 0 0;
+  }
 
   .tabsContainer {
     width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
   }
 
   .tabs {
     height: 100%;
-    width: 100px;
-    background: #f8f7ec;
-    border-radius: 20px 20px 0 0;
+    width: 140px;
+    background: #fcc97d;
+    border-radius: 10px 10px 0 0;
     margin-right: 2px;
-    box-shadow: -2px -2px 10px -7px;
     cursor: pointer;
     display: flex;
     flex-direction: row;
@@ -198,10 +176,9 @@ const totalContainer = css`
 
   .createTab {
     height: 100%;
-    width: 100px;
-    background: #f63471;
-    border-radius: 20px 20px 0 0;
-    box-shadow: -2px -2px 10px -7px;
+    width: 140px;
+    background: var(--gray);
+    border-radius: 10px 10px 0 0;
     cursor: pointer;
     display: flex;
     flex-direction: row;
@@ -210,26 +187,34 @@ const totalContainer = css`
     font-size: 20px;
     transition: all 0.2s ease-in-out;
     color: white;
+    font-weight: 700;
+    margin-left: 60px;
   }
 
   .active {
-    background-color: #ff3366;
-    color: white;
+    background-color: white;
+    font-weight: 700;
+    border-top: 1px solid gray;
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
   }
 
-  .tabs:hover,
+  .tabs:hover {
+    background-color: #ffeed1;
+  }
+
   .createTab:hover {
-    transform: scale(1.04);
-    background-color: #87a1c7;
+    background-color: var(--blue);
   }
 
   .weekTabs {
     width: 100%;
-    height: 50px;
+    height: 40px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: start;
+    border-bottom: dashed 1px gray;
   }
 
   .cardContainer {

@@ -43,7 +43,15 @@ const info = [
   },
 ];
 
-export default function TransferList(props: { ChangeStudentList: Function }) {
+interface StudentProps {
+  studentid: number;
+  studentNickname: string;
+}
+
+export default function TransferList(props: {
+  ChangeStudentList: Function;
+  preLoadedList: StudentProps[];
+}) {
   const [checked, setChecked] = useState([] as any);
   const [left, setLeft] = useState([] as any);
   const [right, setRight] = useState([] as any);
@@ -68,6 +76,24 @@ export default function TransferList(props: { ChangeStudentList: Function }) {
     const finalList = right.slice().map((e) => e.slice(0, 10));
     props.ChangeStudentList(finalList);
   }, [right]);
+
+  useEffect(() => {
+    const nameList = Array.from(
+      { length: props.preLoadedList.length },
+      (v, i) =>
+        `${props.preLoadedList[i].studentid} ${props.preLoadedList[
+          i
+        ]?.studentNickname.substring(7)} ${props.preLoadedList[
+          i
+        ]?.studentNickname.substring(1, 2)}학년 ${props.preLoadedList[
+          i
+        ]?.studentNickname.substring(3, 4)}반 ${props.preLoadedList[
+          i
+        ]?.studentNickname.substring(5, 6)}번 `,
+    );
+    const rightList = not(nameList, right);
+    setRight(rightList);
+  }, [props.preLoadedList]);
 
   const SearchStudentList = async () => {
     let data: any = {};

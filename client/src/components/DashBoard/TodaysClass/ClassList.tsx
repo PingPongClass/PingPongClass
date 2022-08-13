@@ -79,8 +79,12 @@ const ClassList = () => {
 
   const renderList = (): any => {
     let tmp = [] as any;
-    for (let i = 0; i < clsList.length / 6; i++) {
-      tmp.push(render(i));
+    if (clsList.length !== 0) {
+      for (let i = 0; i < clsList.length / 6; i++) {
+        tmp.push(render(i));
+      }
+    } else {
+      tmp.push(render(1));
     }
     return tmp;
   };
@@ -143,7 +147,14 @@ const ClassList = () => {
           </div>
         </div>
         <Swiper
-          style={{ width: '100%' }}
+          style={{
+            width: '100%',
+            borderLeft: '1px solid gray',
+            borderRight: '1px solid gray',
+            borderBottom: '1px solid gray',
+            borderBottomLeftRadius: '20px',
+            borderBottomRightRadius: '20px',
+          }}
           pagination={{
             type: 'progressbar',
           }}
@@ -162,16 +173,15 @@ const ClassList = () => {
 
 const totalContainer = css`
   width: 100%;
+  animation: 0.5s ease-in-out loadEffect1;
+
   .total-container {
     width: 100%;
-    background: #fdfcf3;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: start;
     border-radius: 20px 20px 0 0;
-    box-shadow: 2px 2px 15px -5px;
-    animation: 0.5s ease-in-out loadEffect1;
   }
 
   .tabsContainer {
@@ -184,11 +194,10 @@ const totalContainer = css`
 
   .tabs {
     height: 100%;
-    width: 100px;
-    background: #f8f7ec;
-    border-radius: 20px 20px 0 0;
+    width: 140px;
+    background: #fcc97d;
+    border-radius: 10px 10px 0 0;
     margin-right: 2px;
-    box-shadow: -2px -2px 10px -7px;
     cursor: pointer;
     display: flex;
     flex-direction: row;
@@ -199,22 +208,25 @@ const totalContainer = css`
   }
 
   .active {
-    background-color: #ff3366;
-    color: white;
+    background-color: white;
+    font-weight: 700;
+    border-top: 1px solid gray;
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
   }
 
   .tabs:hover {
-    transform: scale(1.04);
-    background-color: #87a1c7;
+    background-color: #ffeed1;
   }
 
   .weekTabs {
     width: 100%;
-    height: 50px;
+    height: 40px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: start;
+    border-bottom: dashed 1px gray;
   }
 
   .cardContainer {

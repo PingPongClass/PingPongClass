@@ -27,6 +27,7 @@ import EditClass from '@components/DashBoard/Admin/EditClass';
 import { ToastContainer } from 'react-toastify';
 import '@src/App.css';
 import TimeTable from './components/DashBoard/TimeTable/TimeTable';
+import TeacherEditClass from './components/DashBoard/Teacher/TeacherEditClass';
 
 const App = () => {
   return (
@@ -66,6 +67,7 @@ const App = () => {
             <Route path="noticePost" element={<TeacherEditNotice />} />
             <Route path="classes" element={<TeacherClassList />} />
             <Route path="create" element={<TeacherNewClass />} />
+            <Route path="edit/:classId" element={<TeacherEditClass />} />
             <Route path="mypage" element={<InputPassword />} />
             <Route path="teachermyinfo" element={<TeacherMyInfo />} />
           </Route>
