@@ -101,7 +101,8 @@ const totalContainer = css`
     justify-content: start;
     box-sizing: border-box;
     gap: 30px;
-    overflow-y: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .infoContent::-webkit-scrollbar {

@@ -244,7 +244,7 @@ const totalContainer = () => css`
   text-align: center;
   display: grid;
   /* height: inherit; */
-  height: max-content;
+  height: min-content;
   position: relative;
   overflow: hidden;
   animation: 0.5s ease-in-out loadEffect1;
