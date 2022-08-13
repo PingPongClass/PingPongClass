@@ -311,6 +311,8 @@ export const NoticeBoardStyle = () => css`
     background-color: transparent;
     font-family: 'NanumSquare';
     vertical-align: middle;
+    font-size: 13pt;
+    font-weight: 290;
   }
 
   .col {
@@ -320,12 +322,14 @@ export const NoticeBoardStyle = () => css`
   }
   /* 제목 행 */
   .titleRow {
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
     padding: 0.5rem 0;
     background-color: #c0d2e5;
     height: 30px;
     vertical-align: middle;
+    font-weight: 400;
+    font-size: 15pt;
   }
 
   /* 게시글 항목 영역 */
@@ -435,7 +439,7 @@ export const NoticeBoardStyle = () => css`
     border-radius: 0.5rem;
     background-color: #ffe790;
     align-self: center;
-    width: 50%;
+    width: 70%;
     min-width: max-content;
     vertical-align: top;
   }

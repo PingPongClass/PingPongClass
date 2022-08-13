@@ -147,4 +147,10 @@ public class NoticeService {
         NoticeEntity entity = noticeRepository.findById(noticeId).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
         noticeRepository.delete(entity);
     }
+
+    //공지사항 조회
+    public NoticeEntity findNotice(int noticeId){
+        NoticeEntity entity = noticeRepository.findById(noticeId).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
+        return entity;
+    }
 }

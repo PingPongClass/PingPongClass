@@ -188,7 +188,7 @@ const totalContainer = (currentRate: number, totalRate: number) => css`
   justify-content: start;
   border-radius: 20px;
   padding: 50px;
-  box-shadow: 2px 2px 15px -5px;
+  box-shadow: -1px 2px 12px -3px gray;
   box-sizing: border-box;
 
   .infoContainer {

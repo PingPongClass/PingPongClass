@@ -1,5 +1,6 @@
 package com.pingpong.backend.api.controller;
 
+import com.pingpong.backend.api.domain.NoticeEntity;
 import com.pingpong.backend.api.domain.TeacherEntity;
 import com.pingpong.backend.api.domain.request.NoticeRequest;
 import com.pingpong.backend.api.domain.response.NoticeResponse;
@@ -66,5 +67,12 @@ public class NoticeController {
     public int deleteNotice(@PathVariable final int noticeId){
         noticeService.delete(noticeId);
         return 200;
+    }
+
+    @ApiOperation(value = "공지사항 상세 조회", notes = "해당 번호의 공지글을 보여줍니다.")
+    @GetMapping("/{noticeId}")
+    @PreAuthorize("hasRole('TEACHER')")
+    public NoticeEntity selectViewNotice(@PathVariable final int noticeId){
+        return noticeService.findNotice(noticeId);
     }
 }

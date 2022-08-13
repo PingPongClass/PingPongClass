@@ -106,18 +106,17 @@ const totalContainer = css`
   }
 
   .infoContent::-webkit-scrollbar {
-    width: 10px;
+    width: 5px;
   }
 
   .infoContent::-webkit-scrollbar-track {
-    background: #f8cbd3;
+    background: #ebebeb;
     border-radius: 20px;
   }
 
   .infoContent::-webkit-scrollbar-thumb {
-    background-color: #bdcde5; /* color of the scroll thumb */
+    background-color: #cacacb; /* color of the scroll thumb */
     border-radius: 20px; /* roundness of the scroll thumb */
-    border: 1px solid #afafaf;
   }
 
   .footer {

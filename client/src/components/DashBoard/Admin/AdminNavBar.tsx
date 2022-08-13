@@ -76,7 +76,7 @@ const NavBar = () => {
           onClick={onClickNotices}
         >
           <CampaignIcon style={{ fontSize: '40px' }} />
-          공지사항
+          공지 관리
         </div>
       </Link>
     </div>
