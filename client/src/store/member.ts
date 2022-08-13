@@ -58,6 +58,8 @@ export interface Member {
   nextLevel?: string;
   levelPoint?: number;
   myRank?: number;
+  jandiColor?: number;
+  borderColor?: number;
 
   items?: Item[];
   classes?: ClassProps[];
@@ -120,6 +122,8 @@ const initialState = {
   nextLevel: '',
   levelPoint: 0,
   myRank: 0,
+  jandiColor: 0,
+  borderColor: 0,
 
   items: [
     {
@@ -192,6 +196,8 @@ const convert = (state, action: PayloadAction<any>) => {
     nextLevel: action.payload?.nextLevel ? action.payload?.nextLevel : '',
     levelPoint: action.payload?.levelPoint ? action.payload?.levelPoint : 0,
     myRank: action.payload?.myRank ? action.payload?.myRank : 0,
+    jandiColor: action.payload?.jandiColor ? action.payload?.jandiColor : 0,
+    borderColor: action.payload?.borderColor ? action.payload?.borderColor : 0,
     items: action.payload?.items === [] ? action.payload?.items : state.items,
     classes:
       action.payload?.classes === [] ? action.payload?.classes : state.classes,
