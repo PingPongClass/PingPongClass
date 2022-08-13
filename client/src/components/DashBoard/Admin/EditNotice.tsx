@@ -7,6 +7,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { ClassProps, allClass, getClasses } from '@src/store/member';
 import { css } from '@emotion/react';
 import { MenuItem, TextField } from '@mui/material';
+import { toast } from 'react-toastify';
 
 interface PostNoticeProps {
   noticeId?: number;
@@ -86,25 +87,35 @@ const EditNotice = () => {
   };
 
   const changePost = () => {
-    InterceptedAxios.patch('/notice/' + noticeId, notice)
-      .then(() => {
-        alert('수정 완료');
-        navigate('/admin/notice');
-      })
-      .catch(() => {
-        alert('수정 실패! 정보를 다시 확인해 주세요.');
-      });
+    if (tmpTitle === '' || tmpContent === '' || tmpContent === '') {
+      toast.warning('모두 입력해주세요.');
+      return;
+    } else {
+      InterceptedAxios.patch('/notice/' + noticeId, notice)
+        .then(() => {
+          alert('공지사항이 수정되었습니다.');
+          navigate('/admin/notice');
+        })
+        .catch(() => {
+          toast.error('수정 실패! 정보를 다시 확인해 주세요.');
+        });
+    }
   };
 
   const postNew = () => {
-    InterceptedAxios.post('/notice/', notice)
-      .then(() => {
-        alert('추가 완료');
-        navigate('/admin/notice');
-      })
-      .catch(() => {
-        alert('작성 실패! 정보를 다시 확인해 주세요.');
-      });
+    if (tmpTitle === '' || tmpContent === '' || tmpContent === '') {
+      toast.warning('모두 입력해주세요.');
+      return;
+    } else {
+      InterceptedAxios.post('/notice/', notice)
+        .then(() => {
+          alert('공지사항이 작성되었습니다.');
+          navigate('/admin/notice');
+        })
+        .catch(() => {
+          toast.error('작성 실패! 정보를 다시 확인해 주세요.');
+        });
+    }
   };
 
   const submitPost = () => {
@@ -128,7 +139,7 @@ const EditNotice = () => {
       <div className="firstContainer">
         <div>
           <TextField
-            id="filled-select-currency"
+            id="outlined-select-currency"
             label="수업 선택"
             select
             onChange={(e) => {
@@ -149,9 +160,9 @@ const EditNotice = () => {
         </div>
         <div>
           <TextField
-            id="filled-basic"
+            id="outlined-basic"
             label="제목"
-            defaultValue={tmpTitle}
+            value={tmpTitle}
             onChange={(e) => {
               titleChanged(e);
             }}
@@ -163,16 +174,17 @@ const EditNotice = () => {
           />
         </div>
       </div>
+      <br />
       <div>
         <TextField
-          id="filled-basic"
+          id="outlined-basic"
           label="내용"
           helperText="내용을 입력해주세요."
           rows={19}
           multiline
           variant="outlined"
           fullWidth
-          defaultValue={tmpContent}
+          value={tmpContent}
           onChange={(e) => {
             contentChanged(e);
           }}

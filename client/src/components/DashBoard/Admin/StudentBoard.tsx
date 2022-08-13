@@ -307,6 +307,8 @@ const totalContainer = () => css`
     font-family: 'NanumSquare';
     vertical-align: middle;
     display: inline-block;
+    font-size: 13pt;
+    font-weight: 290;
   }
 
   .col {
@@ -318,8 +320,12 @@ const totalContainer = () => css`
   }
   /* 제목 행 */
   .titleRow {
-    padding: 0.5rem 0;
+    padding: 1rem 0 0.5rem 0;
     background-color: #c0d2e5;
+    font-size: 15pt;
+    font-weight: 400;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
   }
 
   /* 게시글 항목 영역 */

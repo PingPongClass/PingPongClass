@@ -79,6 +79,8 @@ export const TeacherStyle = () => css`
   vertical-align: middle;
   /* width: fit-content; */
   /* height: inherit; */
+  font-size: 15pt;
+  font-weight: 400;
 
   position: relative;
   width: 10vw;
