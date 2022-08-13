@@ -9,17 +9,11 @@ import member, {
   saveItem,
 } from '@src/store/member';
 
-function Item({ item }) {
-  const img = '/items/' + item.name + '.gif';
-  return (
-    <div className="item-div">
-      <img src={img} style={{ width: '80px' }} />
-      <p>{item.name}</p>
-    </div>
-  );
+interface GetReactionProps {
+  reactionFunction: Function;
 }
 
-const GetReactionList = () => {
+const GetReactionList = (props: GetReactionProps) => {
   const [items, setItems] = useState<Items[]>([allItems]);
   const [loading, setLoading] = useState(true);
   const memberStore = useAppSelector((state) => state.member);
@@ -34,6 +28,16 @@ const GetReactionList = () => {
       setLoading(false);
     });
   }, []);
+
+  function Item({ item }) {
+    const img = '/items/' + item.name + '.gif';
+    return (
+      <div className="item-div" onClick={() => props.reactionFunction(img)}>
+        <img src={img} style={{ width: '80px' }} />
+        <p>{item.name}</p>
+      </div>
+    );
+  }
 
   const filterItem = items.filter(
     (item) =>

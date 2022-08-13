@@ -1,6 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { motion } from 'framer-motion';
+import one from '../../../assets/images/colorChange_Border.png';
+import two from '../../../assets/images/colorChange_Jandi.png';
 import BobkkiCapsule from '../../../assets/images/bobkkiCapsule.png';
 import CapsuleBox from '../../../assets/images/capsuleBox.png';
 import ItemBackground from '../../../assets/images/splash2.png';
@@ -19,7 +21,7 @@ const Animation = ({
   getType,
 }: ModalDefaultType) => {
   const color = [
-    'white',
+    'black',
     'yellow',
     'green',
     'blue',
@@ -28,10 +30,13 @@ const Animation = ({
     'platinum',
     'pingpong',
   ];
+  useEffect(() => {
+    console.log('Animation2 : ', getColor + ',', color[getColor], ',', getType);
+  }, []);
 
   return (
     <div css={totalContainer}>
-      {/* <audio src="../sounds/gatcha.mp3" autoPlay /> */}
+      <audio src="../sounds/itemgatcha.m4a" autoPlay />
       <div
         style={{
           position: 'relative',
@@ -75,7 +80,7 @@ const Animation = ({
             top: '3vh',
           }}
         >
-          <img src={BobkkiCapsule} alt="뽑기캡슐" />
+          <img src={getType == 1 ? one : two} alt="뽑기캡슐" />
         </motion.div>
 
         <motion.div
@@ -111,7 +116,7 @@ const Animation = ({
             top: '3vh',
           }}
         >
-          <img src={BobkkiCapsule} alt="뽑기캡슐" />
+          <img src={getType === 1 ? one : two} alt="뽑기캡슐" />
         </motion.div>
 
         <motion.div
@@ -121,12 +126,40 @@ const Animation = ({
           }}
           transition={{ duration: 5, repeat: 0 }}
           style={{
+            width: '100%',
+            height: '100%',
             margin: 'auto',
             position: 'absolute',
-            top: '3vh',
+            top: '12vh',
+            left: '8vw',
           }}
         >
-          {/* <div style={{ width: '55%', border: {} }}></div> */}
+          {getType == 1 && (
+            <div
+              className={'border-' + color[getColor - 1]}
+              style={{
+                width: '56px',
+                height: '56px',
+                borderRadius: '30%',
+                border: '17px solid transparent',
+                backgroundOrigin: 'border-box',
+                backgroundClip: 'content-box, border-box',
+              }}
+            ></div>
+          )}
+          {getType == 2 && (
+            <div
+              className={'pong-' + color[getColor - 1]}
+              style={{
+                width: '73px',
+                height: '73px',
+                borderRadius: '30%',
+                border: '17px solid transparent',
+                backgroundOrigin: 'border-box',
+                backgroundClip: 'content-box, border-box',
+              }}
+            ></div>
+          )}
         </motion.div>
 
         <motion.div
@@ -139,7 +172,7 @@ const Animation = ({
             margin: 'auto',
             position: 'absolute',
             top: '27vh',
-            left: '8vh',
+            left: '12vh',
           }}
         >
           <p
@@ -150,7 +183,7 @@ const Animation = ({
               color: 'white',
             }}
           >
-            [{getType === 1 ? '테두리' : '퐁퐁이'}] {color[getColor + 1]}
+            [{getType === 1 ? '테두리' : '퐁퐁이'}] {color[getColor - 1]}
           </p>
         </motion.div>
       </div>

@@ -102,9 +102,9 @@ const Animation = ({ onClickOpenModal, getItem }: ModalDefaultType) => {
             src={ItemBackground}
             alt="뽑기배경"
             style={{
-              width: '450px',
-              marginBottom: '60vh',
-              marginRight: '32vw',
+              width: '462px',
+              marginBottom: '62vh',
+              marginRight: '62vw',
             }}
           />
         </motion.div>

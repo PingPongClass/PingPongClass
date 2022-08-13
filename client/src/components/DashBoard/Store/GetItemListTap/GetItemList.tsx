@@ -118,8 +118,6 @@ const GetItemList = (props: GetItemListProps) => {
       item.cnt > 0,
   );
 
-  // console.log(items);
-
   const render = () => {
     return filterItem.map((item, index) => <Item key={index} item={item} />);
   };

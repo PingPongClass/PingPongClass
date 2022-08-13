@@ -267,3 +267,92 @@ option {
 .hover:hover {
   color: var(--pink);
 }
+
+/* item */
+/* color */
+.item-color {
+  width: 56px;
+  height: 56px;
+  border-radius: 30%;
+  border: 17px solid transparent;
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+}
+
+/* border */
+/* .item-border {
+  width: 56px;
+  height: 56px;
+  border-radius: 30%;
+  border: 17px solid transparent;
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+} */
+
+/* 'black',
+    'yellow',
+    'green',
+    'blue',
+    'purple',
+    'dia',
+    'platinum',
+    'pingpong', */
+
+.border-black {
+  background-image: linear-gradient(#ffffff, #e1e1e1),
+    linear-gradient(to right, #464646, #14002c);
+}
+.border-yellow {
+  background-image: linear-gradient(#ffffff, #e1e1e1),
+    linear-gradient(to right, #cbce67, #de9931);
+}
+.border-green {
+  background-image: linear-gradient(#ffffff, #e1e1e1),
+    linear-gradient(to right, #43c8c7, #3fb15d);
+}
+.border-blue {
+  background-image: linear-gradient(#ffffff, #e1e1e1),
+    linear-gradient(to right, #79c3d6, #5a94eb);
+}
+.border-purple {
+  background-image: linear-gradient(#ffffff, #e1e1e1),
+    linear-gradient(to right, #573dd5, #9b5aeb);
+}
+.border-dia {
+  background-image: linear-gradient(#ffffff, #e1e1e1),
+    linear-gradient(to right, #bfd596, #52deea, #a687e3);
+}
+.border-platinum {
+  background-image: linear-gradient(#ffffff, #e1e1e1),
+    linear-gradient(to right, #f87f93, #eba448, #f2e286);
+}
+.border-pingpong {
+  background-image: linear-gradient(#ffffff, #e1e1e1),
+    linear-gradient(to right, #ebacff, #9899dd, #abe8f0);
+}
+
+/* 퐁퐁 */
+.pong-black {
+  background-image: linear-gradient(#464646, #14002c);
+}
+.pong-yellow {
+  background-image: linear-gradient(#cbce67, #de9931);
+}
+.pong-green {
+  background-image: linear-gradient(#43c8c7, #3fb15d);
+}
+.pong-blue {
+  background-image: linear-gradient(#79c3d6, #5a94eb);
+}
+.pong-purple {
+  background-image: linear-gradient(#573dd5, #9b5aeb);
+}
+.pong-dia {
+  background-image: linear-gradient(#bfd596, #52deea, #a687e3);
+}
+.pong-platinum {
+  background-image: linear-gradient(#f87f93, #eba448, #f2e286);
+}
+.pong-pingpong {
+  background-image: linear-gradient(#ebacff, #9899dd, #abe8f0);
+}

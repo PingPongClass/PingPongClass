@@ -21,7 +21,7 @@ const ItemList = () => {
           `}
         />
         <img src={ColorChangeJandi} className="itemImg" data-tip data-for="1" />
-        <p>색변경권[잔디]</p>
+        <p>퐁퐁이 색상권</p>
       </div>
       <ReactTooltip
         id="1"
@@ -62,7 +62,7 @@ const ItemList = () => {
           data-tip
           data-for="2"
         />
-        <p>색변경권[테두리]</p>
+        <p>테두리 색상권</p>
       </div>
       <ReactTooltip
         id="2"

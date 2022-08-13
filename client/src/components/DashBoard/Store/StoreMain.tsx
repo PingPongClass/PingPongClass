@@ -35,9 +35,24 @@ const StoreMain = () => {
   const [change, setChange] = useState('');
   const [getItem, setGetItem] = useState<number>(0);
   const [getColor, setGetColor] = useState<number>(0);
+  const [getBorder, setGetBorder] = useState<number>(0);
   const [getColorType, setGetColorType] = useState<number>(0);
   const [isOpenPick, setIsOpenPick] = useState(false);
+
+  const [showReaction, setShowReaction] = useState('');
+
   const dispatch = useAppDispatch();
+
+  const color = [
+    'black',
+    'yellow',
+    'green',
+    'blue',
+    'purple',
+    'dia',
+    'platinum',
+    'pingpong',
+  ];
 
   useEffect(() => {
     //로딩시 해당 유저의 아이템 불러오기
@@ -107,7 +122,12 @@ const StoreMain = () => {
   }, [isOpenBbobkki]);
 
   const onClickOpenModal2 = useCallback(() => {
+    //창 꺼지게
     setIsOpenPick(!isOpenPick);
+    if (getColorType === 1) {
+      //색 변경
+      setGetBorder(getColor);
+    }
   }, [isOpenPick]);
 
   //보유 아이템 사용 propfunction
@@ -118,6 +138,13 @@ const StoreMain = () => {
     setGetColorType(type);
     console.log('highFunction : ', color, ',', type);
     //Animation2로 전달
+  };
+
+  //리액션 보이는 창
+  const reactionFunction = (reaction) => {
+    //리액션 보이게
+    setShowReaction(reaction);
+    setTimeout(() => setShowReaction(''), 2000);
   };
 
   // 클릭 이벤트 핸들러
@@ -352,7 +379,20 @@ const StoreMain = () => {
         <div className="pageTitle">보유 목록</div>
         <hr />
         <div className="sideContainer">
-          <div className="example">예시화면</div>
+          <div
+            className={'border-' + color[getBorder - 1]}
+            style={{
+              borderRadius: '10%',
+              border: '17px solid transparent',
+              backgroundOrigin: 'border-box',
+              backgroundClip: 'content-box, border-box',
+              width: '35%',
+              height: '90%',
+            }}
+          >
+            {showReaction != '' && <img src={showReaction} alt="" />}
+            예시화면
+          </div>
           <div className="getItemList">
             <div className="item-tap">
               <div
@@ -376,7 +416,9 @@ const StoreMain = () => {
               {gettap === 'getItemTap' && (
                 <GetItemList highFunction={highFunction} />
               )}
-              {gettap === 'getReactionTap' && <GetReactionList />}
+              {gettap === 'getReactionTap' && (
+                <GetReactionList reactionFunction={reactionFunction} />
+              )}
             </div>
           </div>
         </div>
