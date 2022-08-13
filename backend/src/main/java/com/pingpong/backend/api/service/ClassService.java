@@ -121,25 +121,31 @@ public class ClassService {
     }
 
     //수업 목록 전체 조회
-    public Page<ClassResponse> findClassesById(final int userId, Pageable pageable){
+    public Page<ClassResponse> findClassesById(final int userId, String classTitle,  Pageable pageable){
         List<ClassEntity> classEntityList = new ArrayList<>();
-        if(userId>1000000000) {// 학생일때
-            StudentEntity studentEntity = studentRepository.getById(userId);
-            List<ClassStudentEntity> classStudentEntityList = classStudentRepository.findByStudentEntity(studentEntity);
-            for(ClassStudentEntity classStudentEntity: classStudentEntityList)
-                classEntityList.add(classStudentEntity.getClassEntity());
-        }else if(userId>=4030000 && userId<=4039999){ //선생님일때
-            TeacherEntity teacherEntity = teacherRepository.getById(userId);
-            classEntityList = classRepository.findByTeacherEntity(teacherEntity);
-        } else if(userId>=5030000 && userId<=5039999) { //관리자일때
-            classEntityList = classRepository.findAll();
+        List<ClassResponse> list = new ArrayList<>();
+        if(classTitle==null) {
+            if (userId > 1000000000) {// 학생일때
+                StudentEntity studentEntity = studentRepository.getById(userId);
+                List<ClassStudentEntity> classStudentEntityList = classStudentRepository.findByStudentEntity(studentEntity);
+                for (ClassStudentEntity classStudentEntity : classStudentEntityList)
+                    classEntityList.add(classStudentEntity.getClassEntity());
+            } else if (userId >= 4030000 && userId <= 4039999) { //선생님일때
+                TeacherEntity teacherEntity = teacherRepository.getById(userId);
+                classEntityList = classRepository.findByTeacherEntity(teacherEntity);
+            } else if (userId >= 5030000 && userId <= 5039999) { //관리자일때
+                classEntityList = classRepository.findAll();
+            }
+            List<ClassEntity> resultList = new ArrayList<>();
+            for (ClassEntity classEntity : classEntityList) {
+                if (classEntity.getIsActivated() == 1)
+                    resultList.add(classEntity);
+            }
+            list = resultList.stream().map(ClassResponse::new).collect(Collectors.toList());
+        }else{
+            classEntityList=classRepository.findByClassTitleContains(classTitle);
+            list =classEntityList.stream().map(ClassResponse::new).collect(Collectors.toList());
         }
-        List<ClassEntity> resultList = new ArrayList<>();
-        for(ClassEntity classEntity:classEntityList){
-            if(classEntity.getIsActivated()==1)
-                resultList.add(classEntity);
-        }
-        List<ClassResponse> list = resultList.stream().map(ClassResponse::new).collect(Collectors.toList());
         int start = (int)pageable.getOffset();
         int end =  (start + pageable.getPageSize())>list.size()?list.size():(start +pageable.getPageSize());
         return new PageImpl<>(list.subList(start, end), pageable, list.size());
