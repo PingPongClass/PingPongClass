@@ -94,7 +94,7 @@ const totalContainer = css`
   .infoContent {
     height: 90%;
     width: 95%;
-    padding: 10px 20px 10px 20px;
+    padding: 20px 10px 20px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -105,7 +105,18 @@ const totalContainer = css`
   }
 
   .infoContent::-webkit-scrollbar {
-    display: none;
+    width: 10px;
+  }
+
+  .infoContent::-webkit-scrollbar-track {
+    background: #f8cbd3;
+    border-radius: 20px;
+  }
+
+  .infoContent::-webkit-scrollbar-thumb {
+    background-color: #bdcde5; /* color of the scroll thumb */
+    border-radius: 20px; /* roundness of the scroll thumb */
+    border: 1px solid #afafaf;
   }
 
   .footer {

@@ -293,6 +293,9 @@ const totalContainer = () => css`
     grid-template-rows: 3fr;
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
+  .teacher-box {
+    background-color: white;
+  }
 
   input {
     margin: 0 1em;
@@ -330,7 +333,7 @@ const btnBox = () => css`
   align-content: center;
   align-items: center;
   position: absolute;
-  bottom: 13%;
+  bottom: 10%;
   .Pagination {
     /* margin-right: 11.5rem; */
     justify-content: center;
