@@ -81,7 +81,6 @@ class VideoRoomComponent extends Component {
       quizDisplayStudent: false,
       shieldDisplay: false,
       shieldLoadingDisplay: false,
-      shieldLoadingDisplay: false,
       videos: this.props.setDevices.videos,
       audios: this.props.setDevices.audios,
       speakers: this.props.setDevices.speakers,
@@ -99,6 +98,7 @@ class VideoRoomComponent extends Component {
       stickers: [],
       quiz: {},
       settingDisplay: false,
+      videoLayout: 'bigTeacher',
     };
 
     // 메서드 바인딩 과정
@@ -997,7 +997,7 @@ class VideoRoomComponent extends Component {
       this.state.subscribers.some((user) => user.isScreenShareActive()) ||
       localUser.isScreenShareActive();
     const openviduLayoutOptions = {
-      maxRatio: 2 / 3,
+      maxRatio: 9 / 16,
       minRatio: 9 / 16,
       fixedRatio: isScreenShared,
       bigClass: 'OV_big',
@@ -1071,11 +1071,9 @@ class VideoRoomComponent extends Component {
   // date: 2022/07/28
   // desc: 선생님이 랜덤한 학생을 지목하는 기능
   // todo: 호출 시 현재 참여자 중 랜덤한 1명을 지목하고, 추첨 결과를 전체 참여자에게 공유한다.
-  // Hack: 선생님 계정 체크
   pickRandomStudent(list, bool) {
     if (list.length > 0) {
       let studentList = [];
-      // 선생님이거나 관리자가 아닌 계정(체크 방식 변경 예정)
       list.forEach((elem) => {
         if (!elem.nickname.includes('[선생님]')) studentList.push(elem);
       });
@@ -1160,21 +1158,50 @@ class VideoRoomComponent extends Component {
   };
 
   // name: 한준수
-  // date: 2022/07/28
+  // date: 2022/08/13
   // desc: checkUserHasItem: 아이템 소지 여부를 체크하는 함수
-  // todo: int 형식으로 전달받은 itemId값을 바탕으로 현재 유저의 아이템 소지여부를 확인해서 localUser에 저장하고 공유하는 함수
-  checkUserHasItem(itemId) {
-    if (itemId !== -1) {
-      // axios 요청으로 아이템 정보 획득
-    } else {
-      // 잘못된 itemId값 입력
+  // todo: int 형식으로 전달받은 itemId값을 바탕으로 현재 유저의 아이템 소지여부를 확인해서 boolean값으로 반환하는 함수
+  async checkUserHasItem(itemId) {
+    if (this.props.whoami !== 'teacher') {
+      if (itemId !== -1) {
+        // 1안 axios 요청으로 아이템 정보 획득
+        const result = await InterceptedAxios.get(
+          `/items/${this.props.userId}`,
+        );
+        const list = result.data;
+        // 2안 memberStore에 저장된 정보 가져오기
+        // const list = this.props.memberStore.items;
+        // console.log(list);
+        list.forEach((elem) => {
+          if (elem.itemId === itemId && elem.cnt !== 0) {
+            console.log('보유 갯수: ' + elem.cnt);
+            return true;
+          }
+        });
+      } else {
+        // 잘못된 itemId값 입력
+        return false;
+      }
     }
   }
 
   // name: 한준수
+  // date: 2022/08/13
+  // desc: uesItem: 아이템을 사용하는 함수
+  // todo: int 형식으로 전달받은 itemId값을 바탕으로 현재 유저가 소지한 아이템을 사용하고, 성공 여부를 boolean값으로 반환하는 함수.
+  uesItem = (itemId) => {
+    InterceptedAxios.delete(`/items/${this.props.userId}/${itemId}`).then(
+      () => {
+        return true;
+      },
+    );
+    return false;
+  };
+
+  // name: 한준수
   // date: 2022/07/28
   // desc: startStickerEvent: 칭찬스티커 클릭이벤트를 발생시키는 함수
-  // todo: subscribers에게 sendSignal을 통해 클릭이벤트를 발생시키는 함수
+  // todo: subscribers에게 sendSignalUserChanged를 통해 클릭이벤트를 발생시키는 함수
   startStickerEvent = () => {
     this.state.subscribers.forEach((subs) => {
       this.sendSignalUserChanged({
@@ -1314,6 +1341,18 @@ class VideoRoomComponent extends Component {
     console.log(this.state.quiz);
   };
 
+  // name: 한준수
+  // date: 2022/08/13
+  // desc: 영상 레이아웃 토글 변경 함수
+  toggleVideoLayout = () => {
+    if (this.state.videoLayout === 'bigTeacher') {
+      this.setState({ videoLayout: 'equalSize' });
+    } else if (this.state.videoLayout === 'equalSize') {
+      this.setState({ videoLayout: 'bigTeacher' });
+    }
+    this.updateLayout();
+  };
+
   // render: 렌더링을 담당하는 함수
   render() {
     const mySessionId = this.state.mySessionId;
@@ -1402,7 +1441,25 @@ class VideoRoomComponent extends Component {
             }
           >
             {localUser !== undefined &&
-              localUser.getStreamManager() !== undefined && (
+            localUser.getStreamManager() !== undefined ? (
+              this.state.videoLayout === 'bigTeacher' &&
+              localUser.nickname.includes('[선생님]') ? (
+                <div
+                  className="OT_root OT_publisher custom-class OV_big"
+                  id="localUser"
+                >
+                  <StreamComponent
+                    user={localUser}
+                    currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
+                  />
+                  <FaceDetection
+                    autoPlay={localUser.isScreenShareActive() ? false : true}
+                    camera={localUser.isVideoActive() ? false : true}
+                    smile={this.smile}
+                    outAngle={this.outAngle}
+                  />
+                </div>
+              ) : (
                 <div
                   className="OT_root OT_publisher custom-class"
                   id="localUser"
@@ -1418,21 +1475,38 @@ class VideoRoomComponent extends Component {
                     outAngle={this.outAngle}
                   />
                 </div>
-              )}
-            {this.state.subscribers.map((sub, i) => (
-              <div
-                key={i}
-                className="OT_root OT_publisher custom-class"
-                id="remoteUsers"
-              >
-                <StreamComponent
-                  user={sub}
-                  streamId={sub.streamManager.stream.streamId}
-                  currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
-                />
-                <EmojiFilter user={sub} />
-              </div>
-            ))}
+              )
+            ) : null}
+            {this.state.subscribers.map((sub, i) =>
+              this.state.videoLayout === 'bigTeacher' &&
+              sub.nickname.includes('[선생님]') ? (
+                <div
+                  key={i}
+                  className="OT_root OT_publisher custom-class OV_big"
+                  id="remoteUsers"
+                >
+                  <StreamComponent
+                    user={sub}
+                    streamId={sub.streamManager.stream.streamId}
+                    currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
+                  />
+                  <EmojiFilter user={sub} />
+                </div>
+              ) : (
+                <div
+                  key={i}
+                  className="OT_root OT_publisher custom-class"
+                  id="remoteUsers"
+                >
+                  <StreamComponent
+                    user={sub}
+                    streamId={sub.streamManager.stream.streamId}
+                    currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
+                  />
+                  <EmojiFilter user={sub} />
+                </div>
+              ),
+            )}
           </div>
           <div
             className={
@@ -1515,6 +1589,8 @@ class VideoRoomComponent extends Component {
               toggleQuiz={this.toggleQuiz}
               toggleSetting={this.toggleSetting}
               startStickerEvent={this.startStickerEvent}
+              videoLayout={this.state.videoLayout}
+              toggleVideoLayout={this.toggleVideoLayout}
             />
           </div>
         </div>

@@ -22,6 +22,8 @@ import Shuffle from '@mui/icons-material/Shuffle';
 import Quiz from '@mui/icons-material/HelpOutline';
 import AccessTime from '@mui/icons-material/AccessTime';
 import IconButton from '@mui/material/IconButton';
+import ViewAgenda from '@mui/icons-material/ViewAgenda';
+import ViewArray from '@mui/icons-material/ViewArray';
 
 export default class ToolbarComponent extends Component {
   constructor(props) {
@@ -45,6 +47,7 @@ export default class ToolbarComponent extends Component {
     this.startStickerEvent = this.startStickerEvent.bind(this);
     this.toggleSetting = this.toggleSetting.bind(this);
     this.selfLeaveSession = this.selfLeaveSession.bind(this);
+    this.toggleVideoLayout = this.toggleVideoLayout.bind(this);
   }
 
   // micStatusChanged: 마이크 상태변화 토글 함수
@@ -106,7 +109,7 @@ export default class ToolbarComponent extends Component {
   // desc: 선생님이 랜덤한 학생을 지목하는 기능
   // todo: 내 Subscribers 중 랜덤한 1명을 선택해 지목하고, 지목받은 학생의 테두리를 1.5초동안 빨간색으로 변경 시키고, 3초 동안 지목 버튼을 비활성화 시킨다.
   pickRandomStudent() {
-    this.lockOut(5);
+    this.lockOut(6);
     this.props.pickRandomStudent(this.props.subscribers, false);
   }
 
@@ -135,7 +138,15 @@ export default class ToolbarComponent extends Component {
 
   startStickerEvent() {
     this.props.startStickerEvent();
-    this.lockOutSticker(30);
+    this.lockOutSticker(31);
+  }
+
+  // name: 한준수
+  // date: 2022/08/13
+  // desc: 내 화면의 비디오 레이아웃을 변경시키는 기능.
+  // todo: 이전 상태를 바탕으로 비디오 레이아웃을 다음 상태로 변경시킨다.
+  toggleVideoLayout() {
+    this.props.toggleVideoLayout();
   }
 
   // render: 렌더링 함수
@@ -309,6 +320,25 @@ export default class ToolbarComponent extends Component {
                 <div className="buttonStyle">
                   <Fullscreen />
                   <p>전체화면</p>
+                </div>
+              )}
+            </IconButton>
+
+            <IconButton
+              color="inherit"
+              className="navButton"
+              onClick={this.toggleVideoLayout}
+            >
+              {localUser !== undefined &&
+              this.props.videoLayout === 'bigTeacher' ? (
+                <div className="buttonStyle">
+                  <ViewAgenda />
+                  <p>발표자 중심</p>
+                </div>
+              ) : (
+                <div className="buttonStyle">
+                  <ViewArray />
+                  <p>동등분할</p>
                 </div>
               )}
             </IconButton>
