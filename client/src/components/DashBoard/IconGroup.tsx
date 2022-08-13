@@ -2,13 +2,17 @@ import { css } from '@emotion/react';
 import EventIcon from '@mui/icons-material/Event';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AlarmModal from './AlarmModal';
 import MyPageModal from './MyPageModal';
 import TimeTable from './TimeTable/TimeTable';
+import loadAlarm from '@src/utils/loadAlarm';
+import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 
 const IconGroup = () => {
+  const memberStore = useAppSelector((state) => state.member);
   const [toggle, setToggle] = useState('');
+  const [alarm, setAlarm] = useState('');
   const onClickIcon = (icon: string) => {
     // alert(icon + ',' + toggle);
     if (toggle === icon) {
@@ -18,6 +22,27 @@ const IconGroup = () => {
     }
   };
 
+  useEffect(() => {
+    alarmUpdate();
+  }, []);
+
+  const alarmUpdate = () => {
+    const timer = () => {
+      setTimeout(() => {
+        const alarms = localStorage.getItem('alarms') as any;
+        const parsing = JSON.parse(alarms);
+        setAlarm(parsing.length);
+      }, 500);
+    };
+    console.log(memberStore);
+    loadAlarm({ id: memberStore.userId, name: memberStore.name });
+    timer();
+  };
+
+  const notification = () => {
+    return <div className="alarmCount">{alarm}</div>;
+  };
+
   return (
     <div css={totalContainer}>
       <button onClick={() => onClickIcon('timetable')}>
@@ -25,7 +50,8 @@ const IconGroup = () => {
       </button>
 
       <button onClick={() => onClickIcon('alarm')}>
-        <NotificationsNoneIcon />
+        <NotificationsNoneIcon className="alarmIcon" />
+        {alarm ? notification() : null}
       </button>
 
       <button onClick={() => onClickIcon('myPage')}>
@@ -33,7 +59,9 @@ const IconGroup = () => {
       </button>
 
       {toggle === 'timetable' ? <TimeTable close={onClickIcon} /> : null}
-      {toggle === 'alarm' ? <AlarmModal close={onClickIcon} /> : null}
+      {toggle === 'alarm' ? (
+        <AlarmModal alarmUpdate={alarmUpdate} close={onClickIcon} />
+      ) : null}
 
       {toggle === 'myPage' ? (
         <MyPageModal close={onClickIcon} setToggle={setToggle} />
@@ -48,6 +76,26 @@ const totalContainer = css`
   align-items: center;
   justify-content: center;
   gap: 20px;
+
+  .alarmIcon {
+    position: absolute;
+  }
+
+  .alarmCount {
+    display: flex;
+    flex: row;
+    align-items: center;
+    justify-content: center;
+    top: -14px;
+    right: -14px;
+    width: 10px;
+    height: 10px;
+    position: relative;
+    background-color: tomato;
+    padding: 3px;
+    border-radius: 20px;
+    color: white;
+  }
 
   button {
     width: 40px;

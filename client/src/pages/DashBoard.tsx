@@ -11,18 +11,17 @@ import { saveMember, saveItem } from '@src/store/member';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import loadingImg from '@src/openvidu/assets/images/loadingimg.gif';
 import getTthingMessage from '@utils/tthingMessage';
+import loadAlarm from '@src/utils/loadAlarm';
 
 const DashBoard = () => {
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(true);
-  const memberStore = useAppSelector((state) => state.member);
   const [tthingMessage, setTthingMessage] = useState<string>('');
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
     }, 2000);
-
     dispatch(saveMember()).then(() => timer);
   }, []);
 

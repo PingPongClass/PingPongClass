@@ -5,9 +5,24 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 
 interface AlarmModalStyle {
   close: any;
+  alarmUpdate: any;
 }
 
-const AlarmModal = ({ close }: AlarmModalStyle) => {
+const removeAlarm = (idx, card, alarmUpdate) => {
+  alarmUpdate();
+  const removedAlarms = JSON.parse(localStorage.getItem('removed') as any);
+  console.log(card);
+  localStorage.setItem(
+    'removed',
+    JSON.stringify([...removedAlarms, card.sort]),
+  );
+  const el = document.getElementById(`${idx}card`);
+  el?.setAttribute('style', 'display: none');
+};
+
+const AlarmModal = ({ alarmUpdate, close }: AlarmModalStyle) => {
+  const alarms = localStorage.getItem('alarms') as any;
+  const parsing = JSON.parse(alarms);
   return (
     <div css={totalContainer}>
       <div className="alarmBack" onClick={close}></div>
@@ -20,14 +35,23 @@ const AlarmModal = ({ close }: AlarmModalStyle) => {
             style={{ cursor: 'pointer' }}
           />
         </div>
-        <h3>모두삭제</h3>
-        <div className="alarmCard">
-          <div className="alarmCardNav">
-            <NotificationsIcon style={{ color: '#ffcc00' }} />
-            <CloseIcon fontSize={'small'} />
-          </div>
-          <h3>Card</h3>
-        </div>
+        {parsing.map((card, idx) => {
+          return (
+            <div key={idx} className="alarmCard" id={`${idx}card`}>
+              <div className="alarmCardNav">
+                <NotificationsIcon style={{ color: '#ffcc00' }} />
+                <div
+                  className="closeButton"
+                  onClick={() => removeAlarm(idx, card, alarmUpdate)}
+                >
+                  <CloseIcon fontSize={'small'} />
+                </div>
+              </div>
+              <h3>{card.title}</h3>
+              <p>{card.msg}</p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -51,11 +75,12 @@ const totalContainer = css`
   }
 
   .alarmNav {
-    width: 340px;
+    width: 360px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 20px;
   }
 
   .alarmCardNav {
@@ -64,6 +89,7 @@ const totalContainer = css`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 20px;
   }
 
   .alarmModal {
@@ -80,6 +106,10 @@ const totalContainer = css`
     justify-content: start;
     box-shadow: 2px 2px 10px -5px;
     animation: fadeIn 0.4s;
+  }
+
+  .closeButton {
+    cursor: pointer;
   }
 
   @keyframes fadeIn {
@@ -103,6 +133,7 @@ const totalContainer = css`
     border-radius: 20px;
     background-color: #eaf1fb;
     box-shadow: 2px 2px 10px -5px;
+    margin-bottom: 20px;
   }
 `;
 

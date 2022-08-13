@@ -31,7 +31,7 @@ const HeatMap = () => {
 
   useEffect(() => {
     loadHeatmapList();
-  }, [memberStore]);
+  }, []);
 
   const today = new Date();
 
