@@ -192,6 +192,7 @@ const EditTeacher = ({ onClickOpenModal, teacherId }: ModalDefaultType) => {
         'teacher',
         new Blob([teacherString], { type: 'application/json' }),
       );
+      console.log(newImageFile);
 
       if (
         !isPreviewReset &&
@@ -211,7 +212,7 @@ const EditTeacher = ({ onClickOpenModal, teacherId }: ModalDefaultType) => {
       })
         .then(function (response) {
           alert('정보가 수정되었습니다.');
-          // console.log(response);
+          console.log(response);
           navigate('/admin/teachers');
           // location.href = '/admin/teachers';
         })
@@ -268,7 +269,26 @@ const EditTeacher = ({ onClickOpenModal, teacherId }: ModalDefaultType) => {
               </div>
               <DeleteIcon className="delete-icon-btn" onClick={onDeleteFiles} />
             </div>
-          ) : null}
+          ) : (
+            <div
+              className="profile-img-button hidden"
+              onMouseEnter={() => setIsMouseOn(true)}
+            >
+              <div className="editbtn">
+                <label htmlFor="profile-image">
+                  <EditIcon className="edit-icon-btn" />
+                </label>
+                <input
+                  ref={newImageFile}
+                  type="file"
+                  id="profile-image"
+                  accept="image/jpg, image/jpeg, image/png"
+                  onChange={onChangeFiles}
+                />
+              </div>
+              <DeleteIcon className="delete-icon-btn" onClick={onDeleteFiles} />
+            </div>
+          )}
         </div>
 
         <div className="infoListContainer">
@@ -424,6 +444,10 @@ const ModalCSS = (isMouseOn) => css`
     height: 30px;
     color: white;
     cursor: pointer;
+  }
+
+  .profile-img-button.hidden {
+    display: none;
   }
 
   .profileContainer .profile-img-button .editbtn input {

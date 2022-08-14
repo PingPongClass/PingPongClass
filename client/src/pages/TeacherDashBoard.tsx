@@ -138,18 +138,29 @@ const totalContainer = css`
   .infoContent {
     height: 90%;
     width: 95%;
-    padding: 20px 20px 20px 20px;
+    padding: 20px 10px 20px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: start;
     box-sizing: border-box;
     gap: 30px;
-    overflow-y: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .infoContent::-webkit-scrollbar {
-    display: none;
+    width: 5px;
+  }
+
+  .infoContent::-webkit-scrollbar-track {
+    background: #ebebeb;
+    border-radius: 20px;
+  }
+
+  .infoContent::-webkit-scrollbar-thumb {
+    background-color: #cacacb; /* color of the scroll thumb */
+    border-radius: 20px; /* roundness of the scroll thumb */
   }
 
   .footer {
