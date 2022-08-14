@@ -3,12 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { css } from '@emotion/react';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
-import { useAppSelector } from '@src/store/hooks';
+import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import loadingImg from '@src/openvidu/assets/images/loadingimg.gif';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import EditIcon from '@mui/icons-material/Edit';
 import { toast } from 'react-toastify';
+import { saveMember } from '@src/store/member';
 
 interface RankingInterface {
   rankNum: number;
@@ -31,7 +32,7 @@ const Ranking = () => {
   const [loading, setLoading] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
   const [introduce, setIntroduce] = useState(memberStore.introduce);
-
+  const dispatch = useAppDispatch();
   const level = [
     'white',
     'yellow',
@@ -74,6 +75,14 @@ const Ranking = () => {
     setIntroduce(e.target.value);
   };
 
+  const loadMember = () => {
+    const timer = setTimeout(() => {
+      loadRankingList();
+      setIsEdit(false);
+    }, 500);
+    dispatch(saveMember()).then(() => timer);
+  };
+
   const onEditIntroduce = (e) => {
     if (introduce == null) {
       toast.warning('자개소개를 입력해주세요.');
@@ -97,7 +106,7 @@ const Ranking = () => {
       })
         .then(function (response) {
           alert('정보 수정에 성공하였습니다.');
-          location.reload();
+          loadMember();
         })
         .catch(function (error) {
           console.log(error);

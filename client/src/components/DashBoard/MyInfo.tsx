@@ -1,12 +1,13 @@
 import { css } from '@emotion/react';
 import defaultProfile from '@assets/images/defaultProfile.jpeg';
-import { useAppSelector } from '@src/store/hooks';
 import { useEffect, useState } from 'react';
 import Ranking from './Ranking';
 import EditIcon from '@mui/icons-material/Edit';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
+import { useAppDispatch, useAppSelector } from '@src/store/hooks';
+import { saveMember } from '@src/store/member';
 
 interface StudentDataInterface {
   studentId: number;
@@ -21,6 +22,7 @@ const Myinfo = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [introduce, setIntroduce] = useState(memberStore.introduce);
   const AXIOS = setupInterceptorsTo(axios.create());
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     setTotalRate(
@@ -34,7 +36,14 @@ const Myinfo = () => {
     );
 
     setLevelImg('/levels/' + memberStore.currentLevel + '.png');
-  }, [memberStore]);
+  }, []);
+
+  const loadMember = () => {
+    const timer = setTimeout(() => {
+      setIsEdit(false);
+    }, 500);
+    dispatch(saveMember()).then(() => timer);
+  };
 
   const onClickEdit = (e) => {
     setIsEdit(!isEdit);
@@ -67,13 +76,17 @@ const Myinfo = () => {
       })
         .then(function (response) {
           alert('정보 수정에 성공하였습니다.');
-          location.reload();
+          loadMember();
         })
         .catch(function (error) {
           console.log(error);
           toast.error('정보 수정에 실패하였습니다.');
         });
     }
+  };
+
+  const rankingRefresh = () => {
+    return <Ranking />;
   };
 
   return (
@@ -192,7 +205,7 @@ const Myinfo = () => {
             오전 8:00 기준 랭킹
           </div>
         </div>
-        <Ranking />
+        {isEdit ? '자기소개 수정중' : rankingRefresh()}
       </div>
     </div>
   );
