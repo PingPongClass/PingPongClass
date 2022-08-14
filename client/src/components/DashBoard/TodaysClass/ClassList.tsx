@@ -45,6 +45,7 @@ const ClassList = () => {
       const classUrlData = await AXIOS.get(`/classes/isopen/${elem.classId}`);
       console.log(classUrlData);
       elem.classUrl = classUrlData.data;
+      console.log(elem.classUrl);
     });
     await Promise.all(promises);
     setClsList(result.data.content);

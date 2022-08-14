@@ -43,6 +43,7 @@
     "react-scripts": "5.0.1",
     "react-toastify": "^9.0.7",
     "react-tooltip": "^4.2.21",
+    "recharts": "^2.1.13",
     "redux": "^4.2.0",
     "redux-persist": "^6.0.0",
     "swiper": "^8.3.2",
@@ -76,8 +77,5 @@
   "devDependencies": {
     "@types/react-calendar-heatmap": "^1.6.3"
   },
-  
-"proxy" : "http://i7a403.p.ssafy.io:8080/be"
-
+  "proxy": "http://i7a403.p.ssafy.io:8080/be"
 }
-
