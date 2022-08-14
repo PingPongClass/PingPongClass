@@ -66,9 +66,7 @@ const TeacherClassCard = ({ clsList }: any) => {
           <img src={img} className="classImg" alt="수업" />
           <hr />
           <h2>{clsList.classTitle}</h2>
-          <p>
-            [{clsList.subjectEntity.name}] {clsList.classDesc}
-          </p>
+          <p>{clsList.classDesc}</p>
           <p>
             [{clsList.timetableId}교시] {clsList.teacherName} 선생님
           </p>
@@ -122,11 +120,12 @@ const TotalContainer = (isMouseOn) => css`
   h2 {
     padding-top: 2px;
     padding-bottom: 4px;
-    font-size: 15pt;
+    font-size: 14pt;
   }
+
   p {
     padding-bottom: 2px;
-    font-size: 10pt;
+    font-size: 9.4pt;
   }
 
   hr {
