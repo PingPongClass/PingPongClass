@@ -28,6 +28,7 @@ import { ToastContainer } from 'react-toastify';
 import '@src/App.css';
 import TimeTable from './components/DashBoard/TimeTable/TimeTable';
 import TeacherEditClass from './components/DashBoard/Teacher/TeacherEditClass';
+import ClassLogList from './components/DashBoard/ClassLog/ClassLogList';
 
 const App = () => {
   return (
@@ -56,6 +57,7 @@ const App = () => {
             <Route path="store" element={<StoreMain />} />
             <Route path="mypage" element={<InputPassword />} />
             <Route path="studentmyinfo" element={<StudentMyInfo />} />
+            <Route path="log" element={<ClassLogList />} />
           </Route>
           <Route path="/teacher" element={<TeacherDashBoard />}>
             <Route path="" element={<TeacherMainContent />} />

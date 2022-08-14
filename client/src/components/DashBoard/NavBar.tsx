@@ -4,6 +4,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CampaignIcon from '@mui/icons-material/Campaign';
 import StorefrontIcon from '@mui/icons-material/Storefront';
+import BookIcon from '@mui/icons-material/Book';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
@@ -12,12 +13,14 @@ const NavBar = () => {
   const [isClasses, setIsClasses] = useState(false);
   const [isNotices, setIsNotices] = useState(false);
   const [isStore, setIsStore] = useState(false);
+  const [isLog, setIsLog] = useState(false);
 
   const onClickDashboard = () => {
     setIsDashboard(true);
     setIsClasses(false);
     setIsNotices(false);
     setIsStore(false);
+    setIsLog(false);
   };
 
   const onClickClasses = () => {
@@ -25,6 +28,7 @@ const NavBar = () => {
     setIsClasses(true);
     setIsNotices(false);
     setIsStore(false);
+    setIsLog(false);
   };
 
   const onClickNotices = () => {
@@ -32,6 +36,7 @@ const NavBar = () => {
     setIsClasses(false);
     setIsNotices(true);
     setIsStore(false);
+    setIsLog(false);
   };
 
   const onClickStore = () => {
@@ -39,6 +44,15 @@ const NavBar = () => {
     setIsClasses(false);
     setIsNotices(false);
     setIsStore(true);
+    setIsLog(false);
+  };
+
+  const onClickLog = () => {
+    setIsDashboard(false);
+    setIsClasses(false);
+    setIsNotices(false);
+    setIsStore(false);
+    setIsLog(true);
   };
 
   return (
@@ -62,6 +76,15 @@ const NavBar = () => {
         >
           <CalendarMonthIcon className="nav-div" />
           수업목록
+        </div>
+      </Link>
+      <Link to="log" className="linkButton">
+        <div
+          className={isLog ? 'clickButton' : 'dashNavButton'}
+          onClick={onClickLog}
+        >
+          <BookIcon className="nav-div" />
+          수업기록
         </div>
       </Link>
       <Link to="notice" className="linkButton">
