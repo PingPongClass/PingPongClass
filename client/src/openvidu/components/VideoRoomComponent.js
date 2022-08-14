@@ -555,7 +555,7 @@ class VideoRoomComponent extends Component {
   // camStatusChanged: 캠 설정 변경
   camStatusChanged() {
     localUser.setVideoActive(!localUser.isVideoActive());
-    localUser.getStreamManager().publishVideo(localUser.isVideoActive());
+    localUser.getStreamManager().publishVideo(localUser.isVideoActive(), true);
     this.sendSignalUserChanged({ isVideoActive: localUser.isVideoActive() });
     this.setState({ localUser: localUser });
   }
@@ -672,6 +672,11 @@ class VideoRoomComponent extends Component {
           }
           if (data.isScreenShareActive !== undefined) {
             user.setScreenShareActive(data.isScreenShareActive);
+            if (data.isScreenShareActive) {
+              this.setState({ videoLayout: 'screenShareOn' });
+            } else if (!data.isScreenShareActive) {
+              this.setState({ videoLayout: 'bigTeacher' });
+            }
           }
           if (data.picked !== undefined) {
             user.setPicked(data.picked);
@@ -1109,7 +1114,9 @@ class VideoRoomComponent extends Component {
   smile(event) {
     if (event !== localUser.isSmileActive()) {
       localUser.setSmileActive(!localUser.isSmileActive());
-      localUser.getStreamManager().publishVideo(localUser.isVideoActive());
+      localUser
+        .getStreamManager()
+        .publishVideo(localUser.isVideoActive(), true);
       this.sendSignalUserChanged({ isSmileActive: localUser.isSmileActive() });
       this.setState({ localUser: localUser });
     }
@@ -1119,7 +1126,9 @@ class VideoRoomComponent extends Component {
   outAngle(event) {
     if (event !== localUser.isOutAngleActive()) {
       localUser.setOutAngleActive(!localUser.isOutAngleActive());
-      localUser.getStreamManager().publishVideo(localUser.isVideoActive());
+      localUser
+        .getStreamManager()
+        .publishVideo(localUser.isVideoActive(), true);
       this.sendSignalUserChanged({
         isOutAngleActive: localUser.isOutAngleActive(),
       });
@@ -1454,8 +1463,10 @@ class VideoRoomComponent extends Component {
           >
             {localUser !== undefined &&
             localUser.getStreamManager() !== undefined ? (
-              this.state.videoLayout === 'bigTeacher' &&
-              localUser.nickname.includes('[선생님]') ? (
+              (this.state.videoLayout === 'bigTeacher' &&
+                localUser.nickname.includes('[선생님]')) ||
+              (this.state.videoLayout === 'screenShareOn' &&
+                localUser.isScreenShareActive()) ? (
                 <div
                   className="OT_root OT_publisher custom-class OV_big"
                   id="localUser"
@@ -1490,8 +1501,10 @@ class VideoRoomComponent extends Component {
               )
             ) : null}
             {this.state.subscribers.map((sub, i) =>
-              this.state.videoLayout === 'bigTeacher' &&
-              sub.nickname.includes('[선생님]') ? (
+              (this.state.videoLayout === 'bigTeacher' &&
+                sub.nickname.includes('[선생님]')) ||
+              (this.state.videoLayout === 'screenShareOn' &&
+                sub.isScreenShareActive) ? (
                 <div
                   key={i}
                   className="OT_root OT_publisher custom-class OV_big"

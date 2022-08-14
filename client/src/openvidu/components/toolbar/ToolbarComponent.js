@@ -24,6 +24,7 @@ import AccessTime from '@mui/icons-material/AccessTime';
 import IconButton from '@mui/material/IconButton';
 import ViewAgenda from '@mui/icons-material/ViewAgenda';
 import ViewArray from '@mui/icons-material/ViewArray';
+import Share from '@mui/icons-material/Share';
 
 export default class ToolbarComponent extends Component {
   constructor(props) {
@@ -148,6 +149,33 @@ export default class ToolbarComponent extends Component {
   toggleVideoLayout() {
     this.props.toggleVideoLayout();
   }
+
+  VideoLayout = () => {
+    if (this.props.videoLayout === 'bigTeacher') {
+      return (
+        <div className="buttonStyle">
+          <ViewAgenda />
+          <p>선생님 위주</p>
+        </div>
+      );
+    } else if (this.props.videoLayout === 'bigTeacher') {
+      return (
+        <div className="buttonStyle">
+          <ViewArray />
+          <p>동등분할</p>
+        </div>
+      );
+    } else if (this.props.videoLayout === 'screenShareOn') {
+      return (
+        <div className="buttonStyle">
+          <ScreenShare />
+          <p>화면공유</p>
+        </div>
+      );
+    } else {
+      return null;
+    }
+  };
 
   // render: 렌더링 함수
   render() {
@@ -329,18 +357,26 @@ export default class ToolbarComponent extends Component {
               className="navButton"
               onClick={this.toggleVideoLayout}
             >
-              {localUser !== undefined &&
-              this.props.videoLayout === 'bigTeacher' ? (
-                <div className="buttonStyle">
-                  <ViewAgenda />
-                  <p>발표자 중심</p>
-                </div>
-              ) : (
-                <div className="buttonStyle">
-                  <ViewArray />
-                  <p>동등분할</p>
-                </div>
-              )}
+              {localUser !== undefined
+                ? (this.props.videoLayout === 'bigTeacher' && (
+                    <div className="buttonStyle">
+                      <ViewAgenda />
+                      <p>선생님 위주</p>
+                    </div>
+                  )) ||
+                  (this.props.videoLayout === 'equalSize' && (
+                    <div className="buttonStyle">
+                      <ViewArray />
+                      <p>동등분할</p>
+                    </div>
+                  )) ||
+                  (this.props.videoLayout === 'screenShareOn' && (
+                    <div className="buttonStyle">
+                      <Share />
+                      <p>공유자 우선</p>
+                    </div>
+                  ))
+                : null}
             </IconButton>
 
             <IconButton
