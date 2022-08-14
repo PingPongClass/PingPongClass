@@ -22,4 +22,6 @@ public interface LogRepository extends JpaRepository<LogEntity, Integer> {
     List<Integer> getdistinctdate(@Param("classId") int classId);
     List<LogEntity> findByRegDateAndStudentEntity(LocalDate regDate, StudentEntity studentEntity);
     List<LogEntity> findByRegDateAndClassEntity(LocalDate regDate, ClassEntity classEntity);
+    @Query(value = "SELECT DISTINCT reg_date FROM log WHERE student_id = :studentId", nativeQuery = true)
+    List<LocalDate> getDateList(@Param("studentId") int studentId);
 }

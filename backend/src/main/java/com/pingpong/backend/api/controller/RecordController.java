@@ -64,6 +64,13 @@ public class RecordController {
         return recordService.fingstudentlog(req.getStudentId(), req.getRegDate());
     }
 
+    @ApiOperation(value = "학생의 강의 로그 조회 - 일자별", notes = "학생아이디, 일자로 수업 - 강의 로그 조회")
+    @GetMapping("/log/student/{studentId}")
+    @PreAuthorize("hasRole('STUDENT')")
+    public List<LocalDate> findStudentLog(@PathVariable int studentId){
+        return recordService.findDate(studentId);
+    }
+
     @ApiOperation(value = "선생님의 강의 로그 조회 - 일자별", notes = "classID -> 일자별 로그객체 ")
     @GetMapping("/teacher/{classId}")
     @PreAuthorize("hasRole('TEACHER')")

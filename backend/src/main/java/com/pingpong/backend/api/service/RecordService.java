@@ -130,6 +130,9 @@ public class RecordService {
         return new TeacherLogResponse(totalStuNum, logEntities);
     }
 
+    public List<LocalDate> findDate(int studentId){
+        return logRepository.getDateList(studentId);
+    }
 
 
 

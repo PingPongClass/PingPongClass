@@ -7,12 +7,24 @@ import 'react-calendar/dist/Calendar.css';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { useAppSelector } from '@src/store/hooks';
+import ClassLog from './ClassLog';
+
+export interface LogProps {
+  classId: number;
+  classTitle: string;
+  subjectName: string;
+  timetableId: number;
+  attendance: boolean;
+  point: number;
+  presentCnt: number;
+}
 
 const ClassLogList = () => {
   const [value, onChange] = useState(new Date());
   const AXIOS = setupInterceptorsTo(axios.create());
   const memberStore = useAppSelector((state) => state.member);
-  const [logList, setLogList] = useState([] as any);
+  const [logList, setLogList] = useState<LogProps[]>([]);
+  const [dateList, setDateList] = useState([] as any);
 
   const loadLogList = async () => {
     const studentId = memberStore.userId;
@@ -29,9 +41,25 @@ const ClassLogList = () => {
       });
   };
 
+  const loadLogDate = async () => {
+    const studentId = memberStore.userId;
+    await AXIOS.get('/records/log/student/' + studentId)
+      .then(function (response) {
+        setDateList(response.data);
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        console.log('실패', error);
+      });
+  };
+
   useEffect(() => {
     loadLogList();
   }, [value]);
+
+  useEffect(() => {
+    loadLogDate();
+  }, []);
 
   return (
     <div css={totalContainer}>
@@ -54,31 +82,40 @@ const ClassLogList = () => {
             //   html.push(<div className="dot"></div>);
             // }
             // 다른 조건을 주어서 html.push 에 추가적인 html 태그를 적용할 수 있음.
-            return (
+            if (dateList.find((x) => x === moment(date).format('YYYY-MM-DD'))) {
+              return (
+                <>
+                  <div className="dotContainer">
+                    <div className="dot"></div>
+                  </div>
+                </>
+              );
+            } else {
               <>
                 <div className="dotContainer">
-                  <div className="dot"></div>
+                  <div className="emptydot"></div>
                 </div>
-              </>
-            );
+              </>;
+            }
           }}
         />
       </div>
       <div className="logContainer">
-        <div className="text-gray-500 mt-4">
-          {moment(value).format('YYYY년 MM월 DD일')}
-          <p>
-            {logList[0]?.classEntity?.classTitle} /
-            {logList[0]?.classEntity?.classDay} /
-            {logList[0]?.logEntityList[0]?.subjectEntity?.name} /
-            {logList[0]?.logEntityList[0]?.timetableEntity?.timetableId}교시 /
-            {logList[0]?.teacherEntity?.name} 선생님
-          </p>
-          <p>
-            출석여부 : {logList[0]?.logEntityList[0]?.attendance} / 획득퐁퐁 :
-            {logList[0]?.logEntityList[0]?.point} 퐁퐁 / 발표횟수 :
-            {logList[0]?.logEntityList[0]?.presentCnt}
-          </p>
+        <h2>{moment(value).format('YYYY년 MM월 DD일')}</h2>
+        <div className="tableArea">
+          <div className="row titleRow">
+            <div className="col classInfo">수업 시간</div>
+            <div className="col classTitle">수업명</div>
+            <div className="col attendance">출석여부</div>
+            <div className="col point">얻은 퐁퐁</div>
+            <div className="col presentCnt">발표횟수</div>
+          </div>
+
+          <div className="articleArea">
+            {logList.map((log, index) => {
+              return <ClassLog key={index} log={log} />;
+            })}
+          </div>
         </div>
       </div>
     </div>
@@ -92,6 +129,11 @@ const totalContainer = css`
   align-items: center;
   width: 100%;
   height: 100%;
+
+  h2 {
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
 
   .calendarContainer {
     width: 40%;
@@ -222,6 +264,134 @@ const totalContainer = css`
     align-items: center;
     justify-content: center;
     margin-top: 1px;
+  }
+
+  .emptydot {
+    height: 6px;
+    width: 6px;
+    background: transparent;
+    border-radius: 50%;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+
+  /* table 영역 */
+  .tableArea {
+    width: 100%;
+    height: 100%;
+    /* overflow-y: scroll; */
+    text-align: center;
+  }
+
+  /* 스크롤 바 숨기기 */
+  .tableArea::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tableArea div {
+    display: inline-block;
+  }
+
+  .row,
+  .log.btn {
+    width: 90%;
+    height: 100%;
+    border: none;
+    background-color: transparent;
+    font-family: 'NanumSquare';
+    font-size: 0.9rem;
+    font-weight: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .col {
+    overflow: hidden;
+    width: 15%;
+    line-height: 30px;
+  }
+  /* 제목 행 */
+  .titleRow {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 0.5rem 0;
+    background-color: #c0d2e5;
+    height: 23px;
+    vertical-align: middle;
+    font-weight: 400;
+    font-size: 1em;
+  }
+
+  /* 게시글 항목 영역 */
+  .articleArea {
+    /* padding: 1% 0; */
+    width: -webkit-fill-available;
+    max-width: 100%;
+
+    /* 제목줄 1줄 */
+    .logRow {
+      padding: 0.2rem 0;
+      border-bottom: 1px solid gray;
+    }
+
+    /* 안 보이는 요소 */
+    .hide {
+      display: none;
+    }
+
+    /*  */
+    .detailRow div {
+      display: block;
+    }
+
+    .detailWriter {
+      padding: 0.5rem;
+      max-width: -webkit-max-content;
+    }
+
+    textarea {
+      background-color: rgba(255, 255, 255, 0.7);
+      border: none;
+      resize: none;
+    }
+  }
+
+  /* 특정 열 별 설정 */
+  .classInfo,
+  .classTitle {
+    width: 7rem;
+  }
+
+  .point,
+  .presentCnt,
+  .attendance {
+    width: 5rem;
+  }
+
+  select {
+    max-width: 8%;
+  }
+  a {
+    color: white;
+    background-color: transparent;
+    text-decoration: none;
+  }
+  a:visited {
+    text-decoration: none;
+  }
+
+  @keyframes loadEffect1 {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 `;
 
