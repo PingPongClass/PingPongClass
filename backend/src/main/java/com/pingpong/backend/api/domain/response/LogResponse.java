@@ -16,7 +16,6 @@ public class LogResponse {
     int point;
     boolean attendance;
     int presentCnt;
-    LocalDate regDate;
 
     public LogResponse(LogEntity entity){
         this.classId=entity.getClassEntity().getClassId();
@@ -26,6 +25,5 @@ public class LogResponse {
         this.point=entity.getPoint();
         this.attendance=entity.isAttendance();
         this.presentCnt=entity.getPresentCnt();
-        this.regDate=entity.getRegDate();
     }
 }

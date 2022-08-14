@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -130,7 +131,7 @@ public class RecordService {
         return new TeacherLogResponse(totalStuNum, logEntities);
     }
 
-    public List<LocalDate> findDate(int studentId){
+    public List<Date> findDate(int studentId){
         return logRepository.getDateList(studentId);
     }
 
