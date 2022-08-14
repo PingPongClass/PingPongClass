@@ -90,11 +90,13 @@ const ClassLogList = () => {
                 </>
               );
             } else {
-              <>
-                <div className="dotContainer">
-                  <div className="emptydot"></div>
-                </div>
-              </>;
+              return (
+                <>
+                  <div className="dotContainer">
+                    <div className="emptydot"></div>
+                  </div>
+                </>
+              );
             }
           }}
         />
@@ -163,6 +165,7 @@ const totalContainer = css`
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
     line-height: 1.125em;
     font-family: 'NanumSquareRound';
+    padding: 10px;
   }
 
   .react-calendar__navigation button {
@@ -268,7 +271,7 @@ const totalContainer = css`
   .emptydot {
     height: 6px;
     width: 6px;
-    background: transparent;
+    background-color: transparent;
     border-radius: 50%;
     display: flex;
     text-align: center;
