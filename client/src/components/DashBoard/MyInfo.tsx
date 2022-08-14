@@ -142,46 +142,6 @@ const Myinfo = () => {
         </div>
       </div>
       <div className="rankingContainer">
-        <p style={{ width: '100%', fontWeight: '700' }}>실시간 순위</p>
-        <div className="myRanking">
-          <div className="rankingInfo">
-            <div className="rankBox">{memberStore.myRank}위</div>
-            <div className="nameBox">
-              {memberStore.name} [{memberStore.totalPoint} 퐁퐁]
-            </div>
-            <div className="myBio">
-              {isEdit && (
-                <input
-                  style={{
-                    height: '35px',
-                    width: '70%',
-                  }}
-                  value={introduce}
-                  onChange={(e) => onChangeIntroduce(e)}
-                />
-              )}
-              {!isEdit && (
-                <p>
-                  {memberStore.introduce
-                    ? memberStore.introduce
-                    : '자기소개가 없습니다.'}
-                </p>
-              )}
-            </div>
-          </div>
-          {!isEdit && (
-            <button onClick={onClickEdit}>
-              <EditIcon />
-            </button>
-          )}
-          {isEdit && <button onClick={onEditIntroduce}>수정</button>}
-          {isEdit && (
-            <button onClick={onClickEdit} style={{ color: 'red' }}>
-              취소
-            </button>
-          )}
-        </div>
-        <br />
         <div
           style={{
             display: 'flex',

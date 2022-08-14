@@ -10,6 +10,7 @@ const MainContent = () => {
         <MyInfo />
       </div>
       <h2>오늘의 수업</h2>
+      <hr />
       <div className="todaysClass">
         <TodaysClass />
       </div>
@@ -43,9 +44,9 @@ const totalContainer = css`
   }
 
   .myInfo {
-    height: 450px;
+    height: 360px;
     width: 100%;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
   }
 
   .todaysClass {

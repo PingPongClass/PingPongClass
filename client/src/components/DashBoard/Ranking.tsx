@@ -118,6 +118,44 @@ const Ranking = () => {
   const render = () => {
     return (
       <div className="outRankingContainer">
+        <div className="myRanking">
+          <div className="rankingInfo">
+            <div className="rankBox">{memberStore.myRank}위</div>
+            <div className="nameBox">
+              {memberStore.name} [{memberStore.totalPoint} 퐁퐁]
+            </div>
+            <div className="myBio">
+              {isEdit && (
+                <input
+                  style={{
+                    height: '35px',
+                    width: '70%',
+                  }}
+                  value={introduce}
+                  onChange={(e) => onChangeIntroduce(e)}
+                />
+              )}
+              {!isEdit && (
+                <p>
+                  {memberStore.introduce
+                    ? memberStore.introduce
+                    : '자기소개가 없습니다.'}
+                </p>
+              )}
+            </div>
+          </div>
+          {!isEdit && (
+            <button onClick={onClickEdit}>
+              <EditIcon />
+            </button>
+          )}
+          {isEdit && <button onClick={onEditIntroduce}>수정</button>}
+          {isEdit && (
+            <button onClick={onClickEdit} style={{ color: 'red' }}>
+              취소
+            </button>
+          )}
+        </div>
         <div className="ranking" style={{ borderTop: ' #d0d0d0 1px solid' }}>
           <div className="rankingInfo">
             <div className="rankBox">{rankingList[0].rankNum}위</div>
@@ -193,7 +231,7 @@ const Ranking = () => {
         <div className={!visible ? 'dropDownEmpty' : 'dropDownContainer'}>
           {visible &&
             rankingList.map((ranking, index) => {
-              if (index >= 1 && index % 2 == 0) {
+              if (index >= 1 && index < 10 && index % 2 == 0) {
                 return (
                   <div className="ranking" key={index}>
                     <div className="rankingInfo" style={{ height: '100%' }}>
@@ -260,7 +298,7 @@ const Ranking = () => {
                 );
               }
 
-              if (index >= 1 && index % 2 == 1) {
+              if (index >= 1 && index < 10 && index % 2 == 1) {
                 return (
                   <div className="rankingLow" key={index}>
                     <div className="rankingInfo">
@@ -327,53 +365,6 @@ const Ranking = () => {
                 );
               }
             })}
-        </div>
-        <div className="rankingLow">
-          <div className="rankingInfo">
-            <div className="rankBox">{rankingList[1].rankNum}위</div>
-            <div className="nameBox">
-              {rankingList[1].name} [{rankingList[1].totalPoint} 퐁퐁]
-            </div>
-            <div className="myBio">
-              {rankingList[1].studentId === memberStore.userId && isEdit && (
-                <input
-                  style={{
-                    height: '35px',
-                    width: '70%',
-                  }}
-                  value={introduce}
-                  onChange={(e) => onChangeIntroduce(e)}
-                />
-              )}
-              {rankingList[1].studentId === memberStore.userId && !isEdit && (
-                <p>
-                  {rankingList[1].introduce
-                    ? rankingList[1].introduce
-                    : '자기소개가 없습니다.'}
-                </p>
-              )}
-              {rankingList[1].studentId !== memberStore.userId && (
-                <p>
-                  {rankingList[1].introduce
-                    ? rankingList[1].introduce
-                    : '자기소개가 없습니다.'}
-                </p>
-              )}
-            </div>
-          </div>
-          {rankingList[1].studentId === memberStore.userId && !isEdit && (
-            <button>
-              <EditIcon onClick={onClickEdit} />
-            </button>
-          )}
-          {rankingList[1].studentId === memberStore.userId && isEdit && (
-            <button onClick={onEditIntroduce}>수정</button>
-          )}
-          {rankingList[1].studentId === memberStore.userId && isEdit && (
-            <button onClick={onClickEdit} style={{ color: 'red' }}>
-              취소
-            </button>
-          )}
         </div>
       </div>
     );
