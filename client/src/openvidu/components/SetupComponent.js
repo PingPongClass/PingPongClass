@@ -17,7 +17,7 @@ import Videocam from '@mui/icons-material/Videocam';
 import VideocamOff from '@mui/icons-material/VideocamOff';
 
 const SetupComponent = (props) => {
-  const { teacherName, classTitle, setTap, setDevices, code } = props;
+  const { teacherName, classTitle, setTap, setDevices } = props;
   const {
     videos,
     setVideos,
@@ -45,6 +45,14 @@ const SetupComponent = (props) => {
   const previewFace = useRef();
   useUpdateStream(previewFace, stream);
   useUpdateSpeaker(previewFace, selectedSpeaker);
+
+  useEffect(() => {
+    return () => {
+      stream?.getTracks().forEach((track) => {
+        track.stop();
+      });
+    };
+  }, [stream]);
 
   useEffect(() => {
     const getMyDevices = async () => {
@@ -78,6 +86,9 @@ const SetupComponent = (props) => {
         if (videoTrack) {
           setSelectedVideoTrack(videoTrack);
           stream.addTrack(videoTrack);
+          stream
+            .getVideoTracks()
+            .forEach((track) => (track.enabled = isVideoOn));
         }
       }
       if (effectCnt.current >= 2) setStream(stream);
@@ -98,6 +109,9 @@ const SetupComponent = (props) => {
         if (audioTrack) {
           setSelectedAudioTrack(audioTrack);
           stream.addTrack(audioTrack);
+          stream
+            .getAudioTracks()
+            .forEach((track) => (track.enabled = isVideoOn));
         }
       }
       if (effectCnt.current >= 2) setStream(stream);
@@ -121,13 +135,14 @@ const SetupComponent = (props) => {
   };
 
   const toggleVideo = (e) => {
-    stream.getVideoTracks().forEach((track) => (track.enabled = !isVideoOn));
+    console.log(stream.getVideoTracks());
     setIsVideoOn(!isVideoOn);
+    stream.getVideoTracks().forEach((track) => (track.enabled = !isVideoOn));
   };
 
   const toggleAudio = (e) => {
-    stream.getAudioTracks().forEach((track) => (track.enabled = !isAudioOn));
     setIsAudioOn(!isAudioOn);
+    stream.getAudioTracks().forEach((track) => (track.enabled = !isAudioOn));
   };
 
   const goNext = () => {

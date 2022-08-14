@@ -6,8 +6,17 @@ import './SetupComponent.css';
 import { getAudios, getVideos } from './utils/customUseDevice';
 
 const Result = (props) => {
-  const { teacherName, classTitle, whoami, myData, othersData } = props;
+  const {
+    teacherName,
+    classTitle,
+    whoami,
+    myData,
+    othersData,
+    studentList,
+    studentInfo,
+  } = props;
 
+  console.log(studentList, studentInfo);
   // 결과창 나온 시간
   const time = new Date();
   const finTime =
@@ -37,6 +46,8 @@ const Result = (props) => {
               teacherName={teacherName}
               classTitle={classTitle}
               finTime={finTime}
+              studentList={studentList}
+              studentInfo={studentInfo}
             />
           </>
         ) : (
@@ -48,6 +59,8 @@ const Result = (props) => {
               teacherName={teacherName}
               classTitle={classTitle}
               finTime={finTime}
+              studentList={studentList}
+              studentInfo={studentInfo}
             />
           </>
         )}

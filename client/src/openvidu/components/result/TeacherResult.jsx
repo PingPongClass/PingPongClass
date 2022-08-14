@@ -11,12 +11,15 @@ const TeacherResult = ({
   othersData,
   finTime,
   classId,
+  studentList,
+  studentInfo,
 }) => {
   console.log(myData);
   console.log(othersData);
-  const [totalStudentNum, setTotalStudentNum] = useState(0);
   const [attStudentNum, setAttStudentNum] = useState(0);
   const [totalSticker, setTotalSticker] = useState(0);
+
+  console.log(studentList.length);
 
   const applyToDB = async () => {
     try {
@@ -35,7 +38,6 @@ const TeacherResult = ({
   };
 
   useEffect(() => {
-    setTotalStudentNum(othersData.length); // 우선 임시로
     setAttStudentNum(othersData.length); // 참여자 수
     setTotalSticker(othersData.reduce((acc, cur) => (acc += cur.point), 0)); // 총 부여 스티커 계산식
 
@@ -65,8 +67,8 @@ const TeacherResult = ({
           <div className="t-attendence-time">{myData.attendenceTime}</div>
           <div className="t-fin-time">{finTime}</div>
           <div className="t-point">{totalSticker}</div>
-          <div className="t-student-number">{attStudentNum}</div>
-          <div className="t-att-student-number">{totalStudentNum}</div>
+          <div className="t-student-number">{studentList.length}</div>
+          <div className="t-att-student-number">{attStudentNum}</div>
         </div>
       </div>
       <div css={TotalResult}>

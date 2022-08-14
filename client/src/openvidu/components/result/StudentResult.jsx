@@ -9,8 +9,9 @@ const StudentResult = ({
   myData,
   othersData,
   finTime,
+  studentList,
+  studentInfo,
 }) => {
-  const [totalStudentNum, setTotalStudentNum] = useState(0);
   const [attStudentNum, setAttStudentNum] = useState(0);
   const [totalSticker, setTotalSticker] = useState(0);
   const [teacherModel, setTeacherModel] = useState({
@@ -20,11 +21,12 @@ const StudentResult = ({
   const [otherModels, setOtherModels] = useState([]);
   console.log(otherModels, '저거');
 
+  console.log('ㅇㅁㄻㅇㄻㅇㄹㅇㅁ', studentList.length);
+
   // 학생데이터 상점 받은 순으로 정렬
   otherModels.sort((a, b) => b.point - a.point);
 
   useLayoutEffect(() => {
-    setTotalStudentNum(othersData.length); // 우선 임시로
     setAttStudentNum(othersData.length); // 참여자 수
     const data =
       othersData.reduce((acc, cur) => (acc += cur.point), 0) + myData.point; // 총 부여 스티커 계산식
@@ -67,8 +69,8 @@ const StudentResult = ({
           <div className="t-attendence-time">{teacherModel.attendenceTime}</div>
           <div className="t-fin-time">{finTime}</div>
           <div className="t-point">{totalSticker}</div>
-          <div className="t-student-number">{attStudentNum}</div>
-          <div className="t-att-student-number">{totalStudentNum}</div>
+          <div className="t-student-number">{studentList.length}</div>
+          <div className="t-att-student-number">{attStudentNum}</div>
         </div>
       </div>
 

@@ -356,6 +356,13 @@ class VideoRoomComponent extends Component {
     // 연결된 디바이스 중에서 비디오 디바이스를 필터링
     // var videoDevices = devices.filter((device) => device.kind === "videoinput");
 
+    console.log(
+      '비디오 오디오 확인 ',
+      this.state.currentAudioDevice,
+      this.state.currentVideoDevice,
+      localUser.isAudioActive(),
+      localUser.isVideoActive(),
+    );
     // publisher 초기설정(자기자신)
     let publisher = this.OV.initPublisher(undefined, {
       audioSource: this.state.currentAudioDevice,
@@ -366,6 +373,8 @@ class VideoRoomComponent extends Component {
       frameRate: 30,
       insertMode: 'APPEND',
     });
+
+    console.log(this.OV);
 
     // 접근 허용되었을 때 설정 변경
     if (this.state.session.capabilities.publish) {
@@ -465,6 +474,9 @@ class VideoRoomComponent extends Component {
   // leaveSession: 세션을 빠져나가는 함수
   async leaveSession() {
     const mySession = this.state.session;
+    mySession.unpublish(localUser.getStreamManager());
+    console.log(localUser.getStreamManager().stream.getMediaStream());
+    console.log(localUser);
     this.props.setMyData(this.state.localUser);
     this.props.setOthersData(this.state.subscribers);
 
@@ -807,7 +819,7 @@ class VideoRoomComponent extends Component {
         // In mobile devices the default and first camera is the front one
         // Publisher를 새롭게 설정
         const newPublisher = this.OV.initPublisher(undefined, {
-          audioSource: undefined,
+          audioSource: this.state.currentAudioDeviceId,
           videoSource: newVideoDevice[0].deviceId,
           publishAudio: localUser.isAudioActive(),
           publishVideo: localUser.isVideoActive(),
@@ -846,7 +858,7 @@ class VideoRoomComponent extends Component {
         // Publisher를 새롭게 설정
         const newPublisher = this.OV.initPublisher(undefined, {
           audioSource: newAudioDevice[0].deviceId,
-          videoSource: undefined,
+          videoSource: this.state.currentVideoDeviceId,
           publishVideo: localUser.isVideoActive(),
           publishAudio: localUser.isAudioActive(),
           mirror: true,
