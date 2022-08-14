@@ -211,6 +211,7 @@ const EditTeacher = ({ onClickOpenModal, teacherId }: ModalDefaultType) => {
       })
         .then(function (response) {
           alert('정보가 수정되었습니다.');
+          // console.log(response);
           navigate('/admin/teachers');
           // location.href = '/admin/teachers';
         })

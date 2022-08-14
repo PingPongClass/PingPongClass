@@ -69,9 +69,8 @@ const TeacherBoard = () => {
     setIsBulkModal(!isBulkModal);
   }, [isBulkModal]);
 
-  const handlePage = (event) => {
-    const nowPageInt = parseInt(event.target.outerText);
-    setPage(nowPageInt);
+  const handlePage = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
   };
 
   const deleteSelected = () => {
@@ -112,6 +111,7 @@ const TeacherBoard = () => {
     } else {
       searchQuery = searchQuery + '&name=' + keyword;
     }
+    console.log(searchQuery);
 
     InterceptedAxios.get(searchQuery)
       .then((response) => {
@@ -122,6 +122,7 @@ const TeacherBoard = () => {
           newList.push(newElem);
         });
         setTeachers(newList);
+        setPage(1);
       })
       .catch(() => {
         console.log('선생님 데이터 가져오기 실패');
@@ -228,9 +229,10 @@ const TeacherBoard = () => {
           className="Pagination"
           count={LAST_PAGE}
           defaultPage={1}
-          boundaryCount={2}
+          page={page}
+          boundaryCount={0}
           sx={{ mb: 2 }}
-          onChange={(e) => handlePage(e)}
+          onChange={handlePage}
           variant="outlined"
           shape="rounded"
         />
@@ -244,6 +246,8 @@ const totalContainer = () => css`
   text-align: center;
   display: grid;
   /* height: inherit; */
+  /* width: inherit; */
+  width: -webkit-fill-available;
   height: min-content;
   position: relative;
   overflow: hidden;
@@ -251,9 +255,13 @@ const totalContainer = () => css`
 
   .upperModalArea {
     background-color: white;
+    display: flex;
     z-index: 2;
-    width: 100%;
-    /* width: -webkit-fill-available; */
+    /* width: 95%; */
+    align-items: center;
+    justify-content: space-evenly;
+    align-content: center;
+    width: -webkit-fill-available;
   }
 
   button:hover {

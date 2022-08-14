@@ -112,15 +112,21 @@ const ClassBoard = () => {
   };
 
   const getManagedClass = async () => {
-    let searchQuery = '/classes/' + memberStore.userId + '?page=' + page;
+    let searchQuery =
+      '/classes/' +
+      memberStore.userId +
+      '?pageNumber=' +
+      (page + 1) +
+      '&title=' +
+      keyword;
 
     const response = await InterceptedAxios.get(searchQuery);
     setTotalPage(response.data.totalPages);
     const list = response.data.content;
-    checknewClass(list);
+    checkNewClass(list);
   };
 
-  const checknewClass = (value: ClassBoardProps[]) => {
+  const checkNewClass = (value: ClassBoardProps[]) => {
     const newClass: ClassBoardProps[] = [];
     value.forEach((element) => {
       const id = element.classId;
@@ -129,7 +135,11 @@ const ClassBoard = () => {
         newClass.push({ ...element, isSelected: false });
       }
     });
-    setArticles([...articles, ...newClass]);
+    if (keyword !== '' && keyword !== ' ' && keyword !== undefined) {
+      setArticles(newClass);
+    } else {
+      setArticles([...articles, ...newClass]);
+    }
   };
 
   const toggle = (id: number) => {

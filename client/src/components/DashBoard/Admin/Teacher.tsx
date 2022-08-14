@@ -83,8 +83,11 @@ export const TeacherStyle = () => css`
   font-weight: 400;
 
   position: relative;
-  width: 10vw;
+  width: fit-content;
+  min-width: -webkit-fill-available;
+  max-width: 9vw;
   height: 15vh;
+  min-height: -webkit-fill-available;
   border: 0.01rem solid black;
   margin: 1rem;
   border-radius: 0.5rem;
