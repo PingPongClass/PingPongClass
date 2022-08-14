@@ -158,54 +158,70 @@ const SetupComponent = (props) => {
 
   return (
     <div className="totalContainer">
-      <div className="RoomName">
-        <h3>
-          {classTitle} - {teacherName}
-        </h3>
-      </div>
-      <div className="preview">
-        <video ref={previewFace} autoPlay />
-      </div>
-      <div className="settingSection">
-        <div className="settingVideo">
-          <p>비디오 : </p>
-          <select onChange={selectVideo}>
-            {videos.map((video, i) => (
-              <option value={video.deviceId} key={i}>
-                {video.label}
-              </option>
-            ))}
-          </select>
-          <button onClick={toggleVideo}>
-            {isVideoOn ? <Videocam /> : <VideocamOff />}
-          </button>
+      <div className="parent">
+        <div className="child">
+          <div className="container">
+            <div className="circles">
+              <div className="circle1" />
+              <div className="circle2" />
+              <div className="circle3" />
+            </div>
+            <hr />
+            <div className="main">
+              <div className="RoomName">
+                <h2>
+                  {classTitle} - {teacherName}
+                </h2>
+              </div>
+              <div className="preview">
+                <video ref={previewFace} autoPlay />
+              </div>
+              <div className="settingSection">
+                <div className="settingVideo">
+                  <p>비디오 </p>
+                  <select onChange={selectVideo}>
+                    {videos.map((video, i) => (
+                      <option value={video.deviceId} key={i}>
+                        {video.label}
+                      </option>
+                    ))}
+                  </select>
+                  <button onClick={toggleVideo}>
+                    {isVideoOn ? <Videocam /> : <VideocamOff />}
+                  </button>
+                </div>
+                <div className="settingAudio">
+                  <p>마이크 </p>
+                  <select onChange={selectAudio}>
+                    {audios.map((audio, i) => (
+                      <option value={audio.deviceId} key={i}>
+                        {audio.label}
+                      </option>
+                    ))}
+                  </select>
+                  <button onClick={toggleAudio}>
+                    {isAudioOn ? <Mic /> : <MicOff />}
+                  </button>
+                </div>
+                <div className="settingSpeaker">
+                  <p>스피커 </p>
+                  <select onChange={selectSpeaker}>
+                    {speakers.map((speaker, i) => (
+                      <option value={speaker.deviceId} key={i}>
+                        {speaker.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="next">
+                <button className="nextBtn" onClick={goNext}>
+                  입장하기
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="settingAudio">
-          <p>마이크 : </p>
-          <select onChange={selectAudio}>
-            {audios.map((audio, i) => (
-              <option value={audio.deviceId} key={i}>
-                {audio.label}
-              </option>
-            ))}
-          </select>
-          <button onClick={toggleAudio}>
-            {isAudioOn ? <Mic /> : <MicOff />}
-          </button>
-        </div>
-        <div className="settingSpeaker">
-          <p>스피커 : </p>
-          <select onChange={selectSpeaker}>
-            {speakers.map((speaker, i) => (
-              <option value={speaker.deviceId} key={i}>
-                {speaker.label}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-      <div className="next">
-        <button onClick={goNext}>입장하기</button>
       </div>
     </div>
   );
