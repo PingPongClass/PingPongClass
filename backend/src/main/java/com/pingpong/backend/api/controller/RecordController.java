@@ -67,8 +67,7 @@ public class RecordController {
     @ApiOperation(value = "선생님의 강의 로그 조회 - 일자별", notes = "classID -> 일자별 로그객체 ")
     @GetMapping("/teacher/{classId}")
     @PreAuthorize("hasRole('TEACHER')")
-    public List<TeacherLogResponse> findTeacherLog(@PathVariable int classId){
-        return recordService.findteacherlog(classId);
+    public TeacherLogResponse findTeacherLog(@PathVariable int classId, @RequestBody LogdateRequest req){
+        return recordService.findteacherlog(classId, req.getRegDate());
     }
-
 }

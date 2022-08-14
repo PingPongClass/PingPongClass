@@ -113,28 +113,21 @@ public class RecordService {
     public List<LogResponse> fingstudentlog(int studentId, LocalDate regDate){
         List<LogResponse> logResponseList =new ArrayList<>();
         StudentEntity studentEntity = studentRepository.getById(studentId);
-        List<LogEntity> classEntityList = logRepository.findByRegDate(regDate);
-        for(LogEntity logEntity: classEntityList){
-            List<LogEntity> logEntityList= logRepository.findByClassEntityAndStudentEntity(logEntity.getClassEntity(), studentEntity);
-            logResponseList.add(new LogResponse(logEntity.getClassEntity(),logEntityList ));
+        List<LogEntity> logList = logRepository.findByRegDateAndStudentEntity(regDate, studentEntity);
+        if(!logList.isEmpty()) {
+            for(int i=0; i<logList.size(); i++){
+                logResponseList.add(new LogResponse(logList.get(i)));
+            }
         }
         return logResponseList;
     }
     //선생님 로그 기록 조회 -> 수업에 일자별 로그 리스트 반환
-    public List<TeacherLogResponse> findteacherlog(int classId){
-        List<TeacherLogResponse> teacherLogResponseList = new ArrayList<>();
+    public TeacherLogResponse findteacherlog(int classId, LocalDate regDate){
         ClassEntity classEntity = classRepository.getById(classId);
-        List<Integer> list = logRepository.getdistinctdate(classId);
-        for(int id :list){
-            LogEntity logEntity = logRepository.getById(id);
-            List<LogEntity> logEntities = logRepository.findByRegDateAndClassEntity(logEntity.getRegDate(), classEntity);
-            for(LogEntity log: logEntities) {
-                System.out.println(log.getLogId()+" "+log.getStudentEntity()
-                        .getName());
-                teacherLogResponseList.add(new TeacherLogResponse(logEntity.getRegDate(), logEntities));
-            }
-        }
-        return teacherLogResponseList;
+        List<ClassStudentEntity> classStudentEntityList = classStudentRepository.findByClassEntity(classEntity);
+        int totalStuNum = classStudentEntityList.size();
+        List<LogEntity> logEntities = logRepository.findByRegDateAndClassEntity(regDate, classEntity);
+        return new TeacherLogResponse(totalStuNum, logEntities);
     }
 
 

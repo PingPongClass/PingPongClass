@@ -7,11 +7,21 @@ import java.util.List;
 
 @Getter
 public class LogResponse {
-    private ClassEntity classEntity;
-    private List<LogEntity> logEntityList;
+    int classId;
+    String classTitle;
+    int timetableId;
+    String subjectName;
+    int point;
+    boolean attendance;
+    int presentCnt;
 
-    public LogResponse(ClassEntity classEntity, List<LogEntity> logEntityList){
-        this.classEntity =classEntity;
-        this.logEntityList=logEntityList;
+    public LogResponse(LogEntity entity){
+        this.classId=entity.getClassEntity().getClassId();
+        this.classTitle=entity.getClassEntity().getClassTitle();
+        this.timetableId=entity.getClassEntity().getTimetableEntity().getTimetableId();
+        this.subjectName=entity.getClassEntity().getSubjectEntity().getName();
+        this.point=entity.getPoint();
+        this.attendance=entity.isAttendance();
+        this.presentCnt=entity.getPresentCnt();
     }
 }

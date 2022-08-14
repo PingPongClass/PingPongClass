@@ -8,11 +8,25 @@ import java.util.List;
 
 @Getter
 public class TeacherLogResponse {
-    private LocalDate regDate;
-    private List<LogEntity> logEntityList;
+    int totalStuNum;
+    int attendStuNum;
+    int totalPoint;
+    int totalPresentCnt;
+    List<LogEntity> logEntityList;
 
-    public TeacherLogResponse(LocalDate regDate, List<LogEntity> logEntityList){
-        this.regDate=regDate;
+    public TeacherLogResponse(int totalStuNum, List<LogEntity> logEntityList){
+        this.totalStuNum=totalStuNum;
+        int num=0;
+        int point=0;
+        int present=0;
+        for(LogEntity entity : logEntityList) {
+            if(entity.isAttendance()) num++;
+            point+=entity.getPoint();
+            present+=entity.getPresentCnt();
+        }
+        this.attendStuNum=num;
+        this.totalPoint=point;
+        this.totalPresentCnt=present;
         this.logEntityList=logEntityList;
     }
 
