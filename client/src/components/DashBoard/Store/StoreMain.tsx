@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
 import ItemList from './ItemListTap/ItemList';
@@ -25,6 +25,7 @@ import member, {
   Items,
   saveItem,
 } from '@src/store/member';
+import StorePreview from '@components/DashBoard/Store/StorePreview';
 
 const StoreMain = () => {
   const InterceptedAxios = setupInterceptorsTo(axios.create());
@@ -40,8 +41,8 @@ const StoreMain = () => {
   const [getColorType, setGetColorType] = useState<number>(0);
   const [isOpenPick, setIsOpenPick] = useState(false);
   const [isCameraOn, setIsCameraOn] = useState(false);
-
   const [showReaction, setShowReaction] = useState('');
+  const [cameraLoading, setCameraLoading] = useState(false);
 
   const dispatch = useAppDispatch();
 
@@ -56,14 +57,23 @@ const StoreMain = () => {
     'pingpong',
   ];
 
+  const onClickVideoOn = () => {
+    if (!cameraLoading) setIsCameraOn(true);
+  };
+
+  const onClickVideoOff = () => {
+    if (!cameraLoading) setIsCameraOn(false);
+  };
+
   useEffect(() => {
     //로딩시 해당 유저의 아이템 불러오기
-    dispatch(saveItem(memberStore.userId)).then(() => {
-      setItems(memberStore.items);
-      setGetBorder(memberStore.borderColor);
-      dispatch(saveMember());
-      console.log('-------랜더링 : ', items);
-    });
+    if (memberStore) {
+      dispatch(saveItem(memberStore.userId)).then(() => {
+        setItems(memberStore.items);
+        setGetBorder(memberStore.borderColor);
+        dispatch(saveMember());
+      });
+    }
   }, [change]);
 
   // useEffect(() => {
@@ -98,7 +108,6 @@ const StoreMain = () => {
           itemId = 3;
         }
         setGetItem(itemId);
-        console.log('뽑은 아이템 :' + itemId + ',' + memberStore.userId);
 
         //뽑기 아이템 DB 저장
         InterceptedAxios.post('/items', {
@@ -110,11 +119,10 @@ const StoreMain = () => {
 
             setChange('change');
             //퐁퐁이 개수 줄인 정보 받아오기
-            console.log(memberStore);
           })
           .catch(function (error) {
             toast.warning('뽑기 과정에서 에러 발생');
-            console.log('뽑기 DB저장 실패', error);
+            console.error('뽑기 DB저장 실패', error);
           });
       }
     }
@@ -139,7 +147,6 @@ const StoreMain = () => {
     setIsOpenPick(!isOpenPick);
     setGetColor(color);
     setGetColorType(type);
-    console.log('highFunction : ', color, ',', type);
     //Animation2로 전달
   };
 
@@ -407,24 +414,34 @@ const StoreMain = () => {
                   }}
                 />
               )}
-              {!isCameraOn && (
+              {isCameraOn ? (
+                <StorePreview
+                  isCameraOn={isCameraOn}
+                  cameraLoading={cameraLoading}
+                  setCameraLoading={setCameraLoading}
+                />
+              ) : (
                 <img src="../img/cam.jpg" alt="" className="image-thumbnail" />
               )}
             </div>
             <div className="video-div">
               {isCameraOn ? (
-                <VideocamIcon
-                  className="video-icon"
-                  onClick={() => {
-                    setIsCameraOn(false);
-                  }}
-                />
+                cameraLoading ? (
+                  <VideocamIcon
+                    className="video-icon"
+                    onClick={onClickVideoOff}
+                    color="disabled"
+                  />
+                ) : (
+                  <VideocamIcon
+                    className="video-icon"
+                    onClick={onClickVideoOff}
+                  />
+                )
               ) : (
                 <VideocamOffIcon
                   className="video-icon"
-                  onClick={() => {
-                    setIsCameraOn(true);
-                  }}
+                  onClick={onClickVideoOn}
                 />
               )}
             </div>
@@ -774,6 +791,18 @@ const totalContainer = () => css`
     background-color: #fcc97d;
     padding: 4px 25px;
   }
+
+  .video-div {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    height: 36px;
+
+    & > * {
+      height: 24px;
+    }
+  }
+
   .image-thumbnail {
     width: 100%;
     height: 100%;

@@ -10,7 +10,6 @@ import Videocam from '@mui/icons-material/Videocam';
 import VideocamOff from '@mui/icons-material/VideocamOff';
 import Fullscreen from '@mui/icons-material/Fullscreen';
 import FullscreenExit from '@mui/icons-material/FullscreenExit';
-import SwitchVideoIcon from '@mui/icons-material/SwitchVideo';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PictureInPicture from '@mui/icons-material/PictureInPicture';
 import ScreenShare from '@mui/icons-material/ScreenShare';
@@ -39,7 +38,6 @@ export default class ToolbarComponent extends Component {
     this.screenShare = this.screenShare.bind(this);
     this.stopScreenShare = this.stopScreenShare.bind(this);
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
-    this.switchCamera = this.switchCamera.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.toggleChat = this.toggleChat.bind(this);
     this.toggleParticipant = this.toggleParticipant.bind(this);
@@ -75,11 +73,6 @@ export default class ToolbarComponent extends Component {
   toggleFullscreen() {
     this.setState({ fullscreen: !this.state.fullscreen });
     this.props.toggleFullscreen();
-  }
-
-  // switchCamera: 카메라 변경 함수
-  switchCamera() {
-    this.props.switchCamera();
   }
 
   // leaveSession: 세션 이탈 함수

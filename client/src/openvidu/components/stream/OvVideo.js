@@ -29,7 +29,6 @@ const OvVideoComponent = (props) => {
   useEffect(() => {
     if (props && !!videoRef) {
       user.getStreamManager().addVideoElement(videoRef.current);
-      console.log(currentSpeakerDeviceId);
     }
   }, [user, mutedSound, currentSpeakerDeviceId, props]);
 

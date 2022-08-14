@@ -2,6 +2,25 @@
 // date: 2022/08/07
 // desc: Device에 관련된 유틸 함수들을 한 군데 모아둠
 
+// 권한 가져오는 함수
+export const initStream = async () => {
+  try {
+    // 처음 권한 가져오기
+    const newStream = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+      video: true,
+    });
+    // 사용중인 트랙은 종료시키자 (권한만이 목적)
+    newStream.getTracks().forEach((track) => {
+      track.stop();
+      newStream.removeTrack(track);
+    });
+    throw new Error('Got Permissioned!');
+  } catch (e) {
+    return true;
+  }
+};
+
 // 스트림 만드는 함수
 export const createStream = ({ audioTrack, videoTrack }) => {
   const stream = new MediaStream();

@@ -15,7 +15,6 @@ import './SingleParticipantPanel.css';
 // Todo: 사용자의 이름과 같은 상태값들을 한명씩 출력해주는 컴포넌트
 const SingleParticipantPanel = (props) => {
   const { user, whoami, isMyself } = props;
-  console.log(user);
 
   const onClickPointUp = () => {
     // 누가 보냈는지는 중요하지 않다
