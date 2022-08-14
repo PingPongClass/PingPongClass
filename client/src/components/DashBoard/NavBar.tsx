@@ -79,7 +79,7 @@ const NavBar = () => {
           onClick={onClickStore}
         >
           <StorefrontIcon className="nav-div" />
-          상점
+          퐁퐁상점
         </div>
       </Link>
     </div>

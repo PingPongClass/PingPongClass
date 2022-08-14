@@ -116,8 +116,7 @@ public class StudentController {
     public ResponseEntity<?> findByStudentId(@PathVariable int studentId){
         StudentEntity student = repository.getOne(studentId);
         if(student!=null){
-            int rank = repository.countByTotalPointGreaterThan(student.getTotalPoint())+1;
-            if(rankingRepository.findFirstByStudent(student)!=null) rank = rankingRepository.findFirstByStudent(student).getRankNum();
+            int rank = rankingRepository.findFirstByStudent(student).getRankNum();
             return new ResponseEntity<StudentResponse>(new StudentResponse(student, rank), HttpStatus.OK);
         } else{
             return new ResponseEntity<String>("해당 학생이 존재하지 않습니다.",HttpStatus.FORBIDDEN);

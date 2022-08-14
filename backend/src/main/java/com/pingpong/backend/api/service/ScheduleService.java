@@ -27,23 +27,23 @@ public class ScheduleService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     //매일 8시마다 실행
-//    @Scheduled(cron="0 39 3 ? * *")
-    @Scheduled(cron="0 0 8 * * *")
+//    @Scheduled(cron="0 0 8 * * *")
+    @Scheduled(cron="0 */5 * * * *") //5분마다 -> 8시마다로 바꿔주세요~
     public void everyDay_9_00_RankingJob(){
         System.out.println("8:00 RANKING 디비 갱신 시작!");
         rankingRepository.deleteAll();
-        List<StudentEntity> list = studentRepository.findTop10ByOrderByTotalPointDesc();
+        List<StudentEntity> list = studentRepository.findAllByOrderByTotalPointDesc();
         int size = list.size();
 
         //등수 제작
-        int[] rank = new int[10];
+        int[] rank = new int[size];
         Arrays.fill(rank,1);
-        for(int i=1; i<10; i++){
+        for(int i=1; i<size; i++){
             rank[i] = list.get(i).getTotalPoint() == list.get(i-1).getTotalPoint()? rank[i - 1] : i + 1;
         }
 
         //DB 저장
-        for(int i=0; i<10; i++){
+        for(int i=0; i<size; i++){
             rankingRepository.save(new RankingEntity(list.get(i), rank[i], list.get(i).getTotalPoint()));
         }
 

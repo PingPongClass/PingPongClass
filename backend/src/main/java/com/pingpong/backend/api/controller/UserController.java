@@ -125,8 +125,7 @@ public class UserController {
         if(id == null) return new ResponseEntity<String>("로그인된 회원을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
         if(id.length() == 10){
             StudentEntity student = studentRepository.getOne(Integer.parseInt(id));
-            int rank = studentRepository.countByTotalPointGreaterThan(student.getTotalPoint())+1;
-            if(rankingRepository.findFirstByStudent(student)!=null) rank = rankingRepository.findFirstByStudent(student).getRankNum();
+            int rank = rankingRepository.findFirstByStudent(student).getRankNum();
             return ResponseEntity.ok(new StudentResponse(student, rank));
         } else{
             return ResponseEntity.ok(new TeacherResponse(teacherRepository.getOne(Integer.parseInt(id))));

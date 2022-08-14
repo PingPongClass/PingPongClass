@@ -15,7 +15,7 @@ public class RankResponse {
         this.rankNum=entity.getRankNum();
         this.studentId=entity.getStudent().getStudentId();
         this.name=entity.getStudent().getName();
-        this.totalPoint=entity.getStudent().getTotalPoint();
+        this.totalPoint=entity.getTotalPoint();
         this.introduce=entity.getStudent().getIntroduce();
     }
 }

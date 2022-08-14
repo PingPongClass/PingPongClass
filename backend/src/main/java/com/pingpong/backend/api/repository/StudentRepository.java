@@ -17,7 +17,7 @@ public interface StudentRepository extends JpaRepository<StudentEntity, Integer>
 
     boolean existsByEmail(String email);
 
-    List<StudentEntity> findTop10ByOrderByTotalPointDesc();
+    List<StudentEntity> findAllByOrderByTotalPointDesc();
     int countByTotalPointGreaterThan(int totalPoint);
 
 
