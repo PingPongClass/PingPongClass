@@ -47,7 +47,18 @@
 }
 
 .bounds {
-  background-color: #494949;
+  background: #141e30; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to bottom,
+    #243b55,
+    #141e30
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to bottom,
+    #243b55,
+    #141e30
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
   overflow: hidden;
   position: absolute;
   left: 0;
@@ -60,7 +71,18 @@
 }
 
 .sth_on_bounds {
-  background-color: #494949;
+  background: #141e30; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to bottom,
+    #243b55,
+    #141e30
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to bottom,
+    #243b55,
+    #141e30
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
   overflow: hidden;
   position: absolute;
   left: 0;
@@ -73,7 +95,18 @@
 
 .sth_component {
   position: absolute;
-  background-color: #4a4a4a;
+  background: #141e30; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to bottom,
+    #243b55,
+    #141e30
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to bottom,
+    #243b55,
+    #141e30
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
   top: 0;
   left: 70%;
   bottom: 0;
@@ -149,7 +182,7 @@
   margin-left: auto;
 
   color: #fff;
-  font-family: "Didact Gothic", sans-serif;
+  font-family: 'Didact Gothic', sans-serif;
   font-size: 13px;
   line-height: 1.4;
 }
@@ -751,7 +784,7 @@
 
 .OT_audio-level-meter:before {
   /* makes the height of the container equals its width */
-  content: "";
+  content: '';
   display: block;
   padding-top: 100%;
 }
@@ -781,7 +814,7 @@
 
 .OT_audio-level-meter__audio-only-img:before {
   /* makes the height of the container equals its width */
-  content: "";
+  content: '';
   display: block;
   padding-top: 100%;
 }
@@ -920,7 +953,7 @@
 
 .OT_video-unsupported-img:before {
   /* makes the height of the container 93% of its width (90/97 px) */
-  content: "";
+  content: '';
   display: block;
   padding-top: 93%;
 }
@@ -947,3 +980,4 @@
     border: solid 8px transparent;
   }
 }
+

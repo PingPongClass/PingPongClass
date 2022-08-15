@@ -8,7 +8,18 @@
 #participantToolbar {
   position: relative;
   height: 30px;
-  background-color: #3b4d6b;
+  background: #2b5876; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to left,
+    #4e4376,
+    #2b5876
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to left,
+    #4e4376,
+    #2b5876
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
   box-sizing: border-box;
   font-weight: bold;
   font-size: 14px;
@@ -31,7 +42,7 @@
 }
 
 #participantComponent {
-  background-color: #373737;
+  background-color: rgba(192, 192, 192, 0.097);
   position: absolute;
   z-index: 99999;
   top: 0;
@@ -46,7 +57,7 @@
 
 .teacher-box {
   padding: 0.5rem 0.5rem 0.5rem 1rem;
-  background-color: #312f35;
+  background-color: #cecece36;
 }
 
 .display-box {

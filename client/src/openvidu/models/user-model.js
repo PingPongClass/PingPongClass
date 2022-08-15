@@ -31,7 +31,10 @@ class UserModel {
     this.picked = false;
     this.point = 0;
     this.emoji = '';
-    this.frameColor = { type: 'style', value: { border: '8px solid #F8CBD3' } }; // {type: "style", value: {border: "8px solid #F8CBD3"}}; // { type: "color", value: "#F8CBD3" };
+    this.frameColor = {
+      type: 'style',
+      value: { border: '10px solid #999999' },
+    }; // {type: "style", value: {border: "8px solid #F8CBD3"}}; // { type: "color", value: "#F8CBD3" };
     this.smile = false;
     this.outAngle = false;
     this.attendenceTime = '00:00:00';
