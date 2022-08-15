@@ -3,6 +3,7 @@ import mainLogo from '@assets/images/mainLogo.png';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CampaignIcon from '@mui/icons-material/Campaign';
+import BookIcon from '@mui/icons-material/Book';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
@@ -66,7 +67,7 @@ const TeacherNavBar = () => {
           className={isLog ? 'clickButton' : 'teacherNavButton'}
           onClick={onClickLog}
         >
-          <CampaignIcon style={{ fontSize: '40px' }} />
+          <BookIcon style={{ fontSize: '40px' }} />
           수업기록
         </div>
       </Link>

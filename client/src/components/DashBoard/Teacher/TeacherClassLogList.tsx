@@ -8,21 +8,11 @@ import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { useAppSelector } from '@src/store/hooks';
 
-export interface LogProps {
-  classId: number;
-  classTitle: string;
-  subjectName: string;
-  timetableId: number;
-  attendance: boolean;
-  point: number;
-  presentCnt: number;
-}
-
 const TeacherClassLogList = () => {
   const [value, onChange] = useState(new Date());
   const AXIOS = setupInterceptorsTo(axios.create());
   const memberStore = useAppSelector((state) => state.member);
-  const [logList, setLogList] = useState<LogProps[]>([]);
+  const [logList, setLogList] = useState([] as any);
   const [dateList, setDateList] = useState([] as any);
   const [weeklyList, setWeeklyList] = useState([] as any);
   const userId = memberStore.userId;
@@ -31,12 +21,12 @@ const TeacherClassLogList = () => {
 
   const loadLogList = async () => {
     const classId = classes.classId;
-    console.log(classId);
-    await AXIOS.post('/records/log/teacher/' + classId, {
+    await AXIOS.post('/records/teacher/' + classId, {
       regDate: moment(value).format('YYYY-MM-DD'),
     })
       .then(function (response) {
         setLogList(response.data);
+        console.log(response.data);
       })
       .catch(function (error) {
         console.log('실패', error);
@@ -71,8 +61,9 @@ const TeacherClassLogList = () => {
   };
 
   useEffect(() => {
-    loadLogList();
-  }, [value]);
+    if (isCalendar && value.getDay() === classes.classDay) loadLogList();
+    else setLogList([]);
+  }, [value, classes]);
 
   useEffect(() => {
     loadClassList();
@@ -110,7 +101,6 @@ const TeacherClassLogList = () => {
             </div>
             <div className="column">
               {weeklyList.map((list, idx) => {
-                console.log(list);
                 return (
                   <div key={idx} className="class">
                     {list.classEntityList.map((cls) => (
@@ -170,45 +160,107 @@ const TeacherClassLogList = () => {
           />
         )}
       </div>
-      <div className="logContainer">
-        <h2>
-          {moment(value).format('YYYY년 MM월 DD일')}&nbsp;
-          {day[value.getDay() - 1] + '요일'}
-        </h2>
-        <h3>
-          {classes.timetableId + '교시'}&nbsp;
-          {classes.classTitle}수업
-        </h3>
-        <div className="tableArea">
-          <div className="row titleRow">
-            <div className="col classInfo">수업 시간</div>
-            <div className="col classTitle">수업명</div>
-            <div className="col attendance">출석여부</div>
-            <div className="col point">얻은 퐁퐁</div>
-            <div className="col presentCnt">발표횟수</div>
-          </div>
+      {value.getDay() === classes.classDay ? (
+        <div className="logContainer">
+          <h2>
+            {moment(value).format('YYYY년 MM월 DD일')}&nbsp;
+            {day[value.getDay() - 1] === undefined
+              ? '주말'
+              : day[value.getDay() - 1] + '요일'}
+          </h2>
+          <h3>
+            {classes.timetableId + '교시'}&nbsp;
+            {classes.classTitle}수업
+          </h3>
+          <div className="classTableArea">
+            <div className="row titleRow">
+              <div className="col totalNum">전체</div>
+              <div className="col attendNum">출석</div>
+              <div className="col notattendNum">결석</div>
+              <div className="col totalPoint">부여한 총 퐁퐁</div>
+              <div className="col totalPresentCnt">총 발표횟수</div>
+            </div>
 
-          <div className="articleArea">
-            {logList.map((log, index) => {
-              return (
-                <div key={index} className="row logRow">
-                  <div className="col classInfo">
-                    {log.timetableId}교시 {log.subjectName}
+            <div className="articleArea">
+              {logList && (
+                <div className="row logRow">
+                  <div className="col totalNum">{logList?.totalStuNum}</div>
+                  <div className="col attendNum">{logList?.attendStuNum}</div>
+                  <div className="col notattendNum">
+                    {logList?.totalStuNum - logList?.attendStuNum}
                   </div>
-                  <div className="col classTitle">{log.classTitle}</div>
-                  {log.attendance ? (
-                    <div className="col attendance">출석</div>
-                  ) : (
-                    <div className="col attendance">결석</div>
-                  )}
-                  <div className="col point">{log.point}</div>
-                  <div className="col presentCnt">{log.presentCnt}</div>
+                  <div className="col totalPoint">{logList?.totalPoint}</div>
+                  <div className="col totalPresentCnt">
+                    {logList?.totalPresentCnt}
+                  </div>
                 </div>
-              );
-            })}
+              )}
+            </div>
+          </div>
+          <div className="tableArea">
+            <div className="row titleRow">
+              <div className="col studentInfo">학생</div>
+              <div className="col attendance">출석여부</div>
+              <div className="col point">얻은 퐁퐁</div>
+              <div className="col presentCnt">발표횟수</div>
+            </div>
+
+            <div className="articleArea">
+              {logList &&
+                logList.logEntityList &&
+                logList?.logEntityList.map((log, index) => {
+                  return (
+                    <div key={index} className="row logRow">
+                      <div className="col studentInfo">
+                        {log?.studentEntity.grade}-{log?.studentEntity.classNum}
+                        -{log?.studentEntity.studentNum}
+                        &nbsp;{log?.studentEntity.name}
+                      </div>
+                      {log?.attendance ? (
+                        <div
+                          className="col attendance"
+                          style={{ color: 'blue' }}
+                        >
+                          출석
+                        </div>
+                      ) : (
+                        <div
+                          className="col attendance"
+                          style={{ color: 'red' }}
+                        >
+                          결석
+                        </div>
+                      )}
+                      <div className="col point">{log?.point}</div>
+                      <div className="col presentCnt">{log?.presentCnt}</div>
+                    </div>
+                  );
+                })}
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="logContainer">
+          <h2>
+            {moment(value).format('YYYY년 MM월 DD일')}&nbsp;
+            {day[value.getDay() - 1] === undefined
+              ? '주말'
+              : day[value.getDay() - 1] + '요일'}
+          </h2>
+          {isCalendar ? (
+            <h3>
+              {' '}
+              {day[value.getDay() - 1] === undefined
+                ? '주말'
+                : day[value.getDay() - 1] + '요일'}
+              에는 해당 수업이 없습니다.
+            </h3>
+          ) : (
+            <h3>시간표에서 수업을 클릭해주세요.</h3>
+          )}
+          <div style={{ height: '80%' }} />
+        </div>
+      )}
     </div>
   );
 };
@@ -373,9 +425,25 @@ const totalContainer = css`
   /* table 영역 */
   .tableArea {
     width: 100%;
-    height: 100%;
+    height: 70%;
     /* overflow-y: scroll; */
     text-align: center;
+  }
+
+  .classTableArea {
+    width: 100%;
+    height: 16%;
+    /* overflow-y: scroll; */
+    text-align: center;
+  }
+
+  /* 스크롤 바 숨기기 */
+  .classTableArea::-webkit-scrollbar {
+    display: none;
+  }
+
+  .classTableArea div {
+    display: inline-block;
   }
 
   /* 스크롤 바 숨기기 */
@@ -454,15 +522,25 @@ const totalContainer = css`
   }
 
   /* 특정 열 별 설정 */
-  .classInfo,
-  .classTitle {
-    width: 7rem;
+  .studentInfo {
+    width: 9rem;
   }
 
   .point,
   .presentCnt,
   .attendance {
-    width: 5rem;
+    width: 6rem;
+  }
+
+  .totalNum,
+  .attendNum,
+  .notattendNum {
+    width: 4rem;
+  }
+
+  .totalPoint,
+  .totalPresentCnt {
+    width: 8rem;
   }
 
   select {

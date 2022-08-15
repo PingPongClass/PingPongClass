@@ -20,9 +20,13 @@ const ClassLog = (props: { key: number; log: LogProps }) => {
       </div>
       <div className="col classTitle">{log.classTitle}</div>
       {log.attendance ? (
-        <div className="col attendance">출석</div>
+        <div className="col attendance" style={{ color: 'blue' }}>
+          출석
+        </div>
       ) : (
-        <div className="col attendance">결석</div>
+        <div className="col attendance" style={{ color: 'red' }}>
+          결석
+        </div>
       )}
       <div className="col point">{log.point}</div>
       <div className="col presentCnt">{log.presentCnt}</div>
