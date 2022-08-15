@@ -35,7 +35,7 @@ class ShieldModal extends Component {
         this.props.user.nickname + '님이 발표 프리패스를 사용했습니다!',
       );
       this.props.pickRandomStudent(this.props.subscribers, true);
-      this.props.uesItem(3);
+      this.props.useItem(3);
       this.close();
     } else {
       alert('보유한 발표 프리패스가 없습니다!');

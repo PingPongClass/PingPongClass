@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import Sticker from "./PointSticker";
+import React, { useState } from 'react';
+import Sticker from './PointSticker';
 
 const PointSticker = (props) => {
   const { clickTimeOut, clickPoint, height, width } = props;
@@ -36,7 +36,7 @@ const PointSticker = (props) => {
 
   const removeSticker = (current) => {
     setStickers((stickers) =>
-      stickers.filter((sticker, index) => index !== current)
+      stickers.filter((sticker, index) => index !== current),
     );
   };
 
