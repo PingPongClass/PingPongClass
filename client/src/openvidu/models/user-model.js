@@ -14,10 +14,11 @@ class UserModel {
   frameColor; // 테두리 색깔
   smile; // 현재 웃는 중인지 확인
   outAngle; // 수업 참여 확인
-  attendenceTime; // 접속 시간
+  attendanceTime; // 접속 시간
   profile; // 프로필 이미지 정보
   uid; // 유저 아이디
   levelPng; // 레벨에 맞는 사진 경로
+  presentationCnt; // 발표 횟수
 
   constructor() {
     this.connectionId = '';
@@ -37,9 +38,10 @@ class UserModel {
     }; // {type: "style", value: {border: "8px solid #F8CBD3"}}; // { type: "color", value: "#F8CBD3" };
     this.smile = false;
     this.outAngle = false;
-    this.attendenceTime = '00:00:00';
+    this.attendanceTime = '00:00:00';
     this.profile = '';
     this.levelPng = '';
+    this.presentationCnt = 0;
   }
   // 추가 함수
   isSmileActive() {
@@ -74,6 +76,11 @@ class UserModel {
   getPoint() {
     return this.point;
   }
+
+  getPresentationCnt() {
+    return this.presentationCnt;
+  }
+
   getEmoji() {
     return this.emoji;
   }
@@ -133,6 +140,11 @@ class UserModel {
   setPoint(point) {
     this.point = point;
   }
+
+  setPresentationCnt(presentationCnt) {
+    this.presentationCnt = presentationCnt;
+  }
+
   setEmoji(emoji) {
     this.emoji = emoji;
   }
@@ -150,8 +162,8 @@ class UserModel {
     this.uid = uid;
   }
 
-  setAttendenceTime(attendenceTime) {
-    this.attendenceTime = attendenceTime;
+  setAttendanceTime(attendanceTime) {
+    this.attendanceTime = attendanceTime;
   }
 
   setLevelPng(levelPng) {
@@ -164,6 +176,14 @@ class UserModel {
 
   downPoint() {
     if (this.point > 0) --this.point;
+  }
+
+  upPresentationCnt() {
+    ++this.presentationCnt;
+  }
+
+  downPresentationCnt() {
+    --this.presentationCnt;
   }
 }
 

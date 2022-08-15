@@ -12,6 +12,7 @@ class ShieldModal extends Component {
     };
     this.close = this.close.bind(this);
     this.count = this.count.bind(this);
+    this.upPresentationCnt = this.upPresentationCnt.bind(this);
   }
 
   componentDidUpdate() {
@@ -48,6 +49,7 @@ class ShieldModal extends Component {
   // todo: 호출 시 테두리를 변경하고 그 정보를 전체 참여자에게 공유한다.
   notUseShield = () => {
     // this.props.tempFrameChange({ type: "color", value: "Red" });
+    this.upPresentationCnt();
     this.props.tempFrameChange({
       type: 'style',
       value: {
@@ -55,6 +57,10 @@ class ShieldModal extends Component {
       },
     });
     this.close();
+  };
+
+  upPresentationCnt = () => {
+    this.props.upPresentationCnt();
   };
 
   close() {

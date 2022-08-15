@@ -28,6 +28,7 @@ const App = () => {
   const [myData, setMyData] = useState([]);
   const [othersData, setOthersData] = useState([]);
   const [absentData, setAbsentData] = useState([]);
+  const [teacherData, setTeacherData] = useState();
   // 학생리스트
   const [studentList, setStudentList] = useState([]);
   const [studentInfo, setStudentInfo] = useState({});
@@ -134,6 +135,7 @@ const App = () => {
           studentList={studentList}
           levelPng={levelPng}
           setAbsentData={setAbsentData}
+          setTeacherData={setTeacherData}
         />
       )}
       {tap === 'result' && (
@@ -147,6 +149,7 @@ const App = () => {
           studentList={studentList}
           studentInfo={studentInfo}
           absentData={absentData}
+          teacherData={teacherData}
         />
       )}
     </>

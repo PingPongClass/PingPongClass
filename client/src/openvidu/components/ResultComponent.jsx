@@ -14,9 +14,9 @@ const Result = (props) => {
     absentData,
     studentList,
     studentInfo,
+    teacherData,
   } = props;
 
-  console.log(studentList, studentInfo);
   // 결과창 나온 시간
   const time = new Date();
   const finTime =
@@ -63,6 +63,7 @@ const Result = (props) => {
               finTime={finTime}
               studentList={studentList}
               studentInfo={studentInfo}
+              teacherData={teacherData}
             />
           </>
         )}

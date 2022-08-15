@@ -40,7 +40,6 @@ const SetupComponent = (props) => {
     isAudioOn,
     setIsAudioOn,
   } = setDevices;
-  console.log(whoami);
 
   const [isLoading, setIsLoading] = useState(true);
   const effectCnt = useRef(0); // 최초 마운트에 특정 useEffect가 동작하지 않게 하기 위한 트릭
@@ -49,14 +48,6 @@ const SetupComponent = (props) => {
   const [camLoading, setCamLoading] = useState(false);
   useUpdateStream(previewFace, stream.current);
   useUpdateSpeaker(previewFace, selectedSpeaker);
-
-  useEffect(() => {
-    return () => {
-      stream.current.getTracks().forEach((track) => {
-        track.stop();
-      });
-    };
-  }, []);
 
   useEffect(() => {
     const getMyDevices = async () => {
@@ -77,7 +68,6 @@ const SetupComponent = (props) => {
         stream.current.addTrack(await getVideoTrack(newVideos[0].deviceId));
       stream.current.getTracks().forEach((track) => (track.enabled = false));
       previewFace.current.srcObject = stream.current ?? null;
-      console.log(previewFace, stream);
     };
     getMyDevices().then(() => {
       setIsLoading(false);
@@ -165,7 +155,7 @@ const SetupComponent = (props) => {
 
   return (
     <div className="totalContainer">
-      {isLoading && <Loading />}
+      {isLoading && <Loading whoami={whoami} />}
       <div className="triangles">
         <div className="triangle1" />
         <div className="triangle2" />

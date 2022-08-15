@@ -57,7 +57,7 @@ const TeacherResult = ({
       logs.logList.push({
         attendance: true,
         point: student.point,
-        presentCnt: 0,
+        presentCnt: student.presentationCnt,
         studentId: student.uid,
       });
     }
@@ -151,15 +151,15 @@ const TeacherResult = ({
                     <div className="teacher index">
                       <div className="t-classname">수업 이름</div>
                       <div className="t-nickname">선생님 이름</div>
-                      <div className="t-attendence-time">수업 개설 시간</div>
+                      <div className="t-attendance-time">수업 개설 시간</div>
                       <div className="t-fin-time">수업 종료 시간</div>
                       <div className="t-point">총 부여 상점</div>
                     </div>
                     <div className="teacher">
                       <div className="t-classname">{classTitle}</div>
                       <div className="t-nickname">{teacherName}</div>
-                      <div className="t-attendence-time">
-                        {myData.attendenceTime}
+                      <div className="t-attendance-time">
+                        {myData.attendanceTime}
                       </div>
                       <div className="t-fin-time">{finTime}</div>
                       <div className="t-point">{totalSticker}</div>
@@ -202,18 +202,18 @@ const TeacherResult = ({
                   <div className="studentResult">
                     <div className="person index">
                       <div className="s-nickname">닉네임</div>
-                      <div className="s-attendence-time">최종 출석 시간</div>
+                      <div className="s-attendance-time">최종 출석 시간</div>
                       <div className="s-point">상점</div>
                       <div className="s-point">발표횟수</div>
                     </div>
                     {othersData.map((other, i) => (
                       <div key={i} className="person">
                         <div className="s-nickname">{other.nickname}</div>
-                        <div className="s-attendence-time">
-                          {other.attendenceTime}
+                        <div className="s-attendance-time">
+                          {other.attendanceTime}
                         </div>
                         <div className="s-point">{other.point}</div>
-                        <div className="s-present">{other.presentCnt}</div>
+                        <div className="s-present">{other.presentationCnt}</div>
                       </div>
                     ))}
                   </div>
@@ -241,7 +241,6 @@ const TeacherResult = ({
                 <a href="/teacher">
                   <button onClick={onClickApply}>저장 후 돌아가기</button>
                 </a>
-                <button onClick={logApplyToDB}>테스트</button>
               </div>
             </div>
           </div>
@@ -440,7 +439,7 @@ const ClassStatistic = css`
       align-items: center;
     }
 
-    & > .t-attendence-time,
+    & > .t-attendance-time,
     .t-fin-time {
       display: flex;
       width: 100px;
@@ -515,7 +514,7 @@ const TotalResult = css`
       align-items: center;
     }
 
-    & > .s-attendence-time {
+    & > .s-attendance-time {
       display: flex;
       width: 140px;
       justify-content: center;

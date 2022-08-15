@@ -1,9 +1,20 @@
 import { css } from '@emotion/react';
 import { useState, useEffect } from 'react';
 import LoadingImg from '../assets/images/loadingimg.gif';
+import { useNavigate } from 'react-router-dom';
 
-const Loading = () => {
+const Loading = ({ whoami }) => {
   const [msg, setMsg] = useState('교실로 이동중입니다.');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      navigate(`/${whoami}`);
+    }, 8000);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {

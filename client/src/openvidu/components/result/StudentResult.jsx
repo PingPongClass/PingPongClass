@@ -25,36 +25,24 @@ const StudentResult = ({
   finTime,
   studentList,
   studentInfo,
+  teacherData,
 }) => {
-  const [attStudentNum, setAttStudentNum] = useState(0);
   const [totalSticker, setTotalSticker] = useState(0);
-  const [teacherModel, setTeacherModel] = useState({
-    nickname: '',
-    attendenceTime: '',
-  });
   const [otherModels, setOtherModels] = useState([]);
-
   // 학생데이터 상점 받은 순으로 정렬
   otherModels.sort((a, b) => b.point - a.point);
+  console.log(otherModels);
 
   useLayoutEffect(() => {
-    setAttStudentNum(othersData.length); // 참여자 수
     const data =
       othersData.reduce((acc, cur) => (acc += cur.point), 0) + myData.point; // 총 부여 스티커 계산식
     setTotalSticker(data);
-    // 선생님과 학생 데이터 분리
-    const teacherData = othersData.filter(
-      (other) => other.nickname.substr(0, 5) === '[선생님]',
-    )[0];
-    setTeacherModel(teacherData);
 
     let otherdata = othersData.filter(
       (other) => other.nickname.substr(0, 5) !== '[선생님]',
     );
     otherdata.unshift(myData);
     setOtherModels(otherdata);
-    console.log(otherdata);
-    console.log(otherModels, '이거');
   }, [whoami, myData]);
 
   // 스크롤 처리 해야함
@@ -121,15 +109,17 @@ const StudentResult = ({
                     <div className="teacher index">
                       <div className="t-classname">수업 이름</div>
                       <div className="t-nickname">선생님 이름</div>
-                      <div className="t-attendence-time">수업 개설 시간</div>
+                      <div className="t-attendance-time">수업 개설 시간</div>
                       <div className="t-fin-time">수업 종료 시간</div>
                       <div className="t-point">총 부여 상점</div>
                     </div>
                     <div className="teacher">
                       <div className="t-classname">{classTitle}</div>
                       <div className="t-nickname">{teacherName}</div>
-                      <div className="t-attendence-time">
-                        {teacherModel?.attendenceTime}
+                      <div className="t-attendance-time">
+                        {teacherData
+                          ? teacherData.attendanceTime
+                          : '알 수 없음'}
                       </div>
                       <div className="t-fin-time">{finTime}</div>
                       <div className="t-point">{totalSticker}</div>
@@ -172,7 +162,7 @@ const StudentResult = ({
                   <div className="studentResult">
                     <div className="person index">
                       <div className="s-nickname">닉네임</div>
-                      <div className="s-attendence-time">최종 출석 시간</div>
+                      <div className="s-attendance-time">최종 출석 시간</div>
                       <div className="s-point">상점</div>
                       <div className="s-present">발표횟수</div>
                     </div>
@@ -186,11 +176,11 @@ const StudentResult = ({
                         }
                       >
                         <div className="s-nickname">{other.nickname}</div>
-                        <div className="s-attendence-time">
-                          {other.attendenceTime}
+                        <div className="s-attendance-time">
+                          {other.attendanceTime}
                         </div>
                         <div className="s-point">{other.point}</div>
-                        <div className="s-present">{other.presentCnt}</div>
+                        <div className="s-present">{other.presentationCnt}</div>
                       </div>
                     ))}
                   </div>
@@ -416,7 +406,7 @@ const ClassStatistic = css`
       align-items: center;
     }
 
-    & > .t-attendence-time,
+    & > .t-attendance-time,
     .t-fin-time {
       display: flex;
       width: 100px;
@@ -495,7 +485,7 @@ const TotalResult = css`
       align-items: center;
     }
 
-    & > .s-attendence-time {
+    & > .s-attendance-time {
       display: flex;
       width: 140px;
       justify-content: center;

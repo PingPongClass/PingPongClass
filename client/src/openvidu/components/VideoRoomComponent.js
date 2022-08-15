@@ -101,6 +101,7 @@ class VideoRoomComponent extends Component {
       settingDisplay: false,
       videoLayout: 'bigTeacher',
       levelPng: this.props.levelPng,
+      presentationCnt: 0,
     };
 
     // 메서드 바인딩 과정
@@ -173,6 +174,9 @@ class VideoRoomComponent extends Component {
     this.emoji = this.emoji.bind(this);
     // 익명질문
     this.question = this.question.bind(this);
+    // 발표 횟수 체크
+    this.upPresentationCnt = this.upPresentationCnt.bind(this);
+    this.downPresentationCnt = this.downPresentationCnt.bind(this);
   }
 
   // componentDidMount: 컴포넌트가 마운트 되었을 때 작동하는 리액트 컴포넌트 생명주기함수
@@ -277,7 +281,7 @@ class VideoRoomComponent extends Component {
       String(time.getMinutes()).padStart(2, '0') +
       ':' +
       String(time.getSeconds()).padStart(2, '0');
-    localUser.setAttendenceTime(attTime);
+    localUser.setAttendanceTime(attTime);
 
     // 레벨 저장
     localUser.setLevelPng(this.props.levelPng);
@@ -293,7 +297,7 @@ class VideoRoomComponent extends Component {
     this.state.session
       .connect(token, {
         clientData: this.state.myUserName,
-        attTime: localUser.attendenceTime,
+        attTime: localUser.attendanceTime,
         randPick: this.state.randPick,
         uid: this.props.userId,
         levelPng: this.props.levelPng,
@@ -431,6 +435,7 @@ class VideoRoomComponent extends Component {
             isVideoActive: this.state.localUser.isVideoActive(),
             nickname: this.state.localUser.getNickname(),
             point: this.state.localUser.getPoint(),
+            presentationCnt: this.state.localUser.getPresentationCnt(),
             isScreenShareActive: this.state.localUser.isScreenShareActive(),
           });
         }
@@ -439,6 +444,7 @@ class VideoRoomComponent extends Component {
         this.whoTeacherOrStudent();
       },
     );
+    console.log('하ㅔ앟멯ㅇㅎ', subscribers);
   }
 
   // 학생이 자기혼자 나간경우
@@ -463,7 +469,9 @@ class VideoRoomComponent extends Component {
       this.props.selfLeaveSession();
     }
 
-    return this.props.navigate('/student');
+    // 우선 임시로 카메라를 꺼뜨리기 위해서..
+    this.props.navigate('/student');
+    window.location.href = '/student';
   }
 
   // leaveSession: 세션을 빠져나가는 함수
@@ -562,6 +570,26 @@ class VideoRoomComponent extends Component {
   }
 
   // name: 오석호
+  // date: 2022/08/15
+  // 발표 횟수 증가 함수
+  upPresentationCnt() {
+    this.state.localUser.upPresentationCnt();
+    console.log('잘 작동함: ', this.state.localUser.presentationCnt);
+    this.sendSignalUserChanged({
+      presentationCnt: localUser.getPresentationCnt(),
+    });
+    this.setState({ localUser: localUser });
+  }
+
+  downPresentationCnt() {
+    this.state.localUser.downPresentationCnt();
+    this.sendSignalUserChanged({
+      presentationCnt: localUser.getPresentationCnt(),
+    });
+    this.setState({ localUser: localUser });
+  }
+
+  // name: 오석호
   // date: 2022/08/04
   // 포인트 조작 함수
   upPointChanged() {
@@ -584,6 +612,7 @@ class VideoRoomComponent extends Component {
     const userStream = remoteUsers.filter(
       (user) => user.getStreamManager().stream === stream,
     )[0];
+    this.props.setTeacherData(userStream);
     let index = remoteUsers.indexOf(userStream, 0);
     if (index > -1) {
       remoteUsers.splice(index, 1);
@@ -616,7 +645,7 @@ class VideoRoomComponent extends Component {
       newUser.setAudioActive(event.stream.audioActive);
       newUser.setVideoActive(event.stream.videoActive);
 
-      newUser.setAttendenceTime(
+      newUser.setAttendanceTime(
         JSON.parse(event.stream.connection.data).attTime,
       );
       newUser.setLevelPng(JSON.parse(event.stream.connection.data).levelPng);
@@ -624,6 +653,8 @@ class VideoRoomComponent extends Component {
       const nickname = event.stream.connection.data.split('%')[0];
       newUser.setNickname(JSON.parse(nickname).clientData);
       this.remotes.push(newUser);
+      if (JSON.parse(nickname).clientData.substr(1, 3) === '선생님')
+        this.props.setTeacherData(newUser);
       if (this.localUserAccessAllowed) {
         this.updateSubscribers();
         this.whoAbsent();
@@ -663,6 +694,9 @@ class VideoRoomComponent extends Component {
           if (data.point !== undefined) {
             user.setPoint(data.point);
           }
+          if (data.presentationCnt != undefined) {
+            user.setPresentationCnt(data.presentationCnt);
+          }
           if (data.isScreenShareActive !== undefined) {
             user.setScreenShareActive(data.isScreenShareActive);
             if (data.isScreenShareActive) {
@@ -685,6 +719,7 @@ class VideoRoomComponent extends Component {
                 this.toggleShield();
               } else {
                 // this.tempFrameChange({ type: "color", value: "Red" });
+                this.upPresentationCnt();
                 this.tempFrameChange({
                   type: 'style',
                   value: {
@@ -1269,14 +1304,9 @@ class VideoRoomComponent extends Component {
 
   toggleQuizStudent = (answer) => {
     if (answer) {
-      console.log(answer);
       this.sendSignalUserChanged({ quizAnswerCreated: answer });
-      this.setState({
-        ...this.state,
-        quiz: { ...this.state.quiz, myAnswer: answer },
-        quizDisplayStudent: !this.state.quizDisplayStudent,
-      });
     }
+    this.setState({ quizDisplayStudent: !this.state.quizDisplayStudent });
   };
 
   popUpQuiz = (newQuiz) => {
@@ -1367,13 +1397,13 @@ class VideoRoomComponent extends Component {
           <QuizModal
             display={this.state.quizDisplay}
             toggleQuiz={this.toggleQuiz}
-            header="퀴즈"
+            header="Quiz Modal"
             quiz={this.state.quiz}
           />
           <QuizModalStudent
             display={this.state.quizDisplayStudent}
             toggleQuizStudent={this.toggleQuizStudent}
-            header="퀴즈"
+            header="Quiz Modal"
             quiz={this.state.quiz}
           />
           <ShieldModalLoading
@@ -1394,6 +1424,8 @@ class VideoRoomComponent extends Component {
             subscribers={subscribers}
             timeOut={3}
             header="발표 프리패스 사용"
+            upPresentationCnt={this.upPresentationCnt}
+            downPresentationCnt={this.downPresentationCnt}
           />
 
           {/* 다이얼로그 */}

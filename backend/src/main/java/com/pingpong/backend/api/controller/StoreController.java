@@ -58,7 +58,7 @@ public class StoreController {
     @ApiOperation(value = "칭찬스티커 전체 개수 조회", notes = "유저가 지금까지 획득한 칭찬스티커 개수를 조회합니다.")
     @GetMapping("/totalsticker/{studentId}")
     public int findTotalSticker(@PathVariable final int studentId) throws Exception {
-        return studentService.findByStudentId(studentId).get().getTotalPoint();
+        return studentService.getTotalPoint(studentId);
     }
 
     @ApiOperation(value = "칭찬스티커 개수 사용", notes = "유저의 사용가능한 칭찬스티커 15장을 소멸시킵니다.")
