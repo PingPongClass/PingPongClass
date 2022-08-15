@@ -114,7 +114,7 @@ const StudentResult = ({
   ];
 
   return (
-    <div css={BackgroundContainer}>
+    <div css={totalContainer}>
       <div className="triangles">
         <div className="triangle1" />
         <div className="triangle2" />

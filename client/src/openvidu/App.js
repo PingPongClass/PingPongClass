@@ -25,8 +25,9 @@ const App = () => {
   const [isVideoOn, setIsVideoOn] = useState(false);
   const [isAudioOn, setIsAudioOn] = useState(false);
   // 통계를 내기 위한 자료
-  const [myData, setMyData] = useState(true);
-  const [othersData, setOthersData] = useState(true);
+  const [myData, setMyData] = useState([]);
+  const [othersData, setOthersData] = useState([]);
+  const [absentData, setAbsentData] = useState([]);
   // 학생리스트
   const [studentList, setStudentList] = useState([]);
   const [studentInfo, setStudentInfo] = useState({});
@@ -39,6 +40,7 @@ const App = () => {
   // 입장코드
   const { code } = useParams();
   const { state } = useLocation();
+  console.log('state: ', state);
 
   const memberStore = useAppSelector((state) => state.member);
   const whoami = whoru(memberStore.userId);
@@ -109,6 +111,7 @@ const App = () => {
           setTap={setTap}
           setDevices={setDevices}
           code={code}
+          whoami={whoami}
         />
       )}
       {tap === 'class' && (
@@ -130,6 +133,7 @@ const App = () => {
           studentNum={memberStore.studentNum}
           studentList={studentList}
           levelPng={levelPng}
+          setAbsentData={setAbsentData}
         />
       )}
       {tap === 'result' && (
@@ -142,6 +146,7 @@ const App = () => {
           classId={state.classId}
           studentList={studentList}
           studentInfo={studentInfo}
+          absentData={absentData}
         />
       )}
     </>

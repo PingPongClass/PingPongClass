@@ -470,6 +470,7 @@ class VideoRoomComponent extends Component {
     mySession.unpublish(localUser.getStreamManager());
     this.props.setMyData(this.state.localUser);
     this.props.setOthersData(this.state.subscribers);
+    this.props.setAbsentData(this.state.absentStudents);
 
     if (this.props.whoami === 'teacher') {
       try {
@@ -479,6 +480,7 @@ class VideoRoomComponent extends Component {
             classId: this.props.classId,
           },
         );
+        console.log('수업이 종료되었습니다.', result);
       } catch (e) {
         console.error(e);
       }

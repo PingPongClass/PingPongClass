@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import InterceptedAxios from '@src/utils/iAxios';
 import {
   PieChart,
@@ -21,6 +20,7 @@ const TeacherResult = ({
   whoami,
   myData,
   othersData,
+  absentData,
   finTime,
   classId,
   studentList,
@@ -28,12 +28,12 @@ const TeacherResult = ({
 }) => {
   console.log(myData);
   console.log(othersData);
+  console.log('결석자:', absentData);
+  console.log('클래스아이디:', classId);
   const [attStudentNum, setAttStudentNum] = useState(0);
   const [totalSticker, setTotalSticker] = useState(0);
 
-  console.log(studentList.length);
-
-  const applyToDB = async () => {
+  const pointApplyToDB = async () => {
     try {
       const promises = othersData.map(async (elem) => {
         InterceptedAxios.patch(
@@ -49,11 +49,41 @@ const TeacherResult = ({
     }
   };
 
+  const logApplyToDB = async () => {
+    const logs = { classId: classId, logList: [] };
+    // 출석자 로그
+    for (const student of othersData) {
+      logs.logList.push({
+        attendance: true,
+        point: student.point,
+        presentCnt: 0,
+        studentId: student.uid,
+      });
+    }
+
+    // 결석자 로그
+    for (const absent of absentData) {
+      logs.logList.push({
+        attendance: false,
+        point: 0,
+        presentCnt: 0,
+        studentId: studentInfo[absent],
+      });
+    }
+    console.log(logs);
+    await InterceptedAxios.post(`/records/log`, logs);
+
+    console.log('로그 전송 완료!');
+  };
+
+  const onClickApply = async () => {
+    pointApplyToDB();
+    logApplyToDB();
+  };
+
   useEffect(() => {
     setAttStudentNum(othersData.length); // 참여자 수
     setTotalSticker(othersData.reduce((acc, cur) => (acc += cur.point), 0)); // 총 부여 스티커 계산식
-
-    console.log(totalSticker);
   }, [whoami, myData, othersData, totalSticker]);
 
   // 스크롤 처리 해야함
@@ -227,8 +257,9 @@ const TeacherResult = ({
               </div>
               <div css={OtherThings}>
                 <a href="/teacher">
-                  <button onClick={applyToDB}>저장 후 돌아가기</button>
+                  <button onClick={onClickApply}>저장 후 돌아가기</button>
                 </a>
+                <button onClick={logApplyToDB}>테스트</button>
               </div>
             </div>
           </div>

@@ -1,17 +1,17 @@
 import { css } from '@emotion/react';
-import { Link } from 'react-router-dom';
 import TeacherResult from './result/TeacherResult';
 import StudentResult from './result/StudentResult';
 import './SetupComponent.css';
-import { getAudios, getVideos } from './utils/customUseDevice';
 
 const Result = (props) => {
   const {
     teacherName,
     classTitle,
+    classId,
     whoami,
     myData,
     othersData,
+    absentData,
     studentList,
     studentInfo,
   } = props;
@@ -48,6 +48,8 @@ const Result = (props) => {
               finTime={finTime}
               studentList={studentList}
               studentInfo={studentInfo}
+              absentData={absentData}
+              classId={classId}
             />
           </>
         ) : (

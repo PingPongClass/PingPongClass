@@ -16,9 +16,10 @@ import Mic from '@mui/icons-material/Mic';
 import MicOff from '@mui/icons-material/MicOff';
 import Videocam from '@mui/icons-material/Videocam';
 import VideocamOff from '@mui/icons-material/VideocamOff';
+import { Link } from 'react-router-dom';
 
 const SetupComponent = (props) => {
-  const { teacherName, classTitle, setTap, setDevices } = props;
+  const { teacherName, classTitle, setTap, setDevices, whoami } = props;
   const {
     videos,
     setVideos,
@@ -39,18 +40,19 @@ const SetupComponent = (props) => {
     isAudioOn,
     setIsAudioOn,
   } = setDevices;
+  console.log(whoami);
 
   const [isLoading, setIsLoading] = useState(true);
   const effectCnt = useRef(0); // 최초 마운트에 특정 useEffect가 동작하지 않게 하기 위한 트릭
-  const previewFace = useRef();
-  const [stream, setStream] = useState(new MediaStream());
+  const previewFace = useRef(null);
+  const stream = useRef(new MediaStream());
   const [camLoading, setCamLoading] = useState(false);
-  useUpdateStream(previewFace, stream);
+  useUpdateStream(previewFace, stream.current);
   useUpdateSpeaker(previewFace, selectedSpeaker);
 
   useEffect(() => {
     return () => {
-      stream.getTracks().forEach((track) => {
+      stream.current.getTracks().forEach((track) => {
         track.stop();
       });
     };
@@ -69,11 +71,13 @@ const SetupComponent = (props) => {
       if (newSpeakers.length) setSelectedSpeaker(newSpeakers[0].deviceId);
       setSelectedAudioTrack(newAudios[0]);
       setSelectedVideoTrack(newVideos[0]);
-      const newStream = await createStream({
-        audioTrack: newAudios[0],
-        videoTrack: newVideos[0],
-      });
-      setStream(newStream);
+      if (newAudios[0])
+        stream.current.addTrack(await getAudioTrack(newAudios[0].deviceId));
+      if (newVideos[0])
+        stream.current.addTrack(await getVideoTrack(newVideos[0].deviceId));
+      stream.current.getTracks().forEach((track) => (track.enabled = false));
+      previewFace.current.srcObject = stream.current ?? null;
+      console.log(previewFace, stream);
     };
     getMyDevices().then(() => {
       setIsLoading(false);
@@ -82,46 +86,48 @@ const SetupComponent = (props) => {
 
   useEffect(() => {
     const changeStream = async () => {
-      stream.getVideoTracks().forEach((track) => {
-        track.stop();
-        stream.removeTrack(track);
-      });
-      let videoTrack;
-      if (selectedVideo) {
-        videoTrack = await getVideoTrack(selectedVideo);
-        if (videoTrack) {
-          setSelectedVideoTrack(videoTrack);
-          stream.addTrack(videoTrack);
-          stream
-            .getVideoTracks()
-            .forEach((track) => (track.enabled = isVideoOn));
+      if (effectCnt.current < 2) ++effectCnt.current;
+      else {
+        stream.current.getVideoTracks().forEach((track) => {
+          track.stop();
+          stream.current.removeTrack(track);
+        });
+        let videoTrack;
+        if (selectedVideo) {
+          videoTrack = await getVideoTrack(selectedVideo);
+          if (videoTrack) {
+            setSelectedVideoTrack(videoTrack);
+            stream.current.addTrack(videoTrack);
+            stream.current
+              .getVideoTracks()
+              .forEach((track) => (track.enabled = isVideoOn));
+          }
         }
       }
-      if (effectCnt.current >= 2) setStream(stream);
-      else ++effectCnt.current;
     };
     changeStream();
   }, [selectedVideo]);
 
   useEffect(() => {
     const changeStream = async () => {
-      stream.getAudioTracks().forEach((track) => {
-        track.stop();
-        stream.removeTrack(track);
-      });
-      let audioTrack;
-      if (selectedAudio) {
-        audioTrack = await getAudioTrack(selectedAudio);
-        if (audioTrack) {
-          setSelectedAudioTrack(audioTrack);
-          stream.addTrack(audioTrack);
-          stream
-            .getAudioTracks()
-            .forEach((track) => (track.enabled = isAudioOn));
+      if (effectCnt.current < 2) ++effectCnt.current;
+      else {
+        stream.current.getAudioTracks().forEach((track) => {
+          track.stop();
+          stream.current.removeTrack(track);
+        });
+        let audioTrack;
+        if (selectedAudio) {
+          audioTrack = await getAudioTrack(selectedAudio);
+          if (audioTrack) {
+            setSelectedAudioTrack(audioTrack);
+            stream.current.addTrack(audioTrack);
+            stream.current
+              .getAudioTracks()
+              .forEach((track) => (track.enabled = isAudioOn));
+          }
         }
       }
-      if (effectCnt.current >= 2) setStream(stream);
-      else ++effectCnt.current;
     };
     changeStream();
   }, [selectedAudio]);
@@ -141,27 +147,25 @@ const SetupComponent = (props) => {
 
   const toggleVideo = (e) => {
     setIsVideoOn(!isVideoOn);
-    stream.getVideoTracks().forEach((track) => (track.enabled = !isVideoOn));
+    stream.current
+      .getVideoTracks()
+      .forEach((track) => (track.enabled = !isVideoOn));
   };
 
   const toggleAudio = (e) => {
     setIsAudioOn(!isAudioOn);
-    stream.getAudioTracks().forEach((track) => (track.enabled = !isAudioOn));
+    stream.current
+      .getAudioTracks()
+      .forEach((track) => (track.enabled = !isAudioOn));
   };
 
   const goNext = () => {
     setTap('class');
   };
 
-  if (isLoading)
-    return (
-      <div className="loading">
-        <Loading />
-      </div>
-    );
-
   return (
     <div className="totalContainer">
+      {isLoading && <Loading />}
       <div className="triangles">
         <div className="triangle1" />
         <div className="triangle2" />
@@ -248,6 +252,9 @@ const SetupComponent = (props) => {
                 <button className="nextBtn" onClick={goNext}>
                   입장하기
                 </button>
+                <Link to={`/${whoami}`}>
+                  <button className="backBtn">돌아가기</button>
+                </Link>
               </div>
             </div>
           </div>
