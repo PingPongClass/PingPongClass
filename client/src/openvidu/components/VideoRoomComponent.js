@@ -665,6 +665,11 @@ class VideoRoomComponent extends Component {
           }
           if (data.isScreenShareActive !== undefined) {
             user.setScreenShareActive(data.isScreenShareActive);
+            if (data.isScreenShareActive) {
+              this.setState({ videoLayout: 'screenShareOn' });
+            } else if (!data.isScreenShareActive) {
+              this.setState({ videoLayout: 'bigTeacher' });
+            }
           }
           if (data.picked !== undefined) {
             user.setPicked(data.picked);
@@ -1132,6 +1137,8 @@ class VideoRoomComponent extends Component {
             return true;
           }
         });
+        // 아이템이 없는 경우
+        return false;
       } else {
         // 잘못된 itemId값 입력
         return false;
@@ -1172,6 +1179,8 @@ class VideoRoomComponent extends Component {
     for (let i = 1; i <= multiple; i++) {
       this.addNewSticker(i);
     }
+    // console.log(this.state.stickers);
+    // this.setState({ stickers: this.state.stickers });
     setTimeout(() => {
       this.removeAllStickers();
     }, 4 * 1000);
@@ -1188,14 +1197,15 @@ class VideoRoomComponent extends Component {
     let xEnd = this.state.totalWidth * 0.7 - imgSize * 2;
     let yStart = margin;
     let yEnd = this.state.totalHeight - 80 - imgSize * 2;
-
-    let newSticker = {
+    const newSticker = {
       key: current,
       point: 5,
       top: this.between(yStart, yEnd),
       left: this.between(xStart, xEnd),
     };
-    this.setState({ stickers: [...this.state.stickers, newSticker] });
+
+    this.state.stickers.push(newSticker);
+    this.setState({ stickers: this.state.stickers });
   };
 
   // removeAllStickers: 호출 시 현재 화면에 생성된 모든 칭찬스티커를 제거하는 함수
@@ -1205,6 +1215,7 @@ class VideoRoomComponent extends Component {
 
   // removeSticker: 호출 시 int값으로 주어진 current을 키값으로 가지는 칭찬스티커를 제거하는 함수
   removeSticker = (current) => {
+    console.log('제거중' + current);
     this.setState({
       stickers: this.state.stickers.filter(
         (sticker) => sticker.key !== current,
@@ -1396,10 +1407,11 @@ class VideoRoomComponent extends Component {
           {this.state.stickers.map((stickerKey) => (
             <Sticker
               key={stickerKey.key}
+              stikerKey={stickerKey.key}
               point={stickerKey.point}
               top={stickerKey.top}
-              removeSticker={this.removeSticker}
               left={stickerKey.left}
+              removeSticker={this.removeSticker}
               localUser={localUser}
             ></Sticker>
           ))}
@@ -1416,8 +1428,10 @@ class VideoRoomComponent extends Component {
           >
             {localUser !== undefined &&
             localUser.getStreamManager() !== undefined ? (
-              this.state.videoLayout === 'bigTeacher' &&
-              localUser.nickname.includes('[선생님]') ? (
+              (this.state.videoLayout === 'bigTeacher' &&
+                localUser.nickname.includes('[선생님]')) ||
+              (this.state.videoLayout === 'screenShareOn' &&
+                localUser.isScreenShareActive()) ? (
                 <div
                   className="OT_root OT_publisher custom-class OV_big"
                   id="localUser"
@@ -1452,8 +1466,10 @@ class VideoRoomComponent extends Component {
               )
             ) : null}
             {this.state.subscribers.map((sub, i) =>
-              this.state.videoLayout === 'bigTeacher' &&
-              sub.nickname.includes('[선생님]') ? (
+              (this.state.videoLayout === 'bigTeacher' &&
+                sub.nickname.includes('[선생님]')) ||
+              (this.state.videoLayout === 'screenShareOn' &&
+                sub.isScreenShareActive) ? (
                 <div
                   key={i}
                   className="OT_root OT_publisher custom-class OV_big"
