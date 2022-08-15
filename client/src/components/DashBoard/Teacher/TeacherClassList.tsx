@@ -32,21 +32,20 @@ const ClassList = () => {
     }
   }, []);
 
-  // 지금 무조건 첫수업으로 가게 해둠
   const render = (idx): any => {
     const clsIdx = idx * 6;
     return (
       <SwiperSlide key={idx}>
         <div className="cardContainer">
           <div className="upCardContainer">
-            <ClassCard clsList={clsList[clsIdx]} />
-            <ClassCard clsList={clsList[clsIdx + 1]} />
-            <ClassCard clsList={clsList[clsIdx + 2]} />
+            <ClassCard clsList={clsList[clsIdx]} classUrl={true} />
+            <ClassCard clsList={clsList[clsIdx + 1]} classUrl={true} />
+            <ClassCard clsList={clsList[clsIdx + 2]} classUrl={true} />
           </div>
           <div className="downCardContainer">
-            <ClassCard clsList={clsList[clsIdx + 3]} />
-            <ClassCard clsList={clsList[clsIdx + 4]} />
-            <ClassCard clsList={clsList[clsIdx + 5]} />
+            <ClassCard clsList={clsList[clsIdx + 3]} classUrl={true} />
+            <ClassCard clsList={clsList[clsIdx + 4]} classUrl={true} />
+            <ClassCard clsList={clsList[clsIdx + 5]} classUrl={true} />
           </div>
         </div>
       </SwiperSlide>

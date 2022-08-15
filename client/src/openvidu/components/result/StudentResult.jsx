@@ -32,9 +32,6 @@ const StudentResult = ({
     attendenceTime: '',
   });
   const [otherModels, setOtherModels] = useState([]);
-  console.log(otherModels, '저거');
-
-  console.log('ㅇㅁㄻㅇㄻㅇㄹㅇㅁ', studentList.length);
 
   // 학생데이터 상점 받은 순으로 정렬
   otherModels.sort((a, b) => b.point - a.point);
@@ -237,9 +234,9 @@ const StudentResult = ({
                   </div>
                 </div>
                 <div css={OtherThings}>
-                  <Link to={`/student`}>
+                  <a href="/student">
                     <button>대시보드로 돌아가기</button>
-                  </Link>
+                  </a>
                 </div>
               </div>
             </div>

@@ -227,9 +227,9 @@ const TeacherResult = ({
                   </div>
                 </div>
                 <div css={OtherThings}>
-                  <Link to={`/teacher`}>
+                  <a href="/teacher">
                     <button onClick={applyToDB}>저장 후 돌아가기</button>
-                  </Link>
+                  </a>
                 </div>
               </div>
             </div>

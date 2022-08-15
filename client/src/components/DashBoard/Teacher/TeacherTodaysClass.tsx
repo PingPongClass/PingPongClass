@@ -10,7 +10,6 @@ import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '@src/store/hooks';
 import getCode from '@utils/getCode';
-import { number } from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
 interface ClassProps {
@@ -84,13 +83,7 @@ function TeacherTodaysClass() {
       >
         {classList.map((cls, idx) => (
           <SwiperSlide key={idx} onClick={() => openClass(cls)}>
-            <ClassCard
-              clsList={{
-                classTitle: cls.classTitle,
-                classDesc: cls.classDesc,
-              }}
-              classUrl={true}
-            />
+            <ClassCard clsList={cls} classUrl={true} />
           </SwiperSlide>
         ))}
       </Swiper>

@@ -24,6 +24,8 @@ import IconButton from '@mui/material/IconButton';
 import ViewAgenda from '@mui/icons-material/ViewAgenda';
 import ViewArray from '@mui/icons-material/ViewArray';
 import Share from '@mui/icons-material/Share';
+import SearchIcon from '@mui/icons-material/Search';
+import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 
 export default class ToolbarComponent extends Component {
   constructor(props) {
@@ -47,6 +49,8 @@ export default class ToolbarComponent extends Component {
     this.toggleSetting = this.toggleSetting.bind(this);
     this.selfLeaveSession = this.selfLeaveSession.bind(this);
     this.toggleVideoLayout = this.toggleVideoLayout.bind(this);
+    this.emoji = this.emoji.bind(this);
+    this.question = this.question.bind(this);
   }
 
   // micStatusChanged: 마이크 상태변화 토글 함수
@@ -96,6 +100,14 @@ export default class ToolbarComponent extends Component {
 
   toggleParticipant() {
     this.props.toggleParticipant();
+  }
+
+  emoji() {
+    this.props.emoji();
+  }
+
+  question() {
+    this.props.question();
   }
 
   // name: 한준수
@@ -381,6 +393,30 @@ export default class ToolbarComponent extends Component {
               <div className="buttonStyle">
                 <PeopleIcon />
                 <p>참여자 목록</p>
+              </div>
+            </IconButton>
+
+            <IconButton
+              color="inherit"
+              onClick={this.question}
+              className="navButton"
+              id="navQuestion"
+            >
+              <div className="buttonStyle">
+                <SearchIcon />
+                <p>질문</p>
+              </div>
+            </IconButton>
+
+            <IconButton
+              color="inherit"
+              onClick={this.emoji}
+              className="navButton"
+              id="navEmoji"
+            >
+              <div className="buttonStyle">
+                <EmojiEmotionsIcon />
+                <p>이모지</p>
               </div>
             </IconButton>
 

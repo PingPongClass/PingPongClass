@@ -26,6 +26,7 @@ var localUser = new UserModel();
 class VideoRoomComponent extends Component {
   constructor(props) {
     super(props);
+    console.log(this.props.levelPng);
     // OPENVIDU_SERVER_URL: 오픈비두 서버쪽 URL (포트번호는 변경될 수 있음)
     // this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
     //     ? this.props.openviduServerUrl
@@ -99,6 +100,7 @@ class VideoRoomComponent extends Component {
       quiz: {},
       settingDisplay: false,
       videoLayout: 'bigTeacher',
+      levelPng: this.props.levelPng,
     };
 
     // 메서드 바인딩 과정
@@ -165,11 +167,14 @@ class VideoRoomComponent extends Component {
     // 결석학생 잡기
     this.whoAbsent = this.whoAbsent.bind(this);
     this.whoTeacherOrStudent = this.whoTeacherOrStudent.bind(this);
+    // 이모지
+    this.emoji = this.emoji.bind(this);
+    // 익명질문
+    this.question = this.question.bind(this);
   }
 
   // componentDidMount: 컴포넌트가 마운트 되었을 때 작동하는 리액트 컴포넌트 생명주기함수
   componentDidMount() {
-    console.log('-------------', this.props.code);
     // openViduLayoutOptions: 화면 레이아웃 설정
     const openViduLayoutOptions = {
       maxRatio: 9 / 16, // The narrowest ratio that will be used (default 2x3)
@@ -272,6 +277,9 @@ class VideoRoomComponent extends Component {
       String(time.getSeconds()).padStart(2, '0');
     localUser.setAttendenceTime(attTime);
 
+    // 레벨 저장
+    localUser.setLevelPng(this.props.levelPng);
+
     // uid 저장
     localUser.setUid(this.props.userId);
 
@@ -286,6 +294,7 @@ class VideoRoomComponent extends Component {
         attTime: localUser.attendenceTime,
         randPick: this.state.randPick,
         uid: this.props.userId,
+        levelPng: this.props.levelPng,
       })
       .then(() => {
         this.connectWebCam();
@@ -606,6 +615,7 @@ class VideoRoomComponent extends Component {
       newUser.setAttendenceTime(
         JSON.parse(event.stream.connection.data).attTime,
       );
+      newUser.setLevelPng(JSON.parse(event.stream.connection.data).levelPng);
       newUser.setUid(JSON.parse(event.stream.connection.data).uid);
       const nickname = event.stream.connection.data.split('%')[0];
       newUser.setNickname(JSON.parse(nickname).clientData);
@@ -1290,6 +1300,20 @@ class VideoRoomComponent extends Component {
     this.updateLayout();
   };
 
+  // name: 오석호
+  // date: 2022/08/15
+  // desc: 이모지창을 여닫는 함수
+  emoji = () => {
+    console.log('이모지 이벤트 핸들러');
+  };
+
+  // name: 오석호
+  // date: 2022/08/15
+  // desc: 익명질문창을 여닫는 함수
+  question = () => {
+    console.log('익명질문 이벤트 핸들러');
+  };
+
   // render: 렌더링을 담당하는 함수
   render() {
     const mySessionId = this.state.mySessionId;
@@ -1498,6 +1522,7 @@ class VideoRoomComponent extends Component {
                     chatDisplay={this.state.chatDisplay}
                     close={this.toggleChat}
                     messageReceived={this.checkNotification}
+                    levelPng={this.props.levelPng}
                   />
                 </div>
               )}
@@ -1527,6 +1552,8 @@ class VideoRoomComponent extends Component {
               startStickerEvent={this.startStickerEvent}
               videoLayout={this.state.videoLayout}
               toggleVideoLayout={this.toggleVideoLayout}
+              emoji={this.emoji}
+              question={this.question}
             />
           </div>
         </div>

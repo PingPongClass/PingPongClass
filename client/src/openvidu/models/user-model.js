@@ -17,6 +17,7 @@ class UserModel {
   attendenceTime; // 접속 시간
   profile; // 프로필 이미지 정보
   uid; // 유저 아이디
+  levelPng; // 레벨에 맞는 사진 경로
 
   constructor() {
     this.connectionId = '';
@@ -35,6 +36,7 @@ class UserModel {
     this.outAngle = false;
     this.attendenceTime = '00:00:00';
     this.profile = '';
+    this.levelPng = '';
   }
   // 추가 함수
   isSmileActive() {
@@ -92,6 +94,10 @@ class UserModel {
     return this.picked;
   }
 
+  getLevelPng() {
+    return this.levelPng;
+  }
+
   isLocal() {
     return this.type === 'local';
   }
@@ -143,6 +149,10 @@ class UserModel {
 
   setAttendenceTime(attendenceTime) {
     this.attendenceTime = attendenceTime;
+  }
+
+  setLevelPng(levelPng) {
+    this.levelPng = levelPng;
   }
 
   upPoint() {

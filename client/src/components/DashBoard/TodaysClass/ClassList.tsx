@@ -9,9 +9,7 @@ import { useAppSelector } from '@src/store/hooks';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import { useNavigate } from 'react-router-dom'; // 임시함수 - 주말 지나면 지우기
 
-// 임시함수 - 주말 지나면 지우기
 interface ClassProps {
   classDay: number;
   classDesc: string;
@@ -27,7 +25,6 @@ interface ClassProps {
 }
 
 const ClassList = () => {
-  const navigate = useNavigate(); // 임시함수 - 주말 지나면 지우기
   var dt = new Date();
   const [tab, setTab] = useState(dt.getDay());
   const [clsList, setClsList] = useState([] as any);
@@ -61,17 +58,17 @@ const ClassList = () => {
   const render = (idx): any => {
     const clsIdx = idx * 6;
     return (
-      <SwiperSlide key={idx} onClick={() => joinClass(clsList[clsIdx])}>
+      <SwiperSlide key={idx}>
         <div className="cardContainer">
           <div className="upCardContainer">
-            <ClassCard clsList={clsList[clsIdx]} />
-            <ClassCard clsList={clsList[clsIdx + 1]} />
-            <ClassCard clsList={clsList[clsIdx + 2]} />
+            <ClassCard clsList={clsList[clsIdx]} classUrl={true} />
+            <ClassCard clsList={clsList[clsIdx + 1]} classUrl={true} />
+            <ClassCard clsList={clsList[clsIdx + 2]} classUrl={true} />
           </div>
           <div className="downCardContainer">
-            <ClassCard clsList={clsList[clsIdx + 3]} />
-            <ClassCard clsList={clsList[clsIdx + 4]} />
-            <ClassCard clsList={clsList[clsIdx + 5]} />
+            <ClassCard clsList={clsList[clsIdx + 3]} classUrl={true} />
+            <ClassCard clsList={clsList[clsIdx + 4]} classUrl={true} />
+            <ClassCard clsList={clsList[clsIdx + 5]} classUrl={true} />
           </div>
         </div>
       </SwiperSlide>
@@ -88,20 +85,6 @@ const ClassList = () => {
       tmp.push(render(1));
     }
     return tmp;
-  };
-
-  // 임시함수 - 주말 지나면 지우기
-  const joinClass = async (cls: ClassProps) => {
-    console.log(cls.classUrl);
-    if (cls.classUrl && cls.classUrl !== '링크') {
-      navigate(`/lecture/${cls.classUrl}`, {
-        state: {
-          classId: cls.classId,
-          classTitle: cls.classTitle,
-          teacherName: cls.teacherName,
-        },
-      });
-    }
   };
 
   return (

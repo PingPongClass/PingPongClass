@@ -1,16 +1,17 @@
 import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
 
-const ClassCard = ({ clsList }: any) => {
+const ClassCard = ({ clsList, classUrl }: any) => {
   const [img, setImg] = useState('');
   useEffect(() => {
+    console.log('요기', clsList);
     if (clsList)
       setImg('/subject/' + clsList.subjectEntity.classSubjectCode + '.jpeg');
   }, [clsList]);
 
   if (clsList) {
     return (
-      <div css={TotalContainer(clsList.classUrl)}>
+      <div css={TotalContainer(classUrl)}>
         <img src={img} className="classImg" alt="수업" />
         <hr />
         <h2>{clsList.classTitle}</h2>

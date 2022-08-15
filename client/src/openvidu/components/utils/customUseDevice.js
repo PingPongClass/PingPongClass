@@ -22,10 +22,11 @@ export const initStream = async () => {
 };
 
 // 스트림 만드는 함수
-export const createStream = ({ audioTrack, videoTrack }) => {
+export const createStream = async ({ audioTrack, videoTrack }) => {
   const stream = new MediaStream();
-  if (audioTrack) stream.addTrack(audioTrack);
-  if (videoTrack) stream.addTrack(videoTrack);
+  if (audioTrack) stream.addTrack(await getAudioTrack(audioTrack.deviceId));
+  if (videoTrack) stream.addTrack(await getVideoTrack(videoTrack.deviceId));
+  stream.getTracks().forEach((track) => (track.enabled = false));
   return stream;
 };
 

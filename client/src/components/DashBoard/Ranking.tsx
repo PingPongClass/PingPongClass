@@ -11,6 +11,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { toast } from 'react-toastify';
 import { saveMember } from '@src/store/member';
 import { TextField } from '@mui/material';
+import levelFunction from '@src/utils/levelFunction';
 
 interface RankingInterface {
   rankNum: number;
@@ -35,31 +36,6 @@ const Ranking = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [introduce, setIntroduce] = useState(memberStore.introduce);
   const dispatch = useAppDispatch();
-  const level = [
-    'white',
-    'yellow',
-    'green',
-    'blue',
-    'purple',
-    'rainbow',
-    'rainbow',
-  ];
-
-  const levelFunction = (point) => {
-    let levelNum = 0;
-    if (point >= 100) {
-      levelNum = 6;
-    } else if (point >= 75) {
-      levelNum = 5;
-    } else if (point >= 50) {
-      levelNum = 4;
-    } else if (point >= 25) {
-      levelNum = 3;
-    } else if (point >= 1) {
-      levelNum = 2;
-    } else levelNum = 1;
-    return '/levels/' + level[levelNum - 1] + '.png';
-  };
 
   const loadRankingList = async () => {
     await AXIOS.get(`/students/ranking/`)

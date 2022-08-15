@@ -30,6 +30,7 @@ export default class ChatComponent extends Component {
       .getStreamManager()
       .stream.session.on('signal:chat', (event) => {
         const data = JSON.parse(event.data);
+        console.log(data);
         let messageList = this.state.messageList;
         messageList.push({
           connectionId: event.from.connectionId,
@@ -37,17 +38,10 @@ export default class ChatComponent extends Component {
           time: this.convert12(),
           message: data.message,
           type: 'chat',
+          levelPng: data.levelPng,
         });
         const document = window.document;
         setTimeout(() => {
-          const userImg = document.getElementById(
-            'userImg-' + (this.state.messageList.length - 1),
-          );
-          if (data.streamId) {
-            const video = document.getElementById('video-' + data.streamId);
-            const avatar = userImg.getContext('2d');
-            avatar.drawImage(video, 200, 120, 285, 285, 0, 0, 60, 60);
-          }
           this.props.messageReceived();
         }, 50);
         this.setState({ messageList: messageList });
@@ -67,17 +61,10 @@ export default class ChatComponent extends Component {
           message: data.message,
           type: 'private-chat',
           target: data.target,
+          levelPng: data.levelPng,
         });
         const document = window.document;
         setTimeout(() => {
-          const userImg = document.getElementById(
-            'userImg-' + (this.state.messageList.length - 1),
-          );
-          if (data.streamId) {
-            const video = document.getElementById('video-' + data.streamId);
-            const avatar = userImg.getContext('2d');
-            avatar.drawImage(video, 200, 120, 285, 285, 0, 0, 60, 60);
-          }
           this.props.messageReceived();
         }, 50);
         this.setState({ messageList: messageList });
@@ -103,6 +90,7 @@ export default class ChatComponent extends Component {
 
   // sendmessage: 메시지를 보낼 때 작동하는 함수
   sendMessage() {
+    console.log(this.props.levelPng);
     if (this.props.user && this.state.message) {
       let message = this.state.message.replace(/ +(?= )/g, '');
       if (message !== '' && message !== ' ') {
@@ -112,6 +100,7 @@ export default class ChatComponent extends Component {
             message: message,
             nickname: this.props.user.getNickname(),
             streamId: this.props.user.getStreamManager().stream.streamId,
+            levelPng: this.props.levelPng,
           };
           this.props.user.getStreamManager().stream.session.signal({
             data: JSON.stringify(data),
@@ -125,6 +114,7 @@ export default class ChatComponent extends Component {
             nickname: this.props.user.getNickname(),
             streamId: this.props.user.getStreamManager().stream.streamId,
             target: this.state.messageTarget.nickname,
+            levelPng: this.props.levelPng,
           };
           this.props.user.getStreamManager().stream.session.signal({
             data: JSON.stringify(data),
@@ -212,12 +202,17 @@ export default class ChatComponent extends Component {
                   (data.type === 'chat' ? '' : ' whisper')
                 }
               >
-                <canvas
+                <img
+                  src={data.levelPng}
+                  className={'user-img ' + data.levelPng}
+                  alt=""
+                ></img>
+                {/* <canvas
                   id={'userImg-' + i}
                   width="60"
                   height="60"
                   className="user-img"
-                />
+                /> */}
                 <div className="msg-detail">
                   <div className="msg-info">
                     <p className="msg-nickname">

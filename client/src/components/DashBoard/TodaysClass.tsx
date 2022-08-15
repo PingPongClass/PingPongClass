@@ -45,6 +45,7 @@ function TodaysClass() {
         `/classes/isopen/${elem.classId}`,
       );
       elem.classUrl = classUrlData.data;
+      console.log(elem.classUrl);
     });
     await Promise.all(promises);
   };
@@ -65,7 +66,7 @@ function TodaysClass() {
     if (!loading) {
       return classList.map((cls, idx) => (
         <SwiperSlide key={idx} onClick={() => joinClass(cls)}>
-          <ClassCard clsList={cls} />
+          <ClassCard clsList={cls} classUrl={cls.classUrl} />
         </SwiperSlide>
       ));
     }
