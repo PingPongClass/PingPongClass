@@ -13,6 +13,7 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  ResponsiveContainer,
 } from 'recharts';
 
 const StudentResult = ({
@@ -63,55 +64,37 @@ const StudentResult = ({
     { name: '결석', value: studentList.length - otherModels.length },
   ];
 
+  const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({
     cx,
     cy,
-    value,
-    outerRadius,
-    fill,
     midAngle,
-    index,
+    innerRadius,
+    outerRadius,
+    percent,
     name,
+    value,
+    index,
   }) => {
-    const RADIAN = Math.PI / 180;
-    const sin = Math.sin(-RADIAN * midAngle);
-    const cos = Math.cos(-RADIAN * midAngle);
-    const sx = cx + (outerRadius + 10) * cos;
-    const sy = cy + (outerRadius + 10) * sin;
-    const mx = cx + (outerRadius + 30) * cos;
-    const my = cy + (outerRadius + 30) * sin;
-    const ex = mx + (cos >= 0 ? 1 : -1) * 22;
-    const ey = my;
-    const textAnchor = cos >= 0 ? 'start' : 'end';
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + 18 * Math.cos(-midAngle * RADIAN);
+    const y = cy + 28 * Math.sin(-midAngle * RADIAN);
+
     return (
-      <g>
-        <text x={cx} y={cy} dy={8} textAnchor="middle">
-          출석 통계
-        </text>
-        <path
-          d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
-          stroke={fill}
-          fill="none"
-        />
-        <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
-        <text
-          x={ex + (cos >= 0 ? 1 : -1) * 12}
-          y={ey}
-          textAnchor={textAnchor}
-          fill="#333"
-        >{`${name} : ${value}명`}</text>
-      </g>
+      <text
+        x={x}
+        y={y}
+        fill="white"
+        textAnchor={x > cx ? 'start' : 'end'}
+        fontSize={14}
+        fontWeight={700}
+      >
+        {`${name} : ${value}명`}
+      </text>
     );
   };
 
-  const COLORS = [
-    '#81a5f9',
-    '#f3ab7e',
-    '#6cb07d',
-    '#7f67a1',
-    '#71c4c1',
-    '#ecd691',
-  ];
+  const COLORS = ['#759eff', '#ff9b89'];
 
   return (
     <div css={totalContainer}>
@@ -152,26 +135,34 @@ const StudentResult = ({
                       <div className="t-point">{totalSticker}</div>
                     </div>
                   </div>
-                  <div className="teacherResultChart">
-                    <PieChart width={500} height={200}>
-                      <Pie
-                        label={renderCustomizedLabel}
-                        data={data}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={60}
-                        outerRadius={80}
-                        fill="#8884d8"
-                        dataKey="value"
-                      >
-                        {data.map((entry, index) => (
-                          <Cell
-                            key={`cell-${index}`}
-                            fill={COLORS[index % COLORS.length]}
-                          />
-                        ))}
-                      </Pie>
-                    </PieChart>
+                  <div
+                    className="teacherResultChart"
+                    style={{
+                      paddingLeft: '50px',
+                    }}
+                  >
+                    <ResponsiveContainer width={250} height={200}>
+                      <PieChart>
+                        <Pie
+                          label={renderCustomizedLabel}
+                          data={data}
+                          cx="50%"
+                          cy="50%"
+                          fill="#8884d8"
+                          labelLine={false}
+                          innerRadius={10}
+                          outerRadius={80}
+                          dataKey="value"
+                        >
+                          {data.map((entry, index) => (
+                            <Cell
+                              key={`cell-${index}`}
+                              fill={COLORS[index % COLORS.length]}
+                            />
+                          ))}
+                        </Pie>
+                      </PieChart>
+                    </ResponsiveContainer>
                   </div>
                 </div>
               </div>
@@ -183,6 +174,7 @@ const StudentResult = ({
                       <div className="s-nickname">닉네임</div>
                       <div className="s-attendence-time">최종 출석 시간</div>
                       <div className="s-point">상점</div>
+                      <div className="s-present">발표횟수</div>
                     </div>
                     {otherModels.map((other, i) => (
                       <div
@@ -198,37 +190,27 @@ const StudentResult = ({
                           {other.attendenceTime}
                         </div>
                         <div className="s-point">{other.point}</div>
+                        <div className="s-present">{other.presentCnt}</div>
                       </div>
                     ))}
                   </div>
                   <div>
-                    <BarChart
-                      width={450}
-                      height={270}
-                      data={otherModels}
-                      margin={{
-                        top: 24,
-                      }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="nickname" style={{ fontSize: '9pt' }} />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
-                      <Bar
-                        dataKey="point"
-                        fill="#333"
-                        label={{ position: 'top' }}
-                        background={{ fill: '#eee' }}
+                    <ResponsiveContainer width={450} height={270}>
+                      <BarChart
+                        data={otherModels}
+                        margin={{
+                          top: 24,
+                        }}
                       >
-                        {otherModels.map((entry, index) => (
-                          <Cell
-                            key={`cell-${index}`}
-                            fill={COLORS[index % 20]}
-                          />
-                        ))}
-                      </Bar>
-                    </BarChart>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="nickname" style={{ fontSize: '9pt' }} />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Bar dataKey="point" stackId="a" fill="#a589cd" />
+                        <Bar dataKey="presentCnt" stackId="a" fill="#f3ca7e" />
+                      </BarChart>
+                    </ResponsiveContainer>
                   </div>
                 </div>
               </div>
@@ -253,6 +235,20 @@ const totalContainer = css`
   background-size: 30px 30px;
   height: 100vh;
   position: relative;
+
+  button {
+    width: 200px;
+    height: 40px;
+    border-radius: 20px;
+    background: var(--pink);
+    border: none;
+    font-family: 'NanumSquareRound';
+    font-size: 13pt;
+    color: white;
+    font-weight: 700;
+    text-decoration-line: none;
+    margin-top: 15px;
+  }
 
   .triangles {
     position: absolute;
@@ -492,7 +488,6 @@ const TotalResult = css`
       justify-content: center;
       text-align: center;
     }
-
     & > .s-nickname {
       display: flex;
       width: 150px;
@@ -502,14 +497,21 @@ const TotalResult = css`
 
     & > .s-attendence-time {
       display: flex;
-      width: 150px;
+      width: 140px;
       justify-content: center;
       align-items: center;
     }
 
     & > .s-point {
       display: flex;
-      width: 150px;
+      width: 80px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    & > .s-present {
+      display: flex;
+      width: 85px;
       justify-content: center;
       align-items: center;
     }
