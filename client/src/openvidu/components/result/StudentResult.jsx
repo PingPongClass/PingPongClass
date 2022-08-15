@@ -59,8 +59,8 @@ const StudentResult = ({
   // 스크롤 처리 해야함
 
   const data = [
-    { name: '참여 학생', value: otherModels.length },
-    { name: '미참여 학생', value: studentList.length - otherModels.length },
+    { name: '출석', value: otherModels.length },
+    { name: '결석', value: studentList.length - otherModels.length },
   ];
 
   const renderCustomizedLabel = ({

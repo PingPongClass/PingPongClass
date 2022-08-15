@@ -5,12 +5,15 @@ import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import axios from 'axios';
 
 const TimeTableLine = ({ dayList }: any) => {
-  console.log(dayList);
+  const memberStore = useAppSelector((state) => state.member);
+  console.log(memberStore.userId);
   return (
     <div className="classArea" css={totalContainer}>
       {dayList.map((cls) => (
         <div key={cls.classId} className={'classCard' + cls.classDay}>
-          {cls.subjectEntity.name}
+          {memberStore.userId.toString().length === 10
+            ? cls.subjectEntity.name
+            : cls.classTitle.slice(-3)}
         </div>
       ))}
     </div>

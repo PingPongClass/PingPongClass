@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 import { setContent, selectContent } from '@store/content';
 import { ClassNames, css } from '@emotion/react';
-import TimeTableClassInfo from './TimcTableLine';
+import TimeTableClassInfo from './TimeTableLine';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import loadingImg from '@src/openvidu/assets/images/loadingimg.gif';

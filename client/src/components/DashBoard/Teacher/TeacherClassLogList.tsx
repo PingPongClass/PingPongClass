@@ -74,17 +74,14 @@ const TeacherClassLogList = () => {
   };
 
   useEffect(() => {
-    if (isCalendar && value.getDay() === classes.classDay) loadLogList();
-    else setLogList([]);
-  }, [value, classes]);
-
-  useEffect(() => {
     loadClassList();
   }, []);
 
   useEffect(() => {
     loadLogDate();
-  }, [classes]);
+    if (isCalendar && value.getDay() === classes.classDay) loadLogList();
+    else setLogList([]);
+  }, [value, classes]);
 
   const data = [
     { name: '출석', value: logList?.attendStuNum },

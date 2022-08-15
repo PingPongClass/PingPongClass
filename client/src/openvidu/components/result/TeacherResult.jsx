@@ -59,8 +59,8 @@ const TeacherResult = ({
   // 스크롤 처리 해야함
 
   const data = [
-    { name: '참여 학생', value: attStudentNum },
-    { name: '미참여 학생', value: studentList.length - attStudentNum },
+    { name: '출석', value: attStudentNum },
+    { name: '결석', value: studentList.length - attStudentNum },
   ];
 
   const renderCustomizedLabel = ({
