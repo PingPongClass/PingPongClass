@@ -47,7 +47,7 @@ const App = () => {
     const getMyLevel = async () => {
       console.log(memberStore.userId);
       const myPoint = await InterceptedAxios.get(
-        `/items/sticker/${memberStore.userId}`,
+        `/items/totalsticker/${memberStore.userId}`,
       );
       console.log(myPoint.data);
       const pngUrl = levelFunction(myPoint.data);

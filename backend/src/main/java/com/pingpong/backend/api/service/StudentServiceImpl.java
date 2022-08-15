@@ -106,7 +106,7 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     public int getTotalPoint(int studentId) {
-        StudentEntity studentEntity = repository.getById(studentId);
+        StudentEntity studentEntity = repository.getReferenceById(studentId);
         return studentEntity.getTotalPoint();
     }
 
