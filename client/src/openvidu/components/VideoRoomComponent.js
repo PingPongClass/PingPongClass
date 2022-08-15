@@ -1142,11 +1142,13 @@ class VideoRoomComponent extends Component {
   // desc: uesItem: 아이템을 사용하는 함수
   // todo: int 형식으로 전달받은 itemId값을 바탕으로 현재 유저가 소지한 아이템을 사용하고, 성공 여부를 boolean값으로 반환하는 함수.
   uesItem = (itemId) => {
-    InterceptedAxios.delete(`/items/${this.props.userId}/${itemId}`).then(
-      () => {
+    InterceptedAxios.delete(`/items/${this.props.userId}/${itemId}`)
+      .then(() => {
         return true;
-      },
-    );
+      })
+      .catch((e) => {
+        console.log(e);
+      });
     return false;
   };
 
@@ -1361,7 +1363,7 @@ class VideoRoomComponent extends Component {
             display={this.state.shieldLoadingDisplay}
             toggleShieldLoading={this.toggleShieldLoading}
             timeOut={2.5}
-            header="방어권 구경"
+            header="발표 프리패스 대기중"
           />
           <ShieldModal
             display={this.state.shieldDisplay}
@@ -1369,10 +1371,12 @@ class VideoRoomComponent extends Component {
             toggleShield={this.toggleShield}
             alertToChat={this.alertToChat}
             pickRandomStudent={this.pickRandomStudent}
+            checkUserHasItem={this.checkUserHasItem}
+            uesItem={this.uesItem}
             tempFrameChange={this.tempFrameChange}
             subscribers={subscribers}
             timeOut={3}
-            header="방어권 사용"
+            header="발표 프리패스 사용"
           />
 
           {/* 다이얼로그 */}

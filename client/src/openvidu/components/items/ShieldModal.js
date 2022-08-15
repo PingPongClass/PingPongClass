@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './ShieldModal.css';
 
-const shieldImg = require('../../assets/images/shield.png');
+const shieldImg = require('@src/assets/images/freepassTicket.png');
 
 class ShieldModal extends Component {
   constructor(props) {
@@ -27,11 +27,17 @@ class ShieldModal extends Component {
   // desc: 지목받은 학생이 방어권을 사용하는 함수
   // todo: 호출 시 현재 수업에 참여 중인 자신을 제외한 학생 중 랜덤한 1명을 지목하고, 추첨 결과를 전체 참여자에게 공유한다.
   useShield = () => {
-    this.props.alertToChat(
-      this.props.user.nickname + '님이 방어권을 사용했습니다!',
-    );
-    this.props.pickRandomStudent(this.props.subscribers, true);
-    this.close();
+    console.log('방어권 사용시');
+    if (this.props.checkUserHasItem(3)) {
+      this.props.alertToChat(
+        this.props.user.nickname + '님이 발표 프리패스를 사용했습니다!',
+      );
+      this.props.pickRandomStudent(this.props.subscribers, true);
+      this.props.uesItem(3);
+      this.close();
+    } else {
+      alert('보유한 발표 프리패스가 없습니다!');
+    }
   };
 
   // name: 한준수
@@ -67,14 +73,24 @@ class ShieldModal extends Component {
 
   render() {
     return (
-      <div className={this.state.display ? 'openModal modal' : 'modal'}>
-        {this.state.display ? (
+      <div
+        className={
+          this.state.display && this.props.checkUserHasItem(3)
+            ? 'openModal modal'
+            : 'modal'
+        }
+      >
+        {this.state.display && this.props.checkUserHasItem(3) ? (
           <section>
             <header>{this.props.header}</header>
             <div>
               <div id="content">
-                <img id="shieldIcon" src={shieldImg} alt="방어권 이미지" />
-                <h1>방어권을 사용 하시겠습니까?</h1>
+                <img
+                  id="shieldIcon"
+                  src={shieldImg}
+                  alt="발표 프리패스 이미지"
+                />
+                <h1>발표 프리패스를 사용 하시겠습니까?</h1>
                 <p>({this.state.countDown})초 남음</p>
                 <button
                   className="choice"
