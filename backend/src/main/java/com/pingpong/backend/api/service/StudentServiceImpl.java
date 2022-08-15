@@ -105,6 +105,12 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
+    public int getTotalPoint(int studentId) {
+        StudentEntity studentEntity = repository.getById(studentId);
+        return studentEntity.getTotalPoint();
+    }
+
+    @Override
     @Transactional
     public void updatePoint(int studentId, int point) {
         StudentEntity student = repository.findById(studentId).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));

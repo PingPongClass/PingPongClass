@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { css } from '@emotion/react';
 import axios from 'axios';
-import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
-import { useAppDispatch, useAppSelector } from '@src/store/hooks';
-import loadingImg from '@src/openvidu/assets/images/loadingimg.gif';
+import { setupInterceptorsTo } from '@utils/AxiosInterceptor';
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+import loadingImg from '@openvidu/assets/images/loadingimg.gif';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import EditIcon from '@mui/icons-material/Edit';
 import { toast } from 'react-toastify';
-import { saveMember } from '@src/store/member';
+import { saveMember } from '@store/member';
 import { TextField } from '@mui/material';
-import levelFunction from '@src/utils/levelFunction';
+import levelFunction from '@utils/levelFunction';
 
 interface RankingInterface {
   rankNum: number;
@@ -30,7 +30,9 @@ const Ranking = () => {
   const AXIOS = setupInterceptorsTo(axios.create());
   const memberStore = useAppSelector((state) => state.member);
   const [visible, setVisible] = useState(false);
-  const [rankingList, setRankingList] = useState<RankingInterface[]>([]);
+  const [rankingList, setRankingList] = useState<RankingInterface[]>([
+    { rankNum: 0, studentId: 0, name: '', totalPoint: 0, introduce: '' },
+  ]);
   const [myRanking, setMyRanking] = useState<RankingInterface>();
   const [loading, setLoading] = useState(true);
   const [isEdit, setIsEdit] = useState(false);

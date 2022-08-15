@@ -37,6 +37,9 @@ public interface StudentService {
     //한 학생의 날짜별 스티커 개수 조회
     List<Map<String, Integer>> getPoint(int studentId);
 
+    //한 학생의 전체 스티커 획득 개수 조회
+    int getTotalPoint(int studentId);
+
     void updatePoint(int studentId, int point);
 
     void selectiveDelete(List<Integer> list);

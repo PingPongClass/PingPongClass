@@ -41,17 +41,17 @@ const App = () => {
   const { state } = useLocation();
 
   const memberStore = useAppSelector((state) => state.member);
-  console.log(`items/sticker/${memberStore.userId}`);
   const whoami = whoru(memberStore.userId);
 
   useEffect(() => {
     const getMyLevel = async () => {
+      console.log(memberStore.userId);
       const myPoint = await InterceptedAxios.get(
         `/items/sticker/${memberStore.userId}`,
       );
-      const pngUrl = levelFunction(myPoint);
+      console.log(myPoint.data);
+      const pngUrl = levelFunction(myPoint.data);
       setLevelPng(pngUrl);
-      console.log(pngUrl);
     };
     const getStudentList = async () => {
       const classStudents = await InterceptedAxios.get(
