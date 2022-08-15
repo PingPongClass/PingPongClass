@@ -9,7 +9,7 @@ const TimeTableLine = ({ dayList }: any) => {
   return (
     <div className="classArea" css={totalContainer}>
       {dayList.map((cls) => (
-        <div key={cls.classId} className="classCard">
+        <div key={cls.classId} className={'classCard' + cls.classDay}>
           {cls.subjectEntity.name}
         </div>
       ))}
@@ -19,16 +19,63 @@ const TimeTableLine = ({ dayList }: any) => {
 
 const totalContainer = css`
   width: 70px;
-  .classCard {
-    height: 30px;
+  .classCard1 {
+    height: 35px;
     margin-bottom: 10px;
-    background: #dd7e8f;
+    background: #d2e2f9;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     border-radius: 5px;
-    box-shadow: 2px 2px 15px -5px;
+    font-size: 20px;
+  }
+
+  .classCard2 {
+    height: 35px;
+    margin-bottom: 10px;
+    background: #fad6dd;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    font-size: 20px;
+  }
+
+  .classCard3 {
+    height: 35px;
+    margin-bottom: 10px;
+    background: #fff1bf;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    font-size: 20px;
+  }
+
+  .classCard4 {
+    height: 35px;
+    margin-bottom: 10px;
+    background: #e9dbff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    font-size: 20px;
+  }
+
+  .classCard5 {
+    height: 35px;
+    margin-bottom: 10px;
+    background: #cee7db;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
     font-size: 20px;
   }
 `;

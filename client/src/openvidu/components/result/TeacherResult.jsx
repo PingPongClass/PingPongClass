@@ -121,116 +121,114 @@ const TeacherResult = ({
       </div>
       <div className="parent">
         <div className="child">
-          <div className="container">
-            <div className="circles">
-              <div className="circle1" />
-              <div className="circle2" />
-              <div className="circle3" />
-            </div>
-            <hr />
-            <div className="sideContainer">
-              <div css={TotalContainer}>
-                <h2>고생하셨습니다 {teacherName} 선생님!</h2>
-                <br />
-                <div css={ClassStatistic}>
-                  <h3 style={{ margin: '0' }}>수업 통계</h3>
-                  <div className="classContainer">
-                    <div className="teacherResult">
-                      <div className="teacher index">
-                        <div className="t-classname">수업 이름</div>
-                        <div className="t-nickname">선생님 이름</div>
-                        <div className="t-attendence-time">수업 개설 시간</div>
-                        <div className="t-fin-time">수업 종료 시간</div>
-                        <div className="t-point">총 부여 상점</div>
-                      </div>
-                      <div className="teacher">
-                        <div className="t-classname">{classTitle}</div>
-                        <div className="t-nickname">{teacherName}</div>
-                        <div className="t-attendence-time">
-                          {myData.attendenceTime}
-                        </div>
-                        <div className="t-fin-time">{finTime}</div>
-                        <div className="t-point">{totalSticker}</div>
-                      </div>
+          <div className="circles">
+            <div className="circle1" />
+            <div className="circle2" />
+            <div className="circle3" />
+          </div>
+          <hr />
+          <div className="sideContainer">
+            <div css={TotalContainer}>
+              <h2>고생하셨습니다 {teacherName} 선생님!</h2>
+              <br />
+              <div css={ClassStatistic}>
+                <h3 style={{ margin: '0' }}>수업 통계</h3>
+                <div className="classContainer">
+                  <div className="teacherResult">
+                    <div className="teacher index">
+                      <div className="t-classname">수업 이름</div>
+                      <div className="t-nickname">선생님 이름</div>
+                      <div className="t-attendence-time">수업 개설 시간</div>
+                      <div className="t-fin-time">수업 종료 시간</div>
+                      <div className="t-point">총 부여 상점</div>
                     </div>
-                    <div className="teacherResultChart">
-                      <PieChart width={490} height={200}>
-                        <Pie
-                          label={renderCustomizedLabel}
-                          data={data}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={60}
-                          outerRadius={80}
-                          fill="#8884d8"
-                          dataKey="value"
-                        >
-                          {data.map((entry, index) => (
-                            <Cell
-                              key={`cell-${index}`}
-                              fill={COLORS[index % COLORS.length]}
-                            />
-                          ))}
-                        </Pie>
-                      </PieChart>
+                    <div className="teacher">
+                      <div className="t-classname">{classTitle}</div>
+                      <div className="t-nickname">{teacherName}</div>
+                      <div className="t-attendence-time">
+                        {myData.attendenceTime}
+                      </div>
+                      <div className="t-fin-time">{finTime}</div>
+                      <div className="t-point">{totalSticker}</div>
                     </div>
                   </div>
-                </div>
-                <div css={TotalResult}>
-                  <h3 style={{ margin: '0' }}>학생 통계</h3>
-                  <div className="studentContainer">
-                    <div className="studentResult">
-                      <div className="person index">
-                        <div className="s-nickname">닉네임</div>
-                        <div className="s-attendence-time">최종 출석 시간</div>
-                        <div className="s-point">상점</div>
-                      </div>
-                      {othersData.map((other, i) => (
-                        <div key={i} className="person">
-                          <div className="s-nickname">{other.nickname}</div>
-                          <div className="s-attendence-time">
-                            {other.attendenceTime}
-                          </div>
-                          <div className="s-point">{other.point}</div>
-                        </div>
-                      ))}
-                    </div>
-                    <div>
-                      <BarChart
-                        width={450}
-                        height={270}
-                        data={othersData}
-                        margin={{
-                          top: 24,
-                        }}
+                  <div className="teacherResultChart">
+                    <PieChart width={490} height={200}>
+                      <Pie
+                        label={renderCustomizedLabel}
+                        data={data}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={60}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
                       >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="nickname" style={{ fontSize: '9pt' }} />
-                        <YAxis />
-                        <Tooltip />
-                        <Legend />
-                        <Bar
-                          dataKey="point"
-                          fill="#333"
-                          label={{ position: 'top' }}
-                          background={{ fill: '#eee' }}
-                        >
-                          {othersData.map((entry, index) => (
-                            <Cell
-                              key={`cell-${index}`}
-                              fill={COLORS[index % 20]}
-                            />
-                          ))}
-                        </Bar>
-                      </BarChart>
-                    </div>
+                        {data.map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={COLORS[index % COLORS.length]}
+                          />
+                        ))}
+                      </Pie>
+                    </PieChart>
                   </div>
                 </div>
-                <div css={OtherThings}>
-                  <a href="/teacher">
-                    <button onClick={applyToDB}>저장 후 돌아가기</button>
-                  </a>
+              </div>
+              <div css={TotalResult}>
+                <h3 style={{ margin: '0' }}>학생 통계</h3>
+                <div className="studentContainer">
+                  <div className="studentResult">
+                    <div className="person index">
+                      <div className="s-nickname">닉네임</div>
+                      <div className="s-attendence-time">최종 출석 시간</div>
+                      <div className="s-point">상점</div>
+                    </div>
+                    {othersData.map((other, i) => (
+                      <div key={i} className="person">
+                        <div className="s-nickname">{other.nickname}</div>
+                        <div className="s-attendence-time">
+                          {other.attendenceTime}
+                        </div>
+                        <div className="s-point">{other.point}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <div>
+                    <BarChart
+                      width={450}
+                      height={270}
+                      data={othersData}
+                      margin={{
+                        top: 24,
+                      }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="nickname" style={{ fontSize: '9pt' }} />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      <Bar
+                        dataKey="point"
+                        fill="#333"
+                        label={{ position: 'top' }}
+                        background={{ fill: '#eee' }}
+                      >
+                        {othersData.map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={COLORS[index % 20]}
+                          />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </div>
                 </div>
+              </div>
+              <div css={OtherThings}>
+                <a href="/teacher">
+                  <button onClick={applyToDB}>저장 후 돌아가기</button>
+                </a>
               </div>
             </div>
           </div>
@@ -317,13 +315,6 @@ const BackgroundContainer = css`
     border: 2px solid #001111;
   }
 
-  .container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    justify-content: start;
-  }
-
   .sideContainer {
     display: flex;
     flex-direction: row;
@@ -340,6 +331,7 @@ const BackgroundContainer = css`
   }
 
   .circles {
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: end;
@@ -365,6 +357,7 @@ const BackgroundContainer = css`
     .circle3 {
       background-color: #ef8181;
       margin-left: 0.3rem;
+      margin-right: 1rem;
     }
   }
 `;

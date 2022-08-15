@@ -121,123 +121,121 @@ const StudentResult = ({
       </div>
       <div className="parent">
         <div className="child">
-          <div className="container">
-            <div className="circles">
-              <div className="circle1" />
-              <div className="circle2" />
-              <div className="circle3" />
-            </div>
-            <hr />
-            <div className="sideContainer">
-              <div css={TotalContainer}>
-                <h2>고생하셨습니다 {myData.nickname.substring(7)}님!</h2>
-                <br />
-                <div css={ClassStatistic}>
-                  <h3 style={{ margin: '0' }}>수업 통계</h3>
-                  <div className="classContainer">
-                    <div className="teacherResult">
-                      <div className="teacher index">
-                        <div className="t-classname">수업 이름</div>
-                        <div className="t-nickname">선생님 이름</div>
-                        <div className="t-attendence-time">수업 개설 시간</div>
-                        <div className="t-fin-time">수업 종료 시간</div>
-                        <div className="t-point">총 부여 상점</div>
-                      </div>
-                      <div className="teacher">
-                        <div className="t-classname">{classTitle}</div>
-                        <div className="t-nickname">{teacherName}</div>
-                        <div className="t-attendence-time">
-                          {teacherModel?.attendenceTime}
-                        </div>
-                        <div className="t-fin-time">{finTime}</div>
-                        <div className="t-point">{totalSticker}</div>
-                      </div>
+          <div className="circles">
+            <div className="circle1" />
+            <div className="circle2" />
+            <div className="circle3" />
+          </div>
+          <hr />
+          <div className="sideContainer">
+            <div css={TotalContainer}>
+              <h2>고생하셨습니다 {myData.nickname.substring(7)}님!</h2>
+              <br />
+              <div css={ClassStatistic}>
+                <h3 style={{ margin: '0' }}>수업 통계</h3>
+                <div className="classContainer">
+                  <div className="teacherResult">
+                    <div className="teacher index">
+                      <div className="t-classname">수업 이름</div>
+                      <div className="t-nickname">선생님 이름</div>
+                      <div className="t-attendence-time">수업 개설 시간</div>
+                      <div className="t-fin-time">수업 종료 시간</div>
+                      <div className="t-point">총 부여 상점</div>
                     </div>
-                    <div className="teacherResultChart">
-                      <PieChart width={500} height={200}>
-                        <Pie
-                          label={renderCustomizedLabel}
-                          data={data}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={60}
-                          outerRadius={80}
-                          fill="#8884d8"
-                          dataKey="value"
-                        >
-                          {data.map((entry, index) => (
-                            <Cell
-                              key={`cell-${index}`}
-                              fill={COLORS[index % COLORS.length]}
-                            />
-                          ))}
-                        </Pie>
-                      </PieChart>
+                    <div className="teacher">
+                      <div className="t-classname">{classTitle}</div>
+                      <div className="t-nickname">{teacherName}</div>
+                      <div className="t-attendence-time">
+                        {teacherModel?.attendenceTime}
+                      </div>
+                      <div className="t-fin-time">{finTime}</div>
+                      <div className="t-point">{totalSticker}</div>
                     </div>
                   </div>
-                </div>
-                <div css={TotalResult}>
-                  <h3 style={{ margin: '0' }}>학생 통계</h3>
-                  <div className="studentContainer">
-                    <div className="studentResult">
-                      <div className="person index">
-                        <div className="s-nickname">닉네임</div>
-                        <div className="s-attendence-time">최종 출석 시간</div>
-                        <div className="s-point">상점</div>
-                      </div>
-                      {otherModels.map((other, i) => (
-                        <div
-                          key={i}
-                          className={
-                            other.nickname === myData.nickname
-                              ? 'mydata person'
-                              : 'person'
-                          }
-                        >
-                          <div className="s-nickname">{other.nickname}</div>
-                          <div className="s-attendence-time">
-                            {other.attendenceTime}
-                          </div>
-                          <div className="s-point">{other.point}</div>
-                        </div>
-                      ))}
-                    </div>
-                    <div>
-                      <BarChart
-                        width={450}
-                        height={270}
-                        data={otherModels}
-                        margin={{
-                          top: 24,
-                        }}
+                  <div className="teacherResultChart">
+                    <PieChart width={500} height={200}>
+                      <Pie
+                        label={renderCustomizedLabel}
+                        data={data}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={60}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
                       >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="nickname" style={{ fontSize: '9pt' }} />
-                        <YAxis />
-                        <Tooltip />
-                        <Legend />
-                        <Bar
-                          dataKey="point"
-                          fill="#333"
-                          label={{ position: 'top' }}
-                          background={{ fill: '#eee' }}
-                        >
-                          {otherModels.map((entry, index) => (
-                            <Cell
-                              key={`cell-${index}`}
-                              fill={COLORS[index % 20]}
-                            />
-                          ))}
-                        </Bar>
-                      </BarChart>
-                    </div>
+                        {data.map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={COLORS[index % COLORS.length]}
+                          />
+                        ))}
+                      </Pie>
+                    </PieChart>
                   </div>
                 </div>
-                <div css={OtherThings}>
-                  <a href="/student">
-                    <button>대시보드로 돌아가기</button>
-                  </a>
+              </div>
+              <div css={TotalResult}>
+                <h3 style={{ margin: '0' }}>학생 통계</h3>
+                <div className="studentContainer">
+                  <div className="studentResult">
+                    <div className="person index">
+                      <div className="s-nickname">닉네임</div>
+                      <div className="s-attendence-time">최종 출석 시간</div>
+                      <div className="s-point">상점</div>
+                    </div>
+                    {otherModels.map((other, i) => (
+                      <div
+                        key={i}
+                        className={
+                          other.nickname === myData.nickname
+                            ? 'mydata person'
+                            : 'person'
+                        }
+                      >
+                        <div className="s-nickname">{other.nickname}</div>
+                        <div className="s-attendence-time">
+                          {other.attendenceTime}
+                        </div>
+                        <div className="s-point">{other.point}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <div>
+                    <BarChart
+                      width={450}
+                      height={270}
+                      data={otherModels}
+                      margin={{
+                        top: 24,
+                      }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="nickname" style={{ fontSize: '9pt' }} />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      <Bar
+                        dataKey="point"
+                        fill="#333"
+                        label={{ position: 'top' }}
+                        background={{ fill: '#eee' }}
+                      >
+                        {otherModels.map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={COLORS[index % 20]}
+                          />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </div>
                 </div>
+              </div>
+              <div css={OtherThings}>
+                <a href="/student">
+                  <button>대시보드로 돌아가기</button>
+                </a>
               </div>
             </div>
           </div>
@@ -247,7 +245,7 @@ const StudentResult = ({
   );
 };
 
-const BackgroundContainer = css`
+const totalContainer = css`
   background-color: #ffffff;
   opacity: 0.8;
   background-image: linear-gradient(#929292 1px, transparent 1px),
@@ -255,20 +253,6 @@ const BackgroundContainer = css`
   background-size: 30px 30px;
   height: 100vh;
   position: relative;
-
-  button {
-    width: 200px;
-    height: 40px;
-    border-radius: 20px;
-    background: var(--pink);
-    border: none;
-    font-family: 'NanumSquareRound';
-    font-size: 13pt;
-    color: white;
-    font-weight: 700;
-    text-decoration-line: none;
-    margin-top: 15px;
-  }
 
   .triangles {
     position: absolute;
@@ -324,13 +308,6 @@ const BackgroundContainer = css`
     border: 2px solid #001111;
   }
 
-  .container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    justify-content: start;
-  }
-
   .sideContainer {
     display: flex;
     flex-direction: row;
@@ -341,12 +318,13 @@ const BackgroundContainer = css`
 
   hr {
     width: 100%;
-    height: 2px;
+    height: 1.5px;
     border: 0;
     background-color: black;
   }
 
   .circles {
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: end;
@@ -372,6 +350,7 @@ const BackgroundContainer = css`
     .circle3 {
       background-color: #ef8181;
       margin-left: 0.3rem;
+      margin-right: 1rem;
     }
   }
 `;

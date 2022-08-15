@@ -162,15 +162,19 @@ const SetupComponent = (props) => {
 
   return (
     <div className="totalContainer">
+      <div className="triangles">
+        <div className="triangle1" />
+        <div className="triangle2" />
+      </div>
       <div className="parent">
         <div className="child">
-          <div className="container">
-            <div className="circles">
-              <div className="circle1" />
-              <div className="circle2" />
-              <div className="circle3" />
-            </div>
-            <hr />
+          <div className="circles">
+            <div className="circle1" />
+            <div className="circle2" />
+            <div className="circle3" />
+          </div>
+          <hr />
+          <div className="sideContainer">
             <div className="main">
               <div className="RoomName">
                 <h2>
@@ -178,7 +182,15 @@ const SetupComponent = (props) => {
                 </h2>
               </div>
               <div className="preview">
-                <video ref={previewFace} autoPlay />
+                <video
+                  ref={previewFace}
+                  autoPlay
+                  style={{
+                    backgroundColor: 'white',
+                    borderRadius: '20px',
+                    border: 'solid 7px var(--yellow)',
+                  }}
+                />
               </div>
               <div className="settingSection">
                 <div className="settingVideo">
@@ -190,7 +202,14 @@ const SetupComponent = (props) => {
                       </option>
                     ))}
                   </select>
-                  <button onClick={toggleVideo}>
+                  <button
+                    onClick={toggleVideo}
+                    style={{
+                      border: 'none',
+                      borderRadius: '5px',
+                      background: 'var(--gray)',
+                    }}
+                  >
                     {isVideoOn ? <Videocam /> : <VideocamOff />}
                   </button>
                 </div>
@@ -203,7 +222,14 @@ const SetupComponent = (props) => {
                       </option>
                     ))}
                   </select>
-                  <button onClick={toggleAudio}>
+                  <button
+                    onClick={toggleAudio}
+                    style={{
+                      border: 'none',
+                      borderRadius: '5px',
+                      background: 'var(--gray)',
+                    }}
+                  >
                     {isAudioOn ? <Mic /> : <MicOff />}
                   </button>
                 </div>

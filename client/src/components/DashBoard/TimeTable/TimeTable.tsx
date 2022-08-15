@@ -6,6 +6,8 @@ import TimeTableClassInfo from './TimcTableLine';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import loadingImg from '@src/openvidu/assets/images/loadingimg.gif';
+import CloseIcon from '@mui/icons-material/Close';
+
 interface TimeTableModalStyle {
   close: any;
 }
@@ -35,39 +37,48 @@ const TimeTable = ({ close }: TimeTableModalStyle) => {
 
   const render = () => {
     return (
-      <div css={totalContainer} onClick={close}>
-        <h2>시간표</h2>
-        <div className="upperpart">
-          <div className="blankspace"></div>
-          <div className="classday">
-            {day.map((value, idx) => {
-              return (
-                <div className="day" key={idx}>
-                  {value}
-                </div>
-              );
-            })}
+      <div css={totalContainer}>
+        <div className="main">
+          <div className="nav">
+            <h2>시간표</h2>
+            <CloseIcon
+              fontSize={'large'}
+              onClick={close}
+              style={{ cursor: 'pointer', textAlign: 'right' }}
+            />
           </div>
-        </div>
-        <div className="mainPart">
-          <div className="timeline">
-            {timeline.map((value) => {
-              return (
-                <div className="time" key={value}>
-                  {value}
-                </div>
-              );
-            })}
+          <div className="upperpart">
+            <div className="blankspace"></div>
+            <div className="classday">
+              {day.map((value, idx) => {
+                return (
+                  <div className="day" key={idx}>
+                    {value}
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <div className="column">
-            {weeklyList.map((list, idx) => {
-              console.log(list);
-              return (
-                <div key={idx} className="class">
-                  <TimeTableClassInfo dayList={list.classEntityList} />
-                </div>
-              );
-            })}
+          <div className="mainPart">
+            <div className="timeline">
+              {timeline.map((value) => {
+                return (
+                  <div className="time" key={value}>
+                    {value}
+                  </div>
+                );
+              })}
+            </div>
+            <div className="column">
+              {weeklyList.map((list, idx) => {
+                console.log(list);
+                return (
+                  <div key={idx} className="class">
+                    <TimeTableClassInfo dayList={list.classEntityList} />
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
@@ -79,24 +90,40 @@ const TimeTable = ({ close }: TimeTableModalStyle) => {
 
 const totalContainer = css`
   position: absolute;
-  top: 0px;
-  right: 0px;
+  top: 120px;
+  right: 200px;
   width: 500px;
-  height: 420px;
+  height: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 50px;
-  background-color: rgba(249, 249, 249);
-  box-sizing: border-box;
-  border-radius: 20px 0px 0px 20px;
-  box-shadow: 2px 2px 10px -5px;
   z-index: 1000;
   animation: fadeIn 0.4s;
 
-  h2 {
+  .nav {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: end;
     margin-top: 30px;
+    margin-right: 20px;
   }
+
+  h2 {
+    margin-right: 170px;
+  }
+
+  .main {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background-color: white;
+    opacity: 0.95;
+    border-radius: 20px;
+    box-shadow: 2px 2px 10px -5px;
+  }
+
   .upperpart,
   .mainPart {
     width: 100%;
@@ -114,7 +141,7 @@ const totalContainer = css`
   .timeline {
     width: 50px;
     height: 100%;
-    margin: 5px;
+    margin: 7px;
   }
   .classday,
   .column {
@@ -158,17 +185,15 @@ const totalContainer = css`
     height: 30px;
   }
   .time {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
   @keyframes fadeIn {
     from {
       position: absolute;
-      right: -420px;
       opacity: 0;
     }
     to {
       position: absolute;
-      right: -0px;
       opacity: 1;
     }
   }

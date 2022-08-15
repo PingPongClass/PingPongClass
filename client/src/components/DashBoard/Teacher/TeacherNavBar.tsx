@@ -9,23 +9,34 @@ import { useState } from 'react';
 const TeacherNavBar = () => {
   const [isDashboard, setIsDashboard] = useState(true);
   const [isClasses, setIsClasses] = useState(false);
+  const [isLog, setIsLog] = useState(false);
   const [isNotices, setIsNotices] = useState(false);
 
   const onClickDashboard = () => {
     setIsDashboard(true);
     setIsClasses(false);
+    setIsLog(false);
     setIsNotices(false);
   };
 
   const onClickClasses = () => {
     setIsDashboard(false);
     setIsClasses(true);
+    setIsLog(false);
+    setIsNotices(false);
+  };
+
+  const onClickLog = () => {
+    setIsDashboard(false);
+    setIsClasses(false);
+    setIsLog(true);
     setIsNotices(false);
   };
 
   const onClickNotices = () => {
     setIsDashboard(false);
     setIsClasses(false);
+    setIsLog(false);
     setIsNotices(true);
   };
 
@@ -48,6 +59,15 @@ const TeacherNavBar = () => {
         >
           <CalendarMonthIcon style={{ fontSize: '40px' }} />
           수업목록
+        </div>
+      </Link>
+      <Link to="log" className="linkButton">
+        <div
+          className={isLog ? 'clickButton' : 'teacherNavButton'}
+          onClick={onClickLog}
+        >
+          <CampaignIcon style={{ fontSize: '40px' }} />
+          수업기록
         </div>
       </Link>
       <Link to="notice" className="linkButton">
@@ -77,8 +97,8 @@ const totalContainer = css`
   box-shadow: 2px 2px 10px -5px;
 
   .teacherNavButton {
-    width: 180px;
-    height: 60px;
+    width: 160px;
+    height: 50px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -91,8 +111,8 @@ const totalContainer = css`
   }
 
   .clickButton {
-    width: 180px;
-    height: 60px;
+    width: 160px;
+    height: 50px;
     display: flex;
     flex-direction: row;
     align-items: center;

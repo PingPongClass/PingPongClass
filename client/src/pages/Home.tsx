@@ -19,36 +19,30 @@ const Home = () => {
       </div>
       <div className="parent">
         <div className="child">
-          <div className="container">
-            <div className="circles">
-              <div className="circle1" />
-              <div className="circle2" />
-              <div className="circle3" />
-            </div>
-            <hr />
-            <div className="sideContainer">
-              <LeftSide />
-              {tap === 'main' && <RightSide setTap={setTap} />}
-              {tap === 'login' && (
-                <Login
-                  tap={tap}
-                  setTap={setTap}
-                  userId={userId}
-                  setUserId={setUserId}
-                />
-              )}
-              {tap === 'email' && (
-                <Email setTap={setTap} setEmailConfirmed={setEmailConfirmed} />
-              )}
-              {tap === 'passwordSetting' && (
-                <PasswordSetting
-                  setTap={setTap}
-                  email={email}
-                  userId={userId}
-                />
-              )}
-              {tap === 'passwordFind' && <PasswordFind setTap={setTap} />}
-            </div>
+          <div className="circles">
+            <div className="circle1" />
+            <div className="circle2" />
+            <div className="circle3" />
+          </div>
+          <hr />
+          <div className="sideContainer">
+            <LeftSide />
+            {tap === 'main' && <RightSide setTap={setTap} />}
+            {tap === 'login' && (
+              <Login
+                tap={tap}
+                setTap={setTap}
+                userId={userId}
+                setUserId={setUserId}
+              />
+            )}
+            {tap === 'email' && (
+              <Email setTap={setTap} setEmailConfirmed={setEmailConfirmed} />
+            )}
+            {tap === 'passwordSetting' && (
+              <PasswordSetting setTap={setTap} email={email} userId={userId} />
+            )}
+            {tap === 'passwordFind' && <PasswordFind setTap={setTap} />}
           </div>
         </div>
       </div>
@@ -118,13 +112,6 @@ const totalContainer = css`
     border: 2px solid #001111;
   }
 
-  .container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    justify-content: start;
-  }
-
   .sideContainer {
     display: flex;
     flex-direction: row;
@@ -135,12 +122,13 @@ const totalContainer = css`
 
   hr {
     width: 100%;
-    height: 2px;
+    height: 1.5px;
     border: 0;
     background-color: black;
   }
 
   .circles {
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: end;
@@ -166,6 +154,7 @@ const totalContainer = css`
     .circle3 {
       background-color: #ef8181;
       margin-left: 0.3rem;
+      margin-right: 1rem;
     }
   }
 `;
