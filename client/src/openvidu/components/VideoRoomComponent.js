@@ -1199,7 +1199,6 @@ class VideoRoomComponent extends Component {
     let yEnd = this.state.totalHeight - 80 - imgSize * 2;
     const newSticker = {
       key: current,
-      point: 5,
       top: this.between(yStart, yEnd),
       left: this.between(xStart, xEnd),
     };
@@ -1381,7 +1380,7 @@ class VideoRoomComponent extends Component {
             display={this.state.shieldLoadingDisplay}
             toggleShieldLoading={this.toggleShieldLoading}
             timeOut={2.5}
-            header="방어권 구경"
+            header="발표 프리패스 대기중"
           />
           <ShieldModal
             display={this.state.shieldDisplay}
@@ -1394,7 +1393,7 @@ class VideoRoomComponent extends Component {
             tempFrameChange={this.tempFrameChange}
             subscribers={subscribers}
             timeOut={3}
-            header="방어권 사용"
+            header="발표 프리패스 사용"
           />
 
           {/* 다이얼로그 */}
@@ -1408,7 +1407,6 @@ class VideoRoomComponent extends Component {
             <Sticker
               key={stickerKey.key}
               stikerKey={stickerKey.key}
-              point={stickerKey.point}
               top={stickerKey.top}
               left={stickerKey.left}
               removeSticker={this.removeSticker}

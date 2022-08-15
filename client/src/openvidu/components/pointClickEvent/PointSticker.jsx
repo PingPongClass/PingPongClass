@@ -1,8 +1,7 @@
+import { css } from '@emotion/react';
 import React, { useState } from 'react';
 import './PointSticker.css';
-// const img = require('../levels/yellow.png');
-const stickerImg =
-  'https://item.kakaocdn.net/do/d46eb5180f93b19ab3d2a7275827ac0682f3bd8c9735553d03f6f982e10ebe70';
+
 // name: 한준수
 // date: 2022/07/28
 // desc: 클릭하면 포인트를 얻는 컴포넌트
@@ -10,19 +9,28 @@ const stickerImg =
 const PointSticker = (props) => {
   const { stikerKey, top, left, removeSticker, localUser } = props;
   const [visible, setVisible] = useState(true);
-  console.log(stikerKey);
-  console.log(localUser);
-  console.log(top);
-  console.log(left);
-  console.log(visible);
-  const css = {
-    top: top + 'px',
-    left: left + 'px',
-    visibility: visible ? 'visible' : 'hidden',
-    disabled: !visible,
-    cursor: 'pointer',
-    borderRadius: '50%',
-  };
+  const size = '100px';
+
+  const stickerCSS = css`
+    position: absolute;
+    top: ${top + 'px'};
+    left: ${left + 'px'};
+    border-radius: '50%';
+    cursor: 'pointer';
+    visibility: ${visible ? 'visible' : 'hidden'};
+    /* color: red; */
+    img {
+      width: ${size};
+      max-width: ${size};
+      min-width: ${size};
+      height: ${size};
+      max-height: ${size};
+      min-height: ${size};
+      /* border: red solid 1px; */
+      /* background-color: white; */
+    }
+  `;
+  console.log(stickerCSS);
 
   const addPoint = () => {
     // removeSticker(stikerKey);
@@ -34,14 +42,12 @@ const PointSticker = (props) => {
   };
 
   return (
-    <div id="pointSticker">
+    <div id="pointSticker" css={stickerCSS}>
       <img
         alt="칭찬 스티커"
-        // src="../reactions/heart.gif"
-        // src={stickerImg}
-        src="https://item.kakaocdn.net/do/d46eb5180f93b19ab3d2a7275827ac0682f3bd8c9735553d03f6f982e10ebe70"
+        src="../levels/yellow.png"
         onClick={addPoint}
-        style={css}
+        disabled={!visible}
       />
     </div>
   );
