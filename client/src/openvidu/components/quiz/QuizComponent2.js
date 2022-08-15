@@ -6,20 +6,19 @@ import './QuizComponent.css';
 class QuizComponent extends Component {
   state = {
     question: this.props.quiz.question,
+    answer: this.props.quiz.answer,
     A1: 'O',
     A2: 'X',
     select: 'none',
   };
 
   select = (e) => {
-    console.log(e.target.value);
     e.preventDefault();
     this.setState({ select: e.target.value });
   };
 
   result = (e) => {
     e.preventDefault();
-    console.log(this.state.select);
     this.props.submit(this.state.select);
   };
 

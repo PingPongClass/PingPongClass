@@ -10,18 +10,17 @@ class QuizComponent extends Component {
     A2: this.props.quiz.A2,
     A3: this.props.quiz.A3,
     A4: this.props.quiz.A4,
+    answer: this.props.quiz.answer,
     select: 'none',
   };
 
   select = (e) => {
-    console.log(e.target.value);
     e.preventDefault();
     this.setState({ select: e.target.value });
   };
 
   result = (e) => {
     e.preventDefault();
-    console.log(this.state.select);
     this.props.submit(this.state.select);
   };
 

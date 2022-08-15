@@ -149,6 +149,8 @@ class VideoRoomComponent extends Component {
     this.frameChanged = this.frameChanged.bind(this);
     // toggleQuiz: 퀴즈창 토글 버튼 함수
     this.toggleQuiz = this.toggleQuiz.bind(this);
+    // toggleQuizStudent: 내정답 저장
+    this.toggleQuizStudent = this.toggleQuizStudent.bind(this);
     // toggleShield: 방어권창 토글 버튼 함수
     this.toggleShield = this.toggleShield.bind(this);
     // checkUserHasItem: 유저의 아이템 정보 체크 함수
@@ -1257,9 +1259,14 @@ class VideoRoomComponent extends Component {
 
   toggleQuizStudent = (answer) => {
     if (answer) {
+      console.log(answer);
       this.sendSignalUserChanged({ quizAnswerCreated: answer });
+      this.setState({
+        ...this.state,
+        quiz: { ...this.state.quiz, myAnswer: answer },
+        quizDisplayStudent: !this.state.quizDisplayStudent,
+      });
     }
-    this.setState({ quizDisplayStudent: !this.state.quizDisplayStudent });
   };
 
   popUpQuiz = (newQuiz) => {
@@ -1350,20 +1357,20 @@ class VideoRoomComponent extends Component {
           <QuizModal
             display={this.state.quizDisplay}
             toggleQuiz={this.toggleQuiz}
-            header="Quiz Modal"
+            header="퀴즈"
             quiz={this.state.quiz}
           />
           <QuizModalStudent
             display={this.state.quizDisplayStudent}
             toggleQuizStudent={this.toggleQuizStudent}
-            header="Quiz Modal"
+            header="퀴즈"
             quiz={this.state.quiz}
           />
           <ShieldModalLoading
             display={this.state.shieldLoadingDisplay}
             toggleShieldLoading={this.toggleShieldLoading}
             timeOut={2.5}
-            header="발표 프리패스 대기중"
+            header="방어권 구경"
           />
           <ShieldModal
             display={this.state.shieldDisplay}
@@ -1371,12 +1378,10 @@ class VideoRoomComponent extends Component {
             toggleShield={this.toggleShield}
             alertToChat={this.alertToChat}
             pickRandomStudent={this.pickRandomStudent}
-            checkUserHasItem={this.checkUserHasItem}
-            uesItem={this.uesItem}
             tempFrameChange={this.tempFrameChange}
             subscribers={subscribers}
             timeOut={3}
-            header="발표 프리패스 사용"
+            header="방어권 사용"
           />
 
           {/* 다이얼로그 */}

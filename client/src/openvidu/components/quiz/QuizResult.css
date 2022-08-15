@@ -1,77 +1,65 @@
 .resultContainer {
-  width: 90%;
-  height: 70%;
   display: flex;
-  justify-content: center;
   flex-direction: column;
-  max-width: 1000px;
-  padding: 40px;
-	gap: 15px;
+  justify-content: start;
+  padding: 0 40px;
+  margin-top: 20px;
+  gap: 15px;
 }
 
 .resultQuestion {
-  font-size: 34px;
-  padding: 30px 10px;
-	margin: 0px;
+  font-size: 24px;
+  padding: 20px 10px;
+  margin: 0px;
   border-radius: 5px;
   background-color: white;
   display: flex;
   justify-content: center;
   flex-direction: column;
-  justify-items: center;
   align-items: center;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
     rgba(0, 0, 0, 0.22) 0px 10px 10px;
 }
 
-.resultOutsideContainer{
-	display: flex;
+.resultOutsideContainer {
+  display: flex;
   flex-direction: column;
-	width: 100%;
-}
-
-.resultAnswer {
-	border: 1px solid white;
-	border-radius: 5px;
-	outline: 4px solid #FF3366;
-}
-
-.progressBar1{
-	width: 10%;
-	height: 100px;
-	background-color: #D43959;
-	transition: all 0.3s ease-in-out;
-	border-radius: 5px;
-}
-.progressBar2{
-	width: 10%;
-	height: 100px;
-	background-color: #029371;
-	transition: all 0.3s ease-in-out;
-	border-radius: 5px;
-}
-.progressBar3{
-	width: 10%;
-	height: 100px;
-	background-color: #D28945;
-	transition: all 0.3s ease-in-out;
-	border-radius: 5px;
-}
-.progressBar4{
-	width: 10%;
-	height: 100px;
-	background-color: #2A69A6;
-	transition: all 0.3s ease-in-out;
-	border-radius: 5px;
+  justify-content: start;
+  width: 100%;
+  height: 100%;
 }
 
 .resultContainer h2 {
-	display: inline-block;
-	padding: 5px;
+  display: inline-block;
+  padding: 5px;
 }
 
-.myAnswer {
-	border: 4px solid #7fe630;
-	border-radius: 8px;
-	margin-right: 10px;
+.resultContent {
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+}
+
+.resultAnwerContent {
+  height: 100%;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 26px;
+  font-weight: bold;
+  gap: 20px;
+}
+
+.answerBox {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
 }

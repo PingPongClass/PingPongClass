@@ -9,6 +9,8 @@ class QuizForm extends Component {
     A2: 'none',
     A3: 'none',
     A4: 'none',
+    answer: 'none',
+    myAnswer: 'none',
     answerA1: 0,
     answerA2: 0,
     answerA3: 0,
@@ -45,6 +47,8 @@ class QuizForm extends Component {
       this.setState({ A3: e.value });
     } else if (e.name === 'a4') {
       this.setState({ A4: e.value });
+    } else if (e.name === 'answer') {
+      this.setState({ answer: e.value });
     }
   };
 
@@ -114,6 +118,24 @@ class QuizForm extends Component {
               />
               <span style={{ background: '#2A69A6' }}>
                 네번째 보기를 적어주세요
+              </span>
+            </li>
+            <li>
+              <label htmlFor="answer">정답 선택</label>
+              <select
+                onChange={this.onChange}
+                type="text"
+                name="answer"
+                maxLength="100"
+              >
+                <option value="none">정답 없음</option>
+                <option value={this.state.A1}>{this.state.A1}</option>
+                <option value={this.state.A2}>{this.state.A2}</option>
+                <option value={this.state.A3}>{this.state.A3}</option>
+                <option value={this.state.A4}>{this.state.A4}</option>
+              </select>
+              <span style={{ background: '#7163BA' }}>
+                정답을 선택해주세요.
               </span>
             </li>
             <li>

@@ -3,14 +3,14 @@ import './QuizModal.css';
 import QuizForm from './QuizForm';
 import QuizForm2 from './QuizForm2';
 import QuizListCard from './QuizListCard';
+import QuizResult from './QuizResult';
 
 class QuizModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
       display: this.props.display,
-      form: true,
-      list: false,
+      content: 'two',
       quiz: this.props.quiz,
     };
   }
@@ -30,15 +30,11 @@ class QuizModal extends Component {
 
   quizCreate = (quiz) => {
     this.props.toggleQuiz(quiz);
-    this.setState({ quiz: quiz });
+    this.setState({ quiz: quiz, content: 'results' });
   };
 
-  quizChange = (e) => {
-    this.setState({ form: e, list: false });
-  };
-
-  toggleList = () => {
-    this.setState({ list: true });
+  contentChange = (e) => {
+    this.setState({ content: e });
   };
 
   render() {
@@ -48,34 +44,42 @@ class QuizModal extends Component {
           <section>
             <header>
               {this.props.header}
-              <button className="close" onClick={this.close}>
+              <button className="close" onClick={() => this.close}>
                 &times;
               </button>
             </header>
             <div className="quizSection">
-              {this.state.list ? (
-                <QuizListCard quiz={this.state.quiz} />
-              ) : this.state.form ? (
-                <QuizForm quizCreate={this.quizCreate} />
-              ) : (
-                <QuizForm2 quizCreate={this.quizCreate} />
-              )}
+              {
+                {
+                  two: <QuizForm2 quizCreate={this.quizCreate} />,
+                  four: <QuizForm quizCreate={this.quizCreate} />,
+                  list: (
+                    <QuizListCard
+                      quiz={this.state.quiz}
+                      contentChange={this.contentChange}
+                    />
+                  ),
+                  results: <QuizResult quiz={this.state.quiz} />,
+                }[this.state.content]
+              }
             </div>
             <footer>
               <button
-                onClick={(e) => this.quizChange(false)}
+                onClick={() => this.contentChange('two')}
                 className="current"
               >
                 OX 퀴즈
               </button>
               <button
                 className="current"
-                onClick={(e) => this.quizChange(true)}
+                onClick={() => this.contentChange('four')}
               >
                 4지선다 퀴즈
               </button>
-              <button onClick={this.toggleList}>퀴즈 목록</button>
-              <button className="close" onClick={this.close}>
+              <button onClick={() => this.contentChange('list')}>
+                퀴즈 목록
+              </button>
+              <button className="close" onClick={() => this.close}>
                 닫기
               </button>
             </footer>

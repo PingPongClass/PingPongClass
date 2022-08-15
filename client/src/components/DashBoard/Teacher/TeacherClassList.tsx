@@ -28,7 +28,7 @@ const ClassList = () => {
 
   useEffect(() => {
     if (memberStore.userId !== -1) {
-      const rs = loadClassList(dt.getDay());
+      loadClassList(dt.getDay());
     }
   }, []);
 
@@ -54,7 +54,7 @@ const ClassList = () => {
 
   const renderList = (): any => {
     let tmp = [] as any;
-    if (clsList.length !== 0) {
+    if (clsList.length) {
       for (let i = 0; i < clsList.length / 6; i++) {
         tmp.push(render(i));
       }

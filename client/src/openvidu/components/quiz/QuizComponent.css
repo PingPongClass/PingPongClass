@@ -5,6 +5,8 @@
   justify-items: center;
   align-items: center;
 	margin: 0px;
+  width: 90%;
+  height: 90%;
 }
 
 .flex-grid {
