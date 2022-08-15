@@ -7,6 +7,19 @@ import 'react-calendar/dist/Calendar.css';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { useAppSelector } from '@src/store/hooks';
+import {
+  PieChart,
+  Pie,
+  Cell,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts';
 
 const TeacherClassLogList = () => {
   const [value, onChange] = useState(new Date());
@@ -72,6 +85,47 @@ const TeacherClassLogList = () => {
   useEffect(() => {
     loadLogDate();
   }, [classes]);
+
+  const data = [
+    { name: '출석', value: logList?.attendStuNum },
+    {
+      name: '결석',
+      value: logList?.totalStuNum - logList?.attendStuNum,
+    },
+  ];
+
+  const COLORS = ['#759eff', '#ff9b89'];
+
+  const RADIAN = Math.PI / 180;
+  const renderCustomizedLabel = ({
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    percent,
+    name,
+    value,
+    index,
+  }) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    return (
+      <text
+        x={x}
+        y={y}
+        fill="white"
+        textAnchor={x > cx ? 'start' : 'end'}
+        dominantBaseline="central"
+        fontSize={14}
+        fontWeight={700}
+      >
+        {`${name} ${value}`}
+      </text>
+    );
+  };
 
   return (
     <div css={totalContainer}>
@@ -236,6 +290,52 @@ const TeacherClassLogList = () => {
                     </div>
                   );
                 })}
+            </div>
+          </div>
+          <div className="chartContainer">
+            <div style={{ width: '36%', height: '100%' }}>
+              <ResponsiveContainer>
+                <PieChart>
+                  <Pie
+                    label={renderCustomizedLabel}
+                    data={data}
+                    fill="#8884d8"
+                    dataKey="value"
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    outerRadius={80}
+                  >
+                    {data.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            <div style={{ width: '64%', height: '100%', marginBottom: '16px' }}>
+              <ResponsiveContainer>
+                <BarChart
+                  data={logList?.logEntityList}
+                  margin={{
+                    top: 24,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis
+                    dataKey="studentEntity.name"
+                    style={{ fontSize: '9pt' }}
+                  />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="point" stackId="a" fill="#a589cd" />
+                  <Bar dataKey="presentCnt" stackId="a" fill="#f3ca7e" />
+                </BarChart>
+              </ResponsiveContainer>
             </div>
           </div>
         </div>
@@ -425,16 +525,37 @@ const totalContainer = css`
   /* table 영역 */
   .tableArea {
     width: 100%;
-    height: 70%;
-    /* overflow-y: scroll; */
+    height: 35%;
+    overflow-y: scroll;
     text-align: center;
   }
 
   .classTableArea {
     width: 100%;
-    height: 16%;
+    height: 12%;
     /* overflow-y: scroll; */
     text-align: center;
+  }
+
+  .chartContainer {
+    width: 85%;
+    height: 40%;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  .pie {
+    width: 30%;
+    height: 100%;
+    font-size: 10pt;
+  }
+
+  .bar {
+    width: 70%;
+    height: 100%;
   }
 
   /* 스크롤 바 숨기기 */
@@ -473,16 +594,15 @@ const totalContainer = css`
   .col {
     overflow: hidden;
     width: 15%;
-    line-height: 30px;
+    line-height: 25px;
   }
   /* 제목 행 */
   .titleRow {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    padding: 0.5rem 0;
+    padding: 0.2rem 0;
     background-color: #c0d2e5;
     height: 23px;
-    vertical-align: middle;
     font-weight: 400;
     font-size: 1em;
   }
@@ -495,7 +615,6 @@ const totalContainer = css`
 
     /* 제목줄 1줄 */
     .logRow {
-      padding: 0.2rem 0;
       border-bottom: 1px solid gray;
     }
 
