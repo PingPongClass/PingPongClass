@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CloseBtn from '@mui/icons-material/Close';
 import Send from '../../assets/images/uil_message.png';
+import defaultProfile from '@assets/images/defaultProfile.jpeg';
 import './ChatComponent.css';
 
 // ChatComponent: 채팅 관련 컴포넌트
@@ -39,6 +40,7 @@ export default class ChatComponent extends Component {
           message: data.message,
           type: 'chat',
           levelPng: data.levelPng,
+          profile: data.profile,
         });
         const document = window.document;
         setTimeout(() => {
@@ -62,6 +64,7 @@ export default class ChatComponent extends Component {
           type: 'private-chat',
           target: data.target,
           levelPng: data.levelPng,
+          profile: data.profile,
         });
         const document = window.document;
         setTimeout(() => {
@@ -101,6 +104,7 @@ export default class ChatComponent extends Component {
             nickname: this.props.user.getNickname(),
             streamId: this.props.user.getStreamManager().stream.streamId,
             levelPng: this.props.levelPng,
+            profile: this.props.profile,
           };
           this.props.user.getStreamManager().stream.session.signal({
             data: JSON.stringify(data),
@@ -115,6 +119,7 @@ export default class ChatComponent extends Component {
             streamId: this.props.user.getStreamManager().stream.streamId,
             target: this.state.messageTarget.nickname,
             levelPng: this.props.levelPng,
+            profile: this.props.profile,
           };
           this.props.user.getStreamManager().stream.session.signal({
             data: JSON.stringify(data),
@@ -125,9 +130,6 @@ export default class ChatComponent extends Component {
       }
     }
     this.setState({ message: '' });
-    console.log(this.state.messageTarget);
-    console.log(this.props.user);
-    console.log(typeof this.state.messageTarget, typeof this.props.user);
   }
 
   // scrollToBottom: 스크롤을 맨 아래로 내리는 함수
@@ -203,10 +205,17 @@ export default class ChatComponent extends Component {
                 }
               >
                 <img
-                  src={data.levelPng}
-                  className={'user-img ' + data.levelPng}
-                  alt=""
-                ></img>
+                  src={
+                    data.profile ===
+                      'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null' ||
+                    data.profile ===
+                      'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/'
+                      ? defaultProfile
+                      : data.profile
+                  }
+                  className="user-img"
+                  alt="프로필사진"
+                />
                 {/* <canvas
                   id={'userImg-' + i}
                   width="60"
@@ -216,6 +225,13 @@ export default class ChatComponent extends Component {
                 <div className="msg-detail">
                   <div className="msg-info">
                     <p className="msg-nickname">
+                      <span>
+                        <img
+                          src={data.levelPng}
+                          alt="레벨짤"
+                          className="level-png"
+                        />
+                      </span>
                       {data.target
                         ? data.nickname + ' ▶ ' + data.target
                         : data.nickname}

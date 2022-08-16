@@ -240,6 +240,10 @@ const totalContainer = css`
     margin-top: 15px;
   }
 
+  button:hover {
+    cursor: pointer;
+  }
+
   .triangles {
     position: absolute;
     width: 100%;

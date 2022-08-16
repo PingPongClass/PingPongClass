@@ -50,7 +50,7 @@ export default class ToolbarComponent extends Component {
     this.selfLeaveSession = this.selfLeaveSession.bind(this);
     this.toggleVideoLayout = this.toggleVideoLayout.bind(this);
     this.emoji = this.emoji.bind(this);
-    this.question = this.question.bind(this);
+    this.toggleQuestion = this.toggleQuestion.bind(this);
   }
 
   // micStatusChanged: 마이크 상태변화 토글 함수
@@ -106,8 +106,8 @@ export default class ToolbarComponent extends Component {
     this.props.emoji();
   }
 
-  question() {
-    this.props.question();
+  toggleQuestion() {
+    this.props.toggleQuestion();
   }
 
   // name: 한준수
@@ -398,18 +398,6 @@ export default class ToolbarComponent extends Component {
 
             <IconButton
               color="inherit"
-              onClick={this.question}
-              className="navButton"
-              id="navQuestion"
-            >
-              <div className="buttonStyle">
-                <SearchIcon />
-                <p>질문</p>
-              </div>
-            </IconButton>
-
-            <IconButton
-              color="inherit"
               onClick={this.emoji}
               className="navButton"
               id="navEmoji"
@@ -445,6 +433,21 @@ export default class ToolbarComponent extends Component {
                 </div>
               </IconButton>
             )}
+
+            <IconButton
+              color="inherit"
+              onClick={this.toggleQuestion}
+              className="navButton"
+              id="navQuestButton"
+            >
+              <div className="buttonStyle">
+                {this.props.showQuestionNotification && (
+                  <div id="questPoint" className="" />
+                )}
+                <SearchIcon />
+                <p>익명질문</p>
+              </div>
+            </IconButton>
 
             <IconButton
               color="inherit"

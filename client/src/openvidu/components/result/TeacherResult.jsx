@@ -541,6 +541,10 @@ const TotalResult = css`
   }
 `;
 
-const OtherThings = css``;
+const OtherThings = css`
+  button:hover {
+    cursor: pointer;
+  }
+`;
 
 export default TeacherResult;

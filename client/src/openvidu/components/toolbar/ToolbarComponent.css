@@ -79,8 +79,26 @@
   font-family: 'Open Sans', sans-serif;
 }
 
+#navQuestButton {
+  position: absolute;
+  right: 0;
+  margin-right: 4.5rem;
+}
+
+#questPoint {
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  top: 12px;
+  right: 24px;
+  border-radius: 50%;
+  background-color: #a64dff;
+  border: 1px solid #000;
+  z-index: 99999;
+}
+
 #navChatButton {
-  margin-right: 1rem;
+  position: absolute;
 }
 
 #point {
@@ -100,7 +118,8 @@
 
 @media only screen and (max-width: 700px) {
   #titleContent,
-  #navChatButton {
+  #navChatButton,
+  #navQuestButton {
     display: none;
   }
 }
@@ -113,4 +132,3 @@
     color: white;
   }
 }
-

@@ -125,7 +125,8 @@
 }
 
 .parti,
-.chat {
+.chat,
+.quest {
   position: absolute;
   width: 100%;
   height: calc(100vh - 80px);
@@ -980,4 +981,3 @@
     border: solid 8px transparent;
   }
 }
-

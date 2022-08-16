@@ -45,9 +45,7 @@ const SetupComponent = (props) => {
   const effectCnt = useRef(0); // 최초 마운트에 특정 useEffect가 동작하지 않게 하기 위한 트릭
   const previewFace = useRef(null);
   const stream = useRef(new MediaStream());
-  const [camLoading, setCamLoading] = useState(false);
   useUpdateStream(previewFace, stream.current);
-  useUpdateSpeaker(previewFace, selectedSpeaker);
 
   useEffect(() => {
     const getMyDevices = async () => {
