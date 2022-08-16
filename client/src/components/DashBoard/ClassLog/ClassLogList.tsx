@@ -20,16 +20,16 @@ export interface LogProps {
 }
 
 const ClassLogList = () => {
-  const [value, onChange] = useState(new Date());
+  const [value, setValue] = useState(new Date());
   const AXIOS = setupInterceptorsTo(axios.create());
   const memberStore = useAppSelector((state) => state.member);
   const [logList, setLogList] = useState<LogProps[]>([]);
   const [dateList, setDateList] = useState([] as any);
 
-  const loadLogList = async () => {
+  const loadLogList = (regdate) => {
     const studentId = memberStore.userId;
-    await AXIOS.post(`/records/log/student`, {
-      regDate: moment(value).format('YYYY-MM-DD'),
+    AXIOS.post(`/records/log/student`, {
+      regDate: moment(regdate).format('YYYY-MM-DD'),
       studentId: studentId,
     })
       .then(function (response) {
@@ -53,18 +53,19 @@ const ClassLogList = () => {
   };
 
   useEffect(() => {
-    loadLogList();
-  }, [value]);
-
-  useEffect(() => {
     loadLogDate();
+    loadLogList(value);
   }, []);
 
   return (
     <div css={totalContainer}>
       <div className="calendarContainer">
         <Calendar
-          onChange={onChange} // useState로 포커스 변경 시 현재 날짜 받아오기
+          onChange={(value, event) => {
+            setLogList([]);
+            setValue(value);
+            loadLogList(value);
+          }} // useState로 포커스 변경 시 현재 날짜 받아오기
           formatDay={(locale, date) => moment(date).format('DD')} // 날'일' 제외하고 숫자만 보이도록 설정
           value={value}
           minDetail="month" // 상단 네비게이션에서 '월' 단위만 보이게 설정
