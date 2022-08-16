@@ -1307,9 +1307,14 @@ class VideoRoomComponent extends Component {
 
   toggleQuizStudent = (answer) => {
     if (answer) {
+      console.log(answer);
       this.sendSignalUserChanged({ quizAnswerCreated: answer });
+      this.setState({
+        ...this.state,
+        quiz: { ...this.state.quiz, myAnswer: answer },
+        quizDisplayStudent: !this.state.quizDisplayStudent,
+      });
     }
-    this.setState({ quizDisplayStudent: !this.state.quizDisplayStudent });
   };
 
   popUpQuiz = (newQuiz) => {
@@ -1410,13 +1415,13 @@ class VideoRoomComponent extends Component {
           <QuizModal
             display={this.state.quizDisplay}
             toggleQuiz={this.toggleQuiz}
-            header="Quiz Modal"
+            header="퀴즈"
             quiz={this.state.quiz}
           />
           <QuizModalStudent
             display={this.state.quizDisplayStudent}
             toggleQuizStudent={this.toggleQuizStudent}
-            header="Quiz Modal"
+            header="퀴즈"
             quiz={this.state.quiz}
           />
           <ShieldModalLoading

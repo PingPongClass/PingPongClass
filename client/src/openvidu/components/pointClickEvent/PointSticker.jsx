@@ -30,7 +30,6 @@ const PointSticker = (props) => {
       /* background-color: white; */
     }
   `;
-  console.log(stickerCSS);
 
   const addPoint = () => {
     // removeSticker(stikerKey);

@@ -20,9 +20,31 @@ const removeAlarm = (idx, card, alarmUpdate) => {
   el?.setAttribute('style', 'display: none');
 };
 
+const alarms = localStorage.getItem('alarms') as any;
+const parsing = JSON.parse(alarms);
+console.log(parsing);
+
+const nthChildCard = ({ offset = 0, multiplier = 220 }) => {
+  const styles = {};
+  styles[`&:first-of-type`] = {
+    top: `${offset}px`,
+  };
+  styles[`&:last-of-type`] = {
+    top: `${offset + (parsing.length - 1) * multiplier}px`,
+  };
+  if (parsing) {
+    parsing.forEach((_, index) => {
+      if (index !== 0) {
+        styles[`&:nth-of-type(${index})`] = {
+          top: `${offset + (index - 1) * multiplier}px`,
+        };
+      }
+    });
+  }
+  return styles;
+};
+
 const AlarmModal = ({ alarmUpdate, close }: AlarmModalStyle) => {
-  const alarms = localStorage.getItem('alarms') as any;
-  const parsing = JSON.parse(alarms);
   return (
     <div css={totalContainer}>
       <div className="alarmBack" onClick={close}></div>
@@ -93,7 +115,9 @@ const totalContainer = css`
   }
 
   .alarmModal {
+    min-width: 400px;
     width: 400px;
+    /* width: max-content; */
     height: 85%;
     padding: 20px;
     margin-top: 50px;
@@ -106,6 +130,14 @@ const totalContainer = css`
     justify-content: start;
     box-shadow: 2px 2px 10px -5px;
     animation: fadeIn 0.4s;
+    position: relative;
+    overflow-y: auto;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .alarmModal::-webkit-scrollbar {
+    display: none;
   }
 
   .closeButton {
@@ -134,7 +166,13 @@ const totalContainer = css`
     background-color: #eaf1fb;
     box-shadow: 2px 2px 10px -5px;
     margin-bottom: 20px;
+    position: absolute;
+    ${nthChildCard({ offset: 20, multiplier: 220 })};
   }
+
+  /* .alarmCard:first-of-type {
+    top: 65px;
+  } */
 `;
 
 export default AlarmModal;
