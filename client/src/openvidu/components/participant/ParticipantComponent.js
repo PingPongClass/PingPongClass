@@ -11,6 +11,7 @@ export default class ParticipantComponent extends Component {
     this.close = this.close.bind(this);
     this.upPointChanged = this.upPointChanged.bind(this);
     this.downPointChanged = this.downPointChanged.bind(this);
+    this.partsSortChange = this.partsSortChange.bind(this);
     this.participantScroll = React.createRef();
   }
 
@@ -46,8 +47,20 @@ export default class ParticipantComponent extends Component {
     this.props.downPointChanged();
   }
 
+  partsSortChange(e) {
+    console.log(e.target.value);
+    this.props.partsSortChange(e.target.value);
+  }
+
   // render: 렌더링을 담당하는 함수
   render() {
+    const participants = this.props.subscribers;
+    participants.push(this.props.user);
+    const joinParts = participants.sort(
+      (a, b) => a.attendanceTime - b.attendanceTime,
+    );
+    const pongpongParts = participants.sort((a, b) => b.point - a.point);
+    const numberParts = participants.sort((a, b) => a.point - b.point);
     return (
       <div id="participantContainer">
         <div id="participantComponent">
@@ -60,8 +73,8 @@ export default class ParticipantComponent extends Component {
               alt="참여자 목록 닫기"
             />
           </div>
-          {/* 선생님 */}
-          <div className="teacher-box">
+          {/* 자신 */}
+          <div className="my-box">
             <SingleParticipantPanel
               whoami={this.props.whoami}
               user={this.props.user}
@@ -77,18 +90,20 @@ export default class ParticipantComponent extends Component {
           </div>
           {/* 디스플레이 요소 체크박스 */}
           <div className="display-box">
-            <select>
+            <select value={this.props.type} onChange={this.partsSortChange}>
               <option value="all">전체보기</option>
-              <option value="all">전체보기</option>
-              <option value="all">전체보기</option>
-              <option value="all">전체보기</option>
+              <option value="attend">출석자보기</option>
+              <option value="absent">결석자보기</option>
+              <option value="join">접속순보기</option>
+              <option value="pongpong">퐁퐁순보기</option>
+              <option value="number">번호순보기</option>
             </select>
           </div>
           {/* 수업 참여 여부 */}
           {/* 참여자 */}
           <div className="participants-wrap" ref={this.participantScroll}>
             <div className="attendence-students">
-              <h3>접속자</h3>
+              <h3>출석명단</h3>
               <SingleParticipantPanel
                 whoami={this.props.whoami}
                 user={this.props.user}
@@ -118,7 +133,7 @@ export default class ParticipantComponent extends Component {
               ))}
             </div>
             <div className="absent-students">
-              <h3>미접속자</h3>
+              <h3>결석명단</h3>
               {this.props.absentStudents.map((elem, i) => (
                 <p key={i}>{elem}</p>
               ))}

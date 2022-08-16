@@ -102,6 +102,7 @@ class VideoRoomComponent extends Component {
       videoLayout: 'bigTeacher',
       levelPng: this.props.levelPng,
       presentationCnt: 0,
+      sortType: 'all',
     };
 
     // 메서드 바인딩 과정
@@ -177,6 +178,8 @@ class VideoRoomComponent extends Component {
     // 발표 횟수 체크
     this.upPresentationCnt = this.upPresentationCnt.bind(this);
     this.downPresentationCnt = this.downPresentationCnt.bind(this);
+    // 정렬 변경 이벤트핸들러
+    this.partsSortChange = this.partsSortChange.bind(this);
   }
 
   // componentDidMount: 컴포넌트가 마운트 되었을 때 작동하는 리액트 컴포넌트 생명주기함수
@@ -1365,6 +1368,15 @@ class VideoRoomComponent extends Component {
     console.log('익명질문 이벤트 핸들러');
   };
 
+  // name: 오석호
+  // date: 2022/08/16
+  // desc: 접속자 정렬 기준 선정버튼
+  partsSortChange = (value) => {
+    this.setState({
+      sortType: value,
+    });
+  };
+
   // render: 렌더링을 담당하는 함수
   render() {
     const mySessionId = this.state.mySessionId;
@@ -1372,6 +1384,7 @@ class VideoRoomComponent extends Component {
     const subscribers = this.state.subscribers;
     const chatDisplay = { display: this.state.chatDisplay };
     const participantDisplay = { display: this.state.participantDisplay };
+    console.log(this.props.type);
 
     return (
       <>
@@ -1560,6 +1573,8 @@ class VideoRoomComponent extends Component {
                     absentStudents={this.state.absentStudents}
                     teacher={this.state.teacher}
                     student={this.state.students}
+                    partsSortChange={this.state.partsSortChange}
+                    type={this.state.sortType}
                   />
                 </div>
               )}
