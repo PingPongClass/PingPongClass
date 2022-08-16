@@ -19,6 +19,7 @@ import { motion } from 'framer-motion';
 import { useAppSelector, useAppDispatch } from '@src/store/hooks';
 import ReactTooltip from 'react-tooltip';
 import { toast } from 'react-toastify';
+import CircularProgress from '@mui/material/CircularProgress';
 import member, {
   saveMember,
   allItems,
@@ -34,7 +35,6 @@ const StoreMain = () => {
   const [gettap, setGetTap] = useState('getItemTap');
   const [isOpenBbobkki, setOpenBbobkki] = useState<boolean>(false);
   const [items, setItems] = useState<Items[]>([allItems]);
-  const [change, setChange] = useState('');
   const [getItem, setGetItem] = useState<number>(0);
   const [getColor, setGetColor] = useState<number>(0);
   const [getBorder, setGetBorder] = useState<number>(0);
@@ -43,6 +43,7 @@ const StoreMain = () => {
   const [isCameraOn, setIsCameraOn] = useState(false);
   const [showReaction, setShowReaction] = useState('');
   const [cameraLoading, setCameraLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useAppDispatch();
 
@@ -65,24 +66,21 @@ const StoreMain = () => {
     if (!cameraLoading) setIsCameraOn(false);
   };
 
-  useEffect(() => {
-    //로딩시 해당 유저의 아이템 불러오기
-    if (memberStore) {
-      dispatch(saveItem(memberStore.userId)).then(() => {
+  const loadInfo = () => {
+    const timer = () => {
+      setTimeout(() => {
         setItems(memberStore.items);
         setGetBorder(memberStore.borderColor);
-        dispatch(saveMember());
-      });
-    }
-  }, [change]);
+        setLoading(false);
+      }, 300);
+    };
+    setLoading(true);
+    dispatch(saveItem(memberStore.userId)).then(() => timer());
+  };
 
-  // useEffect(() => {
-  //   dispatch(saveItem(memberStore.userId)).then(() => {
-  //     setItems(memberStore.items);
-  //     dispatch(saveMember());
-  //     console.log('-------뽑을때 : ', items);
-  //   });
-  // }, [memberStore]);
+  useEffect(() => {
+    loadInfo();
+  }, []);
 
   const onClickBtn = () => {
     //사용하시겠습니까? 창
@@ -107,7 +105,6 @@ const StoreMain = () => {
           //희귀도1
           itemId = 3;
         }
-        setGetItem(itemId);
 
         //뽑기 아이템 DB 저장
         InterceptedAxios.post('/items', {
@@ -115,15 +112,18 @@ const StoreMain = () => {
           itemId: itemId,
         })
           .then(() => {
+            console.log('1');
             onClickOpenModal();
-
-            setChange('change');
+            loadInfo();
+            console.log('2');
             //퐁퐁이 개수 줄인 정보 받아오기
           })
           .catch(function (error) {
             toast.warning('뽑기 과정에서 에러 발생');
             console.error('뽑기 DB저장 실패', error);
           });
+
+        setGetItem(itemId);
       }
     }
   };
@@ -147,6 +147,7 @@ const StoreMain = () => {
     setIsOpenPick(!isOpenPick);
     setGetColor(color);
     setGetColorType(type);
+    loadInfo();
     //Animation2로 전달
   };
 
@@ -164,6 +165,14 @@ const StoreMain = () => {
 
   const onClickGetTap = (prop: string) => {
     setGetTap(prop);
+  };
+
+  const renderItemList = () => {
+    if (gettap === 'getItemTap')
+      return <GetItemList highFunction={highFunction} />;
+    if (gettap === 'getReactionTap') {
+      return <GetReactionList reactionFunction={reactionFunction} />;
+    }
   };
 
   return (
@@ -595,11 +604,12 @@ const StoreMain = () => {
               </div>
             </div>
             <div className="item-main">
-              {gettap === 'getItemTap' && (
-                <GetItemList highFunction={highFunction} />
-              )}
-              {gettap === 'getReactionTap' && (
-                <GetReactionList reactionFunction={reactionFunction} />
+              {loading ? (
+                <div className="loadingSpiner">
+                  <CircularProgress />
+                </div>
+              ) : (
+                renderItemList()
               )}
             </div>
           </div>
@@ -878,6 +888,15 @@ const totalContainer = () => css`
       display: flex;
       justify-content: center;
     }
+  }
+
+  .loadingSpiner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
   @keyframes loadEffect1 {
