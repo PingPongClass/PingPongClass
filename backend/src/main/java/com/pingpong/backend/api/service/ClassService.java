@@ -153,28 +153,24 @@ public class ClassService {
 
     //요일별 수업 목록 조회(학생/선생님)
     public Page<ClassResponse> findTodayClasses(final int userId, final int classDay, Pageable pageable){
-        Sort sort = Sort.by(Sort.Direction.ASC,"timetableEntity");
         List<ClassEntity> classEntityList = new ArrayList<>();
         if(userId>1000000000) {// 학생일때
             StudentEntity studentEntity = studentRepository.getOne(userId);
             List<ClassStudentEntity> classStudentEntityList = classStudentRepository.findByStudentEntity(studentEntity);
-            for (ClassStudentEntity classStudentEntity : classStudentEntityList) {
-                List<ClassEntity> subList = classRepository.findByClassIdAndClassDay(classStudentEntity.getClassEntity().getClassId(), classDay, sort);
-                for(ClassEntity classEntity:subList)
-                    classEntityList.add(classEntity);
+            List<ClassEntity> subList = classRepository.findByClassDayOrderByTimetableEntityAsc(classDay);
+            for(ClassEntity entity : subList){
+                if(entity.getIsActivated()==0) continue;
+                for(ClassStudentEntity classStudentEntity : classStudentEntityList) {
+                    if(entity.getClassId()==classStudentEntity.getClassEntity().getClassId()) classEntityList.add(entity);
+                }
             }
         }else { //선생님일때
             TeacherEntity teacherEntity = teacherRepository.findByTeacherId(userId);
-            List<ClassEntity> subList = classRepository.findByTeacherEntityAndClassDay(teacherEntity, classDay, sort);
+            List<ClassEntity> subList = classRepository.findByTeacherEntityAndClassDayOrderByTimetableEntityAsc(teacherEntity, classDay);
             for(ClassEntity classEntity:subList)
-                classEntityList.add(classEntity);
+                if(classEntity.getIsActivated()==1) classEntityList.add(classEntity);
         }
-        List<ClassEntity> resultList = new ArrayList<>();
-        for(ClassEntity classEntity:classEntityList){
-            if(classEntity.getIsActivated()==1)
-                resultList.add(classEntity);
-        }
-        List<ClassResponse> list = resultList.stream().map(ClassResponse::new).collect(Collectors.toList());
+        List<ClassResponse> list = classEntityList.stream().map(ClassResponse::new).collect(Collectors.toList());
         int start = (int)pageable.getOffset();
         int end =  (start + pageable.getPageSize())>list.size()?list.size():(start +pageable.getPageSize());
         return new PageImpl<>(list.subList(start, end), pageable, list.size());
@@ -189,23 +185,20 @@ public class ClassService {
             if(userId>1000000000) {// 학생일때
                 StudentEntity studentEntity = studentRepository.getOne(userId);
                 List<ClassStudentEntity> classStudentEntityList = classStudentRepository.findByStudentEntity(studentEntity);
-                for (ClassStudentEntity classStudentEntity : classStudentEntityList) {
-                    List<ClassEntity> subList = classRepository.findByClassIdAndClassDay(classStudentEntity.getClassEntity().getClassId(), i, sort);
-                    for(ClassEntity classEntity:subList)
-                        classEntityList.add(classEntity);
+                List<ClassEntity> subList = classRepository.findByClassDayOrderByTimetableEntityAsc(i);
+                for(ClassEntity entity : subList){
+                    if(entity.getIsActivated()==0) continue;
+                    for(ClassStudentEntity classStudentEntity : classStudentEntityList) {
+                        if(entity.getClassId()==classStudentEntity.getClassEntity().getClassId()) classEntityList.add(entity);
+                    }
                 }
             }else { //선생님일때
                 TeacherEntity teacherEntity = teacherRepository.findByTeacherId(userId);
-                List<ClassEntity> subList = classRepository.findByTeacherEntityAndClassDay(teacherEntity, i, sort);
+                List<ClassEntity> subList = classRepository.findByTeacherEntityAndClassDayOrderByTimetableEntityAsc(teacherEntity, i);
                 for(ClassEntity classEntity:subList)
-                    classEntityList.add(classEntity);
+                    if(classEntity.getIsActivated()==1) classEntityList.add(classEntity);
             }
-            List<ClassEntity> resultList = new ArrayList<>();
-            for(ClassEntity classEntity:classEntityList){
-                if(classEntity.getIsActivated()==1)
-                    resultList.add(classEntity);
-            }
-            List<ClassResponse> list = resultList.stream().map(ClassResponse::new).collect(Collectors.toList());
+            List<ClassResponse> list = classEntityList.stream().map(ClassResponse::new).collect(Collectors.toList());
             TimetableResponse timetableResponse = new TimetableResponse(list);
             res.add(timetableResponse);
         }
