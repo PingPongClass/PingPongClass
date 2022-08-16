@@ -1,3 +1,4 @@
+// VideoRoomComponent.js
 import React, { Component } from 'react';
 import axios from 'axios';
 import InterceptedAxios from '@utils/iAxios';
@@ -1307,14 +1308,9 @@ class VideoRoomComponent extends Component {
 
   toggleQuizStudent = (answer) => {
     if (answer) {
-      console.log(answer);
       this.sendSignalUserChanged({ quizAnswerCreated: answer });
-      this.setState({
-        ...this.state,
-        quiz: { ...this.state.quiz, myAnswer: answer },
-        quizDisplayStudent: !this.state.quizDisplayStudent,
-      });
     }
+    this.setState({ quizDisplayStudent: !this.state.quizDisplayStudent });
   };
 
   popUpQuiz = (newQuiz) => {
@@ -1415,13 +1411,13 @@ class VideoRoomComponent extends Component {
           <QuizModal
             display={this.state.quizDisplay}
             toggleQuiz={this.toggleQuiz}
-            header="퀴즈"
+            header="Quiz Modal"
             quiz={this.state.quiz}
           />
           <QuizModalStudent
             display={this.state.quizDisplayStudent}
             toggleQuizStudent={this.toggleQuizStudent}
-            header="퀴즈"
+            header="Quiz Modal"
             quiz={this.state.quiz}
           />
           <ShieldModalLoading
@@ -1578,7 +1574,7 @@ class VideoRoomComponent extends Component {
                     absentStudents={this.state.absentStudents}
                     teacher={this.state.teacher}
                     student={this.state.students}
-                    partsSortChange={this.state.partsSortChange}
+                    partsSortChange={this.partsSortChange}
                     type={this.state.sortType}
                   />
                 </div>

@@ -36,28 +36,30 @@ const SingleParticipantPanel = (props) => {
     <div id="oneParticipant">
       <div className="right-side">{user.nickname}</div>
       <div className="left-side">
-        {whoami === 'teacher' && isMyself === false && (
-          <>
-            {/* 08/13 추가 : 선생님한테만 학생이 졸고있다는 것을 알람표시 해주기 */}
-            {user.outAngle ? (
-              <ErrorIcon color="error" />
-            ) : (
-              <AccountCircleIcon />
-            )}
-            <button onClick={onClickPointUp}>▲</button>
-            {user.point ? (
-              <button onClick={onClickPointDown}>▼</button>
-            ) : (
-              <button onClick={onClickPointDown} disabled>
-                ▼
-              </button>
-            )}
-          </>
-        )}
+        {whoami === 'teacher' &&
+          isMyself === false &&
+          user.nickname.substr(0, 5) !== '[선생님]' && (
+            <>
+              {/* 08/13 추가 : 선생님한테만 학생이 졸고있다는 것을 알람표시 해주기 */}
+              {user.outAngle ? (
+                <ErrorIcon color="error" />
+              ) : (
+                <AccountCircleIcon />
+              )}
+              <button onClick={onClickPointUp}>▲</button>
+              {user.point ? (
+                <button onClick={onClickPointDown}>▼</button>
+              ) : (
+                <button onClick={onClickPointDown} disabled>
+                  ▼
+                </button>
+              )}
+            </>
+          )}
         {user.nickname.substr(0, 5) !== '[선생님]' && (
           <span>퐁퐁 : {user.point}</span>
         )}
-        <span>출석 : {user.attendenceTime}</span>
+        <span>출석 : {user.attendanceTime}</span>
         {user.videoActive ? <Videocam /> : <VideocamOff color="secondary" />}
         {user.audioActive ? <Mic /> : <MicOff color="secondary" />}
       </div>

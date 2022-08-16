@@ -48,19 +48,25 @@ export default class ParticipantComponent extends Component {
   }
 
   partsSortChange(e) {
-    console.log(e.target.value);
     this.props.partsSortChange(e.target.value);
   }
 
   // render: 렌더링을 담당하는 함수
   render() {
-    const participants = this.props.subscribers;
+    const participants = this.props.subscribers.slice();
     participants.push(this.props.user);
-    const joinParts = participants.sort(
-      (a, b) => a.attendanceTime - b.attendanceTime,
-    );
-    const pongpongParts = participants.sort((a, b) => b.point - a.point);
-    const numberParts = participants.sort((a, b) => a.point - b.point);
+    if (this.props.type === 'join')
+      participants.sort((a, b) => {
+        if (a.attendanceTime > b.attendanceTime) return 1;
+        else return 0;
+      });
+    else if (this.props.type === 'pongpong')
+      participants.sort((a, b) => b.point - a.point);
+    else if (this.props.type === 'number')
+      participants.sort((a, b) => {
+        if (a.nickname > b.nickname) return 1;
+        else return 0;
+      });
     return (
       <div id="participantContainer">
         <div id="participantComponent">
@@ -81,7 +87,7 @@ export default class ParticipantComponent extends Component {
               isMyself={true}
               // myinfo={this.props.user.nickname}
               // point={this.props.user.point}
-              // attendenceTime={this.props.user.attendenceTime}
+              // attendanceTime={this.props.user.attendanceTime}
               // isVideoOn={this.props.user.videoActive}
               // isAudioOn={this.props.user.audioActive}
               // upPoint={this.props.user.upPoint}
@@ -102,48 +108,36 @@ export default class ParticipantComponent extends Component {
           {/* 수업 참여 여부 */}
           {/* 참여자 */}
           <div className="participants-wrap" ref={this.participantScroll}>
-            <div className="attendence-students">
-              <h3>출석명단</h3>
-              <SingleParticipantPanel
-                whoami={this.props.whoami}
-                user={this.props.user}
-                isMyself={true}
-                // myinfo={this.props.user.nickname}
-                // point={this.props.user.point}
-                // attendenceTime={this.props.user.attendenceTime}
-                // isVideoOn={this.props.user.videoActive}
-                // isAudioOn={this.props.user.audioActive}
-                // upPoint={this.props.user.upPoint}
-                // downPoint={this.props.user.downPoint}
-              />
-              {this.props.subscribers.map((sub, i) => (
-                <SingleParticipantPanel
-                  key={i}
-                  whoami={this.props.whoami}
-                  user={sub}
-                  isMyself={false}
-                  // myinfo={sub.nickname}
-                  // point={sub.point}
-                  // attendenceTime={sub.attendenceTime}
-                  // isVideoOn={sub.videoActive}
-                  // isAudioOn={sub.audioActive}
-                  // upPoint={sub.upPoint}
-                  // downPoint={sub.downPoint}
-                />
-              ))}
+            <div className="attendance-students">
+              {this.props.type !== 'absent' && (
+                <>
+                  {this.props.type === 'all' && <h3>출석명단</h3>}
+                  {participants.map((sub, i) => (
+                    <SingleParticipantPanel
+                      key={i}
+                      whoami={this.props.whoami}
+                      user={sub}
+                      isMyself={false}
+                      // myinfo={sub.nickname}
+                      // point={sub.point}
+                      // attendanceTime={sub.attendanceTime}
+                      // isVideoOn={sub.videoActive}
+                      // isAudioOn={sub.audioActive}
+                      // upPoint={sub.upPoint}
+                      // downPoint={sub.downPoint}
+                    />
+                  ))}
+                </>
+              )}
             </div>
-            <div className="absent-students">
-              <h3>결석명단</h3>
-              {this.props.absentStudents.map((elem, i) => (
-                <p key={i}>{elem}</p>
-              ))}
-            </div>
-            <div className="test">
-              {/* <p>{this.props.teacher.nickname}</p>
-              {this.props.students.map((elem, i) => (
-                <p key={i}>{elem.nickname}</p>
-              ))} */}
-            </div>
+            {(this.props.type === 'all' || this.props.type === 'absent') && (
+              <div className="absent-students">
+                {this.props.type === 'all' && <h3>결석명단</h3>}
+                {this.props.absentStudents.map((elem, i) => (
+                  <p key={i}>{elem}</p>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

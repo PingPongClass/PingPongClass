@@ -76,20 +76,22 @@
   margin-top: 1rem;
   height: calc(100% - 130px);
   overflow: auto;
+  margin-bottom: 2rem;
 }
 
-.participants-wrap .attendence-students > *,
+.participants-wrap .attendance-students > *,
 .participants-wrap .absent-students > * {
   margin-bottom: 0.5rem;
 }
 
-.attendence-students h3,
-.absent-students h3 {
-  text-align: center;
+.participants-wrap .attendance-students {
+  margin-bottom: 2rem;
 }
 
-.absent-students {
-  margin-top: 2rem;
+.attendance-students h3,
+.absent-students h3 {
+  color: var(--gray);
+  text-align: center;
 }
 
 ::-webkit-scrollbar {
