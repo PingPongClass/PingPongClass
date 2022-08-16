@@ -12,6 +12,7 @@ class QuizModal extends Component {
       display: this.props.display,
       content: 'two',
       quiz: this.props.quiz,
+      idx: 0,
     };
   }
 
@@ -28,6 +29,12 @@ class QuizModal extends Component {
     this.props.toggleQuiz();
   };
 
+  sendResult = () => {
+    const quizResult = { ...this.props.quiz, result: true };
+    this.props.toggleQuiz(quizResult);
+    this.setState({ quiz: quizResult });
+  };
+
   quizCreate = (quiz) => {
     this.props.toggleQuiz(quiz);
     this.setState({ quiz: quiz, content: 'results' });
@@ -37,6 +44,10 @@ class QuizModal extends Component {
     this.setState({ content: e });
   };
 
+  loadHistory = (index, e) => {
+    this.setState({ idx: index, content: e });
+  };
+
   render() {
     return (
       <div className={this.state.display ? 'openModal modal' : 'modal'}>
@@ -44,22 +55,27 @@ class QuizModal extends Component {
           <section>
             <header>
               {this.props.header}
-              <button className="close" onClick={() => this.close}>
-                &times;
-              </button>
+              <button onClick={() => this.close}>&times;</button>
             </header>
             <div className="quizSection">
               {
                 {
                   two: <QuizForm2 quizCreate={this.quizCreate} />,
                   four: <QuizForm quizCreate={this.quizCreate} />,
-                  list: (
-                    <QuizListCard
-                      quiz={this.state.quiz}
-                      contentChange={this.contentChange}
-                    />
-                  ),
+                  list: this.props.quizHistory.map((q, index) => {
+                    return (
+                      <QuizListCard
+                        key={index}
+                        historyKey={index}
+                        quiz={q}
+                        loadHistory={this.loadHistory}
+                      />
+                    );
+                  }),
                   results: <QuizResult quiz={this.state.quiz} />,
+                  history: (
+                    <QuizResult quiz={this.props.quizHistory[this.state.idx]} />
+                  ),
                 }[this.state.content]
               }
             </div>
@@ -79,7 +95,8 @@ class QuizModal extends Component {
               <button onClick={() => this.contentChange('list')}>
                 퀴즈 목록
               </button>
-              <button className="close" onClick={() => this.close}>
+              <button onClick={this.sendResult}>퀴즈결과 보여주기</button>
+              <button className="sendResult" onClick={this.close}>
                 닫기
               </button>
             </footer>
