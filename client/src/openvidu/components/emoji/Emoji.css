@@ -1,31 +1,33 @@
-.reaction-setting-container {
-  width: 30%;
-  height: 20%;
-  position: relative;
+.reaction-wrapper {
+  width: 100vw;
+  height: 100vh;
 }
 
-img {
-  width: 50px;
-}
 .reaction-modal {
   z-index: 9999;
-  background-color: rgba(152, 145, 145, 0.6);
+  background-color: rgba(152, 145, 145, 0.8);
   position: absolute;
-  top: calc(100vh - 80px - 20%);
-  left: calc(100vw - 80px - 30%);
+  bottom: 80px;
+  left: calc(100vw - 50% - 90px);
+  border-radius: 16px;
 }
 .reaction-modal.openModal {
   display: grid;
-  align-items: center;
-  vertical-align: middle;
-  justify-self: center;
-  justify-items: center;
-  flex-direction: row;
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   /* 팝업이 열릴때 스르륵 열리는 효과 */
   animation: modal-bg-show 0.3s;
 }
+
+.reaction-modal img {
+  width: 48px;
+}
+
+.reaction-modal img:hover {
+  background-color: var(--text-dark);
+  cursor: pointer;
+}
+
 @keyframes modal-show {
   from {
     opacity: 0;

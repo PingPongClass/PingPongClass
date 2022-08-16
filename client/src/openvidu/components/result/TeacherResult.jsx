@@ -37,9 +37,14 @@ const TeacherResult = ({
   const pointApplyToDB = async () => {
     try {
       const promises = othersData.map(async (elem) => {
-        InterceptedAxios.patch(
-          `/students/points/${elem.point}?studentId=${elem.uid}`,
-        );
+        if (elem.isPointDouble)
+          InterceptedAxios.patch(
+            `/students/points/${elem.point * 2}?studentId=${elem.uid}`,
+          );
+        else
+          InterceptedAxios.patch(
+            `/students/points/${elem.point}?studentId=${elem.uid}`,
+          );
       });
       await Promise.all(promises);
       console.log('DB에 포인트들 저장 완료~');
@@ -54,12 +59,20 @@ const TeacherResult = ({
     const logs = { classId: classId, logList: [] };
     // 출석자 로그
     for (const student of othersData) {
-      logs.logList.push({
-        attendance: true,
-        point: student.point,
-        presentCnt: student.presentationCnt,
-        studentId: student.uid,
-      });
+      if (student.isPointDouble)
+        logs.logList.push({
+          attendance: true,
+          point: student.point * 2,
+          presentCnt: student.presentationCnt,
+          studentId: student.uid,
+        });
+      else
+        logs.logList.push({
+          attendance: true,
+          point: student.point,
+          presentCnt: student.presentationCnt,
+          studentId: student.uid,
+        });
     }
 
     // 결석자 로그
@@ -212,7 +225,23 @@ const TeacherResult = ({
                         <div className="s-attendance-time">
                           {other.attendanceTime}
                         </div>
-                        <div className="s-point">{other.point}</div>
+                        <div className="s-point">
+                          {other.isPointDouble ? (
+                            <p style={{ color: 'red' }}>
+                              <span
+                                style={{
+                                  textDecoration: 'line-through',
+                                  color: 'black',
+                                }}
+                              >
+                                {other.point}
+                              </span>
+                              =&gt;{other.point * 2}
+                            </p>
+                          ) : (
+                            <p>{other.point}</p>
+                          )}
+                        </div>
                         <div className="s-present">{other.presentationCnt}</div>
                       </div>
                     ))}

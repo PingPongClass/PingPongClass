@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import Loading from './Loading';
 import './SetupComponent.css';
 import useUpdateStream from './utils/useUpdateStream';
-import useUpdateSpeaker from './utils/useUpdateSpeaker';
 import {
   createStream,
   getVideoTrack,
@@ -16,10 +15,22 @@ import Mic from '@mui/icons-material/Mic';
 import MicOff from '@mui/icons-material/MicOff';
 import Videocam from '@mui/icons-material/Videocam';
 import VideocamOff from '@mui/icons-material/VideocamOff';
-import { Link } from 'react-router-dom';
+import Switch from '@mui/material/Switch';
+import InterceptedAxios from '@utils/iAxios';
 
 const SetupComponent = (props) => {
-  const { teacherName, classTitle, setTap, setDevices, whoami } = props;
+  const {
+    teacherName,
+    classTitle,
+    setTap,
+    setDevices,
+    whoami,
+    canUseDoublePongpong,
+    isUsedDoublePongpong,
+    setIsUsedDoublePongpong,
+    userId,
+  } = props;
+
   const {
     videos,
     setVideos,
@@ -147,8 +158,24 @@ const SetupComponent = (props) => {
       .forEach((track) => (track.enabled = !isAudioOn));
   };
 
-  const goNext = () => {
+  const goNext = async () => {
+    if (isUsedDoublePongpong) {
+      try {
+        await InterceptedAxios.delete(`/items/${userId}/3`);
+        console.log('더블퐁퐁권이 정상적으로 사용되었습니다!');
+      } catch (e) {
+        console.error(e);
+      }
+    }
     setTap('class');
+  };
+
+  const goBack = () => {
+    window.location.href = `/${whoami}`;
+  };
+
+  const onClickDoublePongpong = () => {
+    setIsUsedDoublePongpong(!isUsedDoublePongpong);
   };
 
   return (
@@ -172,6 +199,21 @@ const SetupComponent = (props) => {
                 [{classTitle} 수업]{' '}
                 <span className="teacher-span">{teacherName}선생님</span>
               </div>
+              {canUseDoublePongpong && (
+                <div className="double-pongpong-toggle">
+                  {isUsedDoublePongpong ? (
+                    <span>더블퐁퐁권 사용O</span>
+                  ) : (
+                    <span>더블퐁퐁권 사용X</span>
+                  )}
+                  <Switch
+                    checked={isUsedDoublePongpong}
+                    onClick={onClickDoublePongpong}
+                    color="error"
+                  />
+                </div>
+              )}
+
               <div className="preview">
                 <video
                   ref={previewFace}
@@ -239,9 +281,9 @@ const SetupComponent = (props) => {
                 <button className="nextBtn" onClick={goNext}>
                   입장하기
                 </button>
-                <Link to={`/${whoami}`}>
-                  <button className="backBtn">돌아가기</button>
-                </Link>
+                <button className="backBtn" onClick={goBack}>
+                  돌아가기
+                </button>
               </div>
             </div>
           </div>

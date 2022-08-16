@@ -330,6 +330,18 @@ export default class ToolbarComponent extends Component {
 
             <IconButton
               color="inherit"
+              onClick={this.toggleEmoji}
+              className="navButton"
+              id="navEmoji"
+            >
+              <div className="buttonStyle">
+                <EmojiEmotionsIcon />
+                <p>이모지</p>
+              </div>
+            </IconButton>
+
+            <IconButton
+              color="inherit"
               className="navButton"
               onClick={this.toggleSetting}
             >
@@ -393,18 +405,6 @@ export default class ToolbarComponent extends Component {
               <div className="buttonStyle">
                 <PeopleIcon />
                 <p>참여자 목록</p>
-              </div>
-            </IconButton>
-
-            <IconButton
-              color="inherit"
-              onClick={this.toggleEmoji}
-              className="navButton"
-              id="navEmoji"
-            >
-              <div className="buttonStyle">
-                <EmojiEmotionsIcon />
-                <p>이모지</p>
               </div>
             </IconButton>
 

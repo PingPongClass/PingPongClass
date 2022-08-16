@@ -176,7 +176,23 @@ const StudentResult = ({
                         <div className="s-attendance-time">
                           {other.attendanceTime}
                         </div>
-                        <div className="s-point">{other.point}</div>
+                        <div className="s-point">
+                          {other.isPointDouble ? (
+                            <p style={{ color: 'red' }}>
+                              <span
+                                style={{
+                                  textDecoration: 'line-through',
+                                  color: 'white',
+                                }}
+                              >
+                                {other.point}
+                              </span>
+                              =&gt;{other.point * 2}
+                            </p>
+                          ) : (
+                            <p>{other.point}</p>
+                          )}
+                        </div>
                         <div className="s-present">{other.presentationCnt}</div>
                       </div>
                     ))}

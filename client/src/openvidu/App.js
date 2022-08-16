@@ -34,6 +34,9 @@ const App = () => {
   const [studentInfo, setStudentInfo] = useState({});
   // 내 레벨 확인
   const [levelPng, setLevelPng] = useState('/levels/rainbow.png');
+  // 더블퐁퐁권 확인
+  const [canUseDoublePongpong, setCanUseDoublePongpong] = useState(false);
+  const [isUsedDoublePongpong, setIsUsedDoublePongpong] = useState(false);
 
   // 라우팅용
   const navigate = useNavigate();
@@ -41,11 +44,21 @@ const App = () => {
   // 입장코드
   const { code } = useParams();
   const { state } = useLocation();
-  console.log('state: ', state);
 
   const memberStore = useAppSelector((state) => state.member);
   const whoami = whoru(memberStore.userId);
 
+  // 더블퐁퐁권 사용 가능 여부 판단
+  useEffect(() => {
+    const getUserItems = async () => {
+      const result = await InterceptedAxios.get(`/items/${memberStore.userId}`);
+      if (result.data.filter((elem) => elem.itemId === 3)[0].cnt > 0)
+        setCanUseDoublePongpong(true);
+    };
+    if (whoami !== 'teacher') getUserItems();
+  });
+
+  // 학생셋 만들기
   useEffect(() => {
     const getMyLevel = async () => {
       console.log(memberStore.userId);
@@ -113,6 +126,10 @@ const App = () => {
           setDevices={setDevices}
           code={code}
           whoami={whoami}
+          canUseDoublePongpong={canUseDoublePongpong}
+          isUsedDoublePongpong={isUsedDoublePongpong}
+          setIsUsedDoublePongpong={setIsUsedDoublePongpong}
+          userId={memberStore.userId}
         />
       )}
       {tap === 'class' && (
@@ -136,6 +153,7 @@ const App = () => {
           levelPng={levelPng}
           setAbsentData={setAbsentData}
           setTeacherData={setTeacherData}
+          isUsedDoublePongpong={isUsedDoublePongpong}
         />
       )}
       {tap === 'result' && (

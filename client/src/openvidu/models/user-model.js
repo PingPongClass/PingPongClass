@@ -19,6 +19,7 @@ class UserModel {
   uid; // 유저 아이디
   levelPng; // 레벨에 맞는 사진 경로
   presentationCnt; // 발표 횟수
+  isPointDouble; // 더블퐁퐁 사용여부
 
   constructor() {
     this.connectionId = '';
@@ -49,6 +50,7 @@ class UserModel {
     this.profile = '';
     this.levelPng = '';
     this.presentationCnt = 0;
+    this.isPointDouble = false;
   }
   // 추가 함수
   isSmileActive() {
@@ -115,6 +117,10 @@ class UserModel {
     return this.levelPng;
   }
 
+  getisPointDouble() {
+    return this.isPointDouble;
+  }
+
   isLocal() {
     return this.type === 'local';
   }
@@ -175,6 +181,10 @@ class UserModel {
 
   setLevelPng(levelPng) {
     this.levelPng = levelPng;
+  }
+
+  setIsPointDouble(isPointDouble) {
+    this.isPointDouble = isPointDouble;
   }
 
   upPoint() {

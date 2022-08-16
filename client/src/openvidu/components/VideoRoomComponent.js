@@ -114,6 +114,7 @@ class VideoRoomComponent extends Component {
       emoji: '',
       emojiDisplay: false,
       isEmojiOn: false,
+      isPointDouble: this.props.isUsedDoublePongpong,
     };
 
     // 메서드 바인딩 과정
@@ -300,6 +301,9 @@ class VideoRoomComponent extends Component {
       String(time.getSeconds()).padStart(2, '0');
     localUser.setAttendanceTime(attTime);
 
+    // 더블퐁퐁권 사용 여부
+    localUser.setIsPointDouble(this.props.isUsedDoublePongpong);
+
     // 레벨 저장
     localUser.setLevelPng(this.props.levelPng);
 
@@ -439,6 +443,7 @@ class VideoRoomComponent extends Component {
         uid: this.props.userId,
         levelPng: this.props.levelPng,
         frameColor: localUser.frameColor,
+        isPointDouble: localUser.isPointDouble,
       })
       .then(() => {
         this.connectWebCam();
@@ -787,6 +792,9 @@ class VideoRoomComponent extends Component {
 
       newUser.setAttendanceTime(
         JSON.parse(event.stream.connection.data).attTime,
+      );
+      newUser.setIsPointDouble(
+        JSON.parse(event.stream.connection.data).isPointDouble,
       );
       newUser.setLevelPng(JSON.parse(event.stream.connection.data).levelPng);
       newUser.setUid(JSON.parse(event.stream.connection.data).uid);

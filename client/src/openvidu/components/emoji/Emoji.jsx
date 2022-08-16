@@ -46,18 +46,26 @@ const Emoji = (props) => {
   }, [display]);
 
   return (
-    <div className={display ? 'openModal modal setting-container' : 'modal'}>
-      {emotions.map((e, index) => {
-        return (
-          <img
-            key={index}
-            src={'../reactions/' + e + '.gif'}
-            onClick={() => {
-              onClickEmotion(e);
-            }}
-          />
-        );
-      })}
+    <div className="openModal reaction-wrapper">
+      <div
+        className={
+          display
+            ? 'openModal reaction-modal reaction-setting-container'
+            : 'modal'
+        }
+      >
+        {emotions.map((e, index) => {
+          return (
+            <img
+              key={index}
+              src={'../reactions/' + e + '.gif'}
+              onClick={() => {
+                onClickEmotion(e);
+              }}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 };
