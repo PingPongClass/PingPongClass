@@ -153,7 +153,7 @@ public class ClassService {
 
     //요일별 수업 목록 조회(학생/선생님)
     public Page<ClassResponse> findTodayClasses(final int userId, final int classDay, Pageable pageable){
-        Sort sort = Sort.by(Sort.Direction.ASC,"TimetableEntity");
+        Sort sort = Sort.by(Sort.Direction.ASC,"timetableEntity");
         List<ClassEntity> classEntityList = new ArrayList<>();
         if(userId>1000000000) {// 학생일때
             StudentEntity studentEntity = studentRepository.getOne(userId);
@@ -183,7 +183,7 @@ public class ClassService {
     //시간표 출력용 요일별 수업 리스트 전체
     public List<TimetableResponse> makeTimeTable(final int userId){
         List<TimetableResponse> res = new ArrayList<>();
-        Sort sort = Sort.by(Sort.Direction.ASC,"TimetableEntity");
+        Sort sort = Sort.by(Sort.Direction.ASC,"timetableEntity");
         for(int i=1; i<6; i++){
             List<ClassEntity> classEntityList = new ArrayList<>();
             if(userId>1000000000) {// 학생일때
