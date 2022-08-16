@@ -25,10 +25,10 @@ const parsing = JSON.parse(alarms);
 
 const nthChildCard = ({ offset = 65, multiplier = 220 }) => {
   const styles = {};
-  styles[`&:last-of-type`] = {
-    top: `${offset + (parsing.length - 1) * multiplier}px`,
-  };
   if (parsing) {
+    styles[`&:last-of-type`] = {
+      top: `${offset + (parsing.length - 1) * multiplier}px`,
+    };
     parsing.forEach((_, index) => {
       if (index !== 0) {
         styles[`&:nth-of-type(${index + 1})`] = {
