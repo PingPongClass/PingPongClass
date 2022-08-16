@@ -300,7 +300,6 @@ class VideoRoomComponent extends Component {
     localUser.setVideoActive(this.props.setDevices.isVideoOn);
 
     if (this.props.memberStore.borderColor === 1) {
-      console.log('hi~~ im 1');
       const frameColor = {
         type: 'style',
         value: {
@@ -310,14 +309,12 @@ class VideoRoomComponent extends Component {
             'linear-gradient(#ffffff, #e1e1e1), linear-gradient(to right, #ebacff, #9899dd, #abe8f0)',
           backgroundOrigin: 'border-box',
           backgroundClip: 'content-box, border-box',
-          margin: '10px',
         },
       };
       localUser.setFrameColor(frameColor);
     }
 
     if (this.props.memberStore.borderColor === 2) {
-      console.log('hi~~ im 2');
       const frameColor = {
         type: 'style',
         value: {
@@ -327,14 +324,12 @@ class VideoRoomComponent extends Component {
             'linear-gradient(#ffffff, #e1e1e1), linear-gradient(to right, #f87f93, #eba448, #f2e286)',
           backgroundOrigin: 'border-box',
           backgroundClip: 'content-box, border-box',
-          margin: '10px',
         },
       };
       localUser.setFrameColor(frameColor);
     }
 
     if (this.props.memberStore.borderColor === 3) {
-      console.log('hi~~ im 3');
       const frameColor = {
         type: 'style',
         value: {
@@ -344,14 +339,12 @@ class VideoRoomComponent extends Component {
             'linear-gradient(#ffffff, #e1e1e1), linear-gradient(to right, #bfd596, #52deea, #a687e3)',
           backgroundOrigin: 'border-box',
           backgroundClip: 'content-box, border-box',
-          margin: '10px',
         },
       };
       localUser.setFrameColor(frameColor);
     }
 
     if (this.props.memberStore.borderColor === 4) {
-      console.log('hi~~ im 4');
       const frameColor = {
         type: 'style',
         value: {
@@ -361,14 +354,12 @@ class VideoRoomComponent extends Component {
             'linear-gradient(#ffffff, #e1e1e1), linear-gradient(to right, #573dd5, #9b5aeb)',
           backgroundOrigin: 'border-box',
           backgroundClip: 'content-box, border-box',
-          margin: '10px',
         },
       };
       localUser.setFrameColor(frameColor);
     }
 
     if (this.props.memberStore.borderColor === 5) {
-      console.log('hi~~ im 5');
       const frameColor = {
         type: 'style',
         value: {
@@ -378,14 +369,12 @@ class VideoRoomComponent extends Component {
             'linear-gradient(#ffffff, #e1e1e1), linear-gradient(to right, #79c3d6, #5a94eb)',
           backgroundOrigin: 'border-box',
           backgroundClip: 'content-box, border-box',
-          margin: '10px',
         },
       };
       localUser.setFrameColor(frameColor);
     }
 
     if (this.props.memberStore.borderColor === 6) {
-      console.log('hi~~ im 6');
       const frameColor = {
         type: 'style',
         value: {
@@ -395,14 +384,12 @@ class VideoRoomComponent extends Component {
             'linear-gradient(#ffffff, #e1e1e1), linear-gradient(to right, #cbce67, #de9931)',
           backgroundOrigin: 'border-box',
           backgroundClip: 'content-box, border-box',
-          margin: '10px',
         },
       };
       localUser.setFrameColor(frameColor);
     }
 
     if (this.props.memberStore.borderColor === 7) {
-      console.log('hi~~ im 7');
       const frameColor = {
         type: 'style',
         value: {
@@ -412,14 +399,12 @@ class VideoRoomComponent extends Component {
             'linear-gradient(#ffffff, #e1e1e1), linear-gradient(to right, #43c8c7, #3fb15d)',
           backgroundOrigin: 'border-box',
           backgroundClip: 'content-box, border-box',
-          margin: '10px',
         },
       };
       localUser.setFrameColor(frameColor);
     }
 
     if (this.props.memberStore.borderColor === 8) {
-      console.log('hi~~ im 8');
       const frameColor = {
         type: 'style',
         value: {
@@ -429,7 +414,6 @@ class VideoRoomComponent extends Component {
             'linear-gradient(#ffffff, #e1e1e1), linear-gradient(to right, #464646, #14002c)',
           backgroundOrigin: 'border-box',
           backgroundClip: 'content-box, border-box',
-          margin: '10px',
         },
       };
       localUser.setFrameColor(frameColor);
