@@ -34,7 +34,14 @@ class UserModel {
     this.emoji = '';
     this.frameColor = {
       type: 'style',
-      value: { border: '10px solid #000000' },
+      value: {
+        border: '10px solid gray',
+        borderRadius: '15px',
+        backgroundImage: 'var(--gray)',
+        backgroundOrigin: 'border-box',
+        backgroundClip: 'content-box, border-box',
+        margin: '10px',
+      },
     }; // {type: "style", value: {border: "8px solid #F8CBD3"}}; // { type: "color", value: "#F8CBD3" };
     this.smile = false;
     this.outAngle = false;
