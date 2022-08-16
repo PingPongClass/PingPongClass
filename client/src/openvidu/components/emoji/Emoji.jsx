@@ -18,18 +18,18 @@ const Emoji = (props) => {
     if (display) {
       if (whoami === 'teacher') {
         //선생님이면 모든 리액션
-        emotions = [
+        setEmotions([
           'heart',
           'clap',
           'cry',
           'sweat',
-          'lauping',
+          'laughing',
           'good',
           'fire',
           '100',
           'disappointed',
           'question',
-        ];
+        ]);
       } else {
         //학생이면 보유리액션
         console.log('student');
