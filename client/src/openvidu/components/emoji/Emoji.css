@@ -1,4 +1,4 @@
-.setting-container {
+.reaction-setting-container {
   width: 30%;
   height: 20%;
   position: relative;
@@ -7,17 +7,19 @@
 img {
   width: 50px;
 }
-.modal {
+.reaction-modal {
   z-index: 9999;
   background-color: rgba(152, 145, 145, 0.6);
   position: absolute;
   top: calc(100vh - 80px - 20%);
   left: calc(100vw - 80px - 30%);
 }
-.modal.openModal {
+.reaction-modal.openModal {
   display: grid;
   align-items: center;
-  align-content: space-between;
+  vertical-align: middle;
+  justify-self: center;
+  justify-items: center;
   flex-direction: row;
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
