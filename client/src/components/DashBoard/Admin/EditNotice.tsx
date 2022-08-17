@@ -26,7 +26,10 @@ const EditNotice = () => {
   const [tmpCode, setTmpCode] = useState(-1);
   const [tmpTitle, setTmpTitle] = useState('');
   const [tmpContent, setTmpContent] = useState('');
-  const [classes, setClasses] = useState<ClassProps[]>([allClass]);
+  const [timer, setTimer] = useState<null | ReturnType<typeof setTimeout>>(
+    null,
+  );
+  const [classes, setClasses] = useState<ClassProps[]>([]);
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   const memberStore = useAppSelector((state) => state.member);
   const titleMaxlength = 50;
@@ -41,10 +44,17 @@ const EditNotice = () => {
 
   useLayoutEffect(() => {
     dispatch(getClasses(memberStore.userId));
+    getNoticeInfo();
   }, []);
 
   useLayoutEffect(() => {
-    setClasses(memberStore.classes);
+    let newList: ClassProps[] = [];
+    memberStore.classes.filter((cls: ClassProps) => {
+      if (newList.indexOf(cls) === -1 && cls.classId !== -1) {
+        newList.push(cls);
+      }
+    });
+    setClasses(newList);
   }, [memberStore]);
 
   useEffect(() => {
@@ -60,10 +70,6 @@ const EditNotice = () => {
     }
   }, [notice]);
 
-  useLayoutEffect(() => {
-    getNoticeInfo();
-  }, []);
-
   const getNoticeInfo = async () => {
     if (!newPost) {
       const result = await InterceptedAxios.get('/notice/' + noticeId);
@@ -75,12 +81,28 @@ const EditNotice = () => {
     // navigate('/teacher/classes');
   };
 
-  const titleChanged = (e) => {
+  const debounce = (func: Function) => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+    const newTimer = setTimeout(async () => {
+      try {
+        await func();
+      } catch (e) {
+        console.error('error', e);
+      }
+    }, 800);
+    setTimer(newTimer);
+  };
+
+  const titleChanged = async (e) => {
     // onChange 이벤트
 
     if (e.target.value.length > titleMaxlength) {
       e.target.value = e.target.value.substr(0, titleMaxlength);
-      toast.warning('공지사항 제목은 50자를 초과할 수 없습니다!');
+      debounce(() => {
+        toast.warning('공지사항 제목은 50자를 초과할 수 없습니다!');
+      });
     }
     setTmpTitle(e.target.value);
   };
@@ -88,7 +110,9 @@ const EditNotice = () => {
   const contentChanged = (e) => {
     if (e.target.value.length > contentMaxlength) {
       e.target.value = e.target.value.substr(0, contentMaxlength);
-      toast.warning('공지사항 본문은 2000자를 초과할 수 없습니다!');
+      debounce(() => {
+        toast.warning('공지사항 본문은 2000자를 초과할 수 없습니다!');
+      });
     }
     setTmpContent(e.target.value);
   };
@@ -163,7 +187,7 @@ const EditNotice = () => {
               onChange={(e) => {
                 codeChanged(e);
               }}
-              value={tmpCode}
+              value={tmpCode || ''}
               size="small"
               variant="outlined"
               fullWidth
@@ -185,7 +209,7 @@ const EditNotice = () => {
             <TextField
               id="outlined-basic"
               // label="제목"
-              value={tmpTitle}
+              value={tmpTitle || ''}
               onChange={(e) => {
                 titleChanged(e);
               }}
@@ -205,7 +229,7 @@ const EditNotice = () => {
             multiline
             variant="outlined"
             fullWidth
-            value={tmpContent}
+            value={tmpContent || ''}
             onChange={(e) => {
               contentChanged(e);
             }}

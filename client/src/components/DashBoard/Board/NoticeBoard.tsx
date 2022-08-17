@@ -199,7 +199,7 @@ const NoticeBoard = () => {
             <TextField
               id="outlined-basic"
               variant="outlined"
-              value={keyword}
+              value={keyword || ''}
               onChange={(e) => setKeyword(e.target.value)}
             />
             <button type="submit" className="searchbutton">
@@ -408,6 +408,7 @@ export const NoticeBoardStyle = () => css`
       text-align: left;
       width: inherit;
       word-wrap: break-word;
+      white-space: pre;
     }
 
     /* 토글 내용 바닥 영역 */
@@ -421,6 +422,7 @@ export const NoticeBoardStyle = () => css`
     .detailWriter {
       padding: 0.5rem;
       max-width: -webkit-max-content;
+      text-align: left;
     }
 
     textarea {
