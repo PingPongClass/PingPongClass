@@ -55,7 +55,7 @@ class QuizModal extends Component {
           <section>
             <header>
               {this.props.header}
-              <button onClick={() => this.close}>&times;</button>
+              <button onClick={this.close}>&times;</button>
             </header>
             <div className="quizSection">
               {
