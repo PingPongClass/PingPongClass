@@ -58,7 +58,7 @@ const Myinfo = () => {
 
   const onEditIntroduce = (e) => {
     if (introduce == null) {
-      toast.warning('자개소개를 입력해주세요.');
+      toast.warning('자기소개를 입력해주세요.');
     } else {
       const frm = new FormData();
       let student: StudentDataInterface;
