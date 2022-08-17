@@ -160,12 +160,14 @@ const totalContainer = css`
   animation: 0.5s ease-in-out loadEffect1;
 
   .total-container {
-    width: 100%;
+    width: 90%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: start;
+    justify-content: center;
     border-radius: 20px 20px 0 0;
+    text-align: center;
+    margin: auto;
   }
 
   .tabsContainer {
@@ -210,7 +212,6 @@ const totalContainer = css`
     flex-direction: row;
     align-items: center;
     justify-content: start;
-    border-bottom: dashed 1px gray;
   }
 
   .cardContainer {

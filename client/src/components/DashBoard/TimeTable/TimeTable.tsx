@@ -141,7 +141,7 @@ const totalContainer = css`
   .timeline {
     width: 50px;
     height: 100%;
-    margin: 7px;
+    margin: 0px;
   }
   .classday,
   .column {
@@ -166,6 +166,8 @@ const totalContainer = css`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    justify-content: start;
+    height: fit-content;
   }
 
   .timeline {
@@ -185,7 +187,9 @@ const totalContainer = css`
     height: 30px;
   }
   .time {
-    margin-bottom: 20px;
+    font-size: 20px;
+    margin-bottom: 11px;
+    margin-top: 10px;
   }
   @keyframes fadeIn {
     from {

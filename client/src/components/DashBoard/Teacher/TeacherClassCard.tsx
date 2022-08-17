@@ -64,7 +64,6 @@ const TeacherClassCard = ({ clsList }: any) => {
       >
         <div className="classcardContainer">
           <img src={img} className="classImg" alt="수업" />
-          <hr />
           <h2>{clsList.classTitle}</h2>
           <p>{clsList.classDesc}</p>
           <p>
@@ -93,7 +92,7 @@ const TeacherClassCard = ({ clsList }: any) => {
 };
 
 const TotalContainer = (isMouseOn) => css`
-  width: 233px;
+  width: 240px;
   height: 215px;
 
   .classcardContainer {
@@ -128,16 +127,13 @@ const TotalContainer = (isMouseOn) => css`
     font-size: 9.4pt;
   }
 
-  hr {
-    width: 200px;
-  }
-
   .classImg {
     width: 100%;
-    height: 120px;
+    height: 60%;
     background: white;
     border-radius: 10px;
     align-items: center;
+    margin-bottom: 10px;
   }
 
   .iconsContainer {
@@ -174,7 +170,7 @@ const TotalContainer = (isMouseOn) => css`
 `;
 
 const EmptyContainer = () => css`
-  width: 233px;
+  width: 240px;
   height: 215px;
   background: #ffffff;
   border-radius: 20px;

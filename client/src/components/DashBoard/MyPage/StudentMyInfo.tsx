@@ -139,7 +139,7 @@ const StudentMyInfo = () => {
     }
   };
   return (
-    <div css={ModalCSS}>
+    <div css={ModalCSS(isMouseOn)}>
       <div className="commonModal">
         <IosModalNew />
       </div>
