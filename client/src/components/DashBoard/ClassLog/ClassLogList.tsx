@@ -171,12 +171,8 @@ const totalContainer = css`
   }
 
   .react-calendar__navigation button {
-    color: gray;
-    min-width: 44px;
-    background: none;
-    font-size: 16px;
-    margin-top: 8px;
-    font-size: 13pt;
+    color: var(--text-dark);
+    font-size: 12pt;
     font-weight: 600;
   }
 

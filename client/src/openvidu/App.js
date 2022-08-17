@@ -52,7 +52,7 @@ const App = () => {
   useEffect(() => {
     const getUserItems = async () => {
       const result = await InterceptedAxios.get(`/items/${memberStore.userId}`);
-      if (result.data.filter((elem) => elem.itemId === 3)[0].cnt > 0)
+      if (result.data.filter((elem) => elem.itemId === 4)[0].cnt > 0)
         setCanUseDoublePongpong(true);
     };
     if (whoami !== 'teacher') getUserItems();

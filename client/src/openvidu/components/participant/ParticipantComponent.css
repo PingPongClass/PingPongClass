@@ -105,3 +105,20 @@
 .participantComponentLight ::-webkit-scrollbar-thumb {
   background-color: #eeeeee !important;
 }
+
+/* select */
+
+.display-box div {
+  color: white;
+}
+
+.display-box div svg {
+  color: rgb(255 255 255);
+}
+.display-box div {
+  border-bottom: 1px solid wthie;
+}
+
+.display-boxdiv ::hover {
+  border-bottom: 1px solid wthie;
+}

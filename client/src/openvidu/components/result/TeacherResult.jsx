@@ -155,10 +155,8 @@ const TeacherResult = ({
           <hr />
           <div className="sideContainer">
             <div css={TotalContainer}>
-              <h2>고생하셨습니다 {teacherName} 선생님!</h2>
-              <br />
               <div css={ClassStatistic}>
-                <h3 style={{ margin: '0' }}>수업 통계</h3>
+                <h1 style={{ margin: '0' }}>수업 통계</h1>
                 <div className="classContainer">
                   <div className="teacherResult">
                     <div className="teacher index">
@@ -210,7 +208,7 @@ const TeacherResult = ({
                 </div>
               </div>
               <div css={TotalResult}>
-                <h3 style={{ margin: '0' }}>학생 통계</h3>
+                {/* <h3 style={{ margin: '0' }}>학생 통계</h3> */}
                 <div className="studentContainer">
                   <div className="studentResult">
                     <div className="person index">
@@ -290,7 +288,7 @@ const BackgroundContainer = css`
 
   button {
     width: 200px;
-    height: 40px;
+    height: 45px;
     border-radius: 20px;
     background: var(--pink);
     border: none;
@@ -299,7 +297,10 @@ const BackgroundContainer = css`
     color: white;
     font-weight: 700;
     text-decoration-line: none;
-    margin-top: 15px;
+  }
+
+  button:hover {
+    cursor: pointer;
   }
 
   .triangles {
@@ -366,9 +367,13 @@ const BackgroundContainer = css`
 
   hr {
     width: 100%;
-    height: 2px;
+    height: 1.5px;
     border: 0;
     background-color: black;
+  }
+
+  .index {
+    background-color: #d5dfee;
   }
 
   .circles {
@@ -405,7 +410,7 @@ const BackgroundContainer = css`
 
 const TotalContainer = css`
   width: 100%;
-  height: 100%;
+  height: 95%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -414,16 +419,16 @@ const TotalContainer = css`
 
 const ClassStatistic = css`
   width: 70%;
-  height: 35%;
+  height: 44%;
   border-radius: 20px;
   margin-top: 10px;
   align-items: center;
   display: flex;
   flex-direction: column;
-  border: 1px solid lightgray;
-  justify-content: center;
+  justify-content: space-between;
 
   .classContainer {
+    width: 60%;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -432,9 +437,10 @@ const ClassStatistic = css`
   .teacherResult {
     display: flex;
     flex-direction: row;
-    background: #fff7d9;
+    background: #f5f5f5;
     margin-right: 20px;
     border-radius: 5px;
+    border: 2px solid gray;
   }
 
   h3 {
@@ -488,6 +494,7 @@ const ClassStatistic = css`
 
   .index {
     font-weight: 700;
+    border-right: 2px solid gray;
   }
 `;
 
@@ -499,7 +506,6 @@ const TotalResult = css`
   align-items: center;
   display: flex;
   flex-direction: column;
-  border: 1px solid lightgray;
   justify-content: center;
 
   .studentContainer {
@@ -512,20 +518,40 @@ const TotalResult = css`
   .studentResult {
     display: flex;
     flex-direction: column;
-    width: 40%;
+    width: 50%;
     height: 80%;
-    background: #fff7d9;
+    background: #f3f3f3;
     margin-right: 20px;
     border-radius: 5px;
+    border: 2px solid gray;
+    .index {
+      border-bottom: 3px solid gray;
+    }
+
+    .person {
+      border-bottom: 2px solid gray;
+    }
   }
 
   h3 {
     text-align: center;
   }
 
+  .teacher.index {
+    background-color: #cad7ea;
+    border-right: 3px solid gray;
+  }
+
+  .mydata {
+    background-color: rgb(255, 155, 137);
+    font-weight: 700;
+    color: white;
+  }
+
   .person {
     display: flex;
     flex-direction: row;
+    border-bottom: 2px solid gray;
 
     & > div {
       display: flex;
@@ -535,7 +561,6 @@ const TotalResult = css`
       justify-content: center;
       text-align: center;
     }
-
     & > .s-nickname {
       display: flex;
       width: 150px;

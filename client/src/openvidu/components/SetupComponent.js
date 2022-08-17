@@ -161,7 +161,7 @@ const SetupComponent = (props) => {
   const goNext = async () => {
     if (isUsedDoublePongpong) {
       try {
-        await InterceptedAxios.delete(`/items/${userId}/3`);
+        await InterceptedAxios.delete(`/items/${userId}/4`);
         console.log('더블퐁퐁권이 정상적으로 사용되었습니다!');
       } catch (e) {
         console.error(e);

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import CloseBtn from '@mui/icons-material/Close';
 import SingleParticipantPanel from './SingleParticipantPanel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 import './ParticipantComponent.css';
 
@@ -96,14 +99,30 @@ export default class ParticipantComponent extends Component {
           </div>
           {/* 디스플레이 요소 체크박스 */}
           <div className="display-box">
-            <select value={this.props.type} onChange={this.partsSortChange}>
+            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+              <Select
+                labelId="demo-simple-select-standard-label"
+                id="demo-simple-select-standard"
+                value={this.props.type}
+                onChange={this.partsSortChange}
+                color="warning"
+              >
+                <MenuItem value="all">전체보기</MenuItem>
+                <MenuItem value="attend">출석자보기</MenuItem>
+                <MenuItem value="absent">결석자보기</MenuItem>
+                <MenuItem value="join">접속순보기</MenuItem>
+                <MenuItem value="pongpong">퐁퐁순보기</MenuItem>
+                <MenuItem value="number">번호순보기</MenuItem>
+              </Select>
+            </FormControl>
+            {/* <select value={this.props.type} onChange={this.partsSortChange}>
               <option value="all">전체보기</option>
               <option value="attend">출석자보기</option>
               <option value="absent">결석자보기</option>
               <option value="join">접속순보기</option>
               <option value="pongpong">퐁퐁순보기</option>
               <option value="number">번호순보기</option>
-            </select>
+            </select> */}
           </div>
           {/* 수업 참여 여부 */}
           {/* 참여자 */}
@@ -111,7 +130,9 @@ export default class ParticipantComponent extends Component {
             <div className="attendance-students">
               {this.props.type !== 'absent' && (
                 <>
-                  {this.props.type === 'all' && <h3>출석명단</h3>}
+                  {this.props.type === 'all' && (
+                    <h3 className="chat-title-sub">출석명단</h3>
+                  )}
                   {participants.map((sub, i) => (
                     <SingleParticipantPanel
                       key={i}
