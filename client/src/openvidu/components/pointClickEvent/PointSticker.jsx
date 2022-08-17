@@ -13,19 +13,19 @@ const PointSticker = (props) => {
 
   const stickerCSS = css`
     position: absolute;
-    top: ${top + 'px'};
-    left: ${left + 'px'};
+    top: ${top + 'px !important'};
+    left: ${left + 'px !important'};
     border-radius: '50%';
     cursor: 'pointer';
     visibility: ${visible ? 'visible' : 'hidden'};
     /* color: red; */
     img {
-      width: ${size};
-      max-width: ${size};
-      min-width: ${size};
-      height: ${size};
-      max-height: ${size};
-      min-height: ${size};
+      width: ${size} + ' !important';
+      max-width: ${size} + ' !important';
+      min-width: ${size} + ' !important';
+      height: ${size} + ' !important';
+      max-height: ${size} + ' !important';
+      min-height: ${size} + ' !important';
       /* border: red solid 1px; */
       /* background-color: white; */
     }
