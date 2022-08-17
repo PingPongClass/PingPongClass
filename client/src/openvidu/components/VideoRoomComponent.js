@@ -1704,7 +1704,7 @@ class VideoRoomComponent extends Component {
                   (this.state.videoLayout === 'bigTeacher' &&
                     localUser.nickname.includes('[선생님]')) ||
                   (this.state.videoLayout === 'screenShareOn' &&
-                    localUser.isScreenShareActive())
+                    localUser.isScreenShareActive() === true)
                     ? 'OT_root OT_publisher custom-class OV_big'
                     : 'OT_root OT_publisher custom-class'
                 }
@@ -1731,7 +1731,7 @@ class VideoRoomComponent extends Component {
                   (this.state.videoLayout === 'bigTeacher' &&
                     sub.nickname.includes('[선생님]')) ||
                   (this.state.videoLayout === 'screenShareOn' &&
-                    sub.isScreenShareActive)
+                    sub.isScreenShareActive() === true)
                     ? 'OT_root OT_publisher custom-class OV_big'
                     : 'OT_root OT_publisher custom-class'
                 }
