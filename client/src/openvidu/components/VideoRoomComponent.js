@@ -852,6 +852,7 @@ class VideoRoomComponent extends Component {
             } else if (!data.isScreenShareActive) {
               this.setState({ videoLayout: 'bigTeacher' });
             }
+            this.updateLayout();
           }
           if (data.picked !== undefined) {
             user.setPicked(data.picked);
@@ -1141,6 +1142,11 @@ class VideoRoomComponent extends Component {
     isScreenShared =
       this.state.subscribers.some((user) => user.isScreenShareActive()) ||
       localUser.isScreenShareActive();
+    if (isScreenShared) {
+      this.setState({ videoLayout: 'screenShareOn' });
+    } else {
+      this.setState({ videoLayout: 'bigTeacher' });
+    }
     const openviduLayoutOptions = {
       maxRatio: 9 / 16,
       minRatio: 9 / 16,
@@ -1535,7 +1541,7 @@ class VideoRoomComponent extends Component {
   };
 
   // name: 한준수
-  // date: 2022/08/13
+  // date: 2022/08/17
   // desc: 영상 레이아웃 토글 변경 함수
   toggleVideoLayout = () => {
     if (this.state.videoLayout === 'bigTeacher') {
@@ -1693,84 +1699,54 @@ class VideoRoomComponent extends Component {
           >
             {localUser !== undefined &&
             localUser.getStreamManager() !== undefined ? (
-              (this.state.videoLayout === 'bigTeacher' &&
-                localUser.nickname.includes('[선생님]')) ||
-              (this.state.videoLayout === 'screenShareOn' &&
-                localUser.isScreenShareActive()) ? (
-                <div
-                  className="OT_root OT_publisher custom-class OV_big"
-                  id="localUser"
-                >
-                  <StreamComponent
-                    user={this.state.localUser}
-                    currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
-                    toggleEmoji={this.toggleEmoji}
-                    emoji={this.state.emoji}
-                  />
-                  <FaceDetection
-                    autoPlay={localUser.isScreenShareActive() ? false : true}
-                    camera={localUser.isVideoActive() ? false : true}
-                    smile={this.smile}
-                    outAngle={this.outAngle}
-                  />
-                </div>
-              ) : (
-                <div
-                  className="OT_root OT_publisher custom-class"
-                  id="localUser"
-                >
-                  <StreamComponent
-                    user={this.state.localUser}
-                    currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
-                    toggleEmoji={this.toggleEmoji}
-                    emoji={this.state.emoji}
-                  />
-                  <FaceDetection
-                    autoPlay={localUser.isScreenShareActive() ? false : true}
-                    camera={localUser.isVideoActive() ? false : true}
-                    smile={this.smile}
-                    outAngle={this.outAngle}
-                  />
-                  {/* {<img></img>} */}
-                </div>
-              )
+              <div
+                className={
+                  (this.state.videoLayout === 'bigTeacher' &&
+                    localUser.nickname.includes('[선생님]')) ||
+                  (this.state.videoLayout === 'screenShareOn' &&
+                    localUser.isScreenShareActive())
+                    ? 'OT_root OT_publisher custom-class OV_big'
+                    : 'OT_root OT_publisher custom-class'
+                }
+                id="localUser"
+              >
+                <StreamComponent
+                  user={this.state.localUser}
+                  currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
+                  toggleEmoji={this.toggleEmoji}
+                  emoji={this.state.emoji}
+                />
+                <FaceDetection
+                  autoPlay={localUser.isScreenShareActive() ? false : true}
+                  camera={localUser.isVideoActive() ? false : true}
+                  smile={this.smile}
+                  outAngle={this.outAngle}
+                />
+              </div>
             ) : null}
-            {this.state.subscribers.map((sub, i) =>
-              (this.state.videoLayout === 'bigTeacher' &&
-                sub.nickname.includes('[선생님]')) ||
-              (this.state.videoLayout === 'screenShareOn' &&
-                sub.isScreenShareActive) ? (
-                <div
-                  key={i}
-                  className="OT_root OT_publisher custom-class OV_big"
-                  id="remoteUsers"
-                >
-                  <StreamComponent
-                    user={sub}
-                    streamId={sub.streamManager.stream.streamId}
-                    currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
-                    toggleEmoji={this.toggleEmoji}
-                    emoji={this.state.emoji}
-                  />
-                  <EmojiFilter user={sub} />
-                </div>
-              ) : (
-                <div
-                  key={i}
-                  className="OT_root OT_publisher custom-class"
-                  id="remoteUsers"
-                >
-                  <StreamComponent
-                    user={sub}
-                    streamId={sub.streamManager.stream.streamId}
-                    currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
-                    toggleEmoji={this.toggleEmoji}
-                    emoji={this.state.emoji}
-                  />
-                  <EmojiFilter user={sub} />
-                </div>
-              ),
-            )}
+            {this.state.subscribers.map((sub, i) => (
+              <div
+                key={i}
+                className={
+                  (this.state.videoLayout === 'bigTeacher' &&
+                    sub.nickname.includes('[선생님]')) ||
+                  (this.state.videoLayout === 'screenShareOn' &&
+                    sub.isScreenShareActive)
+                    ? 'OT_root OT_publisher custom-class OV_big'
+                    : 'OT_root OT_publisher custom-class'
+                }
+                id="remoteUsers"
+              >
+                <StreamComponent
+                  user={sub}
+                  streamId={sub.streamManager.stream.streamId}
+                  currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
+                  toggleEmoji={this.toggleEmoji}
+                  emoji={this.state.emoji}
+                />
+                <EmojiFilter user={sub} />
+              </div>
+            ))}
           </div>
           <div
             className={
