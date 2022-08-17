@@ -41,7 +41,7 @@ class UserModel {
         backgroundImage: 'var(--gray)',
         backgroundOrigin: 'border-box',
         backgroundClip: 'content-box, border-box',
-        margin: '10px',
+        // margin: '10px',
       },
     }; // {type: "style", value: {border: "8px solid #F8CBD3"}}; // { type: "color", value: "#F8CBD3" };
     this.smile = false;
