@@ -96,13 +96,9 @@ const HeatMap = () => {
             }-${
               value.count === 0
                 ? 0
-                : Math.floor(value.count / 5) === 0
-                ? 1
-                : Math.floor(value.count / 5) === 1
-                ? 2
-                : Math.floor(value.count / 5) === 2
-                ? 3
-                : 4
+                : Math.floor(value.count / 6) >= 4
+                ? 4
+                : Math.floor(value.count / 6) + 1
             }`;
           }}
           tooltipDataAttrs={(value: any) => {

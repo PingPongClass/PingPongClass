@@ -180,20 +180,6 @@ const StudentBoard = () => {
               ))}
             </Select>
             <span className="form-label">반</span>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-select-small"
-              defaultValue={studentNumCnt[0]}
-              onChange={(e) => setClassNum(+e.target.value)}
-              className="form-custom"
-            >
-              {studentNumCnt.map((s) => (
-                <MenuItem key={s} value={s}>
-                  {s}
-                </MenuItem>
-              ))}
-            </Select>
-            <span className="form-label">번</span>
 
             <span className="form-label" style={{ padding: '8.5px 14px' }}>
               이름

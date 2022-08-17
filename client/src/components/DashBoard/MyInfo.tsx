@@ -9,6 +9,8 @@ import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { saveMember } from '@src/store/member';
 import PlayArrow from '@mui/icons-material/PlayArrow';
+import ReactTooltip from 'react-tooltip';
+import HelpIcon from '@mui/icons-material/HelpOutline';
 
 interface StudentDataInterface {
   studentId: number;
@@ -126,13 +128,234 @@ const Myinfo = () => {
               </p>
             </div>
           </div>
-          <div className="level-div info-right">
+          <div className="level-div info-right" data-tip data-for="level-info">
+            <HelpIcon
+              fontSize="small"
+              color="action"
+              css={css`
+                height: 1.2vw;
+                margin-right: 7px;
+              `}
+              data-tip
+              data-for="rarity"
+              className="hover"
+            />
             <img src={levelImg} alt="" className="level-img" />
             <div>
               <h2 className="level">{memberStore.currentLevel}</h2>
             </div>
           </div>
+          <ReactTooltip
+            id="level-info"
+            effect="solid"
+            place="top"
+            type="light"
+            textColor="#191919"
+            border
+            borderColor="gray"
+          >
+            <div
+              css={css`
+                text-align: start;
+                padding: 5px;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+              `}
+            >
+              <div
+                css={css`
+                  margin-left: 2px;
+                `}
+              >
+                <b>&nbsp;[Level 기준표]</b>
+                <p>&nbsp;누적 퐁퐁이 개수 기준</p>
+                <br />
+              </div>
+              <div
+                css={css`
+                  display: flex;
+                  margin-right: 2px;
+                  justify-content: start;
+                  align-items: center;
+                `}
+              >
+                <div
+                  css={css`
+                    width: 18px;
+                    margin: 5px 5px;
+                  `}
+                >
+                  <img
+                    src="levels/white.png"
+                    css={css`
+                      border: none !important;
+                    `}
+                  />
+                </div>
+                <div
+                  css={css`
+                    display: flex;
+                    align-items: center;
+                  `}
+                >
+                  <b>White</b> : 0 개
+                </div>
+              </div>{' '}
+              <div
+                css={css`
+                  display: flex;
+                  margin-right: 2px;
+                  justify-content: center;
+                `}
+              >
+                <div
+                  css={css`
+                    width: 18px;
+                    margin: 5px 5px;
+                  `}
+                >
+                  <img
+                    src="levels/yellow.png"
+                    css={css`
+                      border: none !important;
+                    `}
+                  />
+                </div>
+                <div
+                  css={css`
+                    display: flex;
+                    justify-content: center;
+                    text-align: center;
+                  `}
+                >
+                  <b>Yellow</b> : 1 - 49 개
+                </div>
+              </div>{' '}
+              <div
+                css={css`
+                  display: flex;
+                  margin-right: 2px;
+                  justify-content: center;
+                `}
+              >
+                <div
+                  css={css`
+                    width: 18px;
+                    margin: 5px 5px;
+                  `}
+                >
+                  <img
+                    src="levels/green.png"
+                    css={css`
+                      border: none !important;
+                    `}
+                  />
+                </div>
+                <div
+                  css={css`
+                    display: flex;
+                    justify-content: center;
+                    text-align: center;
+                  `}
+                >
+                  <b>Green</b> : 50 - 99 개
+                </div>
+              </div>{' '}
+              <div
+                css={css`
+                  display: flex;
+                  margin-right: 2px;
+                  justify-content: center;
+                `}
+              >
+                <div
+                  css={css`
+                    width: 18px;
+                    margin: 5px 5px;
+                  `}
+                >
+                  <img
+                    src="levels/blue.png"
+                    css={css`
+                      border: none !important;
+                    `}
+                  />
+                </div>
+                <div
+                  css={css`
+                    display: flex;
+                    justify-content: center;
+                    text-align: center;
+                  `}
+                >
+                  <b>Blue</b> : 100 - 149 개
+                </div>
+              </div>{' '}
+              <div
+                css={css`
+                  display: flex;
+                  margin-right: 2px;
+                  justify-content: center;
+                `}
+              >
+                <div
+                  css={css`
+                    width: 18px;
+                    margin: 5px 5px;
+                  `}
+                >
+                  <img
+                    src="levels/purple.png"
+                    css={css`
+                      border: none !important;
+                    `}
+                  />
+                </div>
+                <div
+                  css={css`
+                    display: flex;
+                    justify-content: center;
+                    text-align: center;
+                  `}
+                >
+                  <b>Purple</b> : 150 - 199 개
+                </div>
+              </div>{' '}
+              <div
+                css={css`
+                  display: flex;
+                  margin-right: 2px;
+                  justify-content: center;
+                `}
+              >
+                <div
+                  css={css`
+                    width: 18px;
+                    margin: 5px 5px;
+                  `}
+                >
+                  <img
+                    src="levels/rainbow.png"
+                    css={css`
+                      border: none !important;
+                    `}
+                  />
+                </div>
+                <div
+                  css={css`
+                    display: flex;
+                    justify-content: center;
+                    text-align: center;
+                  `}
+                >
+                  <b>Rainbow</b> : 200 개 이상
+                </div>
+              </div>{' '}
+            </div>
+          </ReactTooltip>
         </div>
+
         <div className="levelContainer">
           <div className="stickerContainer">
             <div className="soFarSticker" style={{ width: `${totalRate}%` }}>
@@ -160,7 +383,8 @@ const Myinfo = () => {
             justifyContent: 'space-between',
             width: '98%',
             alignItems: 'flex-end',
-            marginBottom: '2%',
+            marginTop: '2%',
+            marginBottom: '10px',
           }}
         >
           <div style={{ width: '100%', fontWeight: 'bold', fontSize: '1.2em' }}>
@@ -168,7 +392,7 @@ const Myinfo = () => {
           </div>
           <div
             style={{
-              fontSize: '0.5em',
+              fontSize: '0.7em',
               marginLeft: '5%',
               width: '20%',
               textAlign: 'end',

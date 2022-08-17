@@ -34,7 +34,6 @@ const GetReactionList = (props: GetReactionProps) => {
     return (
       <div className="item-div" onClick={() => props.reactionFunction(img)}>
         <img src={img} style={{ width: '80px' }} />
-        <p>{item.name}</p>
       </div>
     );
   }
@@ -58,7 +57,7 @@ const GetReactionList = (props: GetReactionProps) => {
 
 const totalContainer = () => css`
   width: 100%;
-  height: 100%;
+  height: 90%;
   flex-wrap: wrap;
   display: flex;
   flex-direction: row;

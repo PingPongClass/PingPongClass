@@ -132,7 +132,6 @@ const GetItemList = (props: GetItemListProps) => {
 };
 
 const totalContainer = () => css`
-  width: 100%;
   padding: 10px;
   flex-wrap: wrap;
   display: flex;
@@ -140,8 +139,7 @@ const totalContainer = () => css`
   justify-content: start;
 
   .colorchangeBorder {
-    width: 100px;
-    height: 100px;
+    width: calc(80% / 4);
     background: #ffffff;
     display: flex;
     flex-direction: column;
@@ -152,14 +150,15 @@ const totalContainer = () => css`
     transition: all 0.1s ease-in-out;
     margin: 10px;
     border: 1px solid lightgray;
+    padding: 4px;
+    p {
+      font-size: 0.8vw;
+      margin-bottom: 0px;
+    }
 
     :hover {
       transform: scale(1.05);
       cursor: pointer;
-    }
-
-    p {
-      font-size: calc(0.5vw);
     }
   }
 `;
