@@ -22,3 +22,10 @@
 .left-side button {
   cursor: pointer;
 }
+
+.left-side span {
+  font-size: 14px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}

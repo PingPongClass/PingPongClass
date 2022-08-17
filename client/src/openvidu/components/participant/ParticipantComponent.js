@@ -127,30 +127,27 @@ export default class ParticipantComponent extends Component {
           {/* 수업 참여 여부 */}
           {/* 참여자 */}
           <div className="participants-wrap" ref={this.participantScroll}>
-            <div className="attendance-students">
-              {this.props.type !== 'absent' && (
-                <>
-                  {this.props.type === 'all' && (
-                    <h3 className="chat-title-sub">출석명단</h3>
-                  )}
-                  {participants.map((sub, i) => (
-                    <SingleParticipantPanel
-                      key={i}
-                      whoami={this.props.whoami}
-                      user={sub}
-                      isMyself={false}
-                      // myinfo={sub.nickname}
-                      // point={sub.point}
-                      // attendanceTime={sub.attendanceTime}
-                      // isVideoOn={sub.videoActive}
-                      // isAudioOn={sub.audioActive}
-                      // upPoint={sub.upPoint}
-                      // downPoint={sub.downPoint}
-                    />
-                  ))}
-                </>
-              )}
-            </div>
+            {this.props.type !== 'absent' && (
+              <div className="attendance-students">
+                {this.props.type === 'all' && <h3>출석명단</h3>}
+                {participants.map((sub, i) => (
+                  <SingleParticipantPanel
+                    key={i}
+                    whoami={this.props.whoami}
+                    user={sub}
+                    isMyself={false}
+                    // myinfo={sub.nickname}
+                    // point={sub.point}
+                    // attendanceTime={sub.attendanceTime}
+                    // isVideoOn={sub.videoActive}
+                    // isAudioOn={sub.audioActive}
+                    // upPoint={sub.upPoint}
+                    // downPoint={sub.downPoint}
+                  />
+                ))}
+              </div>
+            )}
+
             {(this.props.type === 'all' || this.props.type === 'absent') && (
               <div className="absent-students">
                 {this.props.type === 'all' && (

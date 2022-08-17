@@ -79,10 +79,19 @@
   font-family: 'Open Sans', sans-serif;
 }
 
+#navEmoji {
+  position: absolute;
+  right: 13.5rem;
+}
+
+#navParticipantButton {
+  position: absolute;
+  right: 9rem;
+}
+
 #navQuestButton {
   position: absolute;
-  right: 0;
-  margin-right: 4.5rem;
+  right: 4.5rem;
 }
 
 #questPoint {

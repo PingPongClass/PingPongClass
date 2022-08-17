@@ -231,7 +231,7 @@ const TeacherBoard = () => {
           defaultPage={1}
           page={page}
           boundaryCount={0}
-          sx={{ mb: 2 }}
+          sx={{ mt: 18 }}
           onChange={handlePage}
           variant="outlined"
           shape="rounded"
@@ -317,9 +317,9 @@ const totalContainer = () => css`
   }
   .tableArea {
     /* width: 40rem; */
-    height: 100%;
+    height: 130%;
     display: grid;
-    grid-template-rows: 3fr;
+    grid-template-rows: 1fr 1fr 1fr;
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
   .teacher-box {

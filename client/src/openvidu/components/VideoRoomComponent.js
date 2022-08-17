@@ -1092,11 +1092,11 @@ class VideoRoomComponent extends Component {
         if (error && error.name === 'SCREEN_EXTENSION_NOT_INSTALLED') {
           this.setState({ showExtensionDialog: true });
         } else if (error && error.name === 'SCREEN_SHARING_NOT_SUPPORTED') {
-          alert('Your browser does not support screen sharing');
+          alert('브라우저가 화면 공유를 지원하지 않습니다!');
         } else if (error && error.name === 'SCREEN_EXTENSION_DISABLED') {
-          alert('You need to enable screen sharing extension');
+          alert('화면 공유를 위한 확장프로그램을 사용할 수 없습니다.');
         } else if (error && error.name === 'SCREEN_CAPTURE_DENIED') {
-          alert('You need to choose a window or application to share');
+          alert('화면 공유를 취소합니다.');
         }
       },
     );
