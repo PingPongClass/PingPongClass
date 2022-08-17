@@ -206,10 +206,12 @@ export default class ChatComponent extends Component {
               >
                 <img
                   src={
-                    data.profile ===
-                      'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null' ||
-                    data.profile ===
-                      'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/'
+                    data.nickname === 'System'
+                      ? '/img/bot.png'
+                      : data.profile ===
+                          'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null' ||
+                        data.profile ===
+                          'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/'
                       ? defaultProfile
                       : data.profile
                   }
@@ -226,11 +228,13 @@ export default class ChatComponent extends Component {
                   <div className="msg-info">
                     <p className="msg-nickname">
                       <span>
-                        <img
-                          src={data.levelPng}
-                          alt="레벨짤"
-                          className="level-png"
-                        />
+                        {data.nickname !== 'System' && (
+                          <img
+                            src={data.levelPng}
+                            alt="레벨짤"
+                            className="level-png"
+                          />
+                        )}
                       </span>
                       {data.target
                         ? data.nickname + ' ▶ ' + data.target

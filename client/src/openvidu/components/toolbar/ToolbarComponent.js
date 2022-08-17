@@ -330,18 +330,6 @@ export default class ToolbarComponent extends Component {
 
             <IconButton
               color="inherit"
-              onClick={this.toggleEmoji}
-              className="navButton"
-              id="navEmoji"
-            >
-              <div className="buttonStyle">
-                <EmojiEmotionsIcon />
-                <p>이모지</p>
-              </div>
-            </IconButton>
-
-            <IconButton
-              color="inherit"
               className="navButton"
               onClick={this.toggleSetting}
             >
@@ -396,18 +384,6 @@ export default class ToolbarComponent extends Component {
                 : null}
             </IconButton>
 
-            <IconButton
-              color="inherit"
-              onClick={this.toggleParticipant}
-              className="navButton"
-              id="navParticipantButton"
-            >
-              <div className="buttonStyle">
-                <PeopleIcon />
-                <p>참여자 목록</p>
-              </div>
-            </IconButton>
-
             {this.props.whoami !== 'teacher' ? (
               <IconButton
                 color="secondary"
@@ -436,6 +412,18 @@ export default class ToolbarComponent extends Component {
 
             <IconButton
               color="inherit"
+              onClick={this.toggleEmoji}
+              className="navButton"
+              id="navEmoji"
+            >
+              <div className="buttonStyle">
+                <EmojiEmotionsIcon />
+                <p>이모지</p>
+              </div>
+            </IconButton>
+
+            <IconButton
+              color="inherit"
               onClick={this.toggleQuestion}
               className="navButton"
               id="navQuestButton"
@@ -446,6 +434,18 @@ export default class ToolbarComponent extends Component {
                 )}
                 <SearchIcon />
                 <p>익명질문</p>
+              </div>
+            </IconButton>
+
+            <IconButton
+              color="inherit"
+              onClick={this.toggleParticipant}
+              className="navButton"
+              id="navParticipantButton"
+            >
+              <div className="buttonStyle">
+                <PeopleIcon />
+                <p>참여자 목록</p>
               </div>
             </IconButton>
 
