@@ -18,6 +18,7 @@ const ManagedClass = (props: {
   const toggleManagedClass = (e: React.MouseEvent<HTMLElement>) => {
     // onCLick 이벤트
     setVisible(!visible);
+    // onClick={toggleManagedClass}
     props.toggleClass();
   };
 
@@ -27,10 +28,10 @@ const ManagedClass = (props: {
 
   return (
     <div className={visible ? 'row articleRow highlited' : 'row articleRow'}>
-      <button className="row article-btn">
+      <button className="row article-btn" onClick={toggleManagedClass}>
         {/* <div className="col">{article.classId}</div> */}
         <div className="col">
-          <Checkbox onClick={toggleManagedClass} />
+          <Checkbox checked={visible} />
           {article.classId}
         </div>
         <div className="col">{article.timetableId} 교시</div>

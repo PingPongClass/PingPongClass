@@ -39,7 +39,6 @@ const Notice = (props: { key: number; article: NoticeProps }) => {
       </button>
       <div className={visible ? 'row detailRow' : 'row detailRow hide'}>
         <div className="detailContent">{article.content}</div>
-        <div className="detailWriter">- {article.writer}</div>
       </div>
     </div>
   );
