@@ -146,12 +146,14 @@ const totalContainer = css`
   animation: 0.5s ease-in-out loadEffect1;
 
   .total-container {
-    width: 100%;
+    width: 90%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: start;
     border-radius: 20px 20px 0 0;
+    text-align: center;
+    margin: auto;
   }
 
   .tabsContainer {
@@ -159,7 +161,7 @@ const totalContainer = css`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
   }
 
   .tabs {

@@ -759,6 +759,12 @@ const totalContainer = css`
     padding: 3px;
   }
 
+  .classCard1:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+    border: 1px solid gray;
+  }
+
   .classCard2 {
     margin-top: -1px;
     height: 15%;
@@ -771,6 +777,12 @@ const totalContainer = css`
     border-radius: 5px;
     font-size: 13pt;
     padding: 3px;
+  }
+
+  .classCard2:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+    border: 1px solid gray;
   }
 
   .classCard3 {
@@ -787,6 +799,12 @@ const totalContainer = css`
     padding: 3px;
   }
 
+  .classCard3:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+    border: 1px solid gray;
+  }
+
   .classCard4 {
     margin-top: -1px;
     height: 15%;
@@ -801,6 +819,12 @@ const totalContainer = css`
     padding: 3px;
   }
 
+  .classCard4:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+    border: 1px solid gray;
+  }
+
   .classCard5 {
     margin-top: -1px;
     height: 15%;
@@ -813,6 +837,12 @@ const totalContainer = css`
     border-radius: 5px;
     font-size: 13pt;
     padding: 3px;
+  }
+
+  .classCard5:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+    border: 1px solid gray;
   }
 
   @keyframes loadEffect1 {

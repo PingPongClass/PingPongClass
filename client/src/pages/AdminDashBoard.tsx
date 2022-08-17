@@ -68,7 +68,7 @@ const totalContainer = css`
 
   .userInfo {
     height: 85%;
-    width: 1000px;
+    width: 1250px;
     min-width: 1000px;
     margin-top: 50px;
     background: #ffffff;

@@ -13,7 +13,6 @@ const ClassCard = ({ clsList, classUrl }: any) => {
     return (
       <div css={TotalContainer(classUrl)}>
         <img src={img} className="classImg" alt="수업" />
-        <hr />
         <div className="class-info">
           <h2>{clsList.classTitle}</h2>
           <p>{clsList.classDesc}</p>
@@ -29,7 +28,7 @@ const ClassCard = ({ clsList, classUrl }: any) => {
 };
 
 const TotalContainer = (classUrl: string) => css`
-  width: 233px;
+  width: 240px;
   height: 215px;
   display: flex;
   flex-direction: column;
@@ -63,16 +62,14 @@ const TotalContainer = (classUrl: string) => css`
     font-size: 9.4pt;
   }
 
-  hr {
-    width: 200px;
-  }
-
   .classImg {
     width: 100%;
-    height: 120px;
+    height: 60%;
     background: white;
     border-radius: 10px;
     align-items: center;
+    object-fit: cover;
+    margin-bottom: 10px;
   }
 
   .class-info {
@@ -85,7 +82,7 @@ const TotalContainer = (classUrl: string) => css`
 `;
 
 const EmptyContainer = () => css`
-  width: 233px;
+  width: 240px;
   height: 215px;
   background: #ffffff;
   border-radius: 20px;

@@ -456,7 +456,7 @@ const StoreMain = () => {
             </div>
           </div>
           <div className="getItemList">
-            <div className="item-tap">
+            <div className="get-item-tap">
               <div
                 className={
                   gettap === 'getItemTap' ? 'store1 selected' : 'store1'
@@ -603,7 +603,7 @@ const StoreMain = () => {
                 </ReactTooltip>
               </div>
             </div>
-            <div className="item-main">
+            <div className="get-item-main">
               {loading ? (
                 <div className="loadingSpiner">
                   <CircularProgress />
@@ -654,8 +654,12 @@ const totalContainer = () => css`
   .itemList {
     width: 70%;
     height: 80%;
-    margin-left: 30px;
     border-radius: 20px;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .getItemList {
@@ -696,6 +700,40 @@ const totalContainer = () => css`
     align-items: center !important;
   }
   .item-tap {
+    width: 75%;
+    height: 15%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    border-bottom: dashed 1px gray;
+
+    .store1,
+    .store2 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 25%;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      background-color: #fcc97d;
+      margin-right: 0.2rem;
+    }
+    .store1:hover,
+    .store2:hover {
+      cursor: pointer;
+      background-color: #ffeed1;
+    }
+
+    .selected {
+      background-color: white;
+      font-weight: 700;
+      border-top: 1px solid gray;
+      border-left: 1px solid gray;
+      border-right: 1px solid gray;
+    }
+  }
+
+  .get-item-tap {
     width: 100%;
     height: 15%;
     display: flex;
@@ -731,8 +769,19 @@ const totalContainer = () => css`
 
   .item-main {
     background-color: white;
-    width: 100%;
+    width: 75%;
     height: 85%;
+    border-radius: 0 0 20px 20px;
+    text-align: left;
+    border-bottom: 1px solid gray;
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
+  }
+
+  .get-item-main {
+    background-color: white;
+    width: 100%;
+    height: 70%;
     border-radius: 0 0 20px 20px;
     text-align: left;
     border-bottom: 1px solid gray;
@@ -777,8 +826,7 @@ const totalContainer = () => css`
 
   .myItemContainer {
     width: 100%;
-    height: 40%;
-    min-height: 380px;
+    height: 45%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -827,7 +875,7 @@ const totalContainer = () => css`
   .draw {
     width: 20%;
     height: 80%;
-    margin: 0;
+    margin-left: 50px;
     display: flex;
     justify-content: center;
     flex-direction: column;

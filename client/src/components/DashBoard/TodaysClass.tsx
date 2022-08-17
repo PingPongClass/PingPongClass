@@ -83,7 +83,7 @@ function TodaysClass() {
         pagination={{
           type: 'progressbar',
         }}
-        slidesPerView={3.5}
+        slidesPerView={4}
         spaceBetween={0}
         navigation={true}
         modules={[Pagination, Navigation]}

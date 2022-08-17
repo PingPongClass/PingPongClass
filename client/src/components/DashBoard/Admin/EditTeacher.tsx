@@ -223,7 +223,7 @@ const EditTeacher = ({ onClickOpenModal, teacherId }: ModalDefaultType) => {
     }
   };
   return (
-    <div css={ModalCSS}>
+    <div css={ModalCSS(isMouseOn)}>
       <div className="commonModal">
         <IosModalNew onClickOpenModal={onClickOpenModal} />
       </div>
