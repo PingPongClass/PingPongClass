@@ -258,7 +258,11 @@ const TeacherResult = ({
                         <Tooltip />
                         <Legend />
                         <Bar dataKey="point" stackId="a" fill="#a589cd" />
-                        <Bar dataKey="presentCnt" stackId="a" fill="#f3ca7e" />
+                        <Bar
+                          dataKey="presentationCnt"
+                          stackId="a"
+                          fill="#f3ca7e"
+                        />
                       </BarChart>
                     </ResponsiveContainer>
                   </div>

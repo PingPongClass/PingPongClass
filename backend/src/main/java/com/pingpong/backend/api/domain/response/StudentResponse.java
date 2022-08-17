@@ -56,10 +56,10 @@ public class StudentResponse {
         HashMap<Integer, Integer> levelrank = new HashMap<>();
         levelrank.put(1, 0);
         levelrank.put(2, 1);
-        levelrank.put(3, 25);
-        levelrank.put(4, 50);
-        levelrank.put(5, 75);
-        levelrank.put(6, 100);
+        levelrank.put(3, 50);
+        levelrank.put(4, 100);
+        levelrank.put(5, 150);
+        levelrank.put(6, 200);
 
         this.currentLevel=levelname.get(level(entity.getTotalPoint()));
         if(level(entity.getTotalPoint())!=6) this.nextLevel=levelname.get(level(entity.getTotalPoint())+1);
@@ -70,13 +70,13 @@ public class StudentResponse {
     }
 
     private int level(int point){
-        if(point >= 100){
+        if(point >= 200){
             return 6;
-        } else if(point >= 75){
+        } else if(point >= 150){
             return 5;
-        } else if(point >= 50){
+        } else if(point >= 100){
             return 4;
-        } else if(point >= 25){
+        } else if(point >= 50){
             return 3;
         } else if(point >= 1) {
             return 2;

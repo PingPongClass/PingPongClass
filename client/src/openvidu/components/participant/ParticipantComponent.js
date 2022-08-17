@@ -153,7 +153,9 @@ export default class ParticipantComponent extends Component {
             </div>
             {(this.props.type === 'all' || this.props.type === 'absent') && (
               <div className="absent-students">
-                {this.props.type === 'all' && <h3>결석명단</h3>}
+                {this.props.type === 'all' && (
+                  <h3 className="chat-title-sub">결석명단</h3>
+                )}
                 {this.props.absentStudents.map((elem, i) => (
                   <p key={i}>{elem}</p>
                 ))}

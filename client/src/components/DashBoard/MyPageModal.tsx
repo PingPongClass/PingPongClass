@@ -73,15 +73,15 @@ const MyPageModal = ({ close, setToggle }: MyPageModalStyle) => {
               style={{ cursor: 'pointer' }}
             />
           </div>
-          <h3 onClick={onClickLogout} className="hover">
-            로그아웃
-          </h3>
 
           <Link to="mypage" className="linkButton">
             <h3 onClick={() => close()} className="hover">
               마이페이지
             </h3>
           </Link>
+          <h3 onClick={onClickLogout} className="hover">
+            로그아웃
+          </h3>
         </div>
       </div>
     </div>
@@ -112,7 +112,7 @@ const totalContainer = css`
     display: flex;
     flex-direction: row;
     justify-content: end;
-    width: 1250px;
+    width: 1500px;
   }
 
   .myPageModal {

@@ -62,7 +62,7 @@
 
 .display-box {
   text-align: right;
-  margin: 0.5rem 1rem;
+  margin: 0 2px;
 }
 
 .display-box > select {
@@ -72,9 +72,8 @@
 
 .participants-wrap {
   color: white;
-  margin-left: 1rem;
   margin-top: 1rem;
-  height: calc(100% - 130px);
+  height: calc(100% - 143px);
   overflow: auto;
   margin-bottom: 2rem;
 }
@@ -90,8 +89,12 @@
 
 .attendance-students h3,
 .absent-students h3 {
-  color: var(--gray);
+  color: white;
   text-align: center;
+}
+
+.absent-students p {
+  margin-left: 1rem;
 }
 
 ::-webkit-scrollbar {
@@ -121,4 +124,9 @@
 
 .display-boxdiv ::hover {
   border-bottom: 1px solid wthie;
+}
+
+.chat-title-sub {
+  background-color: #cecece36;
+  width: 100%;
 }
