@@ -29,6 +29,8 @@ const EditNotice = () => {
   const [classes, setClasses] = useState<ClassProps[]>([allClass]);
   const InterceptedAxios = setupInterceptorsTo(axios.create());
   const memberStore = useAppSelector((state) => state.member);
+  const titleMaxlength = 50;
+  const contentMaxlength = 2000;
   let newPost = false;
 
   if (noticeId === undefined) {
@@ -75,15 +77,26 @@ const EditNotice = () => {
 
   const titleChanged = (e) => {
     // onChange 이벤트
+
+    if (e.target.value.length > titleMaxlength) {
+      e.target.value = e.target.value.substr(0, titleMaxlength);
+      toast.warning('공지사항 제목은 50자를 초과할 수 없습니다!');
+    }
     setTmpTitle(e.target.value);
   };
 
   const contentChanged = (e) => {
+    if (e.target.value.length > contentMaxlength) {
+      e.target.value = e.target.value.substr(0, contentMaxlength);
+      toast.warning('공지사항 본문은 2000자를 초과할 수 없습니다!');
+    }
     setTmpContent(e.target.value);
   };
 
   const codeChanged = (e) => {
-    setTmpCode(+e.target.value);
+    if (+e.target.value !== -1) {
+      setTmpCode(+e.target.value);
+    }
   };
 
   const changePost = () => {
