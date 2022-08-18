@@ -4,7 +4,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CampaignIcon from '@mui/icons-material/Campaign';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useLayoutEffect } from 'react';
 
 const NavBar = () => {
   const [isStudents, setIsStudents] = useState(true);
@@ -39,6 +39,15 @@ const NavBar = () => {
     setIsClasses(false);
     setIsNotices(true);
   };
+
+  useLayoutEffect(() => {
+    const url = document.location.href;
+    const urlSplit = url.split('/');
+    if (urlSplit[urlSplit.length - 1] === 'teachers') onClickTeachers();
+    else if (urlSplit[urlSplit.length - 1] === 'classes') onClickClasses();
+    else if (urlSplit[urlSplit.length - 1] === 'notice') onClickNotices();
+    else onClickStudents();
+  }, []);
 
   return (
     <div css={totalContainer}>

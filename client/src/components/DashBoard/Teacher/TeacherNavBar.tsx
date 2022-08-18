@@ -5,7 +5,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CampaignIcon from '@mui/icons-material/Campaign';
 import BookIcon from '@mui/icons-material/Book';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useLayoutEffect } from 'react';
 
 const TeacherNavBar = () => {
   const [isDashboard, setIsDashboard] = useState(true);
@@ -40,6 +40,15 @@ const TeacherNavBar = () => {
     setIsLog(false);
     setIsNotices(true);
   };
+
+  useLayoutEffect(() => {
+    const url = document.location.href;
+    const urlSplit = url.split('/');
+    if (urlSplit[urlSplit.length - 1] === 'classes') onClickClasses();
+    else if (urlSplit[urlSplit.length - 1] === 'log') onClickLog();
+    else if (urlSplit[urlSplit.length - 1] === 'notice') onClickNotices();
+    else onClickDashboard();
+  }, []);
 
   return (
     <div css={totalContainer}>

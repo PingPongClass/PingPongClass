@@ -6,7 +6,7 @@ import CampaignIcon from '@mui/icons-material/Campaign';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import BookIcon from '@mui/icons-material/Book';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 const NavBar = () => {
   const [isDashboard, setIsDashboard] = useState(true);
@@ -54,6 +54,16 @@ const NavBar = () => {
     setIsStore(false);
     setIsLog(true);
   };
+
+  useLayoutEffect(() => {
+    const url = document.location.href;
+    const urlSplit = url.split('/');
+    if (urlSplit[urlSplit.length - 1] === 'classes') onClickClasses();
+    else if (urlSplit[urlSplit.length - 1] === 'notice') onClickNotices();
+    else if (urlSplit[urlSplit.length - 1] === 'store') onClickStore();
+    else if (urlSplit[urlSplit.length - 1] === 'log') onClickLog();
+    else onClickDashboard();
+  }, []);
 
   return (
     <div css={totalContainer}>
