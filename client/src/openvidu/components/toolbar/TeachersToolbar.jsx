@@ -90,7 +90,6 @@ const TeachersToolbar = ({
 
 const TotalComponent = css`
   position: absolute;
-  z-index: 9999;
   left: 70px;
   width: 250px;
 
@@ -110,7 +109,9 @@ const TotalComponent = css`
   }
 
   .closeModal {
+    position: fixed;
     visibility: hidden;
+    z-index: 0;
   }
 
   @keyframes modal-bg-show {

@@ -73,6 +73,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: end;
+  z-index: 1;
 }
 .quizModal > .quizSection > footer button {
   outline: none;
