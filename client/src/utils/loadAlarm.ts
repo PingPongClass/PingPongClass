@@ -39,7 +39,7 @@ const loadAlarm = async (props: any) => {
       userId > 2022000000
         ? `반갑습니다! ${userName} 학생`
         : `반갑습니다! ${userName} 선생님`,
-    msg: `오늘 수업은${classes.length}개 입니다`,
+    msg: `오늘 수업은 ${classes.length}개 입니다`,
     sort: 'greeting',
   };
 
