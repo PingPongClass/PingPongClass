@@ -41,6 +41,8 @@ const nthChildCard = ({ offset = 65, multiplier = 220 }) => {
 };
 
 const AlarmModal = ({ alarmUpdate, close }: AlarmModalStyle) => {
+  const alarms = localStorage.getItem('alarms') as any;
+  const parsing = JSON.parse(alarms);
   return (
     <div css={totalContainer}>
       <div className="alarmBack" onClick={close}></div>
