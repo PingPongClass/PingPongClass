@@ -101,7 +101,7 @@ const HeatMap = () => {
             return {
               'data-tip': `${value.date
                 .toISOString()
-                .slice(0, 10)} 퐁퐁개수 : ${value.count}`,
+                .slice(0, 10)} 퐁퐁이개수 : ${value.count}`,
             };
           }}
           onClick={(e) => {

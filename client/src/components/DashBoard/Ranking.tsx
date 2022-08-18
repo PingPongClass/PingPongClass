@@ -142,7 +142,7 @@ const Ranking = () => {
               />
               {myRanking?.name}{' '}
               <span className="ranking-pongpong">
-                {myRanking?.totalPoint}퐁퐁
+                {myRanking?.totalPoint}퐁퐁이
               </span>
             </div>
 
@@ -217,7 +217,7 @@ const Ranking = () => {
                 />
                 {rankingList[0].name}
                 <span className="ranking-pongpong">
-                  {rankingList[0].totalPoint}퐁퐁
+                  {rankingList[0].totalPoint}퐁퐁이
                 </span>
               </div>
               <div className="myBio">
@@ -277,7 +277,7 @@ const Ranking = () => {
                         />
                         {ranking.name}
                         <span className="ranking-pongpong">
-                          {ranking.totalPoint}퐁퐁
+                          {ranking.totalPoint}퐁퐁이
                         </span>
                       </div>
                       <div className="myBio">

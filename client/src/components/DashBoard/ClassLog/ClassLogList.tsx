@@ -107,7 +107,7 @@ const ClassLogList = () => {
             <div className="col classInfo">수업 시간</div>
             <div className="col classTitle">수업명</div>
             <div className="col attendance">출석여부</div>
-            <div className="col point">얻은 퐁퐁</div>
+            <div className="col point">얻은 퐁퐁이</div>
             <div className="col presentCnt">발표횟수</div>
           </div>
 

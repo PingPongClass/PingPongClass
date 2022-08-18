@@ -124,7 +124,7 @@ const Myinfo = () => {
               <h2>{memberStore.name} 학생</h2>
               <p style={{ fontSize: '0.95em' }}>
                 <b>{memberStore.nextLevel}</b> 레벨까지 {memberStore.levelPoint}
-                퐁퐁 남았어요!
+                퐁퐁이 남았어요!
               </p>
             </div>
           </div>
