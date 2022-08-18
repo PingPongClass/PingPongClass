@@ -71,7 +71,6 @@ const TimeTable = ({ close }: TimeTableModalStyle) => {
             </div>
             <div className="column">
               {weeklyList.map((list, idx) => {
-                console.log(list);
                 return (
                   <div key={idx} className="class">
                     <TimeTableClassInfo dayList={list.classEntityList} />

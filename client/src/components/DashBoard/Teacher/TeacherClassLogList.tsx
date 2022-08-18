@@ -154,15 +154,38 @@ const TeacherClassLogList = () => {
               {weeklyList.map((list, idx) => {
                 return (
                   <div key={idx} className="class">
-                    {list.classEntityList.map((cls) => (
-                      <div
-                        key={cls.classId}
-                        className={'classCard' + cls.classDay}
-                        onClick={() => clickClassId(cls)}
-                      >
-                        {cls.classTitle.slice(-3)}
-                      </div>
-                    ))}
+                    {timeline.map((value) => {
+                      {
+                        var isTemp = false;
+                        var classday = 0;
+                        var classtitle = '';
+                        let classes = [];
+                        list.classEntityList.map((cls) => {
+                          console.log(cls.timetableId + ' ' + value);
+                          if (cls.timetableId === value) {
+                            isTemp = true;
+                            classday = cls.classDay;
+                            classtitle = cls.classTitle.slice(-3);
+                            classes = cls;
+                          }
+                        });
+                        if (isTemp) {
+                          return (
+                            <div
+                              key={value}
+                              className={'classCard' + classday}
+                              onClick={() => clickClassId(classes)}
+                            >
+                              {classtitle}
+                            </div>
+                          );
+                        } else {
+                          return (
+                            <div key={value} className={'classCardEmpty'} />
+                          );
+                        }
+                      }
+                    })}
                   </div>
                 );
               })}
@@ -843,6 +866,21 @@ const totalContainer = css`
     transform: scale(1.2);
     cursor: pointer;
     border: 1px solid gray;
+  }
+
+  .classCardEmpty {
+    margin-top: -1px;
+    height: 22px;
+    width: 28px;
+    margin-bottom: 8px;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    font-size: 20px;
+    padding: 3px;
   }
 
   @keyframes loadEffect1 {
