@@ -50,14 +50,16 @@ class QuizModal extends Component {
 
   render() {
     return (
-      <div className={this.state.display ? 'openModal modal' : 'modal'}>
+      <div
+        className={this.state.display ? 'quizModal openQuizModal' : 'quizModal'}
+      >
         {this.state.display ? (
-          <section>
+          <section className="quizSection">
             <header>
               {this.props.header}
               <button onClick={this.close}>&times;</button>
             </header>
-            <div className="quizSection">
+            <div className="quizMain">
               {
                 {
                   two: <QuizForm2 quizCreate={this.quizCreate} />,

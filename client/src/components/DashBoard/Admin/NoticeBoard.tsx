@@ -176,7 +176,10 @@ const NoticeBoard = () => {
         <form onSubmit={search} className="search-div">
           <div style={{ width: '10%' }}></div>
           <div className="search-form-div">
-            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+            <FormControl
+              sx={{ m: 1, minWidth: 150, maxWidth: 150 }}
+              size="small"
+            >
               <InputLabel id="demo-simple-select-label">수업명</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -192,7 +195,7 @@ const NoticeBoard = () => {
                       ? s.classTitle +
                         ' : ' +
                         s.teacherName +
-                        (s.classDesc ? '-' + s.classDesc : null)
+                        (s.classDesc ? ' - ' + s.classDesc : null)
                       : s.classTitle}
                   </MenuItem>
                 ))}

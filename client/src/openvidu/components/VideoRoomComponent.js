@@ -1493,10 +1493,12 @@ class VideoRoomComponent extends Component {
   toggleQuiz = (quiz) => {
     if (quiz) {
       this.sendSignalUserChanged({ quizCreated: quiz });
-      this.setState({
-        quiz: quiz,
-        quizHistory: [...this.state.quizHistory, quiz],
-      });
+      if (!quiz.result) {
+        this.setState({
+          quiz: quiz,
+          quizHistory: [...this.state.quizHistory, quiz],
+        });
+      }
     } else {
       this.setState({ quizDisplay: !this.state.quizDisplay });
     }
