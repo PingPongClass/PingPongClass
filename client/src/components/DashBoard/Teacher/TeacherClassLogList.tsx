@@ -39,7 +39,6 @@ const TeacherClassLogList = () => {
     })
       .then(function (response) {
         setLogList(response.data);
-        console.log(response.data);
       })
       .catch(function (error) {
         console.log('실패', error);
@@ -161,7 +160,6 @@ const TeacherClassLogList = () => {
                         var classtitle = '';
                         let classes = [];
                         list.classEntityList.map((cls) => {
-                          console.log(cls.timetableId + ' ' + value);
                           if (cls.timetableId === value) {
                             isTemp = true;
                             classday = cls.classDay;
@@ -546,7 +544,7 @@ const totalContainer = css`
   .tableArea {
     width: 100%;
     height: 35%;
-    overflow-y: scroll;
+    overflow-y: auto;
     text-align: center;
   }
 

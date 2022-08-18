@@ -27,10 +27,6 @@ const TeacherResult = ({
   studentList,
   studentInfo,
 }) => {
-  console.log(myData);
-  console.log(othersData);
-  console.log('결석자:', absentData);
-  console.log('클래스아이디:', classId);
   const [attStudentNum, setAttStudentNum] = useState(0);
   const [totalSticker, setTotalSticker] = useState(0);
 
@@ -47,7 +43,6 @@ const TeacherResult = ({
           );
       });
       await Promise.all(promises);
-      console.log('DB에 포인트들 저장 완료~');
     } catch (e) {
       alert(
         '오류가 발생하여 정상적으로 저장되지 않았습니다. 행정실에 문의하세요.',
@@ -84,10 +79,7 @@ const TeacherResult = ({
         studentId: studentInfo[absent],
       });
     }
-    console.log(logs);
     await InterceptedAxios.post(`/records/log`, logs);
-
-    console.log('로그 전송 완료!');
   };
 
   const onClickApply = async () => {
@@ -541,7 +533,7 @@ const TotalResult = css`
     }
 
     .student-result-data {
-      overflow-y: scroll;
+      overflow-y: auto;
     }
 
     .student-result-data::-webkit-scrollbar {

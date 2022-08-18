@@ -156,8 +156,6 @@ const EditNotice = () => {
   };
 
   const submitPost = () => {
-    console.log(tmpContent);
-
     setNotice({
       title: tmpTitle,
       content: tmpContent,

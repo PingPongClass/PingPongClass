@@ -159,7 +159,6 @@ const NewClassList = () => {
     setSubjectCode(data);
   };
   const ChangeStudentList = (data) => {
-    console.log(data);
     setStudentList(data);
   };
   const ChangeTimetableId = (data) => {
@@ -186,8 +185,6 @@ const NewClassList = () => {
       setSubjectCode(classinfo.subjectEntity.classSubjectCode);
 
       setPreLoadedList(studentList);
-      console.log(studentList);
-      console.log(preLoadedList);
       setTimetableId(classinfo.timetableId);
       setClassDes(classinfo.classDesc);
     }
@@ -234,7 +231,6 @@ const NewClassList = () => {
       studentIdList: studentList,
     };
     const result = await AXIOS.post('/classes', data);
-    console.log(result);
     navigate('/admin/classes');
   };
 
@@ -250,7 +246,6 @@ const NewClassList = () => {
       studentIdList: studentList,
     };
     const result = await AXIOS.patch('/classes/' + classId, data);
-    console.log(result);
     navigate('/admin/classes');
   };
 

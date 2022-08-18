@@ -151,9 +151,7 @@ export default class ToolbarComponent extends Component {
   }
 
   toggleTeacherMenu() {
-    console.log('adffd');
     this.props.toggleTeacherMenu();
-    console.log('dafdaf');
   }
 
   // name: 한준수

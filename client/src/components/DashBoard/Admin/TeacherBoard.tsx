@@ -118,7 +118,6 @@ const TeacherBoard = () => {
     } else {
       searchQuery = searchQuery + '&name=' + keyword;
     }
-    console.log(searchQuery);
 
     InterceptedAxios.get(searchQuery)
       .then((response) => {

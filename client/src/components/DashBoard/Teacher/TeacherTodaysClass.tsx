@@ -31,7 +31,6 @@ function TeacherTodaysClass() {
   const [classList, setClassList] = useState([] as any);
   const navigate = useNavigate();
   const dt = new Date();
-  console.log(classList);
 
   const loadClassList = async () => {
     const teacherId = memberStore.userId;
@@ -43,7 +42,6 @@ function TeacherTodaysClass() {
   };
 
   const openClass = async (cls: ClassProps) => {
-    console.log(cls);
     const newCode = await getCode();
     const newData = {
       classId: cls.classId,
@@ -84,12 +82,9 @@ function TeacherTodaysClass() {
     if (nowHour > 18 || (nowHour >= 18 && nowMinute >= 0)) nowClassTime = 7;
 
     classList.forEach((elem) => {
-      console.log(elem.timetableId);
-      console.log(nowClassTime);
       if (elem.timetableId <= nowClassTime) elem.isDimming = 'done';
       else elem.isDimming = 'notyet';
     });
-    console.log(classList, '여기');
     setClassList(classList);
   }, [classList]);
 

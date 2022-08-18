@@ -11,7 +11,6 @@ interface AlarmModalStyle {
 const removeAlarm = (idx, card, alarmUpdate) => {
   alarmUpdate();
   const removedAlarms = JSON.parse(localStorage.getItem('removed') as any);
-  console.log(card);
   localStorage.setItem(
     'removed',
     JSON.stringify([...removedAlarms, card.sort]),

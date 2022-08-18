@@ -11,7 +11,6 @@ const OvVideoComponent = (props) => {
   // componentDidMount: 해당 컴포넌트가 마운트되고 나서 user의 getStreamManager에 비디오 요소를 넣는 리액트 컴포넌트 생명주기함수
   useEffect(() => {
     if (props && user.streamManager && !!videoRef) {
-      console.log('PROPS: ', props);
       user.getStreamManager().addVideoElement(videoRef.current);
     }
 

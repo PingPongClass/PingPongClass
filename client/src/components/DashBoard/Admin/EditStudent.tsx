@@ -213,7 +213,6 @@ const EditStudent = ({ onClickOpenModal, studentId }: ModalDefaultType) => {
         newImageFile.current &&
         newImageFile.current.files
       ) {
-        console.log('파일넣음');
         frm.append('file', newImageFile.current.files[0]);
         // else frm.append('file', null);
         // 만약 file이 빈거 (기본사진으로 초기화)라면? 어떻게 처리할 것인지에 대해서 잘 몰라서 우선 주석처리

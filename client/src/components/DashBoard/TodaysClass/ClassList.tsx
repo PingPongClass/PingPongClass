@@ -40,9 +40,7 @@ const ClassList = () => {
     // promise.all 처리!
     const promises = result.data.content.map(async (elem, i) => {
       const classUrlData = await AXIOS.get(`/classes/isopen/${elem.classId}`);
-      console.log(classUrlData);
       elem.classUrl = classUrlData.data;
-      console.log(elem.classUrl);
     });
     await Promise.all(promises);
     setClsList(result.data.content);

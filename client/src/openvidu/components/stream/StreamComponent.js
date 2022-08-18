@@ -21,7 +21,6 @@ export default class StreamComponent extends Component {
     };
     this.handlePressKey = this.handlePressKey.bind(this);
     this.toggleSound = this.toggleSound.bind(this);
-    console.log('나', this.props.user);
   }
 
   // toggleSound: 사운드를 뮤트하거나 풀 수 있는 토글 버튼 함수
@@ -33,7 +32,6 @@ export default class StreamComponent extends Component {
   // 수정 필요 - 수정을 하지 않아도 edit이 추가되는 문제 발생
   handlePressKey(event) {
     if (event.key === 'Enter') {
-      console.log(this.state.nickname);
       if (this.state.nickname.length >= 3 && this.state.nickname.length <= 20) {
         this.props.handleNickname(this.state.nickname);
         this.setState({ isFormValid: true });

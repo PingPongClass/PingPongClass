@@ -112,10 +112,8 @@ const StoreMain = () => {
           itemId: itemId,
         })
           .then(() => {
-            console.log('1');
             onClickOpenModal();
             loadInfo();
-            console.log('2');
             //퐁퐁이 개수 줄인 정보 받아오기
           })
           .catch(function (error) {

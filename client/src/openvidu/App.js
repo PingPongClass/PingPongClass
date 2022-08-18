@@ -61,11 +61,9 @@ const App = () => {
   // 학생셋 만들기
   useEffect(() => {
     const getMyLevel = async () => {
-      console.log(memberStore.userId);
       const myPoint = await InterceptedAxios.get(
         `/items/totalsticker/${memberStore.userId}`,
       );
-      console.log(myPoint.data);
       const pngUrl = levelFunction(myPoint.data);
       setLevelPng(pngUrl);
     };
@@ -85,9 +83,6 @@ const App = () => {
     };
     if (whoami !== 'teacher') getMyLevel();
     getStudentList();
-    return () => {
-      console.log('오픈비두 종료');
-    };
   }, []);
 
   // 만약 state 없이 한번에 url에 접근하려고 했다면

@@ -32,9 +32,6 @@ export default class ParticipantComponent extends Component {
       .stream.session.on('signal:point-down', (event) => {
         this.downPointChanged();
       });
-
-    console.log('쌤:', this.props.teacher);
-    console.log('학생:', this.props.students);
   }
 
   // close: 무언가를 닫는 함수

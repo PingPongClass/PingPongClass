@@ -150,7 +150,6 @@ const NewClassList = () => {
     setSubjectCode(data);
   };
   const ChangeStudentList = (data) => {
-    console.log(data);
     setStudentList(data);
   };
   const ChangeTimetableId = (data) => {

@@ -220,7 +220,6 @@ export const memberSlice = createSlice({
     logOut: () => initialState,
     setPoint: (state) => {
       let newPoint = +state.point - 15;
-      console.log(newPoint);
 
       return { ...state, point: newPoint };
     },

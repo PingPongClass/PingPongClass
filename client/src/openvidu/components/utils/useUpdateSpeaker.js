@@ -12,8 +12,6 @@ const attachSinkId = (element, sinkId) => {
     }
     console.error(errorMessage);
   });
-
-  console.log('엘리먼트', element);
 };
 
 // name: 오석호
@@ -23,7 +21,6 @@ const useUpdateSpeaker = (elementRef, speakerInfo) => {
   useEffect(() => {
     const element = elementRef.current;
     const sinkId = speakerInfo;
-    console.log(sinkId);
     if (!element) return;
     attachSinkId(element, sinkId);
   }, [speakerInfo]);

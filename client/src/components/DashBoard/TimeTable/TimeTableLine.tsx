@@ -6,8 +6,6 @@ import axios from 'axios';
 
 const TimeTableLine = ({ dayList }: any) => {
   const memberStore = useAppSelector((state) => state.member);
-  console.log(memberStore.userId);
-  console.log(dayList);
   const timeline = [1, 2, 3, 4, 5, 6, 7];
   return (
     <div className="classArea" css={totalContainer}>
@@ -17,7 +15,6 @@ const TimeTableLine = ({ dayList }: any) => {
           var classday = 0;
           var classtitle = '';
           dayList.map((cls) => {
-            console.log(cls.timetableId + ' ' + value);
             if (cls.timetableId === value) {
               isTemp = true;
               classday = cls.classDay;
@@ -25,7 +22,6 @@ const TimeTableLine = ({ dayList }: any) => {
                 classtitle = cls.subjectEntity.name;
               else classtitle = cls.classTitle.slice(-3);
             }
-            console.log(cls.timetableId + ' ' + value + isTemp);
           });
           if (isTemp) {
             return (

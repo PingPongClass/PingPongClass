@@ -31,7 +31,6 @@ const GetItemList = (props: GetItemListProps) => {
     dispatch(saveItem(memberStore.userId)).then(() => {
       setItems(memberStore.items);
       dispatch(saveMember());
-      console.log('-------랜더링 : ', items);
       setLoading(false);
     });
   }, []);
@@ -59,7 +58,6 @@ const GetItemList = (props: GetItemListProps) => {
         } else {
           color = 1;
         }
-        console.log(rarity + ',' + color);
 
         InterceptedAxios.delete(`/items/${memberStore.userId}/${e.itemId}`)
           .then(() => {
@@ -96,8 +94,6 @@ const GetItemList = (props: GetItemListProps) => {
             console.log(error);
           });
       }
-
-      console.log(e);
     };
 
     return (

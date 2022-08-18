@@ -13,11 +13,15 @@ const ClassCard = ({ clsList, classUrl, isDimming }: any) => {
       <div css={TotalContainer({ classUrl, isDimming })}>
         <img src={img} className="classImg" alt="수업" />
         <div className="class-info">
-          <h2>{clsList.classTitle}</h2>
-          <p>{clsList.classDesc}</p>
-          <p>
-            [{clsList.timetableId}교시] {clsList.teacherName} 선생님
-          </p>
+          <div className="class-title">
+            <h2>{clsList.classTitle}</h2>
+          </div>
+          <div className="class-desc">
+            <p>{clsList.classDesc}</p>
+            <p>
+              [{clsList.timetableId}교시] {clsList.teacherName} 선생님
+            </p>
+          </div>
         </div>
       </div>
     );
@@ -53,14 +57,24 @@ const TotalContainer = ({ classUrl, isDimming }) => css`
     cursor: ${classUrl !== '링크' && classUrl ? 'pointer' : null};
   }
 
-  h2 {
-    padding-top: 2px;
-    padding-bottom: 4px;
-    font-size: 14pt;
+  .class-title {
+    height: 30px;
+    h2 {
+      padding-top: 2px;
+      padding-bottom: 4px;
+      font-size: 14pt;
+    }
   }
-  p {
-    padding-bottom: 2px;
-    font-size: 9.4pt;
+
+  .class-desc {
+    p {
+      padding-bottom: 2px;
+      font-size: 9.4pt;
+      height: 18px;
+      text-align: left;
+      display: flex;
+      align-items: center;
+    }
   }
 
   .classImg {

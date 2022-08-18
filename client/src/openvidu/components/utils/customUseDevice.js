@@ -95,7 +95,6 @@ export const getAudios = async () => {
 export const getSpeakers = async () => {
   try {
     const devices = await navigator.mediaDevices.enumerateDevices();
-    console.log(devices);
     const speakerDevices = devices.filter(
       (device) => device.kind === 'audiooutput',
     );

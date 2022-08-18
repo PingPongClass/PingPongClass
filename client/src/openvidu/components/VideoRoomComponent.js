@@ -29,7 +29,6 @@ let timeout;
 // VideoRoomComponent: 비디오룸 전체를 담당하는 컴포넌트
 class VideoRoomComponent extends Component {
   constructor(props) {
-    console.log('component----------', props);
     super(props);
 
     // OPENVIDU_SERVER_URL: 오픈비두 서버쪽 URL (포트번호는 변경될 수 있음)
@@ -637,7 +636,6 @@ class VideoRoomComponent extends Component {
             classId: this.props.classId,
           },
         );
-        console.log('수업이 종료되었습니다.', result);
       } catch (e) {
         console.error(e);
       }
@@ -721,7 +719,6 @@ class VideoRoomComponent extends Component {
   // 발표 횟수 증가 함수
   upPresentationCnt() {
     this.state.localUser.upPresentationCnt();
-    console.log('잘 작동함: ', this.state.localUser.presentationCnt);
     this.sendSignalUserChanged({
       presentationCnt: localUser.getPresentationCnt(),
     });
@@ -1370,7 +1367,6 @@ class VideoRoomComponent extends Component {
         let cnt = 0;
         list.forEach((elem) => {
           if (elem.itemId === itemId && elem.cnt !== 0) {
-            console.log('보유 갯수: ' + elem.cnt);
             cnt = elem.cnt;
           }
         });
@@ -1612,7 +1608,6 @@ class VideoRoomComponent extends Component {
 
   toggleTeacherMenu() {
     this.setState({ teacherMenuDisplay: !this.state.teacherMenuDisplay });
-    console.log(this.state.teacherMenuDisplay);
   }
 
   // render: 렌더링을 담당하는 함수

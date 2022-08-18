@@ -85,7 +85,6 @@ function RightSide(props: RightSideProps) {
 
         dispatch(saveMember());
         dispatch(getClasses(userId));
-        console.log('로그인 성공', response);
       })
       .catch(function (error) {
         alert('로그인 에러.');

@@ -32,8 +32,6 @@ const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
 
 // 요청 에러 직전 호출됩니다.
 const onRequestError = (error: AxiosError): Promise<AxiosError> => {
-  console.log('요청 에러');
-
   // console.error(`[요청 에러] [${JSON.stringify(error)}]`);
   return Promise.reject(error);
 };
@@ -85,7 +83,6 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
         originalRequest.headers!.Authorization = `Bearer ${newAccessToken}`;
         // 401로 요청 실패했던 요청 새로운 accessToken으로 재요청
         accessToken = newAccessToken;
-        console.log('JWT 토큰 갱신 성공');
         return axios.request(originalRequest);
       })
       .catch((e) => {

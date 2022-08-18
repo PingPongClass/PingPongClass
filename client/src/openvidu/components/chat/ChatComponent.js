@@ -31,7 +31,6 @@ export default class ChatComponent extends Component {
       .getStreamManager()
       .stream.session.on('signal:chat', (event) => {
         const data = JSON.parse(event.data);
-        console.log(data);
         let messageList = this.state.messageList;
         messageList.push({
           connectionId: event.from.connectionId,
@@ -93,7 +92,6 @@ export default class ChatComponent extends Component {
 
   // sendmessage: 메시지를 보낼 때 작동하는 함수
   sendMessage() {
-    console.log(this.props.levelPng);
     if (this.props.user && this.state.message) {
       let message = this.state.message.replace(/ +(?= )/g, '');
       if (message !== '' && message !== ' ') {

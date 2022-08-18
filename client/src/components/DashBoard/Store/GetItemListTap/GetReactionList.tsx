@@ -24,7 +24,6 @@ const GetReactionList = (props: GetReactionProps) => {
     dispatch(saveItem(memberStore.userId)).then(() => {
       setItems(memberStore.items);
       dispatch(saveMember());
-      console.log('-------랜더링 : ', items);
       setLoading(false);
     });
   }, []);

@@ -8,7 +8,6 @@ class QuizListCard extends Component {
   };
 
   componentDidUpdate() {
-    console.log(this.props.quiz);
     if (this.state.quiz !== this.props.quiz) {
       this.setState({ quiz: this.props.quiz });
     }

@@ -45,7 +45,6 @@ function TodaysClass() {
         `/classes/isopen/${elem.classId}`,
       );
       elem.classUrl = classUrlData.data;
-      console.log(elem.classUrl);
     });
     await Promise.all(promises);
   };

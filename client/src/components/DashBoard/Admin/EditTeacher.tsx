@@ -192,14 +192,12 @@ const EditTeacher = ({ onClickOpenModal, teacherId }: ModalDefaultType) => {
         'teacher',
         new Blob([teacherString], { type: 'application/json' }),
       );
-      console.log(newImageFile);
 
       if (
         !isPreviewReset &&
         newImageFile.current &&
         newImageFile.current.files
       ) {
-        console.log('파일넣음');
         frm.append('file', newImageFile.current.files[0]);
         // else frm.append('file', null);
         // 만약 file이 빈거 (기본사진으로 초기화)라면? 어떻게 처리할 것인지에 대해서 잘 몰라서 우선 주석처리
@@ -212,12 +210,11 @@ const EditTeacher = ({ onClickOpenModal, teacherId }: ModalDefaultType) => {
       })
         .then(function (response) {
           alert('정보가 수정되었습니다.');
-          console.log(response);
           navigate('/admin/teachers');
           // location.href = '/admin/teachers';
         })
         .catch(function (error) {
-          console.log(error);
+          console.error(error);
           alert('정보 수정에 실패하였습니다.');
         });
     }

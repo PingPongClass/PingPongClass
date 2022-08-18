@@ -31,7 +31,6 @@ const StudentResult = ({
   const [otherModels, setOtherModels] = useState([]);
   // 학생데이터 상점 받은 순으로 정렬
   otherModels.sort((a, b) => b.point - a.point);
-  console.log(otherModels);
 
   useLayoutEffect(() => {
     const data =
@@ -494,7 +493,7 @@ const TotalResult = css`
     }
 
     .student-result-data {
-      overflow-y: scroll;
+      overflow-y: auto;
     }
 
     .student-result-data::-webkit-scrollbar {

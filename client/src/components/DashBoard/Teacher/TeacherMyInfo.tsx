@@ -42,14 +42,10 @@ const TeacherMyinfo = () => {
 
     let finClassCnt = 0;
     classList.forEach((elem) => {
-      console.log(elem.timetableId);
-      console.log(nowClassTime);
       if (elem.timetableId <= nowClassTime) ++finClassCnt;
     });
     setFinClassNum(finClassCnt);
   }, [classList]);
-
-  console.log(classList.length, finClassNum);
 
   return (
     <div

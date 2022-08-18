@@ -200,7 +200,6 @@ const EditClassList = () => {
       studentIdList: studentList,
     };
     const result = await AXIOS.patch('/classes/' + classId, data);
-    console.log(result);
     alert('수업이 수정되었습니다.');
     navigate('/teacher/classes');
   };

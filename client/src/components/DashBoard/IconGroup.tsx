@@ -34,7 +34,6 @@ const IconGroup = () => {
         setAlarm(parsing.length);
       }, 500);
     };
-    console.log(memberStore);
     loadAlarm({ id: memberStore.userId, name: memberStore.name });
     timer();
   };

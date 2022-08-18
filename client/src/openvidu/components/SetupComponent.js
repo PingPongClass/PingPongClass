@@ -163,7 +163,6 @@ const SetupComponent = (props) => {
     if (isUsedDoublePongpong) {
       try {
         await InterceptedAxios.delete(`/items/${userId}/4`);
-        console.log('더블퐁퐁권이 정상적으로 사용되었습니다!');
       } catch (e) {
         console.error(e);
       }
@@ -180,7 +179,6 @@ const SetupComponent = (props) => {
             classId: classId,
           },
         );
-        console.log('수업이 종료되었습니다.', result);
       } catch (e) {
         console.error(e);
       }

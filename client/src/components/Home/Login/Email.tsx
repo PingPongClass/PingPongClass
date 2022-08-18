@@ -45,7 +45,6 @@ function Email(props: EmailProps) {
     } else {
       InterceptedAxios.get(`/users/email/${mergedEmail}`)
         .then(function () {
-          console.log('이메일 중복안됨');
           setEmail(email1 + '@' + email2);
           setEmailConfirmed(email);
           setUse(true);

@@ -29,7 +29,6 @@ const TeacherClassCard = ({ clsList }: any) => {
   const [isMouseOn, setIsMouseOn] = useState(false);
 
   const openClass = async (cls: ClassProps) => {
-    console.log(cls);
     const newCode = await getCode();
     const newData = {
       classId: cls.classId,

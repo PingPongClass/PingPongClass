@@ -32,11 +32,9 @@ const Emoji = (props) => {
         ]);
       } else {
         //학생이면 보유리액션
-        console.log('student');
         InterceptedAxios.get(`/items/reaction/${id}`)
           .then(function (response) {
             setEmotions(response.data);
-            console.log(emotions);
           })
           .catch(function (error) {
             console.log(error);

@@ -30,7 +30,6 @@ class QuizResult extends Component {
   };
 
   convert = (data) => {
-    console.log(data);
     if (data) {
       return [
         {

@@ -19,17 +19,13 @@ const HeatMap = () => {
   const [countList, setCountList] = useState<HeatMapInterface[]>([]);
 
   const loadHeatmapList = async () => {
-    console.log(memberStore, '///////////');
-    console.log(color[memberStore.jandiColor - 1]);
-
     const studentId = memberStore.userId;
     await AXIOS.get(`/students/points/` + studentId)
       .then(function (response) {
         setCountList(response.data);
-        console.log(response.data);
       })
       .catch(function (error) {
-        console.log('실패', error);
+        console.error('실패', error);
       });
   };
 
