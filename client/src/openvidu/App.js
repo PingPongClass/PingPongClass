@@ -122,6 +122,7 @@ const App = () => {
         <SetupComponent
           teacherName={state.teacherName}
           classTitle={state.classTitle}
+          classId={state.classId}
           setTap={setTap}
           setDevices={setDevices}
           code={code}

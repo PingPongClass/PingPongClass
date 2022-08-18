@@ -26,6 +26,8 @@ import ViewArray from '@mui/icons-material/ViewArray';
 import Share from '@mui/icons-material/Share';
 import SearchIcon from '@mui/icons-material/Search';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+import AutoAwesomeMotionIcon from '@mui/icons-material/AutoAwesomeMotion';
+import TeachersToolbar from './TeachersToolbar';
 
 export default class ToolbarComponent extends Component {
   constructor(props) {
@@ -51,6 +53,7 @@ export default class ToolbarComponent extends Component {
     this.toggleVideoLayout = this.toggleVideoLayout.bind(this);
     this.toggleEmoji = this.toggleEmoji.bind(this);
     this.toggleQuestion = this.toggleQuestion.bind(this);
+    this.toggleTeacherMenu = this.toggleTeacherMenu.bind(this);
   }
 
   // micStatusChanged: 마이크 상태변화 토글 함수
@@ -147,6 +150,12 @@ export default class ToolbarComponent extends Component {
     this.lockOutSticker(31);
   }
 
+  toggleTeacherMenu() {
+    console.log('adffd');
+    this.props.toggleTeacherMenu();
+    console.log('dafdaf');
+  }
+
   // name: 한준수
   // date: 2022/08/13
   // desc: 내 화면의 비디오 레이아웃을 변경시키는 기능.
@@ -238,67 +247,31 @@ export default class ToolbarComponent extends Component {
             </IconButton>
 
             {this.props.whoami === 'teacher' && (
-              <>
-                <IconButton
-                  color="inherit"
-                  className="navButton"
-                  id="navRandButton"
-                  onClick={this.pickRandomStudent}
-                  disabled={!this.state.randAvailable}
-                >
-                  <div className="buttonStyle">
-                    {this.state.randAvailable ? (
-                      <Shuffle />
-                    ) : (
-                      <Shuffle
-                        color="secondary"
-                        style={{ animation: 'cooldown 5s linear 1' }}
-                      />
-                    )}
-                    <p>랜덤 학생 뽑기</p>
-                  </div>
-                </IconButton>
-              </>
+              <IconButton
+                color="inherit"
+                className="navButton"
+                id="navRandButton"
+                onClick={this.toggleTeacherMenu}
+              >
+                <div className="buttonStyle">
+                  <AutoAwesomeMotionIcon />
+                  <p>선생님 메뉴</p>
+                </div>
+              </IconButton>
             )}
 
             {this.props.whoami === 'teacher' && (
-              <>
-                <IconButton
-                  color="inherit"
-                  className="navButton"
-                  id="navRandButton"
-                  onClick={this.startStickerEvent}
-                  disabled={!this.state.stickerAvailable}
-                >
-                  <div className="buttonStyle">
-                    {this.state.stickerAvailable ? (
-                      <AccessTime />
-                    ) : (
-                      <AccessTime
-                        color="secondary"
-                        style={{ animation: 'cooldown 30s linear 1' }}
-                      />
-                    )}
-                    <p>집중 스티커</p>
-                  </div>
-                </IconButton>
-              </>
-            )}
-
-            {this.props.whoami === 'teacher' && (
-              <>
-                <IconButton
-                  color="inherit"
-                  className="navButton"
-                  id="navRandButton"
-                  onClick={this.toggleQuiz}
-                >
-                  <div className="buttonStyle">
-                    <Quiz />
-                    <p>퀴즈 열기</p>
-                  </div>
-                </IconButton>
-              </>
+              <div className="teacher-toolbar">
+                <TeachersToolbar
+                  display={this.props.teacherMenuDisplay}
+                  randAvailable={this.state.randAvailable}
+                  stickerAvailable={this.state.stickerAvailable}
+                  pickRandomStudent={this.pickRandomStudent}
+                  startStickerEvent={this.startStickerEvent}
+                  toggleQuiz={this.toggleQuiz}
+                  toggleTeacherMenu={this.toggleTeacherMenu}
+                />
+              </div>
             )}
 
             <IconButton
