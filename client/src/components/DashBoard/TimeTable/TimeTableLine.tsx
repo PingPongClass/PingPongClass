@@ -7,15 +7,37 @@ import axios from 'axios';
 const TimeTableLine = ({ dayList }: any) => {
   const memberStore = useAppSelector((state) => state.member);
   console.log(memberStore.userId);
+  console.log(dayList);
+  const timeline = [1, 2, 3, 4, 5, 6, 7];
   return (
     <div className="classArea" css={totalContainer}>
-      {dayList.map((cls) => (
-        <div key={cls.classId} className={'classCard' + cls.classDay}>
-          {memberStore.userId.toString().length === 10
-            ? cls.subjectEntity.name
-            : cls.classTitle.slice(-3)}
-        </div>
-      ))}
+      {timeline.map((value) => {
+        {
+          var isTemp = false;
+          var classday = 0;
+          var classtitle = '';
+          dayList.map((cls) => {
+            console.log(cls.timetableId + ' ' + value);
+            if (cls.timetableId === value) {
+              isTemp = true;
+              classday = cls.classDay;
+              if (memberStore.userId.toString().length === 10)
+                classtitle = cls.subjectEntity.name;
+              else classtitle = cls.classTitle.slice(-3);
+            }
+            console.log(cls.timetableId + ' ' + value + isTemp);
+          });
+          if (isTemp) {
+            return (
+              <div key={value} className={'classCard' + classday}>
+                {classtitle}
+              </div>
+            );
+          } else {
+            return <div key={value} className={'classCardEmpty'} />;
+          }
+        }
+      })}
     </div>
   );
 };
@@ -74,6 +96,18 @@ const totalContainer = css`
     height: 35px;
     margin-bottom: 10px;
     background: #cee7db;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    font-size: 20px;
+  }
+
+  .classCardEmpty {
+    height: 35px;
+    margin-bottom: 10px;
+    background: #ffffff;
     display: flex;
     flex-direction: column;
     align-items: center;
