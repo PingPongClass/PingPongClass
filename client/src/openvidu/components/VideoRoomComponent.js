@@ -115,6 +115,7 @@ class VideoRoomComponent extends Component {
       emojiDisplay: false,
       isEmojiOn: false,
       isPointDouble: this.props.isUsedDoublePongpong,
+      teacherMenuDisplay: false,
     };
 
     // 메서드 바인딩 과정
@@ -188,13 +189,14 @@ class VideoRoomComponent extends Component {
     this.whoTeacherOrStudent = this.whoTeacherOrStudent.bind(this);
     // 이모지
     this.toggleEmoji = this.toggleEmoji.bind(this);
-    // 익명질문
-    this.question = this.question.bind(this);
+
     // 발표 횟수 체크
     this.upPresentationCnt = this.upPresentationCnt.bind(this);
     this.downPresentationCnt = this.downPresentationCnt.bind(this);
     // 정렬 변경 이벤트핸들러
     this.partsSortChange = this.partsSortChange.bind(this);
+    // 선생님 메뉴 토글버튼
+    this.toggleTeacherMenu = this.toggleTeacherMenu.bind(this);
   }
 
   // componentDidMount: 컴포넌트가 마운트 되었을 때 작동하는 리액트 컴포넌트 생명주기함수
@@ -1557,15 +1559,7 @@ class VideoRoomComponent extends Component {
   // desc: 이모지창을 여닫는 함수
   toggleEmoji() {
     this.setState({ emojiDisplay: !this.state.emojiDisplay });
-    console.log('이모지 이벤트 핸들러');
   }
-
-  // name: 오석호
-  // date: 2022/08/15
-  // desc: 익명질문창을 여닫는 함수
-  question = () => {
-    console.log('익명질문 이벤트 핸들러');
-  };
 
   // name: 오석호
   // date: 2022/08/16
@@ -1591,6 +1585,11 @@ class VideoRoomComponent extends Component {
       this.sendSignalUserChanged({ emojiUsed: '' });
     }, 3000);
   };
+
+  toggleTeacherMenu() {
+    this.setState({ teacherMenuDisplay: !this.state.teacherMenuDisplay });
+    console.log(this.state.teacherMenuDisplay);
+  }
 
   // render: 렌더링을 담당하는 함수
   render() {
@@ -1621,7 +1620,7 @@ class VideoRoomComponent extends Component {
             currentAudioDeviceId={this.state.currentAudioDeviceId}
             currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
           />
-          {/* 작업중*/}
+
           <Emoji
             display={this.state.emojiDisplay}
             toggleEmoji={this.toggleEmoji}
@@ -1854,6 +1853,8 @@ class VideoRoomComponent extends Component {
               videoLayout={this.state.videoLayout}
               toggleVideoLayout={this.toggleVideoLayout}
               toggleEmoji={this.toggleEmoji}
+              toggleTeacherMenu={this.toggleTeacherMenu}
+              teacherMenuDisplay={this.state.teacherMenuDisplay}
             />
           </div>
         </div>
