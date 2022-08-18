@@ -27,14 +27,22 @@ class QuizModalStudent extends Component {
   submit = (answer) => {
     this.props.toggleQuizStudent(answer);
     let answerText = '';
-    if (answer === 'a1') {
-      answerText = this.props.quiz.A1;
-    } else if (answer === 'a2') {
-      answerText = this.props.quiz.A2;
-    } else if (answer === 'a3') {
-      answerText = this.props.quiz.A3;
-    } else if (answer === 'a4') {
-      answerText = this.props.quiz.A4;
+    if (this.props.quiz.type) {
+      if (answer === 'a1') {
+        answerText = this.props.quiz.A1;
+      } else if (answer === 'a2') {
+        answerText = this.props.quiz.A2;
+      } else if (answer === 'a3') {
+        answerText = this.props.quiz.A3;
+      } else if (answer === 'a4') {
+        answerText = this.props.quiz.A4;
+      }
+    } else {
+      if (answer === 'a1') {
+        answerText = 'O';
+      } else if (answer === 'a2') {
+        answerText = 'X';
+      }
     }
 
     this.setState({ answer: answerText });
@@ -42,29 +50,30 @@ class QuizModalStudent extends Component {
 
   render() {
     return (
-      <div className={this.state.display ? 'openModal modal' : 'modal'}>
+      <div
+        className={this.state.display ? 'quizModal openQuizModal' : 'quizModal'}
+      >
         {this.state.display ? (
-          <section>
+          <section className="quizSection">
             <header>
               {this.props.header}
               <button className="close" onClick={this.close}>
                 &times;
               </button>
             </header>
-            {this.state.quiz.result === true ? (
+            {this.state.quiz.result ? (
               <QuizResult quiz={this.state.quiz} />
-            ) : this.state.quiz.type === true ? (
+            ) : this.state.quiz.type ? (
               <QuizComponent submit={this.submit} quiz={this.state.quiz} />
             ) : (
               <QuizComponent2 submit={this.submit} quiz={this.state.quiz} />
             )}
 
-            {this.state.quiz.result === true && this.state.answer !== 'none' ? (
+            {this.state.quiz.result && this.state.answer !== 'none' ? (
               <p>내가 고른 답 : {this.state.answer}</p>
             ) : null}
 
-            {this.state.quiz.result === true &&
-            this.state.quiz.answer !== 'none' ? (
+            {this.state.quiz.result && this.state.quiz.answer !== 'none' ? (
               <p>정답 : {this.state.quiz.answer}</p>
             ) : null}
             <footer>

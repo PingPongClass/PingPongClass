@@ -1,20 +1,24 @@
-.modal {
-  position: relative;
+.quizModal {
+  position: absolute;
   z-index: 9999;
   background-color: rgba(0, 0, 0, 0.6);
   width: 100%;
   height: 100%;
-  padding-top: 20px;
-  display: flex;
+  padding-bottom: 80px;
+  display: none;
   flex-direction: column;
   box-sizing: border-box;
   align-items: center;
+  justify-content: center;
 }
-.modal > section {
+
+.quizModal > .quizSection {
   position: relative;
-  height: 80%;
+  height: max-content;
   border-radius: 20px;
-  max-height: 800px;
+  min-width: 800px;
+  min-height: min-content;
+  max-height: 95%;
   background-color: #fff;
   /* 팝업이 열릴때 스르륵 열리는 효과 */
   animation: modal-show 0.3s;
@@ -25,15 +29,17 @@
   box-sizing: border-box;
   overflow-y: scroll;
 }
-.modal > section > header {
+.quizModal > .quizSection > header {
   position: relative;
   padding: 16px 64px 16px 16px;
   background-color: #f1f1f1;
   font-weight: 700;
   width: 100%;
+  width: -webkit-fill-available;
+  max-width: 1000px;
   box-sizing: border-box;
 }
-.modal > section > header button {
+.quizModal > .quizSection > header button {
   outline: none;
   cursor: pointer;
   border: 0;
@@ -47,7 +53,10 @@
   color: #999;
   background-color: transparent;
 }
-.quizSection {
+.quizModal > .quizSection > .quizMain {
+  min-width: inherit;
+}
+.quiz.quizSection {
   width: 100%;
   height: 100%;
   border-bottom: 1px solid #dee2e6;
@@ -55,7 +64,7 @@
   overflow-y: scroll;
   box-sizing: border-box;
 }
-.modal > section > footer {
+.quizModal > .quizSection > footer {
   width: 100%;
   padding: 12px 16px;
   text-align: right;
@@ -65,7 +74,7 @@
   align-items: center;
   justify-content: end;
 }
-.modal > section > footer button {
+.quizModal > .quizSection > footer button {
   outline: none;
   cursor: pointer;
   border: 0;
@@ -76,7 +85,7 @@
   font-size: 13px;
   margin-right: 10px;
 }
-.modal.openModal {
+.quizModal.openQuizModal {
   display: flex;
   align-items: center;
   /* 팝업이 열릴때 스르륵 열리는 효과 */
@@ -100,4 +109,3 @@
     opacity: 1;
   }
 }
-
