@@ -1519,27 +1519,44 @@ class VideoRoomComponent extends Component {
   };
 
   answerUpdate = (answer) => {
+    let quiz = this.state.quiz;
     if (answer === 'a1') {
+      quiz = { ...this.state.quiz, answerA1: this.state.quiz.answerA1 + 1 };
       this.setState({
         ...this.state,
-        quiz: { ...this.state.quiz, answerA1: this.state.quiz.answerA1 + 1 },
+        quiz: quiz,
       });
     } else if (answer === 'a2') {
+      quiz = { ...this.state.quiz, answerA1: this.state.quiz.answerA2 + 1 };
       this.setState({
         ...this.state,
-        quiz: { ...this.state.quiz, answerA2: this.state.quiz.answerA2 + 1 },
+        quiz: quiz,
       });
     } else if (answer === 'a3') {
+      quiz = { ...this.state.quiz, answerA1: this.state.quiz.answerA3 + 1 };
       this.setState({
         ...this.state,
-        quiz: { ...this.state.quiz, answerA3: this.state.quiz.answerA3 + 1 },
+        quiz: quiz,
       });
     } else if (answer === 'a4') {
+      quiz = { ...this.state.quiz, answerA1: this.state.quiz.answerA4 + 1 };
       this.setState({
         ...this.state,
-        quiz: { ...this.state.quiz, answerA4: this.state.quiz.answerA4 + 1 },
+        quiz: quiz,
       });
     }
+
+    let resultSavedHistory = [];
+    this.state.quizHistory.forEach((his) => {
+      if (his.question === quiz.question) {
+        resultSavedHistory.push(quiz);
+      } else {
+        resultSavedHistory.push(his);
+      }
+    });
+    this.setState({
+      quizHistory: resultSavedHistory,
+    });
   };
 
   // name: 한준수
