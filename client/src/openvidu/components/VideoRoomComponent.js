@@ -1529,19 +1529,19 @@ class VideoRoomComponent extends Component {
         quiz: quiz,
       });
     } else if (answer === 'a2') {
-      quiz = { ...this.state.quiz, answerA1: this.state.quiz.answerA2 + 1 };
+      quiz = { ...this.state.quiz, answerA2: this.state.quiz.answerA2 + 1 };
       this.setState({
         ...this.state,
         quiz: quiz,
       });
     } else if (answer === 'a3') {
-      quiz = { ...this.state.quiz, answerA1: this.state.quiz.answerA3 + 1 };
+      quiz = { ...this.state.quiz, answerA3: this.state.quiz.answerA3 + 1 };
       this.setState({
         ...this.state,
         quiz: quiz,
       });
     } else if (answer === 'a4') {
-      quiz = { ...this.state.quiz, answerA1: this.state.quiz.answerA4 + 1 };
+      quiz = { ...this.state.quiz, answerA4: this.state.quiz.answerA4 + 1 };
       this.setState({
         ...this.state,
         quiz: quiz,
