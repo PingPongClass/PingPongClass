@@ -15,8 +15,8 @@ export default class EmojiFilter extends Component {
             {this.state.user.smile ? (
               <img
                 style={{
-                  width: '8rem',
-                  height: '8rem',
+                  minWidth: '8rem',
+                  width: '20%',
                   position: 'absolute',
                   top: '5%',
                   right: '2.5%',

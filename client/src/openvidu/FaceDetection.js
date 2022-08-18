@@ -121,16 +121,21 @@ export default class FaceDetection extends Component {
             <h1
               style={{
                 position: 'absolute',
-                top: '10%',
-                right: '10%',
+                top: '5%',
+                right: '2.5%',
                 fontSize: '500%',
               }}
             >
               {this.state.smile < 1 ? null : this.state.smile > 3 ? (
                 <img
                   style={{
-                    width: '8rem',
-                    height: '8rem',
+                    position: 'absolute',
+                    minWidth: '8rem',
+                    width: '20%',
+                    minHeight: '8rem',
+                    height: '20%',
+                    top: '5%',
+                    right: '2.5%',
                   }}
                   src={Smile}
                   alt={'HI'}
@@ -142,16 +147,16 @@ export default class FaceDetection extends Component {
             <h1
               style={{
                 position: 'absolute',
-                top: '10%',
-                right: '10%',
+                top: '5%',
+                right: '2.5%',
                 fontSize: '500%',
               }}
             >
               {this.state.face < 3 ? null : this.state.face > 5 ? (
                 <p
                   style={{
-                    width: '8rem',
-                    height: '8rem',
+                    width: '10%',
+                    height: '10%',
                   }}
                 >
                   🚫

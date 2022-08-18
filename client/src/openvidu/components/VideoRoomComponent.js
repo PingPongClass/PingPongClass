@@ -1403,11 +1403,12 @@ class VideoRoomComponent extends Component {
   // desc: startStickerEvent: 칭찬스티커 클릭이벤트를 발생시키는 함수
   // todo: subscribers에게 sendSignalUserChanged를 통해 클릭이벤트를 발생시키는 함수
   startStickerEvent = () => {
-    this.state.subscribers.forEach((subs) => {
-      this.sendSignalUserChanged({
-        clickEvent: 3,
-      });
+    this.sendSignalUserChanged({
+      clickEvent: 20,
+      // clickEvent: 3,
     });
+    // this.state.subscribers.forEach((subs) => {
+    // });
   };
 
   // addNewStickers: 호출 시 int값으로 주어진 multiple개 만큼의 칭찬스티커를 전체 화면에 생성하는 함수
