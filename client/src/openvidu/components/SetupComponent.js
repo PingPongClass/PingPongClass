@@ -225,7 +225,7 @@ const SetupComponent = (props) => {
                   }}
                 />
               </div>
-              <div className="settingSection">
+              <div className="setting-section">
                 <div className="settingVideo">
                   <p>비디오 </p>
                   <select onChange={selectVideo}>

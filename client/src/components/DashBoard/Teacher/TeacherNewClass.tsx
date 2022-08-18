@@ -163,19 +163,23 @@ const NewClassList = () => {
   const navigate = useNavigate();
 
   const createClass = async () => {
-    const data = {
-      teacherId: memberStore.userId,
-      subjectCode: subjectCode,
-      classTitle: classTitle,
-      classDay: classDay,
-      classUrl: '',
-      timetableId: timetableId,
-      classDesc: classDes,
-      studentIdList: studentList,
-    };
-    const result = await AXIOS.post('/classes', data);
-    console.log(result);
-    navigate('/teacher/classes');
+    if (!classTitle) alert('수업 제목을 입력하세요!');
+    else if (!classDes) alert('수업 설명을 입력하세요!');
+    else {
+      const data = {
+        teacherId: memberStore.userId,
+        subjectCode: subjectCode,
+        classTitle: classTitle,
+        classDay: classDay,
+        classUrl: '',
+        timetableId: timetableId,
+        classDesc: classDes,
+        studentIdList: studentList,
+      };
+      const result = await AXIOS.post('/classes', data);
+      console.log(result);
+      navigate('/teacher/classes');
+    }
   };
 
   return (
@@ -189,6 +193,8 @@ const NewClassList = () => {
           label="수업명"
           fullWidth
           size="small"
+          inputProps={{ maxLength: 12 }}
+          required
         />
         <div className="timeContainer">
           <TextField
@@ -200,6 +206,7 @@ const NewClassList = () => {
             helperText="과목을 선택해주세요"
             size="small"
             fullWidth
+            style={{ paddingRight: '20px' }}
           >
             {subjects.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -216,7 +223,7 @@ const NewClassList = () => {
             helperText="요일을 선택해주세요"
             size="small"
             fullWidth
-            style={{ paddingLeft: '20px', paddingRight: '20px' }}
+            style={{ paddingRight: '20px' }}
           >
             {weeks.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -247,10 +254,12 @@ const NewClassList = () => {
           label="수업 설명"
           fullWidth
           size="small"
+          inputProps={{ maxLength: 19 }}
+          required
         />
         <StudentListTransfer ChangeStudentList={ChangeStudentList} />
         <div className="buttonContainer">
-          <button className="listButton pink" onClick={() => createClass()}>
+          <button className="listButton pink" onClick={createClass}>
             생성
           </button>
           <Link to="/teacher/classes">

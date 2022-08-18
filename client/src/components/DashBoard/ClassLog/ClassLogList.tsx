@@ -151,12 +151,11 @@ const totalContainer = css`
     width: 66%;
     height: 100%;
     align-items: center;
-    justify-content: center;
+    justify-content: baseline;
     display: flex;
     flex-direction: column;
     border-radius: 20px;
     border: 1px solid gray;
-    overflow-y: auto;
   }
 
   .react-calendar {
@@ -281,14 +280,24 @@ const totalContainer = css`
   /* table 영역 */
   .tableArea {
     width: 100%;
-    height: 100%;
+    height: 85%;
     /* overflow-y: scroll; */
     text-align: center;
+    overflow-y: scroll;
   }
 
   /* 스크롤 바 숨기기 */
   .tableArea::-webkit-scrollbar {
-    display: none;
+    display: block;
+    width: 0.5rem;
+  }
+
+  .tableArea::-webkit-scrollbar-thumb {
+    background-color: lightgrey;
+    border-radius: 15px;
+  }
+  .tableArea::-webkit-scrollbar-track {
+    border-radius: 15px;
   }
 
   .tableArea div {

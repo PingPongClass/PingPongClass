@@ -1,17 +1,16 @@
 import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
 
-const ClassCard = ({ clsList, classUrl }: any) => {
+const ClassCard = ({ clsList, classUrl, isDimming }: any) => {
   const [img, setImg] = useState('');
   useEffect(() => {
-    console.log('요기', clsList);
     if (clsList)
       setImg('/subject/' + clsList.subjectEntity.classSubjectCode + '.jpeg');
   }, [clsList]);
 
   if (clsList) {
     return (
-      <div css={TotalContainer(classUrl)}>
+      <div css={TotalContainer({ classUrl, isDimming })}>
         <img src={img} className="classImg" alt="수업" />
         <div className="class-info">
           <h2>{clsList.classTitle}</h2>
@@ -27,7 +26,7 @@ const ClassCard = ({ clsList, classUrl }: any) => {
   }
 };
 
-const TotalContainer = (classUrl: string) => css`
+const TotalContainer = ({ classUrl, isDimming }) => css`
   width: 240px;
   height: 215px;
   display: flex;
@@ -42,7 +41,9 @@ const TotalContainer = (classUrl: string) => css`
 
   filter: ${classUrl !== '링크' && classUrl
     ? 'brightness(100%)'
-    : 'brightness(85%)'};
+    : 'brightness(80%)'};
+
+  filter: ${isDimming === 'done' ? 'brightness(80%)' : 'brightness(100%)'};
 
   box-shadow: ${classUrl !== '링크' && classUrl ? '2px 2px 8px -5px' : null};
   background: ${classUrl !== '링크' && classUrl ? '#fffbf2' : '#f9f7f2'};
@@ -73,8 +74,8 @@ const TotalContainer = (classUrl: string) => css`
   }
 
   .class-info {
-    margin-left: 16px;
     width: 100%;
+    height: 66px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;

@@ -580,16 +580,23 @@ const totalContainer = css`
 
   /* 스크롤 바 숨기기 */
   .classTableArea::-webkit-scrollbar {
-    display: none;
+    display: block;
   }
 
   .classTableArea div {
     display: inline-block;
   }
 
-  /* 스크롤 바 숨기기 */
   .tableArea::-webkit-scrollbar {
-    display: none;
+    display: block;
+  }
+
+  .tableArea::-webkit-scrollbar-thumb {
+    background-color: lightgrey;
+    border-radius: 15px;
+  }
+  .tableArea::-webkit-scrollbar-track {
+    border-radius: 15px;
   }
 
   .tableArea div {

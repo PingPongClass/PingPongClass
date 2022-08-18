@@ -4,13 +4,12 @@ import { useAppSelector } from '@src/store/hooks';
 import axios from 'axios';
 import { setupInterceptorsTo } from '@src/utils/AxiosInterceptor';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const TeacherMyinfo = () => {
   const memberStore = useAppSelector((state) => state.member);
   const AXIOS = setupInterceptorsTo(axios.create());
   const [classList, setClassList] = useState([] as any);
-  const navigate = useNavigate();
+  const [finClassNum, setFinClassNum] = useState<number>(0);
   const dt = new Date();
 
   const loadClassList = async () => {
@@ -26,8 +25,38 @@ const TeacherMyinfo = () => {
     loadClassList();
   }, []);
 
+  useEffect(() => {
+    const now = new Date();
+    const nowHour = now.getHours();
+    const nowMinute = now.getMinutes();
+    let nowClassTime = 0;
+
+    // 시간체크
+    if (nowHour > 9 || (nowHour >= 9 && nowMinute >= 45)) nowClassTime = 1;
+    if (nowHour > 10 || (nowHour >= 10 && nowMinute >= 40)) nowClassTime = 2;
+    if (nowHour > 11 || (nowHour >= 11 && nowMinute >= 35)) nowClassTime = 3;
+    if (nowHour > 12 || (nowHour >= 12 && nowMinute >= 30)) nowClassTime = 4;
+    if (nowHour > 14 || (nowHour >= 14 && nowMinute >= 10)) nowClassTime = 5;
+    if (nowHour > 15 || (nowHour >= 15 && nowMinute >= 5)) nowClassTime = 6;
+    if (nowHour > 16 || (nowHour >= 16 && nowMinute >= 0)) nowClassTime = 7;
+
+    let finClassCnt = 0;
+    classList.forEach((elem) => {
+      console.log(elem.timetableId);
+      console.log(nowClassTime);
+      if (elem.timetableId <= nowClassTime) ++finClassCnt;
+    });
+    setFinClassNum(finClassCnt);
+  }, [classList]);
+
+  console.log(classList.length, finClassNum);
+
   return (
-    <div css={totalContainer}>
+    <div
+      css={totalContainer({
+        finPercent: `${(finClassNum / classList.length) * 100}%`,
+      })}
+    >
       <div className="infoContainer">
         {memberStore.profileFullPath ===
           'https://test-ppc-bucket.s3.ap-northeast-2.amazonaws.com/null' ||
@@ -50,18 +79,30 @@ const TeacherMyinfo = () => {
         </div>
       </div>
       <div className="levelContainer">
-        <h2 className="level">수업 현황 0/{classList.length}</h2>
+        <h2 className="level">
+          수업 현황 {finClassNum}/{classList.length}
+        </h2>
         <div className="stickerContainer">
-          <div className="soFarSticker">
-            <span>완료된 수업 : 0</span>
-          </div>
+          {classList.length ? (
+            !finClassNum ? (
+              <>
+                <span>완료된 수업 : 0</span>
+              </>
+            ) : (
+              <div className="soFarSticker">
+                <span>완료된 수업 : {finClassNum}</span>
+              </div>
+            )
+          ) : (
+            <span>오늘은 수업이 없습니다!</span>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-const totalContainer = css`
+const totalContainer = ({ finPercent }) => css`
   width: 100%;
   height: 100%;
   background: #ffffff;
@@ -138,7 +179,7 @@ const totalContainer = css`
   }
   .soFarSticker {
     position: relative;
-    width: 70%;
+    width: ${finPercent};
     height: 100%;
     background-color: #ffe790;
     border-radius: 20px;
@@ -171,7 +212,7 @@ const totalContainer = css`
       width: 0%;
     }
     to {
-      width: 70%;
+      width: ${finPercent};
     }
   }
 `;

@@ -68,6 +68,31 @@ function TeacherTodaysClass() {
     loadClassList();
   }, []);
 
+  useEffect(() => {
+    const now = new Date();
+    const nowHour = now.getHours();
+    const nowMinute = now.getMinutes();
+    let nowClassTime = 0;
+
+    // 시간체크
+    if (nowHour > 9 || (nowHour >= 9 && nowMinute >= 45)) nowClassTime = 1;
+    if (nowHour > 10 || (nowHour >= 10 && nowMinute >= 40)) nowClassTime = 2;
+    if (nowHour > 11 || (nowHour >= 11 && nowMinute >= 35)) nowClassTime = 3;
+    if (nowHour > 12 || (nowHour >= 12 && nowMinute >= 30)) nowClassTime = 4;
+    if (nowHour > 14 || (nowHour >= 14 && nowMinute >= 10)) nowClassTime = 5;
+    if (nowHour > 15 || (nowHour >= 15 && nowMinute >= 5)) nowClassTime = 6;
+    if (nowHour > 18 || (nowHour >= 18 && nowMinute >= 0)) nowClassTime = 7;
+
+    classList.forEach((elem) => {
+      console.log(elem.timetableId);
+      console.log(nowClassTime);
+      if (elem.timetableId <= nowClassTime) elem.isDimming = 'done';
+      else elem.isDimming = 'notyet';
+    });
+    console.log(classList, '여기');
+    setClassList(classList);
+  }, [classList]);
+
   return (
     <div css={totalContainer}>
       {classList.length === 0 && <p>오늘은 수업이 없습니다.</p>}
@@ -83,7 +108,11 @@ function TeacherTodaysClass() {
       >
         {classList.map((cls, idx) => (
           <SwiperSlide key={idx} onClick={() => openClass(cls)}>
-            <ClassCard clsList={cls} classUrl={true} />
+            <ClassCard
+              clsList={cls}
+              classUrl={true}
+              isDimming={cls.isDimming}
+            />
           </SwiperSlide>
         ))}
       </Swiper>

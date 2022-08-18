@@ -1587,11 +1587,11 @@ class VideoRoomComponent extends Component {
   // name: 오석호
   // date: 2022/08/16
   // desc: 접속자 정렬 기준 선정버튼
-  partsSortChange = (value) => {
+  partsSortChange(value) {
     this.setState({
       sortType: value,
     });
-  };
+  }
   // name: 오석호
   // date: 2022/08/15
   // desc: 이모지창을 여닫는 함수

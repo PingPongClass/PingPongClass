@@ -96,6 +96,7 @@ const TotalContainer = (isMouseOn) => css`
   height: 215px;
 
   .classcardContainer {
+    height: 215px;
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -113,7 +114,6 @@ const TotalContainer = (isMouseOn) => css`
 
   :hover {
     transform: scale(1.05);
-    cursor: pointer;
   }
 
   h2 {
@@ -129,7 +129,7 @@ const TotalContainer = (isMouseOn) => css`
 
   .classImg {
     width: 100%;
-    height: 60%;
+    height: 112px;
     background: white;
     border-radius: 10px;
     align-items: center;
@@ -164,8 +164,8 @@ const TotalContainer = (isMouseOn) => css`
     color: white;
     cursor: pointer;
     position: absolute;
-    top: 11rem;
-    left: 11.5rem;
+    bottom: 1.25rem;
+    right: 0.5rem;
   }
 `;
 

@@ -217,32 +217,36 @@ const TeacherResult = ({
                       <div className="s-point">상점</div>
                       <div className="s-point">발표횟수</div>
                     </div>
-                    {othersData.map((other, i) => (
-                      <div key={i} className="person">
-                        <div className="s-nickname">{other.nickname}</div>
-                        <div className="s-attendance-time">
-                          {other.attendanceTime}
+                    <div className="student-result-data">
+                      {othersData.map((other, i) => (
+                        <div key={i} className="person">
+                          <div className="s-nickname">{other.nickname}</div>
+                          <div className="s-attendance-time">
+                            {other.attendanceTime}
+                          </div>
+                          <div className="s-point">
+                            {other.isPointDouble ? (
+                              <p style={{ color: 'red' }}>
+                                <span
+                                  style={{
+                                    textDecoration: 'line-through',
+                                    color: 'black',
+                                  }}
+                                >
+                                  {other.point}
+                                </span>
+                                =&gt;{other.point * 2}
+                              </p>
+                            ) : (
+                              <p>{other.point}</p>
+                            )}
+                          </div>
+                          <div className="s-present">
+                            {other.presentationCnt}
+                          </div>
                         </div>
-                        <div className="s-point">
-                          {other.isPointDouble ? (
-                            <p style={{ color: 'red' }}>
-                              <span
-                                style={{
-                                  textDecoration: 'line-through',
-                                  color: 'black',
-                                }}
-                              >
-                                {other.point}
-                              </span>
-                              =&gt;{other.point * 2}
-                            </p>
-                          ) : (
-                            <p>{other.point}</p>
-                          )}
-                        </div>
-                        <div className="s-present">{other.presentationCnt}</div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                   <div>
                     <ResponsiveContainer width={450} height={270}>
@@ -432,7 +436,7 @@ const ClassStatistic = css`
   justify-content: space-between;
 
   .classContainer {
-    width: 60%;
+    width: 80%;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -466,14 +470,14 @@ const ClassStatistic = css`
 
     & > .t-classname {
       display: flex;
-      width: 100px;
+      width: 200px;
       justify-content: center;
       align-items: center;
     }
 
     & > .t-nickname {
       display: flex;
-      width: 100px;
+      width: 200px;
       justify-content: center;
       align-items: center;
     }
@@ -481,7 +485,7 @@ const ClassStatistic = css`
     & > .t-attendance-time,
     .t-fin-time {
       display: flex;
-      width: 100px;
+      width: 200px;
       justify-content: center;
       align-items: center;
     }
@@ -490,7 +494,7 @@ const ClassStatistic = css`
     .t-student-number,
     .t-att-student-number {
       display: flex;
-      width: 100px;
+      width: 200px;
       justify-content: center;
       align-items: center;
     }
@@ -534,6 +538,22 @@ const TotalResult = css`
 
     .person {
       border-bottom: 2px solid gray;
+    }
+
+    .student-result-data {
+      overflow-y: scroll;
+    }
+
+    .student-result-data::-webkit-scrollbar {
+      display: block;
+    }
+
+    .student-result-data::-webkit-scrollbar-thumb {
+      background-color: lightgrey;
+      border-radius: 15px;
+    }
+    .student-result-data::-webkit-scrollbar-track {
+      border-radius: 15px;
     }
   }
 

@@ -197,6 +197,8 @@ const Myinfo = () => {
                   css={css`
                     display: flex;
                     align-items: center;
+                    justify-content: center;
+                    text-align: center;
                   `}
                 >
                   <b>White</b> : 0 개
@@ -207,6 +209,7 @@ const Myinfo = () => {
                   display: flex;
                   margin-right: 2px;
                   justify-content: center;
+                  align-items: center;
                 `}
               >
                 <div
@@ -227,6 +230,7 @@ const Myinfo = () => {
                     display: flex;
                     justify-content: center;
                     text-align: center;
+                    align-items: center;
                   `}
                 >
                   <b>Yellow</b> : 1 - 49 개
@@ -256,6 +260,7 @@ const Myinfo = () => {
                   css={css`
                     display: flex;
                     justify-content: center;
+                    align-items: center;
                     text-align: center;
                   `}
                 >
@@ -287,6 +292,7 @@ const Myinfo = () => {
                     display: flex;
                     justify-content: center;
                     text-align: center;
+                    align-items: center;
                   `}
                 >
                   <b>Blue</b> : 100 - 149 개
@@ -317,6 +323,7 @@ const Myinfo = () => {
                     display: flex;
                     justify-content: center;
                     text-align: center;
+                    align-items: center;
                   `}
                 >
                   <b>Purple</b> : 150 - 199 개
@@ -347,6 +354,7 @@ const Myinfo = () => {
                     display: flex;
                     justify-content: center;
                     text-align: center;
+                    align-items: center;
                   `}
                 >
                   <b>Rainbow</b> : 200 개 이상
