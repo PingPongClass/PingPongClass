@@ -68,7 +68,7 @@ const TeachersToolbar = ({
                   style={{ animation: 'cooldown 30s linear 1' }}
                 />
               )}
-              <p>집중 스티커</p>
+              <p>집중 퐁퐁이</p>
             </div>
           </IconButton>
           <IconButton

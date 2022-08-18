@@ -376,9 +376,9 @@ const Myinfo = () => {
               className="currentSticker"
               style={{ width: `${currentRate}%` }}
             >
-              <div className="point-info">
+              <div className="point-now-info">
+                <PlayArrow className="arrow-up-icon" />
                 <div>현재 {memberStore.point}</div>
-                <PlayArrow className="arrow-icon" />
               </div>
             </div>
           </div>
@@ -391,7 +391,7 @@ const Myinfo = () => {
             justifyContent: 'space-between',
             width: '98%',
             alignItems: 'flex-end',
-            marginTop: '2%',
+            marginTop: '3%',
             marginBottom: '10px',
           }}
         >
@@ -592,10 +592,28 @@ const totalContainer = (currentRate: number, totalRate: number) => css`
     flex-direction: column;
     align-items: center;
   }
+  .point-now-info {
+    height: 30px;
+    width: 76px;
+    font-weight: 600;
+    color: var(--text-dark);
+    position: absolute;
+    top: 22px;
+    right: -28px;
+    font-size: 0.9em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
   .arrow-icon {
     font-size: 1.2em;
     transform: rotate(90deg);
+  }
+
+  .arrow-up-icon {
+    font-size: 1.2em;
+    transform: rotate(270deg);
   }
 
   img {

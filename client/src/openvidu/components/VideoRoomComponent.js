@@ -1759,7 +1759,7 @@ class VideoRoomComponent extends Component {
                   streamId={sub.streamManager.stream.streamId}
                   currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
                 />
-                <EmojiFilter user={sub} />
+                <EmojiFilter user={sub} whoami={this.props.whoami} />
               </div>
             ))}
           </div>

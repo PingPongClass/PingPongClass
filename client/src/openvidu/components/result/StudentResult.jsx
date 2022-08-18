@@ -185,7 +185,15 @@ const StudentResult = ({
                                     color: 'white',
                                   }}
                                 >
-                                  {other.point}
+                                  <p
+                                    style={
+                                      other.nickname === myData.nickname
+                                        ? { color: 'white' }
+                                        : { color: 'black' }
+                                    }
+                                  >
+                                    {other.point}
+                                  </p>
                                 </span>
                                 =&gt;{other.point * 2}
                               </p>

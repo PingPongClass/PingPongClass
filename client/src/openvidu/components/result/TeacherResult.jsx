@@ -29,6 +29,7 @@ const TeacherResult = ({
 }) => {
   const [attStudentNum, setAttStudentNum] = useState(0);
   const [totalSticker, setTotalSticker] = useState(0);
+  const [sortedOthersData, setSortedOthersData] = useState([]);
 
   const pointApplyToDB = async () => {
     try {
@@ -90,6 +91,7 @@ const TeacherResult = ({
   useEffect(() => {
     setAttStudentNum(othersData.length); // 참여자 수
     setTotalSticker(othersData.reduce((acc, cur) => (acc += cur.point), 0)); // 총 부여 스티커 계산식
+    setSortedOthersData(othersData.sort((a, b) => b.point - a.point));
   }, [whoami, myData, othersData, totalSticker]);
 
   // 스크롤 처리 해야함
@@ -210,7 +212,7 @@ const TeacherResult = ({
                       <div className="s-point">발표횟수</div>
                     </div>
                     <div className="student-result-data">
-                      {othersData.map((other, i) => (
+                      {sortedOthersData.map((other, i) => (
                         <div key={i} className="person">
                           <div className="s-nickname">{other.nickname}</div>
                           <div className="s-attendance-time">
@@ -243,7 +245,7 @@ const TeacherResult = ({
                   <div>
                     <ResponsiveContainer width={450} height={270}>
                       <BarChart
-                        data={othersData}
+                        data={sortedOthersData}
                         margin={{
                           top: 24,
                         }}

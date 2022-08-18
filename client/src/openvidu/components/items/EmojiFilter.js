@@ -15,26 +15,28 @@ export default class EmojiFilter extends Component {
             {this.state.user.smile ? (
               <img
                 style={{
-                  minWidth: '8rem',
-                  width: '20%',
+                  minWidth: '6rem',
+                  width: '15%',
                   position: 'absolute',
-                  top: '5%',
-                  right: '2.5%',
+                  bottom: '5%',
+                  left: '2.5%',
                 }}
                 src={Smile}
                 alt={'HI'}
               ></img>
             ) : null}
-            <h1
-              style={{
-                position: 'absolute',
-                top: '5%',
-                right: '2.5%',
-                fontSize: '500%',
-              }}
-            >
-              {this.state.user.outAngle ? '🚫' : null}
-            </h1>
+            {this.props.whoami === 'teacher' && (
+              <h1
+                style={{
+                  position: 'absolute',
+                  bottom: '5%',
+                  left: '2.5%',
+                  fontSize: '500%',
+                }}
+              >
+                {this.state.user.outAngle ? '🚫' : null}
+              </h1>
+            )}
           </>
         ) : null}
       </div>

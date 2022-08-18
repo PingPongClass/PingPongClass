@@ -51,7 +51,10 @@ video {
 }
 
 #statusIcons {
-  bottom: 40px;
+  display: flex;
+  flex-direction: row-reverse;
+  top: 0;
+  right: 40px;
   background: #c71100;
   width: 40px;
   height: fit-content;
@@ -61,6 +64,7 @@ video {
 
 #camIcon,
 #micIcon {
+  background: #c71100;
   text-align: center;
   padding: 6px;
 }
@@ -75,8 +79,8 @@ video {
 #volumeButton {
   background-color: #000000c4;
   position: absolute;
-  bottom: 0;
-  left: 0;
+  top: 0;
+  right: 0;
   z-index: 1000;
   color: #ffffff;
 }
