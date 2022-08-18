@@ -190,7 +190,12 @@ const NoticeBoard = () => {
                 </MenuItem>
                 {classes.map((s) => (
                   <MenuItem key={s.classId} value={s.classId}>
-                    {s.classTitle}
+                    {s.teacherName
+                      ? s.classTitle +
+                        ' : ' +
+                        s.teacherName +
+                        (s.classDesc ? '-' + s.classDesc : null)
+                      : s.classTitle}
                   </MenuItem>
                 ))}
               </Select>

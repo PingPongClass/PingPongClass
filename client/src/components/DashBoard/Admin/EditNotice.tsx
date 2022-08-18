@@ -258,7 +258,7 @@ const EditNotice = () => {
             </button>
           )}
           {/* </Link> */}
-          <Link to="/teacher/notice">
+          <Link to="/admin/notice">
             <button className="button-xsm gray">취소</button>
           </Link>
         </div>
