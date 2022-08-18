@@ -117,18 +117,21 @@ export default class FaceDetection extends Component {
         style={{ position: 'relative', height: '95%', width: '98%' }}
       >
         {!this.props.camera || this.state.autoPlay ? (
-          <div>
+          <>
             <h1
               style={{
                 position: 'absolute',
-                top: '10px',
-                right: '10px',
-                fontSize: '100px',
+                top: '10%',
+                right: '10%',
+                fontSize: '500%',
               }}
             >
               {this.state.smile < 1 ? null : this.state.smile > 3 ? (
                 <img
-                  style={{ width: '200px', height: '200px' }}
+                  style={{
+                    width: '8rem',
+                    height: '8rem',
+                  }}
                   src={Smile}
                   alt={'HI'}
                 ></img>
@@ -139,13 +142,20 @@ export default class FaceDetection extends Component {
             <h1
               style={{
                 position: 'absolute',
-                bottom: '100px',
-                right: '10px',
-                fontSize: '100px',
+                top: '10%',
+                right: '10%',
+                fontSize: '500%',
               }}
             >
               {this.state.face < 3 ? null : this.state.face > 5 ? (
-                '🚫'
+                <p
+                  style={{
+                    width: '8rem',
+                    height: '8rem',
+                  }}
+                >
+                  🚫
+                </p>
               ) : (
                 <LoadingBar msg={'🚫 3초후 자리비움 설정'} />
               )}
@@ -153,7 +163,7 @@ export default class FaceDetection extends Component {
             <div style={{ width: '0px', height: '0px' }}>
               <video ref={this.video} autoPlay muted onPlay={this.onPlay} />
             </div>
-          </div>
+          </>
         ) : null}
       </div>
     );

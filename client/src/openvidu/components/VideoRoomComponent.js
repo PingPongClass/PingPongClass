@@ -898,6 +898,9 @@ class VideoRoomComponent extends Component {
             user.setFrameColor(data.frameColor);
           }
           if (data.clickEvent !== undefined) {
+            // console.log('스티커 추가');
+            // console.log(event.from.remoteOptions);
+            // console.log(data);
             this.addNewStickers(data.clickEvent);
           }
           if (data.quizCreated !== undefined) {
@@ -1146,9 +1149,10 @@ class VideoRoomComponent extends Component {
       localUser.isScreenShareActive();
     if (isScreenShared) {
       this.setState({ videoLayout: 'screenShareOn' });
-    } else {
-      this.setState({ videoLayout: 'bigTeacher' });
     }
+    // else {
+    //   this.setState({ videoLayout: 'bigTeacher' });
+    // }
     const openviduLayoutOptions = {
       maxRatio: 9 / 16,
       minRatio: 9 / 16,
@@ -1521,27 +1525,44 @@ class VideoRoomComponent extends Component {
   };
 
   answerUpdate = (answer) => {
+    let quiz = this.state.quiz;
     if (answer === 'a1') {
+      quiz = { ...this.state.quiz, answerA1: this.state.quiz.answerA1 + 1 };
       this.setState({
         ...this.state,
-        quiz: { ...this.state.quiz, answerA1: this.state.quiz.answerA1 + 1 },
+        quiz: quiz,
       });
     } else if (answer === 'a2') {
+      quiz = { ...this.state.quiz, answerA2: this.state.quiz.answerA2 + 1 };
       this.setState({
         ...this.state,
-        quiz: { ...this.state.quiz, answerA2: this.state.quiz.answerA2 + 1 },
+        quiz: quiz,
       });
     } else if (answer === 'a3') {
+      quiz = { ...this.state.quiz, answerA3: this.state.quiz.answerA3 + 1 };
       this.setState({
         ...this.state,
-        quiz: { ...this.state.quiz, answerA3: this.state.quiz.answerA3 + 1 },
+        quiz: quiz,
       });
     } else if (answer === 'a4') {
+      quiz = { ...this.state.quiz, answerA4: this.state.quiz.answerA4 + 1 };
       this.setState({
         ...this.state,
-        quiz: { ...this.state.quiz, answerA4: this.state.quiz.answerA4 + 1 },
+        quiz: quiz,
       });
     }
+
+    let resultSavedHistory = [];
+    this.state.quizHistory.forEach((his) => {
+      if (his.question === quiz.question) {
+        resultSavedHistory.push(quiz);
+      } else {
+        resultSavedHistory.push(his);
+      }
+    });
+    this.setState({
+      quizHistory: resultSavedHistory,
+    });
   };
 
   // name: 한준수
@@ -1576,16 +1597,16 @@ class VideoRoomComponent extends Component {
   // desc: 이모지창을 여닫는 함수
   sendEmoji = (emoji) => {
     if (timeout) clearTimeout(timeout); // 쓰로틀링을 사용했습니다.
-    localUser.setEmoji(emoji);
+    // localUser.setEmoji(emoji);
     this.setState({ emoji: emoji });
 
     // localUser.getStreamManager().publishVideo(localUser.isVideoActive());
     this.sendSignalUserChanged({ emojiUsed: emoji });
     timeout = setTimeout(() => {
-      localUser.setEmoji('');
+      // localUser.setEmoji('');
       this.setState({ emoji: '' });
       this.sendSignalUserChanged({ emojiUsed: '' });
-    }, 3000);
+    }, 3 * 1000);
   };
 
   toggleTeacherMenu() {
@@ -1714,7 +1735,6 @@ class VideoRoomComponent extends Component {
                 <StreamComponent
                   user={this.state.localUser}
                   currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
-                  toggleEmoji={this.toggleEmoji}
                   emoji={this.state.emoji}
                 />
                 <FaceDetection
@@ -1742,8 +1762,6 @@ class VideoRoomComponent extends Component {
                   user={sub}
                   streamId={sub.streamManager.stream.streamId}
                   currentSpeakerDeviceId={this.state.currentSpeakerDeviceId}
-                  toggleEmoji={this.toggleEmoji}
-                  emoji={this.state.emoji}
                 />
                 <EmojiFilter user={sub} />
               </div>

@@ -27,7 +27,6 @@
   align-items: center;
   justify-content: start;
   box-sizing: border-box;
-  overflow-y: scroll;
 }
 .quizModal > .quizSection > header {
   position: relative;
@@ -55,6 +54,7 @@
 }
 .quizModal > .quizSection > .quizMain {
   min-width: inherit;
+  overflow-y: scroll;
 }
 .quiz.quizSection {
   width: 100%;
@@ -73,6 +73,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: end;
+  z-index: 1;
 }
 .quizModal > .quizSection > footer button {
   outline: none;

@@ -1,41 +1,41 @@
 import React, { Component } from 'react';
+import Smile from '../../assets/images/giphy_smile.gif';
 
 export default class EmojiFilter extends Component {
   constructor(props) {
     super(props);
     this.state = { user: this.props.user };
-    console.log('---------------EmojiFilter', this.state.user);
   }
 
   render() {
     return (
-      <div style={{ position: 'relative', height: '100%' }}>
+      <div style={{ position: 'relative', width: '100%', height: '100%' }}>
         {!this.state.user.screenShareActive && this.state.user.videoActive ? (
-          <div>
-            {this.state.user.emoji !== '' && (
-              <img src={'../reactions/' + this.state.user.emoji + '.gif'}></img>
-            )}
-            <h3
+          <>
+            {this.state.user.smile ? (
+              <img
+                style={{
+                  width: '8rem',
+                  height: '8rem',
+                  position: 'absolute',
+                  top: '5%',
+                  right: '2.5%',
+                }}
+                src={Smile}
+                alt={'HI'}
+              ></img>
+            ) : null}
+            <h1
               style={{
                 position: 'absolute',
-                fontSize: '140px',
-                bottom: '0px',
-                right: '0px',
-              }}
-            >
-              {this.state.user.smile ? '😁' : null}
-            </h3>
-            <h3
-              style={{
-                position: 'absolute',
-                fontSize: '130px',
-                bottom: '0px',
-                right: '0px',
+                top: '5%',
+                right: '2.5%',
+                fontSize: '500%',
               }}
             >
               {this.state.user.outAngle ? '🚫' : null}
-            </h3>
-          </div>
+            </h1>
+          </>
         ) : null}
       </div>
     );

@@ -1,7 +1,9 @@
 .outListContainer {
   width: 80%;
-	height: 120px;
+  height: 120px;
   max-width: 700px;
+  min-height: 140px;
+  height: max-content;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -13,14 +15,15 @@
     rgba(0, 0, 0, 0.22) 0px 10px 10px;
 }
 
-.outSideContainer{
-	width: 100%;
+.outSideContainer {
+  width: 100%;
+  min-height: 45px;
   margin-top: 20px;
-	display: flex;
+  display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
-	gap: 20px;
+  gap: 20px;
 }
 
 .quizListContainer {
@@ -50,5 +53,26 @@
 .listItems p {
   margin: 4px;
   font-weight: bold;
-	font-size: 20px;
+  font-size: 20px;
+}
+
+.quizListContainer button {
+  display: inline-block;
+  outline: 0;
+  cursor: pointer;
+  border: none;
+  padding: 0 56px;
+  min-height: 45px;
+  line-height: 45px;
+  border-radius: 7px;
+  background-color: #0070f3;
+  color: white;
+  font-weight: 400;
+  font-size: 16px;
+  box-shadow: 0 4px 14px 0 rgb(0 118 255 / 39%);
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+.quizListContainer button :hover {
+  background: rgba(0, 118, 255, 0.9);
+  box-shadow: 0 6px 20px rgb(0 118 255 / 23%);
 }
