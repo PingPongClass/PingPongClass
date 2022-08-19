@@ -557,14 +557,14 @@ const TotalResult = css`
 
     & > .s-point {
       display: flex;
-      width: 80px;
+      width: 100px;
       justify-content: center;
       align-items: center;
     }
 
     & > .s-present {
       display: flex;
-      width: 85px;
+      width: 100px;
       justify-content: center;
       align-items: center;
     }
