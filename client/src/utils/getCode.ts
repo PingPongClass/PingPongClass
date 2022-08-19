@@ -5,7 +5,7 @@ const getCode = async () => {
   const interceptedAxios = setupInterceptorsTo(axios.create());
   while (1) {
     const usedCode = await interceptedAxios.get(`/classes/checkcode`);
-    const code = Math.random().toString(16).substring(2, 8);
+    const code = Math.random().toString(14).substring(2, 8);
     if (!(code in usedCode)) return code;
   }
 };

@@ -185,7 +185,7 @@ const StudentResult = ({
                                     color: 'white',
                                   }}
                                 >
-                                  <p
+                                  <span
                                     style={
                                       other.nickname === myData.nickname
                                         ? { color: 'white' }
@@ -193,7 +193,7 @@ const StudentResult = ({
                                     }
                                   >
                                     {other.point}
-                                  </p>
+                                  </span>
                                 </span>
                                 =&gt;{other.point * 2}
                               </p>
@@ -561,14 +561,18 @@ const TotalResult = css`
 
     & > .s-point {
       display: flex;
-      width: 100px;
+      width: 120px;
       justify-content: center;
       align-items: center;
+
+      p {
+        width: 120px;
+      }
     }
 
     & > .s-present {
       display: flex;
-      width: 100px;
+      width: 120px;
       justify-content: center;
       align-items: center;
     }
