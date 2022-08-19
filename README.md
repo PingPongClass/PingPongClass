@@ -19,10 +19,14 @@
 </div>
 
 <br/>
+<br />
 
 <div align="center"> 
-    <h3>온라인 수업에 <span style="color: red">재미</span>를 더하다, PingpongClass </h3>
-    <h5>엄마~ 나 핑퐁클래스 들을래~</h5>
+    <h3>온라인 수업에 <span style="color: red">재미</span>를 더하다, 핑퐁클래스에서 재미있는 수업을 만나보세요! </h3>
+    <br />
+    <p>학교에 가지 않고 등교를 하는 시대가 찾아왔습니다.</p>
+    <p>코로나-19가 앞당긴 비대면 시대에서 핑퐁클래스는 "재미"와 "상호작용" 이라는 키워드에 초점을 맞추었습니다.</p>
+    <h5>Gamification을 접목한 Interactive한 수업, 핑퐁 클래스에서 이루어드립니다.</h5>
 </div>
 
 <br/>
@@ -134,7 +138,7 @@
 <thead>
   <tr>
     <td align="center"><strong>소개 영상</strong></th>
-    <td align="center"><strong>시연 영상</strong></th>
+    <td align="center"><strong>시연 영상 (추후 업로드)</strong></th>
   </tr>
   </thead>
   <tbody>
@@ -167,11 +171,119 @@
   <tbody>
     <tr>
       <td>
+        <img src="https://user-images.githubusercontent.com/14370441/185532012-0456e32d-91f2-4c39-8efb-9503590a06a8.gif" width=200/>
+      </td>
+      <td>
+        <b>랭킹 기능</b>
+        <div>사용자의 랭킹을 자유롭게 확인할 수 있습니다.</div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <img src="https://user-images.githubusercontent.com/14370441/185531997-f31c506b-4557-47b1-9cfc-ae1ced98f66f.gif" width=200/>
+      </td>
+      <td>
+        <b>뽑기 기능</b>
+        <div>획득한 퐁퐁이를 이용해서 아이템을 뽑아서 사용할 수 있습니다.</div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <img src="https://user-images.githubusercontent.com/14370441/185532862-2a724960-ecae-435e-8eab-47e4e3e7a3eb.gif" width=200/>
+      </td>
+      <td>
+        <b>참여자 목록 기능</b>
+        <div>원하는 학생에게 퐁퐁이를 부여하거나, 학생들의 상태를 출석, 결석, 퐁퐁이, 접속시간, 번호순으로 확인하고 관리할 수 있습니다.</div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <img src="https://user-images.githubusercontent.com/14370441/185531921-65a64725-d16e-4b6d-baac-e8974c76056b.gif" width=200/>
+      </td>
+      <td>
+        <b>이모지 기능</b>
+        <div>상점에서 뽑은 이모지를 수업 내에서 사용할 수 있습니다.</div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <img src="https://user-images.githubusercontent.com/14370441/185531928-d6a1d7d1-e864-4a12-b995-90dfe6f1ea89.gif" width=200/>
+      </td>
+      <td>
+        <b>채팅 기능</b>
+        <div>원하는 사람에게 원하는 채팅 혹은 귓속말을 보낼 수 있습니다.</div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <img src="https://user-images.githubusercontent.com/14370441/185531951-3c8ead1d-6b2e-4862-9e5e-918fa7c5df08.gif" width=200/>
+      </td>
+      <td>
+        <b>익명질문 기능</b>
+        <div>학생은 익명으로 질문을 올리고 답변을 받을 수 있습니다. 선생님은 누가 만든 질문인지 확인할 수 있습니다.</div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <img src="https://user-images.githubusercontent.com/14370441/185531970-94c7a8d3-f096-4840-b0be-742ec57bfc0e.gif" width=200/>
+      </td>
+      <td>
+        <b>화면 인식 기능</b>
+        <div>현재 졸고 있는 학생이나 웃고있는 학생을 인식해서 이모지를 보여줍니다.</div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <img src="https://user-images.githubusercontent.com/14370441/185531980-57a577c1-4cb0-4cf5-8bd6-3e32e4fa907b.gif" width=200/>
+      </td>
+      <td>
+        <b>집중 퐁퐁이 기능</b>
+        <div>수업에 집중하는 학생들을 위해 클릭하면 퐁퐁이가 부여되는 스티커를 화면에 만들어낼 수 있습니다.</div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <img src="https://user-images.githubusercontent.com/14370441/185531988-d40989d9-74af-49f9-894f-44ecebbfc25d.gif" width=200/>
+      </td>
+      <td>
+        <b>퀴즈 기능</b>
+        <div>수업 진행 중 필요에 따라 퀴즈를 내고 결과를 확인하고 학생과 공유할 수 있습니다.</div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <img src="https://user-images.githubusercontent.com/14370441/185531999-1b29057c-f593-473f-84f3-1d0580c6e760.gif" width=200/>
+      </td>
+      <td>
+        <b>학생 랜덤 선택 기능</b>
+        <div>발표를 위해서, 혹은 다양한 이유로 1명의 학생을 랜덤으로 뽑을 수 있습니다. 뽑힌 학생은 발표 프리패스권을 통해서 선정을 1회 막을 수 있습니다.</div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <img src="https://user-images.githubusercontent.com/14370441/185532005-564775c9-1d15-4e77-9aa0-0c7dd9ffe24f.gif" width=200/>
+      </td>
+      <td>
+        <b>통계 기능</b>
+        <div>수업이 끝나고 수업에 대한 통계를 표와 그래프로 확인할 수 있습니다.</div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <img src="https://user-images.githubusercontent.com/14370441/185532008-0ffdbc91-5dcd-4568-90fc-5a25740947d5.gif" width=200/>
+      </td>
+      <td>
+        <b>수업기록 기능</b>
+        <div>지금까지 있었던 수업들에 대한 통계를 확인할 수 있습니다.</div>
+      </td>
+    </tr>
+    <tr>
+      <td>
         <img src="https://user-images.githubusercontent.com/14370441/185453444-e9178a9f-7375-4b2c-99e2-d48e4589bec6.gif" width=200/>
       </td>
       <td>
         <b>엑셀 업로드 기능</b>
-        <div>여러분의 엑셀은 모두 저희의 데이터가 될 수 있습니다.</div>
+        <div>엑셀파일로 편하게 학생 및 선생님 정보를 관리할 수 있습니다.</div>
       </td>
     </tr>
   </tbody>
