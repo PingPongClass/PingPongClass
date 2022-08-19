@@ -1,0 +1,77 @@
+plugins {
+    id 'org.springframework.boot' version '2.7.1'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'idea'
+    //20220729 추가
+    id 'com.google.cloud.tools.jib' version '3.1.2'
+}
+
+group = 'com.pingpong'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'junit:junit:4.13.1'
+    runtimeOnly 'mysql:mysql-connector-java:8.0.29'
+    annotationProcessor 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'com.h2database:h2'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    //STOMP 웹소캣 서버 사이드 테스트를 위한 의존성 추가
+    implementation 'org.springframework.boot:spring-boot-starter-mustache'
+    //STOMP 관련 프론트 라이브러리
+    implementation 'org.webjars.bower:jquery:3.3.1'
+    implementation 'org.webjars:sockjs-client:1.1.2'
+    implementation 'org.webjars:stomp-websocket:2.3.3-1'
+    implementation 'org.webjars:webjars-locator:0.30'
+    //WebRTC 클라이언트 의존성 추가
+    implementation 'org.webjars.bower:webrtc-adapter:7.4.0'
+    //Kurento (미디어서버) 관련 의존성 추가
+    implementation 'org.kurento:kurento-client:6.16.0'
+    implementation 'org.kurento:kurento-utils-js:6.15.0'
+
+    //swagger
+    implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+
+    //JUnit
+    testImplementation group: 'junit', name: 'junit', version: '4.13.1'
+
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.7.0'
+    //JWT
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+
+    //excel
+    implementation 'org.apache.poi:poi-ooxml:5.2.2' //.xlsx
+    implementation 'org.apache.poi:poi:5.2.2' //.xls
+
+    //SMTP
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    //Amazon S3 imageUpload
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE'
+}
+    tasks.named('test') {
+    useJUnitPlatform()
+}
+

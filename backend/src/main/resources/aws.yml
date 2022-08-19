@@ -1,0 +1,18 @@
+#S3
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIA3MW7LJZM64XYEIT4
+      secretKey: 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
+    s3:
+      bucket: test-ppc-bucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB

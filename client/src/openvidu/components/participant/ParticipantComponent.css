@@ -1,0 +1,132 @@
+#participantContainer {
+  position: absolute;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#participantToolbar {
+  position: relative;
+  height: 30px;
+  background: #2b5876; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to left,
+    #4e4376,
+    #2b5876
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to left,
+    #4e4376,
+    #2b5876
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  box-sizing: border-box;
+  font-weight: bold;
+  font-size: 14px;
+  text-align: center;
+  padding-top: 4px;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  color: #ffffff;
+}
+
+#closeButton {
+  width: 20px;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#closeButton:hover {
+  cursor: pointer;
+}
+
+#participantComponent {
+  background-color: rgba(192, 192, 192, 0.097);
+  position: absolute;
+  z-index: 99999;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  height: calc(100% - 30px);
+  width: calc(100% - 30px);
+  border-radius: 20px;
+}
+
+.my-box {
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
+  background-color: #cecece36;
+}
+
+.display-box {
+  text-align: right;
+  margin: 0 2px;
+}
+
+.display-box > select {
+  width: 100px;
+  text-align: center;
+}
+
+.participants-wrap {
+  color: white;
+  margin-top: 1rem;
+  height: calc(100% - 143px);
+  overflow: auto;
+  margin-bottom: 2rem;
+}
+
+.participants-wrap .attendance-students > *,
+.participants-wrap .absent-students > * {
+  margin-bottom: 0.5rem;
+}
+
+.participants-wrap .attendance-students {
+  margin-bottom: 2rem;
+}
+
+.attendance-students h3,
+.absent-students h3 {
+  color: white;
+  text-align: center;
+}
+
+.absent-students p {
+  margin-left: 1rem;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #696969;
+}
+
+.participantComponentLight ::-webkit-scrollbar-thumb {
+  background-color: #eeeeee !important;
+}
+
+/* select */
+
+.display-box div {
+  color: white;
+}
+
+.display-box div svg {
+  color: rgb(255 255 255);
+}
+.display-box div {
+  border-bottom: 1px solid wthie;
+}
+
+.display-boxdiv ::hover {
+  border-bottom: 1px solid wthie;
+}
+
+.chat-title-sub {
+  background-color: #cecece36;
+  width: 100%;
+}

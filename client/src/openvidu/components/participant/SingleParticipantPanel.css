@@ -1,0 +1,31 @@
+#oneParticipant {
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-left: 1rem;
+}
+
+.right-side {
+  font-weight: 600;
+}
+
+.left-side {
+  display: flex;
+  justify-content: center;
+}
+
+.left-side > * {
+  margin-right: 0.5rem;
+}
+
+.left-side button {
+  cursor: pointer;
+}
+
+.left-side span {
+  font-size: 14px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
