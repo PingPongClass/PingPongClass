@@ -221,8 +221,12 @@ const StudentResult = ({
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Bar dataKey="퐁퐁이" stackId="a" fill="#a589cd" />
-                        <Bar dataKey="발표횟수" stackId="a" fill="#f3ca7e" />
+                        <Bar dataKey="point" stackId="a" fill="#a589cd" />
+                        <Bar
+                          dataKey="presentationCnt"
+                          stackId="a"
+                          fill="#f3ca7e"
+                        />
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
