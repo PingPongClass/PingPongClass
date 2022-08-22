@@ -138,7 +138,7 @@
 <thead>
   <tr>
     <td align="center"><strong>소개 영상</strong></th>
-    <td align="center"><strong>시연 영상 (추후 업로드)</strong></th>
+    <td align="center"><strong>시연 영상</strong></th>
   </tr>
   </thead>
   <tbody>
@@ -149,8 +149,8 @@
       </a>
     </td>
     <td>
-      <a href="">
-        <img src="https://user-images.githubusercontent.com/14370441/185449197-7dc55917-d689-4ca4-8d89-a1236428dbf9.png" width=400 height=240/>
+      <a href="https://www.youtube.com/watch?v=L6kh1eLFU1U">
+        <img src="https://user-images.githubusercontent.com/14370441/185664101-5c5e0f15-f838-457b-8de4-9e653d40567f.png" width=400 height=240/>
       </a>
     </td>
   </tr>

@@ -194,7 +194,10 @@ export default class ToolbarComponent extends Component {
     // const mySessionId = this.props.sessionId;
     const localUser = this.props.user;
     return (
-      <AppBar className="toolbar" id="header">
+      <AppBar
+        className="toolbar"
+        id={this.props.whoami === 'teacher' ? 'teacher-header' : 'header'}
+      >
         <Toolbar className="toolbar">
           {this.props.sessionId && (
             <div id="titleContent">

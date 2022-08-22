@@ -1708,11 +1708,12 @@ class VideoRoomComponent extends Component {
           <div
             id="layout"
             className={
-              this.state.chatDisplay === 'block' ||
+              (this.state.chatDisplay === 'block' ||
               this.state.participantDisplay === 'block' ||
               this.state.questionDisplay === 'block'
                 ? 'sth_on_bounds'
-                : 'bounds'
+                : 'bounds') +
+              (this.props.whoami === 'teacher' ? ' teacher-layout' : '')
             }
           >
             {localUser !== undefined &&

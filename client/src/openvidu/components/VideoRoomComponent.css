@@ -93,6 +93,20 @@
   width: 70%;
 }
 
+.teacher-layout {
+  background: #530c0c; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to bottom,
+    #530c0c,
+    #332828
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to bottom,
+    #530c0c,
+    #332828
+  );
+}
+
 .sth_component {
   position: absolute;
   background: #141e30; /* fallback for old browsers */

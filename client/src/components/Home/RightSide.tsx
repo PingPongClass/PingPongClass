@@ -31,6 +31,23 @@ function RightSide(props: RightSideProps) {
     setTap('login');
   };
 
+  const goLogin = (params) => {
+    setStatus(params);
+    if (params === 'student') {
+      setUserID(2022000001);
+      setUserPw('ssafy2022000001');
+      alert('학생 로그인');
+    } else if (params === 'teacher') {
+      setUserID(4030001);
+      setUserPw('ssafy4030001');
+      alert('선생님 로그인');
+    } else {
+      setUserID(5030001);
+      setUserPw('ssafy5030001');
+      alert('관리자 로그인');
+    }
+  };
+
   function goRealLogin(params) {
     InterceptedAxios.post('/auth/login', {
       id: userId,
@@ -91,6 +108,33 @@ function RightSide(props: RightSideProps) {
         만들기 위해 제작했어요.
       </div>
       <div className="buttons-div">
+        <div>
+          <button
+            className="button blue"
+            onClick={(e) => {
+              goLogin('student');
+            }}
+          >
+            학생
+          </button>
+          <button
+            className="button blue"
+            onClick={(e) => {
+              goLogin('teacher');
+            }}
+          >
+            선생님
+          </button>
+          <button
+            className="button blue"
+            onClick={(e) => {
+              goLogin('admin');
+            }}
+          >
+            관리자
+          </button>
+        </div>
+
         <button className="button blue" onClick={onClickLogin}>
           로그인
         </button>
