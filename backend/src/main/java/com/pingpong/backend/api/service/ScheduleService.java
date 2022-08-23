@@ -29,8 +29,8 @@ public class ScheduleService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     //매일 8시마다 실행
-//    @Scheduled(cron= "0 0 8 * * *", zone = "Asia/Seoul")
-    @Scheduled(cron="0 */1 * * * *", zone = "Asia/Seoul") //5분마다 -> 8시마다로 바꿔주세요~
+    @Scheduled(cron= "0 0 8 * * *", zone = "Asia/Seoul")
+//    @Scheduled(cron="0 */1 * * * *", zone = "Asia/Seoul") //5분마다 -> 8시마다로 바꿔주세요~
     public void everyDay_9_00_RankingJob(){
         System.out.println("8:00 RANKING 디비 갱신 시작!");
         rankingRepository.deleteAll();

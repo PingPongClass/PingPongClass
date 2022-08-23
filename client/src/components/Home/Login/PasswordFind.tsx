@@ -140,6 +140,10 @@ const totalContainer = css`
   align-items: flex-end;
   padding-right: 7rem;
 
+  .title-sub {
+    margin-right: 15px;
+  }
+
   .div-title {
     height: 9vh;
   }
@@ -149,7 +153,7 @@ const totalContainer = css`
   }
 
   .input-email {
-    width: 150px;
+    width: 138px;
   }
 
   button:first-of-type {

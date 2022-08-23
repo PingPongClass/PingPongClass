@@ -111,7 +111,7 @@ function RightSide(props: RightSideProps) {
         <button className="button blue" onClick={onClickLogin}>
           로그인
         </button>
-        <div
+        {/* <div
         // css={css`
         //   display: none;
         // `}
@@ -140,7 +140,7 @@ function RightSide(props: RightSideProps) {
           >
             관리자(임시)
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
